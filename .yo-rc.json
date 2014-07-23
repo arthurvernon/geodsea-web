@@ -1,0 +1,18 @@
+{
+  "generator-jhipster": {
+    "baseName": "geodsea",
+    "packageName": "com.geodsea.pub",
+    "packageFolder": "com/geodsea/pub",
+    "authenticationType": "token",
+    "hibernateCache": "ehcache",
+    "clusteredHttpSession": "no",
+    "websocket": "atmosphere",
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "useCompass": false,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "javaVersion": "7"
+  }
+}
