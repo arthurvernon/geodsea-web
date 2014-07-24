@@ -10,6 +10,10 @@ geodseaApp.controller('AdminController', ['$scope',
     function ($scope) {
     }]);
 
+geodseaApp.controller('HelpController', ['$scope',
+    function ($scope) {
+    }]);
+
 geodseaApp.controller('LanguageController', ['$scope', '$translate',
     function ($scope, $translate) {
         $scope.changeLanguage = function (languageKey) {

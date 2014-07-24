@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "geodsea",
+        "title": "Geo d'Sea",
         "browsehappy": "Ваш браузер <strong>устарел</strong>. Пожалуйста <a href=\"http://browsehappy.com/?locale=en\">обновите ваш браузер</a>.",
         "menu": {
             "home": "Главная",
@@ -27,7 +27,13 @@
             "fr": "Французский",
             "de": "Немецкий",
             "pl": "Польский",
-            "ru": "Русский"
+            "ru": "Русский",
+            "help": {
+                "main" : "_ru_Help",
+                "about" : "_ru_About",
+                "contact" : "_ru_Contact",
+                "faq" : "_ru_FAQ"
+            }
         },
         "form": {
             "username": "Логин",
@@ -74,15 +80,12 @@
         "logged": {
             "message": "Вы вошли как пользователь \"{{username}}\"."
         },
-        "question": "Если у Вас возникли вопросы по JHipster:",
+        "question": "Если у Вас возникли вопросы по Geo d'Sea:",
         "link": {
-            "homepage": "JHipster домашняя страница",
-            "stackoverflow": "JHipster на Stack Overflow",
-            "bugtracker": "JHipster баг трекер",
-            "contact": "пользователь @java_hipster в Twitter"
-        },
-        "like": "Если вам нравится JHipster, не забудьте дать нам звёздочку на",
-        "github": "Github"
+            "bugtracker": "Geo d'Sea баг трекер",
+            "wiki": "_ru_Geo d'Sea wiki",
+            "twitter": "пользователь @geodsea в Twitter"
+        }
     },
     "activate": {
         "title": "Activation",

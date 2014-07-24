@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "geodsea",
+        "title": "Geo d'Sea",
         "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
         "menu": {
             "home": "Accueil",
@@ -19,7 +19,14 @@
                 "register": "Register"
             },
             "admin": "Administration",
-            "language": "Langue"
+            "language": "Langue",
+            "help": {
+                "main" : "_fr_Help",
+                "about" : "_fr_About",
+                "contact" : "_fr_Contact",
+                "faq" : "_fr_FAQ"
+            }
+
         },
         "language": {
             "da": "Danois",
@@ -69,20 +76,17 @@
         }
     },
     "main": {
-        "title": "Bienvenue, Java Hipster !",
+        "title": "Bienvenue, Geo d'Sea !",
         "subtitle": "Ceci est votre page d'accueil",
         "logged": {
             "message": "Vous êtes connecté en tant que \"{{username}}\"."
         },
-        "question": "Si vous avez des questions à propos de JHipster:",
+        "question": "Si vous avez des questions à propos de Geo d'Sea:",
         "link": {
-            "homepage": "Page d'accueil de JHipster",
-            "stackoverflow": "JHipster sur Stack Overflow",
-            "bugtracker": "JHipster bug tracker",
-            "contact": "Contactez-nous sur Twitter @java_hipster"
-        },
-        "like": "Si vous aimez JHipster, donnez nous une étoile sur",
-        "github": "Github"
+            "bugtracker": "Geo d'Sea bug tracker",
+            "wiki": "Geo d'Sea Wiki",
+            "twitter": "Contactez-nous sur Twitter @geodsea"
+        }
     },
     "activate": {
         "title": "Activation",

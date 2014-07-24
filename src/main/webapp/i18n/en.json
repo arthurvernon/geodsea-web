@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "geodsea",
+        "title": "Geo d'Sea",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
@@ -19,7 +19,13 @@
                 "register": "Register"
             },
             "admin": "Administration",
-            "language": "Language"
+            "language": "Language",
+            "help": {
+                "main" : "Help",
+                "about" : "About",
+                "contact" : "Contact",
+                "faq" : "FAQ"
+            }
         },
         "language": {
             "da": "Danish",
@@ -69,20 +75,17 @@
         }
     },
     "main": {
-        "title": "Welcome, Java Hipster!",
-        "subtitle": "This is your homepage",
+        "title": "Welcome, Geo d'Sea!",
+        "subtitle": "Tracking of Vessels Via Mobile Networks",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },
-        "question": "If you have any question on JHipster:",
+        "question": "If you have any question on Geo d'Sea:",
         "link": {
-            "homepage": "JHipster homepage",
-            "stackoverflow": "JHipster on Stack Overflow",
-            "bugtracker": "JHipster bug tracker",
-            "contact": "contact @java_hipster on Twitter"
-        },
-        "like": "If you like JHipster, don't forget to give us a star on",
-        "github": "Github"
+            "wiki": "Geo d'Sea Wiki",
+            "bugtracker": "Geo d'Sea Bug Tracker",
+            "twitter": "contact @geodsea on Twitter"
+        }
     },
     "activate": {
         "title": "Activation",
@@ -308,5 +311,5 @@
         "title": "Error page!",
         "403": "You are not authorized to access the page."
     },
-    "footer": "This is your footer"
+    "footer": " &copy; Copyright 2014, Arthur Vernon. Last updated on May 29, 2014."
 }

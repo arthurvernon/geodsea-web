@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "geodsea",
+        "title": "Geo d'Sea",
         "browsehappy": "Du bruger en <strong>forældet</strong> browser. <a href=\"http://browsehappy.com/?locale=da\">Opgrader din browser</a> og få gavn af hele den tilgængelige funktionalitet.",
         "menu": {
             "home": "Forsiden",
@@ -19,7 +19,13 @@
                 "register": "Register"
             },
             "admin": "Administration",
-            "language": "Sprog"
+            "language": "Sprog",
+            "help": {
+                "main" : "_da_Help",
+                "about" : "_da_About",
+                "contact" : "_da_Contact",
+                "faq" : "_da_FAQ"
+            }
         },
         "language": {
             "da": "Dansk",
@@ -74,15 +80,12 @@
         "logged": {
             "message": "Du er logget ind som bruger \"{{username}}\"."
         },
-        "question": "Hvis du har spørgsmål om JHipster:",
+        "question": "Hvis du har spørgsmål om Geo d'Sea:",
         "link": {
-            "homepage": "JHipster homepage",
-            "stackoverflow": "JHipster på Stack Overflow",
-            "bugtracker": "JHipster bug tracker",
-            "contact": "Kontakt @java_hipster på Twitter"
-        },
-        "like": "Hvis du kan lide JHipster, så husk at give os en stjerne på",
-        "github": "Github"
+            "bugtracker": "_da_Geo d'Sea Bug Tracker",
+            "wiki": "_da_Geo d'Sea Wiki",
+            "twitter": "Kontakt @geodsea på Twitter"
+        }
     },
     "activate": {
         "title": "Activation",
