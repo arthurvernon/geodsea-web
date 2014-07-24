@@ -9,17 +9,37 @@
                 "settings": "Настройки",
                 "password": "Пароль",
                 "sessions": "Сессии",
+                "login": "Authenticate",
+                "logout": "Выйти",
+                "register": {
+                    "user" : "_ru_Register User",
+                    "vessel" : "_ru_Register Vessel"
+                }
+
+            },
+            "admin": {
+                "main" : "Администрирование",
                 "tracker": "Трекер польз.",
                 "metrics": "Метрики",
                 "logs": "Логи",
                 "audits": "Аудит",
-                "login": "Authenticate",
-                "logout": "Выйти",
-                "apidocs": "API",
-                "register": "Register"
+                "apidocs": "API"
             },
-            "admin": "Администрирование",
-            "language": "Язык"
+            "language": "Язык",
+            "help": {
+                "main" : "_ru_Help",
+                "overview" : "_ru_Overview",
+                "role" : "_ru_Role",
+                "owner" : "_da_Boat Owner",
+                "skipper" : "_ru_Skipper",
+                "rescue" : "_ru_Rescue",
+                "club" : "_ru_Club",
+                "friend" : "_ru_Friend",
+                "about" : "_ru_About",
+                "contact" : "_ru_Contact",
+                "faq" : "_ru_FAQ",
+                "privacy" : "_pl_Privacy"
+            }
         },
         "language": {
             "da": "Датский",
@@ -27,13 +47,7 @@
             "fr": "Французский",
             "de": "Немецкий",
             "pl": "Польский",
-            "ru": "Русский",
-            "help": {
-                "main" : "_ru_Help",
-                "about" : "_ru_About",
-                "contact" : "_ru_Contact",
-                "faq" : "_ru_FAQ"
-            }
+            "ru": "Русский"
         },
         "form": {
             "username": "Логин",
@@ -75,8 +89,8 @@
         }
     },
     "main": {
-        "title": "Добро пожаловать, Java Hipster!",
-        "subtitle": "Это ваша домашняя страница",
+        "title": "Добро пожаловать, Geo d'Sea!",
+        "subtitle": "_ru_Vessel Tracking Via Mobile Networks",
         "logged": {
             "message": "Вы вошли как пользователь \"{{username}}\"."
         },

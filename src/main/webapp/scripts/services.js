@@ -113,7 +113,8 @@ geodseaApp.factory('Session', [
 geodseaApp.constant('USER_ROLES', {
         all: '*',
         admin: 'ROLE_ADMIN',
-        user: 'ROLE_USER'
+        user: 'ROLE_USER',
+        owner: 'ROLE_OWNER'
     });
 
 geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authService', 'Session', 'Account', 'Base64Service', 'AccessToken', 

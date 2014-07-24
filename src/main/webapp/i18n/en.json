@@ -4,27 +4,40 @@
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
-            "account": {
-                "main": "Account",
+            "user": {
+                "main": "User",
                 "settings": "Settings",
                 "password": "Password",
                 "sessions": "Sessions",
+                "login": "Authenticate",
+                "logout": "Log out",
+                "register": {
+                    "user" : "Register User",
+                    "vessel" : "Register Vessel"
+                }
+            },
+            "admin": {
+                "main" : "Admin",
                 "tracker": "User tracker",
                 "metrics": "Metrics",
                 "logs": "Logs",
                 "audits": "Audits",
-                "login": "Authenticate",
-                "logout": "Log out",
-                "apidocs": "API",
-                "register": "Register"
+                "apidocs": "API"
             },
-            "admin": "Administration",
             "language": "Language",
             "help": {
-                "main" : "Help",
-                "about" : "About",
-                "contact" : "Contact",
-                "faq" : "FAQ"
+                "main": "Help",
+                "overview": "Overview",
+                "role": "Role",
+                "owner": "Boat Owner",
+                "skipper": "Skipper",
+                "rescue": "Rescue",
+                "club": "Club",
+                "friend": "Friend",
+                "about": "About Us",
+                "contact": "Contact",
+                "faq": "FAQ",
+                "privacy": "Privacy"
             }
         },
         "language": {
@@ -51,7 +64,7 @@
                 "register": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>"
             },
             "error": {
-                "dontmatch" : "The password and its confirmation do not match!"
+                "dontmatch": "The password and its confirmation do not match!"
             },
             "validate": {
                 "newpassword": {
@@ -76,7 +89,7 @@
     },
     "main": {
         "title": "Welcome, Geo d'Sea!",
-        "subtitle": "Tracking of Vessels Via Mobile Networks",
+        "subtitle": "Vessel Tracking Via Your Mobile",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },
@@ -160,7 +173,7 @@
             "button": "Save"
         },
         "messages": {
-            "error":  "<strong>An error has occured!</strong> The password could not be changed.",
+            "error": "<strong>An error has occured!</strong> The password could not be changed.",
             "success": "<strong>Password changed!</strong>"
         }
     },
@@ -311,5 +324,21 @@
         "title": "Error page!",
         "403": "You are not authorized to access the page."
     },
-    "footer": " &copy; Copyright 2014, Arthur Vernon. Last updated on May 29, 2014."
+    "footer": " &copy; Copyright 2014, Arthur Vernon. Last updated on May 29, 2014.",
+
+    "help": {
+        "overview": {
+            "title": "Overview",
+            "headline": "Geo d'Sea provides the boating community with communication and monitoring tools that save both time and money.",
+            "benefits" : {
+                "leadin" : "You can use this service as a:",
+                "skipper" : "To keep sea rescue and friends informed about your journey.<br> Receive noticies relevant to your location.",
+                "rescue" : "To maintain a watch and manage an area of operations.<br> Receive alerts when vessels are overdue.",
+                "friend" : "To track the location of people on-board the boat.<br>Exchange messages with each other.<br>Be informed of events relating to the vessel.",
+                "club" : "To track the location of participants."
+            }
+        }
+    }
+
+
 }

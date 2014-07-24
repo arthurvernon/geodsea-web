@@ -9,22 +9,35 @@
                 "settings": "Einstellungen",
                 "password": "Passwort",
                 "sessions": "Sitzungen",
+                "login": "Anmelden",
+                "logout": "Abmelden",
+                "register": {
+                    "user" : "Registrierung",
+                    "vessel" : "_de_Registrierung Vessel"
+                }
+            },
+            "admin": {
+                "main" : "Administration",
                 "tracker": "User tracker",
                 "metrics": "Metriken",
                 "logs": "Protokoll",
                 "audits": "Audits",
-                "login": "Anmelden",
-                "logout": "Abmelden",
-                "apidocs": "API",
-                "register": "Registrierung"
+                "apidocs": "API"
             },
-            "admin": "Administration",
             "language": "Sprache",
             "help": {
                 "main" : "Hilfe",
+                "overview" : "_de_Overview",
+                "role" : "_de_Role",
+                "owner" : "_de_Boat Owner",
+                "skipper" : "_de_Skipper",
+                "rescue" : "_de_Rescue",
+                "club" : "_de_Club",
+                "friend" : "_de_Friend",
                 "about" : "_de_About",
                 "contact" : "Kontakt",
-                "faq" : "_de_FAQ"
+                "faq" : "_de_FAQ",
+                "privacy" : "Privacy"
             }
 
         },
@@ -77,7 +90,7 @@
     },
     "main": {
         "title": "Willkommen, Geo d'Sea!",
-        "subtitle": "Tracking of vessels via mobile networks",
+        "subtitle": "_de_Vessel Tracking Via Mobile Networks",
         "logged": {
             "message": "Sie sind als Benutzer \"{{username}}\" angemeldet."
         },

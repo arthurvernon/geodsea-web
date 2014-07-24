@@ -1,0 +1,147 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
+<!--[if IE 7]>    <html class="ie7 oldie"> <![endif]-->
+<!--[if IE 8]>    <html class="ie8 oldie"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" xmlns:th="http://www.thymeleaf.org"><!-- InstanceBegin template="/Templates/SectionTemplate.dwt" codeOutsideHTMLIsLocked="false" -->
+<!--<![endif]-->
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>GeoD'Sea</title>
+
+ 
+<!--	<link href="../_css/style.css" rel="stylesheet" type="text/css"
+          th:href="@{/_css/style.css}"/> 
+-->  
+    <link href="../../../_css/boilerplate.css" rel="stylesheet" type="text/css"
+          th:href="@{/_css/boilerplate.css}"/>
+    <link href="../../../_css/layout.css" rel="stylesheet" type="text/css"
+          th:href="@{/_css/layout.css}"/>
+    <link href="../../../_css/main.css" rel="stylesheet" type="text/css"
+          th:href="@{/_css/main.css}"/>
+    <link href="../../../SpryAssets/SpryCollapsiblePanel.css" rel="stylesheet" type="text/css"
+          th:href="@{/SpryAssets/SpryCollapsiblePanel.css}"/>
+    <link href="../../../SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css"
+          th:href="@{/SpryAssets/SpryMenuBarHorizontal.css}"/>
+
+<!-- 
+To learn more about the conditional comments around the html tags at the top of the file:
+paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
+
+Do the following if you're using your customized build of modernizr (http://www.modernizr.com/):
+* insert the link to your js here
+* remove the link below to the html5shiv
+* add the "no-js" class to the html tags at the top
+* you can also remove the link to respond.min.js if you included the MQ Polyfill in your modernizr build 
+-->
+
+    <script src="../../../_js/libs/modernizr-2.0.6.min.js" 
+			type="text/javascript" 
+			th:src="@{/_js/libs/modernizr-2.0.6.min.js}">
+	</script>
+    <script src="../../../_js/respond.min.js"              
+			type="text/javascript" 
+			th:src="@{/_js/respond.min.js}">
+    </script>
+    <script src="../../../_js/jquery-2.1.1.min.js"         
+			type="text/javascript" 
+			th:src="@{/_js/jquery-2.1.1.min.js}" >
+	</script>
+    <script src="../../../SpryAssets/SpryCollapsiblePanel.js" 
+			type="text/javascript"
+            th:src="@{/SpryAssets/SpryCollapsiblePanel.js}">
+    </script>
+    <script src="../../../SpryAssets/SpryMenuBar.js" 
+			type="text/javascript"
+            th:src="@{/SpryAssets/SpryMenuBar.js}">
+	</script>
+
+<!-- InstanceParam name="OnLoad" type="text" value="About GeoTracker" -->
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+</head>
+<body onLoad="About GeoTracker">
+<div class="gridContainer clearfix">
+<div id="boat-icon">
+<a class="pngfix" href="/geodsea/WEB-INF/views/public/index.html" th:href="@{/public/index}">
+<img src="../../../images/boat.gif" alt="boat" width="45" height="45" th:src="@{/images/boat.gif}"/></a>
+</div>
+<div id="header">
+<h1>GeoD'Sea <!-- InstanceBeginEditable name="Subtitle" -->Documentation<!-- InstanceEndEditable --></h1>
+  </div>
+  <div id="user">
+		<a href="/geodsea/WEB-INF/views/user/login.html" th:href="@{/user/logout}">Logout</a>
+   </div>
+    <div id="Menu">
+        <ul id="MenuBar1" class="MenuBarHorizontal">
+            <li><a class="MenuBarItemSubmenu" href="skipper.html" th:text="#{menu.skipper.overview}"
+                   th:href="@{/public/skipper}">Skipper</a>
+                <ul>
+                    <li><a href="skipper.html" th:href="@{/public/skipper}"
+                           th:text="#{menu.skipper.overview}">Overview</a></li>
+                    <li><a href="/geodsea/WEB-INF/views/user/register.html" th:href="@{/user/register}"
+                           th:text="#{menu.skipper.registration}">Register</a></li>
+                    <li><a href="/geodsea/WEB-INF/views/skipper/index.html" th:href="@{/skipper}"
+                           th:text="#{menu.skipper.portal}">Portal</a></li>
+                </ul>
+            </li>
+            <li><a href="rescue.html" th:href="@{/public/rescue}" th:text="#{menu.rescue.overview}">Rescue</a>
+                <ul>
+                    <li><a href="rescue.html" th:href="@{/public/rescue}" th:text="#{menu.rescue.overview}">Overview</a>
+                    </li>
+                    <li><a href="/geodsea/WEB-INF/views/group/register.html"
+                           th:href="@{/user/register?function=Rescue}" th:text="#{menu.rescue.registration}">Registration</a>
+                    </li>
+                    <li><a href="/geodsea/WEB-INF/views/rescue/index.html" th:href="@{/rescue}"
+                           th:text="#{menu.rescue.portal}">Portal</a></li>
+                </ul>
+            </li>
+            <li><a class="MenuBarItemSubmenu" href="club.html" th:href="@{/public/club}"
+                   th:text="#{menu.club.overview}">Clubs</a>
+                <ul>
+                    <li><a href="club.html" th:href="@{/public/club}" th:text="#{menu.club.overview}">Overview</a></li>
+                    <li><a href="/geodsea/WEB-INF/views/group/register.html" th:href="@{/group/register?function=Club}"
+                           th:text="#{menu.club.registration}">Registration</a>
+                    </li>
+                    <li><a href="/geodsea/WEB-INF/views/group/index.html" th:href="@{/group}"
+                           th:text="#{menu.club.portal}">Portal</a></li>
+                </ul>
+            </li>
+            <li><a class="MenuBarItemSubmenu" href="#" th:href="@{/public/about}" th:text="#{menu.help}">Help</a>
+                <ul>
+                    <li><a href="/geodsea/WEB-INF/views/public/about.html" th:href="@{/public/about}"
+                           th:text="#{menu.help.about}">About Us</a></li>
+                    <li><a href="/geodsea/WEB-INF/views/public/faq.html" th:href="@{/public/faq}"
+                           th:text="#{menu.help.faq}">FAQ</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+  <div id="main"><!-- InstanceBeginEditable name="MainText" -->
+    
+<p>Listing of available documents including</p>
+<ul>
+<li>Club Event Setup</li>
+<li>Club Registration</li>
+<li>Sea Rescue Account Setup</li>
+<li>Monitoring Trips</li>
+<li>Manually Record a Journey Plan</li>
+<li>FAQs</li>
+</ul>
+  <!-- InstanceEndEditable -->
+    
+  </div>
+  
+  <div id="footer">
+   &copy; Copyright 2014, Arthur Vernon. License <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution</a>.
+    Last updated on May 29, 2014.
+  </div>
+</div>
+<script type="text/javascript">
+var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"/geodsea/SpryAssets/SpryMenuBarDownHover.gif", imgRight:"/geodsea/SpryAssets/SpryMenuBarRightHover.gif"});
+</script>
+</body>
+<!-- InstanceEnd --></html>

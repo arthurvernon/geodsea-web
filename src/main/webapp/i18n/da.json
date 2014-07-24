@@ -4,27 +4,40 @@
         "browsehappy": "Du bruger en <strong>forældet</strong> browser. <a href=\"http://browsehappy.com/?locale=da\">Opgrader din browser</a> og få gavn af hele den tilgængelige funktionalitet.",
         "menu": {
             "home": "Forsiden",
-            "account": {
+            "user": {
                 "main": "Konto",
                 "settings": "Indstillinger",
                 "password": "Kodeord",
                 "sessions": "Sessions",
+                "login": "Log ind",
+                "logout": "Log ud",
+                "register": {
+                    "user" : "_da_Register User",
+                    "vessel" : "_da_Register Vessel"
+                }
+            },
+            "admin": {
+                "main" : "Administration",
                 "tracker": "Brugersporing",
                 "metrics": "Målinger",
                 "logs": "Logs",
                 "audits": "Audits",
-                "login": "Log ind",
-                "logout": "Log ud",
-                "apidocs": "API",
-                "register": "Register"
+                "apidocs": "API"
             },
-            "admin": "Administration",
             "language": "Sprog",
             "help": {
                 "main" : "_da_Help",
+                "overview" : "_da_Overview",
+                "role" : "_da_Role",
+                "owner" : "_da_Boat Owner",
+                "skipper" : "_da_Skipper",
+                "rescue" : "_da_Rescue",
+                "club" : "_da_Club",
+                "friend" : "_da_Friend",
                 "about" : "_da_About",
                 "contact" : "_da_Contact",
-                "faq" : "_da_FAQ"
+                "faq" : "_da_FAQ",
+                "privacy" : "Privacy"
             }
         },
         "language": {
@@ -75,8 +88,8 @@
         }
     },
     "main": {
-        "title": "Velkommen, Java Hipster!",
-        "subtitle": "Dette er din startside",
+        "title": "Velkommen, Geo d'Sea!",
+        "subtitle": "_de_Vessel Tracking Via Mobile Networks",
         "logged": {
             "message": "Du er logget ind som bruger \"{{username}}\"."
         },

@@ -10,13 +10,21 @@ geodseaApp
     .config(['$routeProvider', '$httpProvider', '$translateProvider',  'tmhDynamicLocaleProvider', 'USER_ROLES',
         function ($routeProvider, $httpProvider, $translateProvider, tmhDynamicLocaleProvider, USER_ROLES) {
             $routeProvider
-                .when('/register', {
-                    templateUrl: 'views/register.html',
+                .when('/register/user', {
+                    templateUrl: 'views/registeruser.html',
                     controller: 'RegisterController',
                     access: {
                         authorizedRoles: [USER_ROLES.all]
                     }
                 })
+                .when('/register/vessel', {
+                    templateUrl: 'views/registeruser.html',
+                    controller: 'RegisterController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.user, USER_ROLES.admin]
+                    }
+                })
+
                 .when('/activate', {
                     templateUrl: 'views/activate.html',
                     controller: 'ActivationController',
@@ -109,6 +117,48 @@ geodseaApp
                         authorizedRoles: [USER_ROLES.admin]
                     }
                 })
+                .when('/overview', {
+                    templateUrl: 'views/overview.html',
+                    controller: 'HelpController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.all]
+                    }
+                })
+                .when('/owner', {
+                    templateUrl: 'views/owner.html',
+                    controller: 'HelpController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.all]
+                    }
+                })
+                .when('/skipper', {
+                    templateUrl: 'views/skipper.html',
+                    controller: 'HelpController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.all]
+                    }
+                })
+                .when('/rescue', {
+                    templateUrl: 'views/rescue.html',
+                    controller: 'HelpController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.all]
+                    }
+                })
+                .when('/club', {
+                    templateUrl: 'views/club.html',
+                    controller: 'HelpController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.all]
+                    }
+                })
+                .when('/friend', {
+                    templateUrl: 'views/friend.html',
+                    controller: 'HelpController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.all]
+                    }
+                })
                 .otherwise({
                     templateUrl: 'views/main.html',
                     controller: 'MainController',
@@ -152,7 +202,7 @@ geodseaApp
                 $rootScope.$on('event:auth-loginRequired', function(rejection) {
                     Session.invalidate();
                     $rootScope.authenticated = false;
-                    if ($location.path() !== "/" && $location.path() !== "" && $location.path() !== "/register" &&
+                    if ($location.path() !== "/" && $location.path() !== "" && $location.path() !== "/register/user" &&
                             $location.path() !== "/activate") {
                         $location.path('/login').replace();
                     }
