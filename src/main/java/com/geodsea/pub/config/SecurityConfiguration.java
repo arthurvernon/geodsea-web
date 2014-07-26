@@ -40,13 +40,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
+             // stops ugly unauthorised messages appearing all the time... not ideal but...
+            .antMatchers("/websocket/activity")
+            .antMatchers("/app/rest/register")
             .antMatchers("/bower_components/**")
             .antMatchers("/fonts/**")
             .antMatchers("/images/**")
             .antMatchers("/scripts/**")
             .antMatchers("/styles/**")
             .antMatchers("/views/**")
-            .antMatchers("/swagger-ui/**");
+            .antMatchers("/swagger-ui/**")
+            .antMatchers("/console/**");
     }
     
 
