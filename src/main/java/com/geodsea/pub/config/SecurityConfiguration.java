@@ -19,11 +19,11 @@ import javax.inject.Inject;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    
+
 
     @Inject
     private UserDetailsService userDetailsService;
-    
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,16 +33,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-            .userDetailsService(userDetailsService)
+                .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-             // stops ugly unauthorised messages appearing all the time... not ideal but...
+            // stops ugly unauthorised messages appearing all the time... not ideal but...
             .antMatchers("/websocket/activity")
             .antMatchers("/app/rest/register")
+            .antMatchers("/app/rest/activate")
             .antMatchers("/bower_components/**")
             .antMatchers("/fonts/**")
             .antMatchers("/images/**")
@@ -52,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/swagger-ui/**")
             .antMatchers("/console/**");
     }
-    
+
 
     @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
     private static class GlobalSecurityConfiguration extends GlobalMethodSecurityConfiguration {
@@ -60,6 +61,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         protected MethodSecurityExpressionHandler createExpressionHandler() {
             return new OAuth2MethodSecurityExpressionHandler();
         }
-        
+
     }
 }
