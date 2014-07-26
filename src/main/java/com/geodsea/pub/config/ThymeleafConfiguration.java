@@ -11,6 +11,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
@@ -33,7 +34,7 @@ public class ThymeleafConfiguration {
 
     @Bean
     @Description("Thymeleaf template resolver serving HTML 5 emails")
-    public ClassLoaderTemplateResolver emailTemplateResolver() {
+    public ITemplateResolver emailTemplateResolver() {
         ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
         emailTemplateResolver.setPrefix("mails/");
         emailTemplateResolver.setSuffix(".html");
@@ -45,9 +46,9 @@ public class ThymeleafConfiguration {
 
     @Bean
     @Description("Thymeleaf template resolver serving HTML 5")
-    public ServletContextTemplateResolver webTemplateResolver() {
-        ServletContextTemplateResolver webTemplateResolver = new ServletContextTemplateResolver();
-        webTemplateResolver.setPrefix("/WEB-INF/templates/");
+    public ITemplateResolver webTemplateResolver() {
+        ClassLoaderTemplateResolver webTemplateResolver = new ClassLoaderTemplateResolver();
+        webTemplateResolver.setPrefix("templates/");
         webTemplateResolver.setSuffix(".html");
         webTemplateResolver.setTemplateMode("HTML5");
         webTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
