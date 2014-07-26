@@ -58,9 +58,15 @@ public class OAuth2ServerConfiguration {
                     .authorizeRequests()
                     .antMatchers("/views/**").permitAll()
                     .antMatchers("/app/rest/authenticate").permitAll()
+                    .antMatchers("/app/rest/register").permitAll()
                     .antMatchers("/app/rest/logs/**").hasAnyAuthority(AuthoritiesConstants.ADMIN)
                     .antMatchers("/app/**").authenticated()
                     .antMatchers("/websocket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)
+
+                    // added this, but it still does not work. Why? Possibly the user's credentials are not being submitted
+                    // TODO find a way to have credentials submitted with Atmoshpere reqests. http://async-io.org/
+//                    .antMatchers("/websocket/activity").permitAll()
+
                     .antMatchers("/websocket/**").permitAll()
                     .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
                     .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
