@@ -18,8 +18,8 @@ geodseaApp
                     }
                 })
                 .when('/register/vessel', {
-                    templateUrl: 'views/registeruser.html',
-                    controller: 'RegisterController',
+                    templateUrl: 'views/boats.html',
+                    controller: 'BoatController',
                     access: {
                         authorizedRoles: [USER_ROLES.user, USER_ROLES.admin]
                     }
