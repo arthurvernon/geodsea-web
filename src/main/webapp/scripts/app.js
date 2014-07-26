@@ -20,6 +20,11 @@ geodseaApp
                 .when('/register/vessel', {
                     templateUrl: 'views/boats.html',
                     controller: 'BoatController',
+                    resolve:{
+                        resolvedBoat: ['Boat', function (Boat) {
+                            return Boat.query();
+                        }]
+                    },
                     access: {
                         authorizedRoles: [USER_ROLES.user, USER_ROLES.admin]
                     }
