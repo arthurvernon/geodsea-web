@@ -1,7 +1,7 @@
 package com.geodsea.pub.web.rest;
 
 import com.geodsea.pub.Application;
-import com.geodsea.pub.repository.UserRepository;
+import com.geodsea.pub.repository.PersonRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,14 +33,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserResourceTest {
 
     @Inject
-    private UserRepository userRepository;
+    private PersonRepository personRepository;
 
     private MockMvc restUserMockMvc;
 
     @Before
     public void setup() {
         UserResource userResource = new UserResource();
-        ReflectionTestUtils.setField(userResource, "userRepository", userRepository);
+        ReflectionTestUtils.setField(userResource, "personRepository", personRepository);
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource).build();
     }
 
@@ -50,7 +50,7 @@ public class UserResourceTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.lastName").value("Administrator"));
+                .andExpect(jsonPath("$.lastName").value("User"));
     }
 
     @Test

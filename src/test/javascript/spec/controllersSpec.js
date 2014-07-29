@@ -71,7 +71,7 @@ describe('Controllers Tests ', function () {
 
         it('should save account', function () {
             //GIVEN
-            $scope.settingsAccount = {firstName: "John", lastName: "Doe"};
+            $scope.settingsAccount = {firstName: "John", lastName: "Doe", telephone: "12345678"};
 
             //SET SPY
             spyOn(AccountService, 'save');
@@ -81,7 +81,8 @@ describe('Controllers Tests ', function () {
 
             //THEN
             expect(AccountService.save).toHaveBeenCalled();
-                        expect(AccountService.save).toHaveBeenCalledWith({firstName: "John", lastName: "Doe"}, jasmine.any(Function), jasmine.any(Function));
+                        expect(AccountService.save).toHaveBeenCalledWith({firstName: "John", lastName: "Doe", telephone: "12345678"},
+                            jasmine.any(Function), jasmine.any(Function));
 
             //SIMULATE SUCCESS CALLBACK CALL FROM SERVICE
             AccountService.save.calls.mostRecent().args[1]();

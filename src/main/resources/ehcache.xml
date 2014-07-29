@@ -17,7 +17,7 @@
             overflowToDisk="false"
             />
 
-    <cache name="com.geodsea.pub.domain.User"
+    <cache name="com.geodsea.pub.domain.Person"
            timeToLiveSeconds="3600">
     </cache>
 
@@ -25,7 +25,7 @@
            timeToLiveSeconds="3600">
     </cache>
 
-    <cache name="com.geodsea.pub.domain.User.authorities"
+    <cache name="com.geodsea.pub.domain.Participant.authorities"
            timeToLiveSeconds="3600">
     </cache>
    
@@ -33,7 +33,7 @@
            timeToLiveSeconds="3600">
     </cache>
 
-    <cache name="com.geodsea.pub.domain.User.persistentTokens"
+    <cache name="com.geodsea.pub.domain.Person.persistentTokens"
            timeToLiveSeconds="3600">
     </cache>
 

@@ -15,12 +15,13 @@ import java.util.Map;
  */
 
 @Entity
-@Table(name = "T_PERSISTENT_AUDIT_EVENT")
+@Table(name = "T_AUDIT_EVENT", schema = "BOAT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PersistentAuditEvent  {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(generator = "AUDIT_EVENT_SEQ_GEN", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "AUDIT_EVENT_SEQ_GEN", sequenceName = "BOAT.AUDIT_EVENT_ID_SEQ")
     @Column(name = "event_id")
     private long id;
 

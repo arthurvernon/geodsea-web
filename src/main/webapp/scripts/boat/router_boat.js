@@ -5,11 +5,11 @@ geodseaApp
         function ($routeProvider, $httpProvider, $translateProvider, USER_ROLES) {
             $routeProvider
                 .when('/boat', {
-                    templateUrl: 'views/boats.html',
-                    controller: 'BoatController',
+                    templateUrl: 'views/vessels.html',
+                    controller: 'VesselController',
                     resolve:{
-                        resolvedBoat: ['Boat', function (Boat) {
-                            return Boat.query();
+                        resolvedBoat: ['Vessel', function (Vessel) {
+                            return Vessel.query();
                         }]
                     },
                     access: {

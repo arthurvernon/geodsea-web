@@ -3,26 +3,29 @@ package com.geodsea.pub.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
+import org.joda.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 /**
  * A user.
  */
 @Entity
-@Table(name = "T_USER")
+@Table(name = "T_PERSON", schema = "BOAT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class User extends AbstractAuditingEntity implements Serializable {
-
-    @NotNull
-    @Size(min = 0, max = 50)
-    @Id
-    private String login;
+//@DiscriminatorValue("P")
+@PrimaryKeyJoinColumn(name="PERSON_ID", referencedColumnName = "ID")
+public class Person extends Participant implements Serializable {
 
     @JsonIgnore
     @Size(min = 0, max = 100)
@@ -40,38 +43,30 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Size(min = 0, max = 100)
     private String email;
 
-    @NotNull
-    private Boolean activated = false;
-
     @Size(min = 2, max = 5)
     @Column(name = "lang_key")
     private String langKey;
 
-    @Size(min = 0, max = 20)
-    @Column(name = "activation_key")
-    private String activationKey;
+    @Column(name="BIRTH_DATE", nullable = true)
+    @Temporal(TemporalType.DATE)
+    @Past()
+    @DateTimeFormat(style="S-")
+    private Date birthDate;
+
+
+    /**
+     * The telephone number upon which the person can be contacted in emergencies
+     */
+    @Column(name="TELEPHONE", nullable = true)
+    @Pattern(regexp="^\\(?(\\d{2,3})\\)?[- ]?(\\d{3,4})[- ]?(\\d{4})$",
+            message="{invalid.phonenumber}")
+    private String telephone;
+
 
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "T_USER_AUTHORITY",
-            joinColumns = {@JoinColumn(name = "login", referencedColumnName = "login")},
-            inverseJoinColumns = {@JoinColumn(name = "name", referencedColumnName = "name")})
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Authority> authorities;
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "person")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PersistentToken> persistentTokens;
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
 
     public String getPassword() {
         return password;
@@ -105,22 +100,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.email = email;
     }
 
-    public Boolean getActivated() {
-        return activated;
-    }
-
-    public void setActivated(Boolean activated) {
-        this.activated = activated;
-    }
-
-    public String getActivationKey() {
-        return activationKey;
-    }
-
-    public void setActivationKey(String activationKey) {
-        this.activationKey = activationKey;
-    }
-
     public String getLangKey() {
         return langKey;
     }
@@ -129,14 +108,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.langKey = langKey;
     }
 
-    public Set<Authority> getAuthorities() {
-        return authorities;
-    }
 
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
-    }
-    
     public Set<PersistentToken> getPersistentTokens() {
         return persistentTokens;
     }
@@ -145,40 +117,32 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.persistentTokens = persistentTokens;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        User user = (User) o;
-
-        if (!login.equals(user.login)) {
-            return false;
-        }
-
-        return true;
+    public String getTelephone() {
+        return telephone;
     }
 
-    @Override
-    public int hashCode() {
-        return login.hashCode();
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "login='" + login + '\'' +
+                "login='" + getParticipantName() + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", activated='" + activated + '\'' +
+                ", telephone='" + email + '\'' +
                 ", langKey='" + langKey + '\'' +
-                ", activationKey='" + activationKey + '\'' +
                 "}";
     }
 }

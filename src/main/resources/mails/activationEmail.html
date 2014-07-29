@@ -5,14 +5,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     </head>
     <body>
-        <p th:text="#{activation.greeting(${user.login})}">
+        <p th:text="#{activation.greeting(${user.participantName})}">
             Dear
         </p>
         <p th:text="#{activation.text1}">
             Your Geo d'Sea account has been created, please click on the URL below to activate it:
         </p>
         <p>
-            <a th:href="@{|${baseUrl}/#/activate?key=${user.activationKey}|}"
+            <a th:href="@{|${baseUrl}/#/activate?key=${user.registrationToken}|}"
                th:text="|${user.login}|">Activation Link</a>
         </p>
         <p>

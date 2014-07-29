@@ -1,8 +1,8 @@
 package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.geodsea.pub.domain.User;
-import com.geodsea.pub.repository.UserRepository;
+import com.geodsea.pub.domain.Person;
+import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.security.AuthoritiesConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public class UserResource {
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
 
     @Inject
-    private UserRepository userRepository;
+    private PersonRepository personRepository;
 
     /**
      * GET  /rest/users/:login -> get the "login" user.
@@ -36,12 +36,12 @@ public class UserResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)
-    public User getUser(@PathVariable String login, HttpServletResponse response) {
+    public Person getUser(@PathVariable String login, HttpServletResponse response) {
         log.debug("REST request to get User : {}", login);
-        User user = userRepository.findOne(login);
-        if (user == null) {
+        Person person = personRepository.getUserByParticipantName(login);
+        if (person == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
-        return user;
+        return person;
     }
 }

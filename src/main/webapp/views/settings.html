@@ -80,6 +80,31 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label translate="global.form.telephone">E-mail</label>
+                    <input type="email" class="form-control" name="email" placeholder="{{'global.form.telephone.placeholder' | translate}}"
+                           ng-model="settingsAccount.telephone" ng-minlength=5 ng-maxlength=100 required>
+                    <div class="error"
+                         ng-show="form.telephone.$dirty && form.telephone.$invalid">
+                        <small class="error"
+                               ng-show="form.telephone.$error.required" translate="global.messages.validate.telephone.required">
+                            Your telephone number is required.
+                        </small>
+                        <small class="error"
+                               ng-show="form.telephone.$error.telephone" translate="global.messages.validate.telephone.invalid">
+                            Your telephone number is invalid.
+                        </small>
+                        <small class="error"
+                               ng-show="form.telephone.$error.minlength" translate="global.messages.validate.telephone.minlength">
+                            Your telephone number is required to be at least 5 characters
+                        </small>
+                        <small class="error"
+                               ng-show="form.telephone.$error.maxlength" translate="global.messages.validate.telephone.maxlength">
+                            Your telephone number cannot be longer than 100 characters
+                        </small>
+                    </div>
+                </div>
+
                 <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" translate="settings.form.button">Save</button>
             </form>
         </div>

@@ -1,0 +1,16 @@
+drop table if exists BOAT.VESSEL cascade;
+drop table if exists BOAT.VESSEL_EQUIPMENT cascade;
+drop table if exists BOAT.VESSEL_OWNER cascade;
+drop table if exists BOAT.SKIPPER cascade;
+drop table if exists BOAT.VESSEL_PERMIT cascade;
+drop table if exists BOAT.LICENSE cascade;
+drop table if exists BOAT.LICENSE_SKIPPER cascade;
+drop table if exists BOAT.LICENSE_VESSEL cascade;
+drop table if exists BOAT.TRIP cascade;
+drop sequence if exists BOAT.VESSEL_ID_SEQ;
+drop sequence if exists BOAT.LICENSE_ID_SEQ;
+drop sequence if exists BOAT.VESSEL_OWNER_ID_SEQ;
+drop sequence if exists BOAT.RIGHT_ID_SEQ;
+drop sequence if exists BOAT.SKIPPER_ID_SEQ;
+drop sequence if exists BOAT.BOAT_ID_SEQ;
+drop sequence if exists BOAT.TRIP_ID_SEQ;

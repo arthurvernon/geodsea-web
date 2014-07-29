@@ -3,9 +3,9 @@ package com.geodsea.pub.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.geodsea.pub.domain.Authority;
 import com.geodsea.pub.domain.PersistentToken;
-import com.geodsea.pub.domain.User;
+import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.repository.PersistentTokenRepository;
-import com.geodsea.pub.repository.UserRepository;
+import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.security.SecurityUtils;
 import com.geodsea.pub.service.MailService;
 import com.geodsea.pub.service.UserService;
@@ -50,7 +50,7 @@ public class AccountResource {
     private SpringTemplateEngine templateEngine;
 
     @Inject
-    private UserRepository userRepository;
+    private PersonRepository personRepository;
 
     @Inject
     private UserService userService;
@@ -70,15 +70,15 @@ public class AccountResource {
     @Timed
     public ResponseEntity<?> registerAccount(@RequestBody UserDTO userDTO, HttpServletRequest request,
                                              HttpServletResponse response) {
-        User user = userRepository.findOne(userDTO.getLogin());
-        if (user != null) {
+        Person person = personRepository.getUserByParticipantName(userDTO.getLogin());
+        if (person != null) {
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         } else {
-            user = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(), userDTO.getFirstName(),
+            person = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(), userDTO.getFirstName(),
                     userDTO.getLastName(), userDTO.getEmail().toLowerCase(), userDTO.getLangKey());
-            final Locale locale = Locale.forLanguageTag(user.getLangKey());
-            String content = createHtmlContentFromTemplate(user, locale, request, response);
-            mailService.sendActivationEmail(user.getEmail(), content, locale);
+            final Locale locale = Locale.forLanguageTag(person.getLangKey());
+            String content = createHtmlContentFromTemplate(person, locale, request, response);
+            mailService.sendActivationEmail(person.getEmail(), content, locale);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
@@ -90,11 +90,11 @@ public class AccountResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
-        User user = userService.activateRegistration(key);
-        if (user == null) {
+        Person person = userService.activateRegistration(key);
+        if (person == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<String>(user.getLogin(), HttpStatus.OK);
+        return new ResponseEntity<String>(person.getParticipantName(), HttpStatus.OK);
     }
 
     /**
@@ -117,22 +117,23 @@ public class AccountResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<UserDTO> getAccount() {
-        User user = userService.getUserWithAuthorities();
-        if (user == null) {
+        Person person = userService.getUserWithAuthorities();
+        if (person == null) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         List<String> roles = new ArrayList<>();
-        for (Authority authority : user.getAuthorities()) {
+        for (Authority authority : person.getAuthorities()) {
             roles.add(authority.getName());
         }
         return new ResponseEntity<>(
             new UserDTO(
-                user.getLogin(),
+                person.getParticipantName(),
                 null,
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getLangKey(),
+                person.getFirstName(),
+                person.getLastName(),
+                person.getEmail(),
+                person.getLangKey(),
+                person.getTelephone(),
                 roles),
             HttpStatus.OK);
     }
@@ -171,12 +172,12 @@ public class AccountResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<List<PersistentToken>> getCurrentSessions() {
-        User user = userRepository.findOne(SecurityUtils.getCurrentLogin());
-        if (user == null) {
+        Person person = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
+        if (person == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(
-            persistentTokenRepository.findByUser(user),
+            persistentTokenRepository.findByPerson(person),
             HttpStatus.OK);
     }
 
@@ -198,8 +199,8 @@ public class AccountResource {
     @Timed
     public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
         String decodedSeries = URLDecoder.decode(series, "UTF-8");
-        User user = userRepository.findOne(SecurityUtils.getCurrentLogin());
-        List<PersistentToken> persistentTokens = persistentTokenRepository.findByUser(user);
+        Person person = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
+        List<PersistentToken> persistentTokens = persistentTokenRepository.findByPerson(person);
         for (PersistentToken persistentToken : persistentTokens) {
             if (StringUtils.equals(persistentToken.getSeries(), decodedSeries)) {
                 persistentTokenRepository.delete(decodedSeries);
@@ -207,10 +208,10 @@ public class AccountResource {
         }
     }
 
-    private String createHtmlContentFromTemplate(final User user, final Locale locale, final HttpServletRequest request,
+    private String createHtmlContentFromTemplate(final Person person, final Locale locale, final HttpServletRequest request,
                                                  final HttpServletResponse response) {
         Map<String, Object> variables = new HashMap<String, Object>();
-        variables.put("user", user);
+        variables.put("user", person);
         variables.put("baseUrl", request.getScheme() + "://" +   // "http" + "://
                                  request.getServerName() +       // "myhost"
                                  ":" + request.getServerPort());

@@ -57,7 +57,8 @@
             "confirmpassword": "Подтверждение нового пароля",
             "confirmpassword.placeholder": "Подтвердите новый пароль",
             "email": "E-mail",
-            "email.placeholder": "Ваш e-mail"
+            "email.placeholder": "Ваш e-mail",
+            "telephone" : "_ru_Telephone"
         },
         "messages": {
             "info": {
@@ -84,6 +85,12 @@
                     "invalid": "E-mail не верен.",
                     "minlength": "Длина e-mail должна быть хотя-бы 5 символов",
                     "maxlength": "E-mail не может быть длиннее чем 50 символов"
+                },
+                "telephone": {
+                    "required": "_ru_telephone number должен быть указан.",
+                    "invalid": "_ru_telephone number не верен.",
+                    "minlength": "_ru_Длина telephone number должна быть хотя-бы 5 символов",
+                    "maxlength": "_ru_telephone number не может быть длиннее чем 50 символов"
                 }
             }
         }

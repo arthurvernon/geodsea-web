@@ -21,7 +21,7 @@ import java.io.Serializable;
  * @see com.geodsea.pub.security.CustomPersistentRememberMeServices
  */
 @Entity
-@Table(name = "T_PERSISTENT_TOKEN")
+@Table(name = "T_PERSISTENT_TOKEN", schema = "BOAT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PersistentToken implements Serializable {
 
@@ -52,7 +52,8 @@ public class PersistentToken implements Serializable {
 
     @JsonIgnore
     @ManyToOne
-    private User user;
+    @JoinColumn(name = "person_id")
+    private Person person;
 
     public String getSeries() {
         return series;
@@ -103,12 +104,12 @@ public class PersistentToken implements Serializable {
         }
     }
 
-    public User getUser() {
-        return user;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     @Override

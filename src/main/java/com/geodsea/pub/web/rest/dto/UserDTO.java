@@ -11,6 +11,8 @@ public class UserDTO {
     private String firstName;
     
     private String lastName;
+
+    private String telephone;
     
     private String email;
     
@@ -22,6 +24,7 @@ public class UserDTO {
     }
 
     public UserDTO(String login, String password, String firstName, String lastName, String email, String langKey,
+                   String telephone,
                    List<String> roles) {
         this.login = login;
         this.password = password;
@@ -29,6 +32,7 @@ public class UserDTO {
         this.lastName = lastName;
         this.email = email;
         this.langKey = langKey;
+        this.telephone = telephone;
         this.roles = roles;
     }
 
@@ -60,6 +64,15 @@ public class UserDTO {
         return roles;
     }
 
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("UserDTO{");
@@ -70,6 +83,7 @@ public class UserDTO {
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", email='").append(email).append('\'');
+        sb.append(", telephone='").append(telephone).append('\'');
         sb.append(", langKey='").append(langKey).append('\'');
         sb.append(", roles=").append(roles);
         sb.append('}');

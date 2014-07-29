@@ -56,7 +56,8 @@
             "confirmpassword": "New password confirmation",
             "confirmpassword.placeholder": "Confirm the new password",
             "email": "E-mail",
-            "email.placeholder": "Your e-mail"
+            "email.placeholder": "Your e-mail",
+            "telephone" : "Telephone"
         },
         "messages": {
             "info": {
@@ -83,6 +84,12 @@
                     "invalid": "Your e-mail is invalid.",
                     "minlength": "Your e-mail is required to be at least 5 characters",
                     "maxlength": "Your e-mail cannot be longer than 50 characters"
+                },
+                "telephone": {
+                    "required": "Your telephone number is required.",
+                    "invalid": "Your telephone number is invalid.",
+                    "minlength": "Your telephone number is required to be at least 5 characters",
+                    "maxlength": "Your telephone number cannot be longer than 50 characters"
                 }
             }
         }

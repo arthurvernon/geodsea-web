@@ -3,19 +3,20 @@ package com.geodsea.pub.web.rest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.inject.Inject;
 
+import com.geodsea.pub.domain.Vessel;
+import com.geodsea.pub.domain.type.VesselType;
+import com.geodsea.pub.repository.VesselRepository;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -28,14 +29,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.geodsea.pub.Application;
-import com.geodsea.pub.domain.Boat;
-import com.geodsea.pub.repository.BoatRepository;
 
 
 /**
  * Test class for the BoatResource REST controller.
  *
- * @see BoatResource
+ * @see VesselResource
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -44,7 +43,7 @@ import com.geodsea.pub.repository.BoatRepository;
     DirtiesContextTestExecutionListener.class,
     TransactionalTestExecutionListener.class })
 @ActiveProfiles("dev")
-public class BoatResourceTest {
+public class VesselResourceTest {
     
     private static final Long DEFAULT_ID = new Long(1L);
 
@@ -57,24 +56,28 @@ public class BoatResourceTest {
     private static final String UPD_SAMPLE_TEXT_ATTR = "sampleTextAttributeUpt";
 
     @Inject
-    private BoatRepository boatRepository;
+    private VesselRepository vesselRepository;
 
     private MockMvc restBoatMockMvc;
     
-    private Boat boat;
+    private Vessel vessel;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        BoatResource boatResource = new BoatResource();
-        ReflectionTestUtils.setField(boatResource, "boatRepository", boatRepository);
+        VesselResource vesselResource = new VesselResource();
+        ReflectionTestUtils.setField(vesselResource, "vesselRepository", vesselRepository);
 
-        this.restBoatMockMvc = MockMvcBuilders.standaloneSetup(boatResource).build();
+        this.restBoatMockMvc = MockMvcBuilders.standaloneSetup(vesselResource).build();
 
-        boat = new Boat();
-        boat.setId(DEFAULT_ID);
-    	boat.setSampleDateAttribute(DEFAULT_SAMPLE_DATE_ATTR);
-    	boat.setSampleTextAttribute(DEFAULT_SAMPLE_TEXT_ATTR);
+        vessel = new Vessel();
+        vessel.setId(DEFAULT_ID);
+        vessel.setVesselType(VesselType.CABIN);
+        vessel.setVesselName("Blythe's Spirit");
+        vessel.setLength(18);
+
+    	vessel.setSampleDateAttribute(DEFAULT_SAMPLE_DATE_ATTR);
+    	vessel.setSampleTextAttribute(DEFAULT_SAMPLE_TEXT_ATTR);
     }
 
     // TODO text is broken - cannot rely on preset ID.
@@ -82,13 +85,13 @@ public class BoatResourceTest {
     public void testCRUDBoat() throws Exception {
 
     	// Create Boat
-    	restBoatMockMvc.perform(post("/app/rest/boats")
+    	restBoatMockMvc.perform(post("/app/rest/vessels")
     			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(boat)))
+                .content(TestUtil.convertObjectToJsonBytes(vessel)))
                 .andExpect(status().isOk());
 
     	// Read Boat
-//    	restBoatMockMvc.perform(get("/app/rest/boats/{id}", DEFAULT_ID))
+//    	restBoatMockMvc.perform(get("/app/rest/vessels/{id}", DEFAULT_ID))
 //                .andExpect(status().isOk())
 //                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(jsonPath("$.id").value(DEFAULT_ID.intValue()))
@@ -99,13 +102,13 @@ public class BoatResourceTest {
 //    	boat.setSampleDateAttribute(UPD_SAMPLE_DATE_ATTR);
 //    	boat.setSampleTextAttribute(UPD_SAMPLE_TEXT_ATTR);
 //
-//    	restBoatMockMvc.perform(post("/app/rest/boats")
+//    	restBoatMockMvc.perform(post("/app/rest/vessels")
 //    			.contentType(TestUtil.APPLICATION_JSON_UTF8)
 //                .content(TestUtil.convertObjectToJsonBytes(boat)))
 //                .andExpect(status().isOk());
 //
 //    	// Read updated Boat
-//    	restBoatMockMvc.perform(get("/app/rest/boats/{id}", DEFAULT_ID))
+//    	restBoatMockMvc.perform(get("/app/rest/vessels/{id}", DEFAULT_ID))
 //                .andExpect(status().isOk())
 //                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(jsonPath("$.id").value(DEFAULT_ID.intValue()))
@@ -113,12 +116,12 @@ public class BoatResourceTest {
 //    			.andExpect(jsonPath("$.sampleTextAttribute").value(UPD_SAMPLE_TEXT_ATTR));
 //
 //    	// Delete Boat
-//    	restBoatMockMvc.perform(delete("/app/rest/boats/{id}", DEFAULT_ID)
+//    	restBoatMockMvc.perform(delete("/app/rest/vessels/{id}", DEFAULT_ID)
 //                .accept(TestUtil.APPLICATION_JSON_UTF8))
 //                .andExpect(status().isOk());
 //
 //    	// Read nonexisting Boat
-//    	restBoatMockMvc.perform(get("/app/rest/boats/{id}", DEFAULT_ID)
+//    	restBoatMockMvc.perform(get("/app/rest/vessels/{id}", DEFAULT_ID)
 //                .accept(TestUtil.APPLICATION_JSON_UTF8))
 //                .andExpect(status().isNotFound());
 //

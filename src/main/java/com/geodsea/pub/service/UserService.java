@@ -2,10 +2,11 @@ package com.geodsea.pub.service;
 
 import com.geodsea.pub.domain.Authority;
 import com.geodsea.pub.domain.PersistentToken;
-import com.geodsea.pub.domain.User;
+import com.geodsea.pub.domain.Person;
+import com.geodsea.pub.domain.util.DateConstants;
 import com.geodsea.pub.repository.AuthorityRepository;
 import com.geodsea.pub.repository.PersistentTokenRepository;
-import com.geodsea.pub.repository.UserRepository;
+import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.security.SecurityUtils;
 import com.geodsea.pub.service.util.RandomUtil;
 import org.joda.time.LocalDate;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,7 +36,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Inject
-    private UserRepository userRepository;
+    private PersonRepository personRepository;
 
     @Inject
     private PersistentTokenRepository persistentTokenRepository;
@@ -42,66 +44,78 @@ public class UserService {
     @Inject
     private AuthorityRepository authorityRepository;
 
-    public User activateRegistration(String key) {
+    public Person activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
-        User user = userRepository.getUserByActivationKey(key);
+        Person person = personRepository.getUserByActivationKey(key);
 
         // activate given user for the registration key.
-        if (user != null) {
-            user.setActivated(true);
-            user.setActivationKey(null);
-            userRepository.save(user);
-            log.debug("Activated user: {}", user);
+        if (person != null) {
+            if (person.getRegistrationTokenExpires().getTime() > System.currentTimeMillis())
+            {
+                log.info("User account {} not activated as it has expired", person);
+                personRepository.delete(person);
+                return null;
+            }
+            person.setEnabled(true);
+            person.setRegistrationToken(null);
+            person.setRegistrationTokenExpires(null);
+            personRepository.save(person);
+            log.debug("Activated user: {}", person);
         }
-        return user;
+        return person;
     }
 
-    public User createUserInformation(String login, String password, String firstName, String lastName, String email,
+    public Person createUserInformation(String login, String password, String firstName, String lastName, String email,
                                       String langKey) {
-        User newUser = new User();
+        Person newPerson = new Person();
+        String encryptedPassword = passwordEncoder.encode(password);
+        newPerson.setParticipantName(login);
+        // new user gets initially a generated password
+        newPerson.setPassword(encryptedPassword);
+        newPerson.setFirstName(firstName);
+        newPerson.setLastName(lastName);
+        newPerson.setEmail(email);
+        newPerson.setLangKey(langKey);
+        // new user is not active
+        newPerson.setEnabled(false);
+
+        // new user gets registration key that will expire in 8 hours
+        newPerson.setRegistrationTokenExpires(new Date(System.currentTimeMillis() + 8 * DateConstants.HOURS));
+        newPerson.setRegistrationToken(RandomUtil.generateActivationKey());
+
         Authority authority = authorityRepository.findOne("ROLE_USER");
         Set<Authority> authorities = new HashSet<Authority>();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(login);
-        // new user gets initially a generated password
-        newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(firstName);
-        newUser.setLastName(lastName);
-        newUser.setEmail(email);
-        newUser.setLangKey(langKey);
-        // new user is not active
-        newUser.setActivated(false);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
         authorities.add(authority);
-        newUser.setAuthorities(authorities);
-        userRepository.save(newUser);
-        log.debug("Created Information for User: {}", newUser);
-        return newUser;
+        newPerson.setAuthorities(authorities);
+
+        personRepository.save(newPerson);
+
+        log.debug("Created Information for User: {}", newPerson);
+        return newPerson;
     }
 
     public void updateUserInformation(String firstName, String lastName, String email) {
-        User currentUser = userRepository.findOne(SecurityUtils.getCurrentLogin());
-        currentUser.setFirstName(firstName);
-        currentUser.setLastName(lastName);
-        currentUser.setEmail(email);
-        userRepository.save(currentUser);
-        log.debug("Changed Information for User: {}", currentUser);
+        Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
+        currentPerson.setFirstName(firstName);
+        currentPerson.setLastName(lastName);
+        currentPerson.setEmail(email);
+        personRepository.save(currentPerson);
+        log.debug("Changed Information for User: {}", currentPerson);
     }
 
     public void changePassword(String password) {
-        User currentUser = userRepository.findOne(SecurityUtils.getCurrentLogin());
+        Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
         String encryptedPassword = passwordEncoder.encode(password);
-        currentUser.setPassword(encryptedPassword);
-        userRepository.save(currentUser);
-        log.debug("Changed password for User: {}", currentUser);
+        currentPerson.setPassword(encryptedPassword);
+        personRepository.save(currentPerson);
+        log.debug("Changed password for User: {}", currentPerson);
     }
 
     @Transactional(readOnly = true)
-    public User getUserWithAuthorities() {
-        User currentUser = userRepository.findOne(SecurityUtils.getCurrentLogin());
-        currentUser.getAuthorities().size(); // eagerly load the association
-        return currentUser;
+    public Person getUserWithAuthorities() {
+        Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
+        currentPerson.getAuthorities().size(); // eagerly load the association
+        return currentPerson;
     }
 
     /**
@@ -118,8 +132,8 @@ public class UserService {
         List<PersistentToken> tokens = persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1));
         for (PersistentToken token : tokens) {
             log.debug("Deleting token {}", token.getSeries());
-            User user = token.getUser();
-            user.getPersistentTokens().remove(token);
+            Person person = token.getPerson();
+            person.getPersistentTokens().remove(token);
             persistentTokenRepository.delete(token);
         }
     }
@@ -134,10 +148,10 @@ public class UserService {
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
         LocalDate now = new LocalDate();
-        List<User> users = userRepository.findNotActivatedUsersByCreationDateBefore(now.minusDays(3));
-        for (User user : users) {
-            log.debug("Deleting not activated user {}", user.getLogin());
-            userRepository.delete(user);
+        List<Person> persons = personRepository.findNotActivatedUsersByCreationDateBefore(now.minusDays(3));
+        for (Person person : persons) {
+            log.debug("Deleting not activated user {}", person.getParticipantName());
+            personRepository.delete(person);
         }
     }
 }

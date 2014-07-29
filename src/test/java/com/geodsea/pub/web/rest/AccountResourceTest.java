@@ -2,8 +2,8 @@ package com.geodsea.pub.web.rest;
 
 import com.geodsea.pub.Application;
 import com.geodsea.pub.domain.Authority;
-import com.geodsea.pub.domain.User;
-import com.geodsea.pub.repository.UserRepository;
+import com.geodsea.pub.domain.Person;
+import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.security.AuthoritiesConstants;
 import com.geodsea.pub.service.UserService;
 import org.junit.Before;
@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AccountResourceTest {
 
     @Inject
-    private UserRepository userRepository;
+    private PersonRepository personRepository;
 
     @Mock
     private UserService userService;
@@ -57,7 +57,7 @@ public class AccountResourceTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         AccountResource accountResource = new AccountResource();
-        ReflectionTestUtils.setField(accountResource, "userRepository", userRepository);
+        ReflectionTestUtils.setField(accountResource, "personRepository", personRepository);
         ReflectionTestUtils.setField(accountResource, "userService", userService);
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(accountResource).build();
     }
@@ -92,13 +92,13 @@ public class AccountResourceTest {
         authority.setName(AuthoritiesConstants.ADMIN);
         authorities.add(authority);
 
-        User user = new User();
-        user.setLogin("test");
-        user.setFirstName("john");
-        user.setLastName("doe");
-        user.setEmail("john.doe@jhipter.com");
-        user.setAuthorities(authorities);
-        when(userService.getUserWithAuthorities()).thenReturn(user);
+        Person person = new Person();
+        person.setParticipantName("test");
+        person.setFirstName("john");
+        person.setLastName("doe");
+        person.setEmail("john.doe@jhipter.com");
+        person.setAuthorities(authorities);
+        when(userService.getUserWithAuthorities()).thenReturn(person);
 
         restUserMockMvc.perform(get("/app/rest/account")
                 .accept(MediaType.APPLICATION_JSON))

@@ -30,22 +30,22 @@ public abstract class AbstractAuditingEntity {
 
     @CreatedBy
     @NotNull
-    @Column(name = "created_by")
+    @Column(name = "CREATED_BY")
     private String createdBy;
 
     @CreatedDate
     @NotNull
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    @Column(name = "created_date")
+    @Column(name = "CREATED_DATE")
     private DateTime createdDate = DateTime.now();
 
     @LastModifiedBy
-    @Column(name = "last_modified_by")
+    @Column(name = "LAST_MODIFIED_BY")
     private String lastModifiedBy;
 
     @LastModifiedDate
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    @Column(name = "last_modified_date")
+    @Column(name = "LAST_MODIFIED_DATE")
     private DateTime lastModifiedDate = DateTime.now();
 
     public String getCreatedBy() {

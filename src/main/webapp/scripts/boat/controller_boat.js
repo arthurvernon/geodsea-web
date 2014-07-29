@@ -1,32 +1,32 @@
 'use strict';
 
-geodseaApp.controller('BoatController', ['$scope', 'resolvedBoat', 'Boat',
-    function ($scope, resolvedBoat, Boat) {
+geodseaApp.controller('VesselController', ['$scope', 'resolvedVessel', 'Vessel',
+    function ($scope, resolvedVessel, Boat) {
 
-        $scope.boats = resolvedBoat;
+        $scope.vessels = resolvedVessel;
 
         $scope.create = function () {
-            Boat.save($scope.boat,
+            Vessel.save($scope.vessel,
                 function () {
-                    $scope.boats = Boat.query();
-                    $('#saveBoatModal').modal('hide');
+                    $scope.vessels = Boat.query();
+                    $('#saveVesselModal').modal('hide');
                     $scope.clear();
                 });
         };
 
         $scope.update = function (id) {
-            $scope.boat = Boat.get({id: id});
-            $('#saveBoatModal').modal('show');
+            $scope.vessel = Vessel.get({id: id});
+            $('#saveVesselModal').modal('show');
         };
 
         $scope.delete = function (id) {
-            Boat.delete({id: id},
+            Vessel.delete({id: id},
                 function () {
-                    $scope.boats = Boat.query();
+                    $scope.vessels = Vessel.query();
                 });
         };
 
         $scope.clear = function () {
-            $scope.boat = {id: null, sampleTextAttribute: null, sampleDateAttribute: null};
+            $scope.vessel = {id: null, sampleTextAttribute: null, sampleDateAttribute: null};
         };
     }]);

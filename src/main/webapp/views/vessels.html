@@ -1,11 +1,11 @@
 <div>
 
-    <h2>Boats</h2>
+    <h2>Vessels</h2>
 
-    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveBoatModal" ng-click="clear()">
-        <span class="glyphicon glyphicon-flash"></span> Create a new Boat
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveVesselModal" ng-click="clear()">
+        <span class="glyphicon glyphicon-flash"></span> Create a new Vessel
     </button>
-    <div class="modal fade" id="saveBoatModal" tabindex="-1" role="dialog" aria-labelledby="myBoatLabel"
+    <div class="modal fade" id="saveVesselModal" tabindex="-1" role="dialog" aria-labelledby="myVesselLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -16,7 +16,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                 ng-click="clear()">&times;</button>
-                        <h4 class="modal-title" id="myBoatLabel">Create or edit a Boat</h4>
+                        <h4 class="modal-title" id="myVesselLabel">Create or edit a Vessel</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -28,13 +28,13 @@
                         <div class="form-group">
                             <label>Sample text attribute</label>
                             <input type="text" class="form-control" name="test"
-                                   ng-model="boat.sampleTextAttribute" ng-minlength=1 ng-maxlength=50 required>
+                                   ng-model="vessel.sampleTextAttribute" ng-minlength=1 ng-maxlength=50 required>
                         </div>
 
                         <div class="form-group">
                             <label>Sample date attribute</label>
                             <input type="date" class="form-control" name="test"
-                                   ng-model="boat.sampleDateAttribute" required>
+                                   ng-model="vessel.sampleDateAttribute" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -61,18 +61,18 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="boat in boats">
-                    <td>{{boat.id}}</td>
-                    <td>{{boat.sampleTextAttribute}}</td>
-                    <td>{{boat.sampleDateAttribute}}</td>
+                <tr ng-repeat="vessel in vessels">
+                    <td>{{vessel.id}}</td>
+                    <td>{{vessel.sampleTextAttribute}}</td>
+                    <td>{{vessel.sampleDateAttribute}}</td>
                     <td>
                         <button type="submit"
-                                ng-click="update(boat.id)"
+                                ng-click="update(vessel.id)"
                                 class="btn">
                             <span class="glyphicon glyphicon-pencil"></span> Edit
                         </button>
                         <button type="submit"
-                                ng-click="delete(boat.id)"
+                                ng-click="delete(vessel.id)"
                                 class="btn btn-danger">
                             <span class="glyphicon glyphicon-remove-circle"></span> Delete
                         </button>

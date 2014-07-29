@@ -58,7 +58,8 @@
             "confirmpassword": "Potwierdź nowe hasło",
             "confirmpassword.placeholder": "Potwierdź nowe hasło",
             "email": "E-mail",
-            "email.placeholder": "Twój e-mail"
+            "email.placeholder": "Twój e-mail",
+            "telephone" : "_pl_Telephone"
         },
         "messages": {
             "info": {
@@ -85,6 +86,12 @@
                     "invalid": "Twój e-mail jest błędny.",
                     "minlength": "Twój e-mail musi mieć przynajmniej 5 liter",
                     "maxlength": "Your e-mail nie może być dłuższe niż 50 liter"
+                },
+                "telephone": {
+                    "required": "_pl_Twój telephone number jest wymagany.",
+                    "invalid": "_pl_Twój telephone number jest błędny.",
+                    "minlength": "_pl_Twój telephone number musi mieć przynajmniej 5 liter",
+                    "maxlength": "_pl_Your telephone number nie może być dłuższe niż 50 liter"
                 }
             }
         }

@@ -2,9 +2,9 @@ package com.geodsea.pub.service;
 
 import com.geodsea.pub.Application;
 import com.geodsea.pub.domain.PersistentToken;
-import com.geodsea.pub.domain.User;
+import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.repository.PersistentTokenRepository;
-import com.geodsea.pub.repository.UserRepository;
+import com.geodsea.pub.repository.PersonRepository;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,27 +34,27 @@ public class UserServiceTest {
     private PersistentTokenRepository persistentTokenRepository;
 
     @Inject
-    private UserRepository userRepository;
+    private PersonRepository personRepository;
 
     @Inject
     private UserService userService;
 
     @Test
     public void testRemoveOldPersistentTokens() {
-    	User admin = userRepository.findOne("admin");
-    	int existingCount = persistentTokenRepository.findByUser(admin).size();
+    	Person admin = personRepository.getUserByParticipantName("admin");
+    	int existingCount = persistentTokenRepository.findByPerson(admin).size();
         generateUserToken(admin, "1111-1111", new LocalDate());
         LocalDate now = new LocalDate();
         generateUserToken(admin, "2222-2222", now.minusDays(32));
-        assertThat(persistentTokenRepository.findByUser(admin)).hasSize(existingCount + 2);
+        assertThat(persistentTokenRepository.findByPerson(admin)).hasSize(existingCount + 2);
         userService.removeOldPersistentTokens();
-        assertThat(persistentTokenRepository.findByUser(admin)).hasSize(existingCount + 1);
+        assertThat(persistentTokenRepository.findByPerson(admin)).hasSize(existingCount + 1);
     }
 
-    private void generateUserToken(User user, String tokenSeries, LocalDate localDate) {
+    private void generateUserToken(Person person, String tokenSeries, LocalDate localDate) {
         PersistentToken token = new PersistentToken();
         token.setSeries(tokenSeries);
-        token.setUser(user);
+        token.setPerson(person);
         token.setTokenValue(tokenSeries + "-data");
         token.setTokenDate(localDate);
         token.setIpAddress("127.0.0.1");

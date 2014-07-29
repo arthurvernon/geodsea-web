@@ -1,9 +1,9 @@
 package com.geodsea.pub.security;
 
 import com.geodsea.pub.domain.PersistentToken;
-import com.geodsea.pub.domain.User;
+import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.repository.PersistentTokenRepository;
-import com.geodsea.pub.repository.UserRepository;
+import com.geodsea.pub.repository.PersonRepository;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +70,7 @@ public class CustomPersistentRememberMeServices extends
     private PersistentTokenRepository persistentTokenRepository;
 
     @Inject
-    private UserRepository userRepository;
+    private PersonRepository personRepository;
 
     @Inject
     public CustomPersistentRememberMeServices(Environment env, org.springframework.security.core.userdetails.UserDetailsService userDetailsService) {
@@ -84,7 +84,7 @@ public class CustomPersistentRememberMeServices extends
     protected UserDetails processAutoLoginCookie(String[] cookieTokens, HttpServletRequest request, HttpServletResponse response) {
 
         PersistentToken token = getPersistentToken(cookieTokens);
-        String login = token.getUser().getLogin();
+        String login = token.getPerson().getParticipantName();
 
         // Token also matches, so login is valid. Update the token value, keeping the *same* series number.
         log.debug("Refreshing persistent login token for user '{}', series '{}'", login, token.getSeries());
@@ -107,11 +107,11 @@ public class CustomPersistentRememberMeServices extends
         String login = successfulAuthentication.getName();
 
         log.debug("Creating new persistent login for user {}", login);
-        User user = userRepository.findOne(login);
+        Person person = personRepository.getUserByParticipantName(login);
 
         PersistentToken token = new PersistentToken();
         token.setSeries(generateSeriesData());
-        token.setUser(user);
+        token.setPerson(person);
         token.setTokenValue(generateTokenData());
         token.setTokenDate(new LocalDate());
         token.setIpAddress(request.getRemoteAddr());

@@ -57,7 +57,8 @@
             "confirmpassword": "Neues Passwort bestätigen",
             "confirmpassword.placeholder": "Bestätigen Sie ihr neues Passwort",
             "email": "E-Mail Adresse",
-            "email.placeholder": "Ihre E-Mail Adresse"
+            "email.placeholder": "Ihre E-Mail Adresse",
+            "telephone" : "_de_Telephone"
         },
         "messages": {
             "info": {
@@ -84,6 +85,12 @@
                     "invalid": "Ihre E-Mail Adresse ist ungültig.",
                     "minlength": "Ihre E-Mail Adresse muss mindestens 5 Zeichen lang sein",
                     "maxlength": "Ihre E-Mail Adresse darf nicht länger als 50 Zeichen sein"
+                },
+                "telephone": {
+                    "required": "_de_Ihre telephone number wird benötigt.",
+                    "invalid": "_de_Ihre telephone number ist ungültig.",
+                    "minlength": "_de_Ihre telephone number muss mindestens 5 Zeichen lang sein",
+                    "maxlength": "_de_Ihre telephone number darf nicht länger als 50 Zeichen sein"
                 }
             }
         }

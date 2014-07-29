@@ -1,8 +1,8 @@
 package com.geodsea.pub.security;
 
 import com.geodsea.pub.domain.Authority;
-import com.geodsea.pub.domain.User;
-import com.geodsea.pub.repository.UserRepository;
+import com.geodsea.pub.domain.Person;
+import com.geodsea.pub.repository.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +25,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     private final Logger log = LoggerFactory.getLogger(UserDetailsService.class);
 
     @Inject
-    private UserRepository userRepository;
+    private PersonRepository personRepository;
 
     @Override
     @Transactional
@@ -33,20 +33,20 @@ public class UserDetailsService implements org.springframework.security.core.use
         log.debug("Authenticating {}", login);
         String lowercaseLogin = login.toLowerCase();
 
-        User userFromDatabase = userRepository.findOne(lowercaseLogin);
-        if (userFromDatabase == null) {
+        Person personFromDatabase = personRepository.getUserByParticipantName(lowercaseLogin);
+        if (personFromDatabase == null) {
             throw new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database");
-        } else if (!userFromDatabase.getActivated()) {
+        } else if (!personFromDatabase.isEnabled()) {
             throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
         }
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (Authority authority : userFromDatabase.getAuthorities()) {
+        for (Authority authority : personFromDatabase.getAuthorities()) {
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authority.getName());
             grantedAuthorities.add(grantedAuthority);
         }
 
-        return new org.springframework.security.core.userdetails.User(lowercaseLogin, userFromDatabase.getPassword(),
+        return new org.springframework.security.core.userdetails.User(lowercaseLogin, personFromDatabase.getPassword(),
                 grantedAuthorities);
     }
 }

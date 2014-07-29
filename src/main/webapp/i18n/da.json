@@ -56,7 +56,8 @@
             "confirmpassword": "Bekræft det nye kodeordet",
             "confirmpassword.placeholder": "Bekræft det nye kodeord",
             "email": "E-mail",
-            "email.placeholder": "Din e-mail adresse"
+            "email.placeholder": "Din e-mail adresse",
+            "telephone" : "_da_Telephone"
         },
         "messages": {
             "info": {
@@ -83,6 +84,12 @@
                     "invalid": "Din e-mail adresse er ugyldig!",
                     "minlength": "Din e-mail adresse skal som minimum være på 5 tegn",
                     "maxlength": "Din e-mail adresse må ikke overskride 50 tegn"
+                },
+                "telephone": {
+                    "required": "_da_Din telephone number er påkrævet.",
+                    "invalid": "_da_Din telephone number er ugyldig!",
+                    "minlength": "_da_Din telephone number skal som minimum være på 5 tegn",
+                    "maxlength": "_da_Din tepehone numebr må ikke overskride 50 tegn"
                 }
             }
         }

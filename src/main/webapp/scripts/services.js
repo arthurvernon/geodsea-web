@@ -93,11 +93,12 @@ geodseaApp.factory('AuditsService', ['$http',
 
 geodseaApp.factory('Session', [
     function () {
-        this.create = function (login, firstName, lastName, email, userRoles) {
+        this.create = function (login, firstName, lastName, email, telephone, userRoles) {
             this.login = login;
             this.firstName = firstName;
             this.lastName = lastName;
             this.email = email;
+            this.telephone = telephone;
             this.userRoles = userRoles;
         };
         this.invalidate = function () {
@@ -105,6 +106,7 @@ geodseaApp.factory('Session', [
             this.firstName = null;
             this.lastName = null;
             this.email = null;
+            this.telephone = null;
             this.userRoles = null;
         };
         return this;
@@ -134,7 +136,7 @@ geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authS
                     AccessToken.set(data);
 
                     Account.get(function(data) {
-                        Session.create(data.login, data.firstName, data.lastName, data.email, data.roles);
+                        Session.create(data.login, data.firstName, data.lastName, data.email, data.telephone, data.roles);
                         $rootScope.account = Session;
                         authService.loginConfirmed(data);
                     });
@@ -157,7 +159,7 @@ geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authS
                             return;
                         }
                         Account.get(function(data) {
-                            Session.create(data.login, data.firstName, data.lastName, data.email, data.roles);
+                            Session.create(data.login, data.firstName, data.lastName, data.email, data.telephone, data.roles);
                             $rootScope.account = Session;
 
                             if (!$rootScope.isAuthorized(authorizedRoles)) {
