@@ -1,11 +1,11 @@
 <div>
 
-    <h2>Vessels</h2>
+    <h2 translate="vessel.list.title">Vessel1s</h2>
 
     <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveVesselModal" ng-click="clear()">
         <span class="glyphicon glyphicon-flash"></span> Create a new Vessel
     </button>
-    <div class="modal fade" id="saveVesselModal" tabindex="-1" role="dialog" aria-labelledby="myVesselLabel"
+    <div class="modal fade" id="saveVesselModal" tabindex="-1" role="dialog" aria-labelledby="myVessel1Label"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -16,13 +16,39 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                 ng-click="clear()">&times;</button>
-                        <h4 class="modal-title" id="myVesselLabel">Create or edit a Vessel</h4>
+                        <h4 class="modal-title" id="myVessel1Label" translate="vessel.form.title">Create or edit a Vessel</h4>
                     </div>
+                    <div class="alert alert-success" ng-show="success" translate="vessel.messages.success">
+                        <strong>Vessel saved!</strong>
+                    </div>
+                    <div class="alert alert-danger" ng-show="error" translate="vessel.messages.error">
+                        <strong>An error has occurred!</strong> Vessel could not be saved.
+                    </div>
+
                     <div class="modal-body">
                         <div class="form-group">
                             <label>ID</label>
                             <input type="text" class="form-control" name="id"
-                                   ng-model="boat.id" readonly>
+                                   ng-model="vessel.id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label translate="vessel.form.hin.label">Hull Identification Number</label>
+                            <input type="text" class="form-control" name="hin" placeholder="{{'vessel.form.hin.placeholder' | translate}}"
+                                   ng-model="vessel.hullIdentificationNumber" ng-minlength=12 ng-maxlength=14 required>
+                            <div class="error" ng-show="form.hin.$dirty && form.hin.$invalid">
+                                <small class="error"
+                                       ng-show="form.hin.$error.required" translate="vessel.form.hin.required">
+                                    The hull identification number is required.
+                                </small>
+                                <small class="error"
+                                       ng-show="form.hin.$error.minlength" translate="vessel.form.hin.minlength">
+                                    A hull identification number is at least 12 digits long
+                                </small>
+                                <small class="error"
+                                       ng-show="form.hin.$error.maxlength" translate="vessel.form.hin.maxlength">
+                                    A hull identification number is no more than 14 digits long.
+                                </small>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -53,31 +79,33 @@
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Sample text</th>
-                    <th>Sample date</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th translate="vessel.list.id">ID</th>
+                <th translate="vessel.list.name">Sample text</th>
+                <th translate="vessel.list.registrationdate">Sample date</th>
+                <th translate="vessel.list.hin">Hull ID Number</th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="vessel in vessels">
-                    <td>{{vessel.id}}</td>
-                    <td>{{vessel.sampleTextAttribute}}</td>
-                    <td>{{vessel.sampleDateAttribute}}</td>
-                    <td>
-                        <button type="submit"
-                                ng-click="update(vessel.id)"
-                                class="btn">
-                            <span class="glyphicon glyphicon-pencil"></span> Edit
-                        </button>
-                        <button type="submit"
-                                ng-click="delete(vessel.id)"
-                                class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove-circle"></span> Delete
-                        </button>
-                    </td>
-                </tr>
+            <tr ng-repeat="vessel in vessels">
+                <td>{{vessel.id}}</td>
+                <td>{{vessel.sampleTextAttribute}}</td>
+                <td>{{vessel.sampleDateAttribute}}</td>
+                <td>{{vessel.hullIdentificationNumber}}</td>
+                <td>
+                    <button type="submit"
+                            ng-click="update(vessel.id)"
+                            class="btn">
+                        <span class="glyphicon glyphicon-pencil"></span> Edit
+                    </button>
+                    <button type="submit"
+                            ng-click="delete(vessel.id)"
+                            class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove-circle"></span> Delete
+                    </button>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

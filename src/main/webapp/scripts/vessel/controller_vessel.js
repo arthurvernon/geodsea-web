@@ -1,14 +1,14 @@
 'use strict';
 
 geodseaApp.controller('VesselController', ['$scope', 'resolvedVessel', 'Vessel',
-    function ($scope, resolvedVessel, Boat) {
+    function ($scope, resolvedVessel, Vessel) {
 
         $scope.vessels = resolvedVessel;
 
         $scope.create = function () {
             Vessel.save($scope.vessel,
                 function () {
-                    $scope.vessels = Boat.query();
+                    $scope.vessels = Vessel.query();
                     $('#saveVesselModal').modal('hide');
                     $scope.clear();
                 });
@@ -16,6 +16,7 @@ geodseaApp.controller('VesselController', ['$scope', 'resolvedVessel', 'Vessel',
 
         $scope.update = function (id) {
             $scope.vessel = Vessel.get({id: id});
+            window.alert('hello');
             $('#saveVesselModal').modal('show');
         };
 

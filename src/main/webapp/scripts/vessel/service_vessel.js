@@ -7,4 +7,3 @@ geodseaApp.factory('Vessel', ['$resource',
             'get': { method: 'GET'}
         });
     }]);
-

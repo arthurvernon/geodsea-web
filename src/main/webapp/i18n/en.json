@@ -12,12 +12,12 @@
                 "login": "Authenticate",
                 "logout": "Log out",
                 "register": {
-                    "user" : "Register User",
-                    "vessel" : "Register Vessel"
+                    "user": "Register User",
+                    "vessel": "Register Vessel"
                 }
             },
             "admin": {
-                "main" : "Admin",
+                "main": "Admin",
                 "tracker": "User tracker",
                 "metrics": "Metrics",
                 "logs": "Logs",
@@ -57,7 +57,7 @@
             "confirmpassword.placeholder": "Confirm the new password",
             "email": "E-mail",
             "email.placeholder": "Your e-mail",
-            "telephone" : "Telephone"
+            "telephone": "Telephone"
         },
         "messages": {
             "info": {
@@ -337,15 +337,36 @@
         "overview": {
             "title": "Overview",
             "headline": "Geo d'Sea provides the boating community with communication and monitoring tools that save both time and money.",
-            "benefits" : {
-                "leadin" : "You can use this service as a:",
-                "skipper" : "To keep sea rescue and friends informed about your journey.<br> Receive noticies relevant to your location.",
-                "rescue" : "To maintain a watch and manage an area of operations.<br> Receive alerts when vessels are overdue.",
-                "friend" : "To track the location of people on-board the boat.<br>Exchange messages with each other.<br>Be informed of events relating to the vessel.",
-                "club" : "To track the location of participants."
+            "benefits": {
+                "leadin": "You can use this service as a:",
+                "skipper": "To keep sea rescue and friends informed about your journey.<br> Receive noticies relevant to your location.",
+                "rescue": "To maintain a watch and manage an area of operations.<br> Receive alerts when vessels are overdue.",
+                "friend": "To track the location of people on-board the boat.<br>Exchange messages with each other.<br>Be informed of events relating to the vessel.",
+                "club": "To track the location of participants."
             }
         }
+    },
+    "vessel": {
+        "list" :{
+            "title": "Vessel",
+            "id" : "id",
+            "hin" : "HIN",
+            "registrationdate" : "Reg. Date",
+            "name" : "Vessel Name"
+        },
+        "form": {
+            "title": "Create/Edit a Vessel",
+            "hin": {
+                "label": "Hull Identification Number",
+                "placeholder": "Enter HIN",
+                "required" : "Your hull identification number is required",
+                "minlength": " A hull identification number is no less than 12 digits long",
+                "maxlength" : "A hull identification number is no more than 14 digits long"
+            }
+        },
+        "messages":{
+            "error" : "<strong>An error has occurred!</strong> Vessel could not be saved.",
+            "success": "<strong>Vessel saved!</strong>"
+        }
     }
-
-
 }

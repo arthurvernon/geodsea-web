@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -33,10 +34,11 @@ public class VesselResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public void create(@RequestBody Vessel vessel) {
+    public ResponseEntity<Vessel> create(@RequestBody Vessel vessel) {
         log.debug("REST request to save Vessel : {}", vessel);
-        Vessel b = vesselRepository.save(vessel);
-        log.debug("Created a vessel with id: " + b.getId());
+        Vessel saved = vesselRepository.save(vessel);
+        log.debug("Created a vessel with id: " + saved.getId());
+        return new ResponseEntity<Vessel>(saved, HttpStatus.OK);
     }
 
     /**

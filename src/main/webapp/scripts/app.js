@@ -6,6 +6,7 @@ var httpHeaders;
 var geodseaApp = angular.module('geodseaApp', ['http-auth-interceptor', 'tmh.dynamicLocale',
     'ngResource', 'ngRoute', 'ngCookies', 'geodseaAppUtils', 'pascalprecht.translate', 'truncate']);
 
+
 geodseaApp
     .config(['$routeProvider', '$httpProvider', '$translateProvider',  'tmhDynamicLocaleProvider', 'USER_ROLES',
         function ($routeProvider, $httpProvider, $translateProvider, tmhDynamicLocaleProvider, USER_ROLES) {
@@ -15,18 +16,6 @@ geodseaApp
                     controller: 'RegisterController',
                     access: {
                         authorizedRoles: [USER_ROLES.all]
-                    }
-                })
-                .when('/register/vessel', {
-                    templateUrl: 'views/vessels.html',
-                    controller: 'VesselController',
-                    resolve:{
-                        resolvedBoat: ['Vessel', function (Vessel) {
-                            return Vessel.query();
-                        }]
-                    },
-                    access: {
-                        authorizedRoles: [USER_ROLES.user, USER_ROLES.admin]
                     }
                 })
 
