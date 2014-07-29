@@ -9,6 +9,8 @@ import com.geodsea.pub.repository.PersistentTokenRepository;
 import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.security.SecurityUtils;
 import com.geodsea.pub.service.util.RandomUtil;
+import org.jadira.usertype.dateandtime.joda.PersistentDateTime;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,7 +149,7 @@ public class UserService {
      */
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
-        LocalDate now = new LocalDate();
+        DateTime now = new DateTime();
         List<Person> persons = personRepository.findNotActivatedUsersByCreationDateBefore(now.minusDays(3));
         for (Person person : persons) {
             log.debug("Deleting not activated user {}", person.getParticipantName());
