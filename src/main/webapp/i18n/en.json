@@ -348,62 +348,61 @@
     },
     "vessel": {
         "type": {
-            "bowrider": {
+            "motorised": "Motorised",
+            "unmotorised": "Not Motorised",
+            "BOW_RIDER": {
                 "description": "A boat where there is a seating section in front of the windscreen.",
                 "name": "Bow Rider",
-                "enum": "BOW_RIDER",
                 "motorised": "Yes"
             },
-            "halfcabin": {
+            "HALF_CABIN": {
                 "description": "Enclosed section in the front of the boat, e.g. with bunks.",
                 "name": "Half Cabin",
-                "enum": "HALF_CABIN",
                 "motorised": "Yes"
             },
-            "walkaround": {
+            "WALK_AROUND": {
                 "description": "Enclosed centre console with the ability to walk abound the deck.",
                 "name": "Walk Around",
-                "enum": "WALK_AROUND",
                 "motorised": "Yes"
             },
-            "centerconsole": {
+            "CENTER_CONSOLE": {
                 "description": "Basic kind of boat with a steering wheel and console suitable for fishing/diving with lots of surronding deck space.",
-                "name": "CENTER_CONSOLE",
+                "name": "Center Console",
                 "motorised": "Yes"
             },
-            "openboat": {
+            "OPEN_BOAT": {
                 "description": "No superstructure, like and aluminium of riberglass dinghy.",
-                "name": "OPEN_BOAT",
+                "name": "Open Boat",
                 "motorised": "Yes"
             },
-            "flybridge": {
-                "description": "larger vessel with an elevated platform from which to skipper the vessel from.",
-                "name": "FLY_BRIDGE",
+            "FLY_BRIDGE": {
+                "description": "Larger vessel with an elevated platform to skipper the vessel from.",
+                "name": "Fly Bridge",
                 "motorised": "Yes"
             },
-            "personalwatercraft": {
+            "PERSONAL_WATER_CRAFT": {
                 "description": "Motorised still but limited for one or two people, e.g. a Jet ski",
-                "name": "PERSONAL_WATER_CRAFT",
+                "name": "Personal Water Craft",
                 "motorised": "Yes"
             },
-            "opencockpit": {
+            "OPEN_COCKPIT": {
                 "description": "Like a racing yacht - has no cockpit or superstructure, e.g. catemaran or mono-hull with self draining deck.",
-                "name": "OPEN_COCKPIT",
+                "name": "Open Cockpit",
                 "motorised": "No"
             },
-            "cabin": {
+            "CABIN": {
                 "description": "Standard sailing/cruisiung yacht with sleeping quarters.",
-                "name": "CABIN",
+                "name": "Cabin",
                 "motorised": "No"
             },
-            "rowboat": {
+            "ROW_BOAT": {
                 "description": "Non-powered small open vessel.",
-                "name": "ROW_BOAT",
+                "name": "Row Boat",
                 "motorised": "No"
             },
-            "seakayak": {
+            "SEA_KAYAK": {
                 "description": "Any paddle craft.",
-                "name": "SEA_KAYAK",
+                "name": "Seak Kayak",
                 "motorised": "No"
             }
         },

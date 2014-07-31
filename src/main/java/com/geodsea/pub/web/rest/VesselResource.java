@@ -2,6 +2,7 @@ package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.geodsea.pub.domain.Vessel;
+import com.geodsea.pub.domain.type.VesselType;
 import com.geodsea.pub.repository.VesselRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -54,6 +56,18 @@ public class VesselResource {
         log.debug("REST request to get all Vessels returned " + vessels.size() + " vessels.");
 
         return vessels;
+    }
+
+    @RequestMapping(value = "/rest/vesseltypes",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<VesselType> getAllVesselTypes() {
+        log.debug("REST request to get all Vessels");
+        VesselType[] types = VesselType.values();
+        log.debug("REST request to get all Vessels returned " + types.length + " vessel types.");
+
+        return Arrays.asList(types);
     }
 
     /**

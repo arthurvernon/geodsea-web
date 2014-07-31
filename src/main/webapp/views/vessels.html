@@ -56,12 +56,30 @@
                         <!-- Vessel Type -->
                         <div class="form-group">
                             <label translate="vessel.form.vesseltype.label">Vessel Type</label>
+                            <input type="text" class="form-control" name="vtype" placeholder="{{'vessel.form.vesseltype.placeholder' | translate}}"
+                                   ng-model="vessel.vesselType">
+
 
                             <!--<select class="form-control" name="test" ng-options="name.id for name in vesselTypes"-->
                                     <!--ng-model="vessel.vesselType" ng-selected = "vessel.vesselType = vessel.vesselType || vesselTypes[0]">-->
                             <!--</select>-->
-                            <select class="form-control" name="test" ng-options="name.id for name in vesselTypes"
-                                    ng-model="vessel.vesselType" ng-selected = "vessel.vesselType = vessel.vesselType || vesselTypes[0]">
+                            <select class="form-control" name="vesselType"
+                                    ng-model="vessel.vesselType" ng-selected = "vessel.vesselType">
+                                <optgroup label="{{ 'vessel.type.motorised' | translate }}">
+                                    <option translate="vessel.type.BOW_RIDER.name">BOW_RIDER</option>
+                                    <option translate="vessel.type.BOW_RIDER.name">HALF_CABIN</option>
+                                    <option>WALK_AROUND</option>
+                                    <option>CENTER_CONSOLE</option>
+                                    <option>OPEN_BOAT</option>
+                                    <option>FLY_BRIDGE</option>
+                                    <option>PERSONAL_WATER_CRAFT</option>
+                                </optgroup>
+                                <optgroup label="{{ 'vessel.type.unmotorised' | translate }}">
+                                    <option>OPEN_COCKPIT </option>
+                                    <option>CABIN</option>
+                                    <option>ROW_BOAT</option>
+                                    <option>SEA_KAYAK</option>
+                                </optgroup>
                             </select>
 
                             <!--<select ng-model="vessel.vesselType">-->

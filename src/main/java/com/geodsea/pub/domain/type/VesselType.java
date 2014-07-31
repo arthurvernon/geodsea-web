@@ -34,7 +34,7 @@ public enum VesselType {
     OPEN_BOAT(true),
 
     /*
-    * larger vessel with an elevated platform from which to skipper the vessel from.
+    * Larger vessel with an elevated platform to skipper the vessel from.
      */
     FLY_BRIDGE(true),
 
