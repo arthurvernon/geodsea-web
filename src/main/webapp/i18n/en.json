@@ -347,25 +347,91 @@
         }
     },
     "vessel": {
-        "list" :{
+        "type": {
+            "bowrider": {
+                "description": "A boat where there is a seating section in front of the windscreen.",
+                "name": "Bow Rider",
+                "enum": "BOW_RIDER",
+                "motorised": "Yes"
+            },
+            "halfcabin": {
+                "description": "Enclosed section in the front of the boat, e.g. with bunks.",
+                "name": "Half Cabin",
+                "enum": "HALF_CABIN",
+                "motorised": "Yes"
+            },
+            "walkaround": {
+                "description": "Enclosed centre console with the ability to walk abound the deck.",
+                "name": "Walk Around",
+                "enum": "WALK_AROUND",
+                "motorised": "Yes"
+            },
+            "centerconsole": {
+                "description": "Basic kind of boat with a steering wheel and console suitable for fishing/diving with lots of surronding deck space.",
+                "name": "CENTER_CONSOLE",
+                "motorised": "Yes"
+            },
+            "openboat": {
+                "description": "No superstructure, like and aluminium of riberglass dinghy.",
+                "name": "OPEN_BOAT",
+                "motorised": "Yes"
+            },
+            "flybridge": {
+                "description": "larger vessel with an elevated platform from which to skipper the vessel from.",
+                "name": "FLY_BRIDGE",
+                "motorised": "Yes"
+            },
+            "personalwatercraft": {
+                "description": "Motorised still but limited for one or two people, e.g. a Jet ski",
+                "name": "PERSONAL_WATER_CRAFT",
+                "motorised": "Yes"
+            },
+            "opencockpit": {
+                "description": "Like a racing yacht - has no cockpit or superstructure, e.g. catemaran or mono-hull with self draining deck.",
+                "name": "OPEN_COCKPIT",
+                "motorised": "No"
+            },
+            "cabin": {
+                "description": "Standard sailing/cruisiung yacht with sleeping quarters.",
+                "name": "CABIN",
+                "motorised": "No"
+            },
+            "rowboat": {
+                "description": "Non-powered small open vessel.",
+                "name": "ROW_BOAT",
+                "motorised": "No"
+            },
+            "seakayak": {
+                "description": "Any paddle craft.",
+                "name": "SEA_KAYAK",
+                "motorised": "No"
+            }
+        },
+        "list": {
             "title": "Vessel",
-            "id" : "id",
-            "hin" : "HIN",
-            "registrationdate" : "Reg. Date",
-            "name" : "Vessel Name"
+            "id": "id",
+            "hin": "HIN",
+            "type": "Type",
+            "registrationdate": "Reg. Date",
+            "name": "Vessel Name"
         },
         "form": {
             "title": "Create/Edit a Vessel",
             "hin": {
                 "label": "Hull Identification Number",
                 "placeholder": "Enter HIN",
-                "required" : "Your hull identification number is required",
+                "required": "Your hull identification number is required",
                 "minlength": " A hull identification number is no less than 12 digits long",
-                "maxlength" : "A hull identification number is no more than 14 digits long"
+                "maxlength": "A hull identification number is no more than 14 digits long"
+            },
+            "vesseltype": {
+                "label": "Vessel Type",
+                "placeholder": "Select from the list",
+                "required": "The vessel type is required"
             }
         },
-        "messages":{
-            "error" : "<strong>An error has occurred!</strong> Vessel could not be saved.",
+        "messages": {
+            "error": "<strong>An error has occurred!</strong> Vessel could not be saved.",
             "success": "<strong>Vessel saved!</strong>"
         }
     }

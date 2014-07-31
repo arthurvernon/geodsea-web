@@ -1,6 +1,6 @@
 <div>
 
-    <h2 translate="vessel.list.title">Vessel1s</h2>
+    <h2 translate="vessel.list.title">Vessels</h2>
 
     <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveVesselModal" ng-click="clear()">
         <span class="glyphicon glyphicon-flash"></span> Create a new Vessel
@@ -31,6 +31,8 @@
                             <input type="text" class="form-control" name="id"
                                    ng-model="vessel.id" readonly>
                         </div>
+
+                        <!-- Hull Identification Number -->
                         <div class="form-group">
                             <label translate="vessel.form.hin.label">Hull Identification Number</label>
                             <input type="text" class="form-control" name="hin" placeholder="{{'vessel.form.hin.placeholder' | translate}}"
@@ -50,6 +52,30 @@
                                 </small>
                             </div>
                         </div>
+
+                        <!-- Vessel Type -->
+                        <div class="form-group">
+                            <label translate="vessel.form.vesseltype.label">Vessel Type</label>
+
+                            <!--<select class="form-control" name="test" ng-options="name.id for name in vesselTypes"-->
+                                    <!--ng-model="vessel.vesselType" ng-selected = "vessel.vesselType = vessel.vesselType || vesselTypes[0]">-->
+                            <!--</select>-->
+                            <select class="form-control" name="test" ng-options="name.id for name in vesselTypes"
+                                    ng-model="vessel.vesselType" ng-selected = "vessel.vesselType = vessel.vesselType || vesselTypes[0]">
+                            </select>
+
+                            <!--<select ng-model="vessel.vesselType">-->
+                                <!--<option value="BOW_RIDER">{{'vessel.type.bowrider.name' | translate}}</option>-->
+                                <!--<option value="HALF_CABIN">{{'vessel.type.halfcabin.name' | translate}}</option>-->
+                            <!--</select>-->
+                            <!--<div class="error" ng-show="form.vesseltype.$dirty && form.vesseltype.$invalid">-->
+                                <!--<small class="error"-->
+                                       <!--ng-show="form.vesseltype.$error.required" translate="vessel.form.vesseltype.required">-->
+                                    <!--Vessel Type is required.-->
+                                <!--</small>-->
+                            <!--</div>-->
+                        </div>
+
 
                         <div class="form-group">
                             <label>Sample text attribute</label>
@@ -84,6 +110,7 @@
                 <th translate="vessel.list.name">Sample text</th>
                 <th translate="vessel.list.registrationdate">Sample date</th>
                 <th translate="vessel.list.hin">Hull ID Number</th>
+                <th translate="vessel.list.type">Vessel Type</th>
                 <th></th>
             </tr>
             </thead>
@@ -93,6 +120,7 @@
                 <td>{{vessel.sampleTextAttribute}}</td>
                 <td>{{vessel.sampleDateAttribute}}</td>
                 <td>{{vessel.hullIdentificationNumber}}</td>
+                <td>{{vessel.vesselType}}</td>"
                 <td>
                     <button type="submit"
                             ng-click="update(vessel.id)"
