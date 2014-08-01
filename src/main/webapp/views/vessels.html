@@ -56,42 +56,25 @@
                         <!-- Vessel Type -->
                         <div class="form-group">
                             <label translate="vessel.form.vesseltype.label">Vessel Type</label>
-                            <input type="text" class="form-control" name="vtype" placeholder="{{'vessel.form.vesseltype.placeholder' | translate}}"
-                                   ng-model="vessel.vesselType">
-
-
-                            <!--<select class="form-control" name="test" ng-options="name.id for name in vesselTypes"-->
-                                    <!--ng-model="vessel.vesselType" ng-selected = "vessel.vesselType = vessel.vesselType || vesselTypes[0]">-->
-                            <!--</select>-->
                             <select class="form-control" name="vesselType"
                                     ng-model="vessel.vesselType" ng-selected = "vessel.vesselType">
                                 <optgroup label="{{ 'vessel.type.motorised' | translate }}">
                                     <option translate="vessel.type.BOW_RIDER.name">BOW_RIDER</option>
-                                    <option translate="vessel.type.BOW_RIDER.name">HALF_CABIN</option>
-                                    <option>WALK_AROUND</option>
-                                    <option>CENTER_CONSOLE</option>
-                                    <option>OPEN_BOAT</option>
-                                    <option>FLY_BRIDGE</option>
-                                    <option>PERSONAL_WATER_CRAFT</option>
+                                    <option translate="vessel.type.HALF_CABIN.name">HALF_CABIN</option>
+                                    <option translate="vessel.type.WALK_AROUND.name">WALK_AROUND</option>
+                                    <option translate="vessel.type.CENTER_CONSOLE.name">CENTER_CONSOLE</option>
+                                    <option translate="vessel.type.OPEN_BOAT.name">OPEN_BOAT</option>
+                                    <option translate="vessel.type.FLY_BRIDGE.name">FLY_BRIDGE</option>
+                                    <option translate="vessel.type.PERSONAL_WATER_CRAFT.name">PERSONAL_WATER_CRAFT</option>
                                 </optgroup>
                                 <optgroup label="{{ 'vessel.type.unmotorised' | translate }}">
-                                    <option>OPEN_COCKPIT </option>
-                                    <option>CABIN</option>
-                                    <option>ROW_BOAT</option>
-                                    <option>SEA_KAYAK</option>
+                                    <option translate="vessel.type.OPEN_COCKPIT.name">OPEN_COCKPIT</option>
+                                    <option translate="vessel.type.CABIN.name">CABIN</option>
+                                    <option translate="vessel.type.ROW_BOAT.name">ROW_BOAT</option>
+                                    <option translate="vessel.type.SEA_KAYAK.name">SEA_KAYAK</option>
                                 </optgroup>
                             </select>
 
-                            <!--<select ng-model="vessel.vesselType">-->
-                                <!--<option value="BOW_RIDER">{{'vessel.type.bowrider.name' | translate}}</option>-->
-                                <!--<option value="HALF_CABIN">{{'vessel.type.halfcabin.name' | translate}}</option>-->
-                            <!--</select>-->
-                            <!--<div class="error" ng-show="form.vesseltype.$dirty && form.vesseltype.$invalid">-->
-                                <!--<small class="error"-->
-                                       <!--ng-show="form.vesseltype.$error.required" translate="vessel.form.vesseltype.required">-->
-                                    <!--Vessel Type is required.-->
-                                <!--</small>-->
-                            <!--</div>-->
                         </div>
 
 
@@ -138,7 +121,7 @@
                 <td>{{vessel.sampleTextAttribute}}</td>
                 <td>{{vessel.sampleDateAttribute}}</td>
                 <td>{{vessel.hullIdentificationNumber}}</td>
-                <td>{{vessel.vesselType}}</td>"
+                <td>{{'vessel.type.' + vessel.vesselType + '.name' | translate}}</td>
                 <td>
                     <button type="submit"
                             ng-click="update(vessel.id)"
