@@ -1,47 +1,99 @@
-create sequence BOAT.PARTICIPANT_ID_SEQ increment 1 minvalue 100 start 100 cache 1;
-alter table BOAT.PARTICIPANT_ID_SEQ owner to geodsea;
+CREATE SEQUENCE BOAT.PARTICIPANT_ID_SEQ INCREMENT 1 MINVALUE 100 START 100 CACHE 1;
+ALTER TABLE BOAT.PARTICIPANT_ID_SEQ OWNER TO geodsea;
 
-create table BOAT.T_PARTICIPANT (
-  ID bigint not null primary key default nextval('BOAT.PARTICIPANT_ID_SEQ'),
-  PARTICIPANT_NAME varchar(100) not null,
-  REGISTRATION_TOKEN_EXPIRES timestamp null,
-  REGISTRATION_TOKEN varchar(50) null,
-  ENABLED boolean not null default false,
-  CREATED_BY varchar(50) null default 'system',
-  CREATED_DATE timestamp not null default now(),
-  LAST_MODIFIED_BY varchar(50) null,
-  LAST_MODIFIED_DATE timestamp null
+CREATE TABLE BOAT.T_PARTICIPANT (
+  ID                         BIGINT       NOT NULL PRIMARY KEY DEFAULT nextval('BOAT.PARTICIPANT_ID_SEQ'),
+  PARTICIPANT_NAME           VARCHAR(100) NOT NULL,
+  REGISTRATION_TOKEN_EXPIRES TIMESTAMP    NULL,
+  REGISTRATION_TOKEN         VARCHAR(50)  NULL,
+  ENABLED                    BOOLEAN      NOT NULL DEFAULT FALSE,
+  CREATED_BY                 VARCHAR(50)  NULL DEFAULT 'system',
+  CREATED_DATE               TIMESTAMP    NOT NULL DEFAULT now(),
+  LAST_MODIFIED_BY           VARCHAR(50)  NULL,
+  LAST_MODIFIED_DATE         TIMESTAMP    NULL
 );
 
-alter table BOAT.T_PARTICIPANT OWNER to geodsea;
-alter sequence BOAT.PARTICIPANT_ID_SEQ owned by BOAT.T_PARTICIPANT.ID;
-alter table BOAT.T_PARTICIPANT add constraint UQ_PARTICIPANT_NAME unique(PARTICIPANT_NAME);
+ALTER TABLE BOAT.T_PARTICIPANT OWNER TO geodsea;
+ALTER SEQUENCE BOAT.PARTICIPANT_ID_SEQ OWNED BY BOAT.T_PARTICIPANT.ID;
+ALTER TABLE BOAT.T_PARTICIPANT ADD CONSTRAINT UQ_PARTICIPANT_NAME UNIQUE (PARTICIPANT_NAME);
 
-comment on COLUMN BOAT.T_PARTICIPANT.PARTICIPANT_NAME is 'unique identifier for a participant';
-comment on COLUMN BOAT.T_PARTICIPANT.REGISTRATION_TOKEN is 'token that exists when account is initially created';
-comment on COLUMN BOAT.T_PARTICIPANT.REGISTRATION_TOKEN_EXPIRES is 'time up till when the registration can be completed';
-comment on COLUMN BOAT.T_PARTICIPANT.ENABLED is 'allows admin to lock the account. True if the participant may access the system, false otherwise';
-comment on COLUMN BOAT.T_PARTICIPANT.CREATED_BY is 'The participant name of the user who created this participant';
-comment on COLUMN BOAT.T_PARTICIPANT.CREATED_DATE is 'Date/time when the user created this participant';
-comment on COLUMN BOAT.T_PARTICIPANT.LAST_MODIFIED_BY is 'The participant who last modified this record, null if it has not been modified';
-comment on COLUMN BOAT.T_PARTICIPANT.LAST_MODIFIED_DATE is 'When (if ever) the participant''s details were last updated';
+COMMENT ON COLUMN BOAT.T_PARTICIPANT.PARTICIPANT_NAME IS 'unique identifier for a participant';
+COMMENT ON COLUMN BOAT.T_PARTICIPANT.REGISTRATION_TOKEN IS 'token that exists when account is initially created';
+COMMENT ON COLUMN BOAT.T_PARTICIPANT.REGISTRATION_TOKEN_EXPIRES IS 'time up till when the registration can be completed';
+COMMENT ON COLUMN BOAT.T_PARTICIPANT.ENABLED IS 'allows admin to lock the account. True if the participant may access the system, false otherwise';
+COMMENT ON COLUMN BOAT.T_PARTICIPANT.CREATED_BY IS 'The participant name of the user who created this participant';
+COMMENT ON COLUMN BOAT.T_PARTICIPANT.CREATED_DATE IS 'Date/time when the user created this participant';
+COMMENT ON COLUMN BOAT.T_PARTICIPANT.LAST_MODIFIED_BY IS 'The participant who last modified this record, null if it has not been modified';
+COMMENT ON COLUMN BOAT.T_PARTICIPANT.LAST_MODIFIED_DATE IS 'When (if ever) the participant''s details were last updated';
 
-create index PARTICIPANT_NAME_IDX on BOAT.T_PARTICIPANT(PARTICIPANT_NAME);
+CREATE INDEX PARTICIPANT_NAME_IDX ON BOAT.T_PARTICIPANT (PARTICIPANT_NAME);
 
 
-
-create table BOAT.T_PERSON (
-  PERSON_ID bigint not null primary key references BOAT.T_PARTICIPANT(ID) ON DELETE CASCADE,
-  FIRST_NAME varchar(50) not null,
-  LAST_NAME varchar(50) not null,
-  EMAIL varchar(100) not null,
-  LANG_KEY varchar(5) null,
-  BIRTH_DATE DATE null,
-  TELEPHONE varchar(20) null,
-  PASSWORD varchar(150) not null,
-  LANGUAGE_KEY varchar(5)
+CREATE TABLE BOAT.T_PERSON (
+  PERSON_ID    BIGINT       NOT NULL PRIMARY KEY REFERENCES BOAT.T_PARTICIPANT (ID) ON DELETE CASCADE,
+  FIRST_NAME   VARCHAR(50)  NOT NULL,
+  LAST_NAME    VARCHAR(50)  NOT NULL,
+  EMAIL        VARCHAR(100) NOT NULL,
+  LANG_KEY     VARCHAR(5)   NULL,
+  BIRTH_DATE   DATE         NULL,
+  TELEPHONE    VARCHAR(20)  NULL,
+  PASSWORD     VARCHAR(150) NOT NULL,
+  LANGUAGE_KEY VARCHAR(5)
 );
 
-alter table BOAT.T_PERSON OWNER to geodsea;
+ALTER TABLE BOAT.T_PERSON OWNER TO geodsea;
 
-create index PER_EMAIL_IDX on BOAT.T_PERSON(EMAIL);
+CREATE INDEX PER_EMAIL_IDX ON BOAT.T_PERSON (EMAIL);
+
+
+----------------------------------------------------------
+-- Group creation
+----------------------------------------------------------
+
+CREATE TABLE BOAT.T_PARTICIPANT_GROUP (
+  ID             BIGINT       NOT NULL PRIMARY KEY REFERENCES BOAT.T_PARTICIPANT (ID) ON DELETE CASCADE,
+  MEMBER_ID      BIGINT       NULL,
+  PUBLISHED_NAME VARCHAR(100) NOT NULL,
+  WEBSITE_URL    VARCHAR(100)
+);
+
+ALTER TABLE BOAT.T_PARTICIPANT_GROUP OWNER TO geodsea;
+CREATE INDEX PARTICIPANT_PUBLISHED_NAME_IDX ON BOAT.T_PARTICIPANT_GROUP (PUBLISHED_NAME);
+COMMENT ON COLUMN BOAT.T_PARTICIPANT_GROUP.MEMBER_ID IS 'The member who is the contact person (the one who registered the organisation). Should be not null but Hibernate doesn''t handle bidirectional FKs';
+
+
+----------------------------------------------------------
+-- Organisation member
+----------------------------------------------------------
+
+
+CREATE SEQUENCE BOAT.MEMBER_ID_SEQ INCREMENT 1 MINVALUE 1 START 1 CACHE 1;
+ALTER TABLE BOAT.MEMBER_ID_SEQ OWNER TO geodsea;
+
+CREATE TABLE BOAT.T_MEMBER (
+  ID                   BIGINT  NOT NULL PRIMARY KEY DEFAULT nextval('BOAT.MEMBER_ID_SEQ'),
+  PARTICIPANT_GROUP_ID BIGINT  NOT NULL REFERENCES BOAT.T_PARTICIPANT_GROUP ON UPDATE RESTRICT ON DELETE CASCADE,
+  PARTICIPANT_ID       BIGINT  NOT NULL REFERENCES BOAT.T_PARTICIPANT ON UPDATE RESTRICT ON DELETE CASCADE,
+  MEMBER_SINCE         DATE    NULL,
+  MEMBER_UNTIL         DATE    NULL,
+  ACTIVE               BOOLEAN NOT NULL DEFAULT FALSE,
+  MANAGER              BOOLEAN NOT NULL DEFAULT FALSE
+);
+ALTER TABLE BOAT.T_MEMBER OWNER TO geodsea;
+ALTER SEQUENCE BOAT.MEMBER_ID_SEQ OWNED BY BOAT.T_MEMBER.ID;
+
+ALTER TABLE BOAT.T_MEMBER ADD CONSTRAINT UC_MEMBER_ONCE_ONLY UNIQUE (PARTICIPANT_GROUP_ID, PARTICIPANT_ID);
+
+CREATE INDEX ORG_MEMBER_PARTICIPANT_IDX ON BOAT.T_MEMBER (PARTICIPANT_ID);
+
+COMMENT ON TABLE BOAT.T_MEMBER IS 'The participants within an group which may be anyone except the group itself';
+
+COMMENT ON COLUMN BOAT.T_MEMBER.PARTICIPANT_ID IS 'The immutable person or or group that belongs to this organisation';
+COMMENT ON COLUMN BOAT.T_MEMBER.PARTICIPANT_GROUP_ID IS 'The immutable group that has this member';
+
+----------------------------------------------------------
+-- Constraint from organisation to member table for primary contact
+----------------------------------------------------------
+
+ALTER TABLE BOAT.T_PARTICIPANT_GROUP ADD CONSTRAINT FK_PARTICIPANT_GROUP_CONTACT
+FOREIGN KEY (MEMBER_ID) REFERENCES BOAT.T_MEMBER (ID) ON DELETE CASCADE;

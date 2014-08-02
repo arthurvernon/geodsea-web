@@ -116,20 +116,11 @@
 
     <changeSet id="100" author="Arthur Vernon">
 
-        <sqlFile path="boat.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="agencies.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="vessel.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="geozone.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="views.sql" relativeToChangelogFile="true"/>
 
     </changeSet>
 
-    <!-- Sample changeSet for creating a new Entity with the entity sub-generator -->
-    <!-- 
-    <changeSet id="100" author="jhipster">
-	    <createTable tableName="T_FOO">
-            <column name="id" type="varchar(255)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="sample_text_attribute" type="varchar(50)"/>
-            <column name="sample_date_attribute" type="date"/>
-        </createTable>
-    </changeSet>
-    -->
 </databaseChangeLog>

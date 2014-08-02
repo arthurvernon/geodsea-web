@@ -440,6 +440,7 @@
             "type": "Type",
             "length": "Length (m)",
             "name": "Vessel Name",
+            "fuelcapacity": "Fuel Capacity",
             "storagetype": "Storage Type"
         },
         "form": {
@@ -469,6 +470,13 @@
                 "required": "Length of the vessel is required.",
                 "nan": "This is not a valid number.",
                 "range": "Length must be in the range 1-80 metres."
+            },
+            "fuelcapacity": {
+                "label": "Fuel Capacity (l)",
+                "placeholder": "Enter fuel capacity in litres",
+                "required": "Fuel capacity is required for motorised vessels.",
+                "nan": "This is not a valid number.",
+                "range": "Length must be in the range 0-1000 litres."
             },
             "storagetype": {
                 "label": "Storage Type",

@@ -115,6 +115,10 @@
         <spring-security-oauth2.version>2.0.0.RC2</spring-security-oauth2.version>
         <swagger-springmvc.version>0.8.2</swagger-springmvc.version>
         <usertype.core.version>3.2.0.GA</usertype.core.version>
+        <postgis.version>1.5.2</postgis.version>
+        <jts.version>1.13</jts.version>
+        <hibernate-spatial-version>4.3</hibernate-spatial-version>
+
     </properties>
 
     <repositories>
@@ -163,6 +167,14 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>OSGEO GeoTools repo</id>
+            <url>http://download.osgeo.org/webdav/geotools</url>
+        </repository>
+        <repository>
+            <id>Hibernate Spatial repo</id>
+            <url>http://www.hibernatespatial.org/repository</url>
         </repository>
     </repositories>
     <pluginRepositories>
@@ -392,13 +404,35 @@
             <version>${swagger-springmvc.version}</version>
         </dependency>
 
+
+        <!-- GIS dependencies -->
+        <dependency>
+            <groupId>com.vividsolutions</groupId>
+            <artifactId>jts</artifactId>
+            <version>${jts.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgis</groupId>
+            <artifactId>postgis-jdbc</artifactId>
+            <version>${postgis.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Database dependencies-->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.3-1100-jdbc41</version>
         </dependency>
-        
+
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-spatial</artifactId>
+            <version>${hibernate-spatial-version}</version>
+        </dependency>
+
+
 
         <!-- Test dependencies -->
         <dependency>

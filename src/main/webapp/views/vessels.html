@@ -5,7 +5,7 @@
     <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveVesselModal" ng-click="clear()">
         <span class="glyphicon glyphicon-flash"></span> Create a new Vessel
     </button>
-    <div class="modal fade" id="saveVesselModal" tabindex="-1" role="dialog" aria-labelledby="myVessel1Label"
+    <div class="modal fade" id="saveVesselModal" tabindex="-1" role="dialog" aria-labelledby="myVesselLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -16,7 +16,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                 ng-click="clear()">&times;</button>
-                        <h4 class="modal-title" id="myVessel1Label" translate="vessel.form.title">Create or edit a
+                        <h4 class="modal-title" id="myVesselLabel" translate="vessel.form.title">Create or edit a
                             Vessel</h4>
                     </div>
                     <div class="alert alert-success" ng-show="success" translate="vessel.messages.success">
@@ -109,25 +109,37 @@
                         <!-- length -->
                         <div class="form-group">
                             <label translate="vessel.form.length.label">Length (m)</label>
-
                             <input type="number" ng-model="vessel.length" name="length"
-                                   min="1" max="80" integer required/>
-
+                                   min="1" max="80"/>
                             <div class="error" ng-show="form.length.$dirty && form.length.$invalid">
-
-                                <small class="error" ng-show="form.length.$error.integer">This is not a valid number.
-                                </small>
-                                <small class="error"
-                                       ng-show="form.length.$error.required" translate="vessel.form.length.required">
+                                <small class="error" ng-show="form.length.$error.required"
+                                       translate="vessel.form.length.required">
                                     Length of the vessel is required.
                                 </small>
-
+                                <small class="error" ng-show="form.length.$error.number"
+                                       translate="vessel.form.length.nan">This is not a valid number.
+                                </small>
                                 <small class="error" ng-show="form.length.$error.min || form.length.$error.max"
                                        translate="vessel.form.length.range">
                                     Length must be in the range 1-80 metres.
                                 </small>
                             </div>
+                        </div>
 
+                        <!-- length -->
+                        <div class="form-group">
+                            <label translate="vessel.form.fuelcapacity.label">Length (m)</label>
+                            <input type="number" ng-model="vessel.fuelCapacity" name="fuelcapacity"
+                                   min="0" max="1000"/>
+                            <div class="error" ng-show="form.fuelcapacity.$dirty && form.fuelcapacity.$invalid">
+                                <small class="error" ng-show="form.fuelcapacity.$error.number"
+                                       translate="vessel.form.length.nan">This is not a valid number.
+                                </small>
+                                <small class="error" ng-show="form.fuelcapacity.$error.min || form.fuelcapacity.$error.max"
+                                       translate="vessel.form.fuelcapacity.range">
+                                    Fuel capacity must be between 0 and 1000.
+                                </small>
+                            </div>
                         </div>
 
                         <!-- Storage location -->
@@ -170,6 +182,7 @@
                 <th translate="vessel.list.hin">Hull ID Number</th>
                 <th translate="vessel.list.type">Vessel Type</th>
                 <th translate="vessel.list.length">Length(m)</th>
+                <th translate="vessel.list.fuelcapacity">Fuel Capacity</th>
                 <th translate="vessel.list.storagetype">Storage Type</th>
                 <th></th>
             </tr>
@@ -181,6 +194,7 @@
                 <td>{{vessel.hullIdentificationNumber}}</td>
                 <td>{{'vessel.type.' + vessel.vesselType + '.name' | translate}}</td>
                 <td>{{vessel.length}}</td>
+                <td>{{vessel.fuelCapacity}}</td>
                 <td>{{'vessel.storagetype.' + vessel.storageType + '.name' | translate}}</td>
                 <td>
                     <button type="submit"

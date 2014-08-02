@@ -16,6 +16,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * A Boat.
@@ -98,6 +99,7 @@ public class Vessel implements Serializable {
      * </p>
      */
     @Column(name="STORAGE_TYPE", nullable = true)
+    @Enumerated(EnumType.STRING)
     private StorageType storageType;
 
     /**
@@ -124,6 +126,18 @@ public class Vessel implements Serializable {
     @Column(name="VESSEL_TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
     private VesselType vesselType;
+
+    /**
+     * A list of the emergency equipment on the boat.
+     * <p>
+     *     This list ignores aspects of emergency equipment which may be important to record.
+     * </p>
+     */
+    @ElementCollection(targetClass = EmergencyEquipment.class)
+    @JoinTable(name="T_VESSEL_EQUIPMENT", joinColumns = @JoinColumn(name="VESSEL_ID") ,schema = "BOAT")
+    @Column(name="EQPT_TYPE", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private List<EmergencyEquipment> emergencyEquipment;
 
     public long getId() {
         return id;
