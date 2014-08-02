@@ -11,10 +11,7 @@ CREATE TABLE BOAT.T_VESSEL (
   VESSEL_TYPE           VARCHAR(20) NOT NULL,
   LENGTH_M              INT         NULL,
   TOTAL_HP              INT         NULL,
-  FUEL_CAPACITY_L       INT         NULL,
--- the crap to get rid of eventually...
-  sample_text_attribute VARCHAR(50),
-  sample_date_attribute DATE
+  FUEL_CAPACITY_L       INT         NULL
 );
 
 ALTER TABLE BOAT.T_VESSEL OWNER TO geodsea;

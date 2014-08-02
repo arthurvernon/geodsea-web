@@ -411,7 +411,7 @@
             "id": "id",
             "hin": "HIN",
             "type": "Type",
-            "registrationdate": "Reg. Date",
+            "length": "Length (m)",
             "name": "Vessel Name"
         },
         "form": {
@@ -423,10 +423,24 @@
                 "minlength": " A hull identification number is no less than 12 digits long",
                 "maxlength": "A hull identification number is no more than 14 digits long"
             },
-            "vesseltype": {
+            "type": {
                 "label": "Vessel Type",
                 "placeholder": "Select from the list",
                 "required": "The vessel type is required"
+            },
+            "name": {
+                "label": "Vessel Name",
+                "placeholder": "Enter name of vessel",
+                "required": "A vessel name is required",
+                "minlength": "A name must be at least 5 characters long",
+                "maxlength": "A name may not be more than 40 characters long"
+            },
+            "length": {
+                "label": "Length (m)",
+                "placeholder": "Enter length  in metres",
+                "required": "Length of the vessel is required.",
+                "nan": "This is not a valid number.",
+                "range": "Length must be in the range 1-80 metres."
             }
         },
         "messages": {

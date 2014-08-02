@@ -47,13 +47,8 @@ public class VesselResourceTest {
     
     private static final Long DEFAULT_ID = new Long(1L);
 
-    private static final LocalDate DEFAULT_SAMPLE_DATE_ATTR = new LocalDate(0L);
-
-    private static final LocalDate UPD_SAMPLE_DATE_ATTR = new LocalDate();
-
-    private static final String DEFAULT_SAMPLE_TEXT_ATTR = "sampleTextAttribute";
-
-    private static final String UPD_SAMPLE_TEXT_ATTR = "sampleTextAttributeUpt";
+    private static final String DEFAULT_SAMPLE_TEXT_ATTR = "Blythe's Spririt";
+    private static final String UPD_SAMPLE_TEXT_ATTR = "Blythe's Spririt II";
 
     @Inject
     private VesselRepository vesselRepository;
@@ -73,11 +68,8 @@ public class VesselResourceTest {
         vessel = new Vessel();
         vessel.setId(DEFAULT_ID);
         vessel.setVesselType(VesselType.CABIN);
-        vessel.setVesselName("Blythe's Spirit");
+        vessel.setVesselName(DEFAULT_SAMPLE_TEXT_ATTR);
         vessel.setLength(18);
-
-    	vessel.setSampleDateAttribute(DEFAULT_SAMPLE_DATE_ATTR);
-    	vessel.setSampleTextAttribute(DEFAULT_SAMPLE_TEXT_ATTR);
     }
 
     // TODO text is broken - cannot rely on preset ID.

@@ -42,8 +42,8 @@ public class Vessel implements Serializable {
      * <p>This International Standard establishes a coding system to achieve identification of any small craft in terms of</p>
      * <ul>
      * <li>
-     * <li> identification code of the country of the manufacturer;</li>
-     * <li> identification code of the manufacturer;</li>
+     * <li>identification code of the country of the manufacturer;</li>
+     * <li>identification code of the manufacturer;</li>
      * <li>serial number;</li>
      * <li>month and year of manufacture;</li>
      * <li>model year.</li>
@@ -125,47 +125,12 @@ public class Vessel implements Serializable {
     @Enumerated(EnumType.STRING)
     private VesselType vesselType;
 
-
-
-
-
-
-
-
-
-    @Size(min = 1, max = 50)
-    @Column(name = "sample_text_attribute")
-    private String sampleTextAttribute;
-
-    @NotNull
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = CustomLocalDateSerializer.class)
-    @Column(name = "sample_date_attribute")
-    private LocalDate sampleDateAttribute;
-
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getSampleTextAttribute() {
-        return sampleTextAttribute;
-    }
-
-    public void setSampleTextAttribute(String sampleTextAttribute) {
-        this.sampleTextAttribute = sampleTextAttribute;
-    }
-
-    public LocalDate getSampleDateAttribute() {
-        return sampleDateAttribute;
-    }
-
-    public void setSampleDateAttribute(LocalDate sampleDateAttribute) {
-        this.sampleDateAttribute = sampleDateAttribute;
     }
 
     @Override
@@ -193,10 +158,10 @@ public class Vessel implements Serializable {
 
     @Override
     public String toString() {
-        return "Boat{" +
+        return "Vessel{" +
                 "id=" + id +
-                ", sampleTextAttribute='" + sampleTextAttribute + '\'' +
-                ", sampleDateAttribute=" + sampleDateAttribute +
+                ", hullIdentificationNumber='" + hullIdentificationNumber + '\'' +
+                ", vesselName='" + vesselName + '\'' +
                 '}';
     }
 
