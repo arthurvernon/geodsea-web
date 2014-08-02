@@ -63,7 +63,7 @@
                         <div class="form-group">
                             <label translate="vessel.form.type.label">Vessel Type</label>
                             <select class="form-control" name="vesselType"
-                                    ng-model="vessel.vesselType" ng-selected="vessel.vesselType">
+                                    ng-model="vessel.vesselType" ng-selected="vessel.vesselType" required>
                                 <optgroup label="{{ 'vessel.type.motorised' | translate }}">
                                     <option translate="vessel.type.BOW_RIDER.name">BOW_RIDER</option>
                                     <option translate="vessel.type.HALF_CABIN.name">HALF_CABIN</option>
@@ -81,7 +81,6 @@
                                     <option translate="vessel.type.SEA_KAYAK.name">SEA_KAYAK</option>
                                 </optgroup>
                             </select>
-
                         </div>
 
                         <!-- Hull Identification Number -->
@@ -112,15 +111,15 @@
                             <label translate="vessel.form.length.label">Length (m)</label>
 
                             <input type="number" ng-model="vessel.length" name="length"
-                                   min="1" max="80" integer required/> {{vessel.length}}
+                                   min="1" max="80" integer required/>
 
                             <div class="error" ng-show="form.length.$dirty && form.length.$invalid">
 
+                                <small class="error" ng-show="form.length.$error.integer">This is not a valid number.
+                                </small>
                                 <small class="error"
                                        ng-show="form.length.$error.required" translate="vessel.form.length.required">
                                     Length of the vessel is required.
-                                </small>
-                                <small class="error" ng-show="form.length.$error.integer">This is not a valid number.
                                 </small>
 
                                 <small class="error" ng-show="form.length.$error.min || form.length.$error.max"
@@ -130,6 +129,22 @@
                             </div>
 
                         </div>
+
+                        <!-- Storage location -->
+                        <div class="form-group">
+                            <label translate="vessel.form.storagetype.label">Storage Type</label>
+                            <select class="form-control" name="storageType"
+                                    ng-model="vessel.storageType" ng-selected="vessel.storageType" required>
+                                <option translate="vessel.storagetype.HOME.name">HOME</option>
+                                <option translate="vessel.storagetype.PEN.name">PEN</option>
+                                <option translate="vessel.storagetype.BOAT_YARD.name">BOAT_YARD</option>
+                                <option translate="vessel.storagetype.STACKER.name">STACKER</option>
+                                <option translate="vessel.storagetype.MOORING.name">MOORING</option>
+                                <option translate="vessel.storagetype.JETTY.name">JETTY</option>
+
+                            </select>
+                        </div>
+
 
                     </div>
 
@@ -155,6 +170,7 @@
                 <th translate="vessel.list.hin">Hull ID Number</th>
                 <th translate="vessel.list.type">Vessel Type</th>
                 <th translate="vessel.list.length">Length(m)</th>
+                <th translate="vessel.list.storagetype">Storage Type</th>
                 <th></th>
             </tr>
             </thead>
@@ -165,6 +181,7 @@
                 <td>{{vessel.hullIdentificationNumber}}</td>
                 <td>{{'vessel.type.' + vessel.vesselType + '.name' | translate}}</td>
                 <td>{{vessel.length}}</td>
+                <td>{{'vessel.storagetype.' + vessel.storageType + '.name' | translate}}</td>
                 <td>
                     <button type="submit"
                             ng-click="update(vessel.id)"

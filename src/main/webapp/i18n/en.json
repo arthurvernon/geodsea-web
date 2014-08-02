@@ -347,6 +347,33 @@
         }
     },
     "vessel": {
+        "storagetype":{
+            "HOME": {
+                "description": "Vessel is kept at a person's home.",
+                "name": "Home"
+            },
+            "PEN": {
+                "description": "The vessel is in a boat pen.",
+                "name": "Boat Pen"
+            },
+            "BOAT_YARD": {
+                "description": "The vessel is stored in a boat yard.",
+                "name": "Boat Yard"
+            },
+            "STACKER": {
+                "description": "The vessel is stored in a stacker.",
+                "name": "Stacker"
+            },
+            "MOORING": {
+                "description": "The vessel is tied off at a mooring.",
+                "name": "Mooring"
+            },
+            "JETTY": {
+                "description": "The vessel is tied up alongside a jetty.",
+                "name": "Jetty"
+            }
+
+        },
         "type": {
             "motorised": "Motorised",
             "unmotorised": "Not Motorised",
@@ -412,7 +439,8 @@
             "hin": "HIN",
             "type": "Type",
             "length": "Length (m)",
-            "name": "Vessel Name"
+            "name": "Vessel Name",
+            "storagetype": "Storage Type"
         },
         "form": {
             "title": "Create/Edit a Vessel",
@@ -441,7 +469,13 @@
                 "required": "Length of the vessel is required.",
                 "nan": "This is not a valid number.",
                 "range": "Length must be in the range 1-80 metres."
+            },
+            "storagetype": {
+                "label": "Storage Type",
+                "placeholder": "Choose a storage type",
+                "required": "The storage type is required"
             }
+
         },
         "messages": {
             "error": "<strong>An error has occurred!</strong> Vessel could not be saved.",
