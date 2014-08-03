@@ -49,14 +49,20 @@
             "ru": "Russian"
         },
         "form": {
+            "firstname": "First Name",
+            "firstname.placeholder": "Enter your first name",
+            "lastname": "Last Name",
+            "lastname.placeholder": "Enter your last name",
             "username": "Login",
-            "username.placeholder": "Your login",
+            "username.placeholder": "Enter a unique username, maybe your email address?",
             "newpassword": "New password",
             "newpassword.placeholder": "New password",
             "confirmpassword": "New password confirmation",
             "confirmpassword.placeholder": "Confirm the new password",
             "email": "E-mail",
-            "email.placeholder": "Your e-mail",
+            "email.placeholder": "Your e-mail address",
+            "streetaddress": "Street Address",
+            "streetaddress.placeholder": "Enter your home address (not a PO Box number)",
             "telephone": "Telephone"
         },
         "messages": {
@@ -68,6 +74,16 @@
                 "dontmatch": "The password and its confirmation do not match!"
             },
             "validate": {
+                "firstname": {
+                    "required": "Your first name is required.",
+                    "minlength": "Your first name is required to be at least 2 characters",
+                    "maxlength": "Your first name cannot be longer than 50 characters"
+                },
+                "lastname": {
+                    "required": "Your last name is required.",
+                    "minlength": "Your last name is required to be at least 2 characters",
+                    "maxlength": "Your last name cannot be longer than 50 characters"
+                },
                 "newpassword": {
                     "required": "Your password is required.",
                     "minlength": "Your password is required to be at least 5 characters",
@@ -84,6 +100,9 @@
                     "invalid": "Your e-mail is invalid.",
                     "minlength": "Your e-mail is required to be at least 5 characters",
                     "maxlength": "Your e-mail cannot be longer than 50 characters"
+                },
+                "streetaddress": {
+                    "required": "Your street address is required."
                 },
                 "telephone": {
                     "required": "Your telephone number is required.",

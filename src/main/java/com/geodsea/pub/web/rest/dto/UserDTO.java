@@ -18,13 +18,15 @@ public class UserDTO {
     
     private String langKey;
 
+    private String streetAddress;
+
     private List<String> roles;
 
     public UserDTO() {
     }
 
     public UserDTO(String login, String password, String firstName, String lastName, String email, String langKey,
-                   String telephone,
+                   String telephone, String streetAddress,
                    List<String> roles) {
         this.login = login;
         this.password = password;
@@ -33,6 +35,7 @@ public class UserDTO {
         this.email = email;
         this.langKey = langKey;
         this.telephone = telephone;
+        this.streetAddress = streetAddress;
         this.roles = roles;
     }
 
@@ -72,6 +75,14 @@ public class UserDTO {
         this.telephone = telephone;
     }
 
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
 
     @Override
     public String toString() {
@@ -84,6 +95,7 @@ public class UserDTO {
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", email='").append(email).append('\'');
         sb.append(", telephone='").append(telephone).append('\'');
+        sb.append(", address='").append(streetAddress).append('\'');
         sb.append(", langKey='").append(langKey).append('\'');
         sb.append(", roles=").append(roles);
         sb.append('}');

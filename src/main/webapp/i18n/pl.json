@@ -51,6 +51,10 @@
             "ru": "Rosyjski"
         },
         "form": {
+            "firstname": "_pl_First Name",
+            "firstname.placeholder": "_pl_Enter your first name",
+            "lastname": "_pl_Last Name",
+            "lastname.placeholder": "_pl_Enter your last name",
             "username": "Login",
             "username.placeholder": "Twój login",
             "newpassword": "Nowe hasło",
@@ -59,6 +63,8 @@
             "confirmpassword.placeholder": "Potwierdź nowe hasło",
             "email": "E-mail",
             "email.placeholder": "Twój e-mail",
+            "streetaddress": "_pl_Street Address",
+            "streetaddress.placeholder": "_pl_Your street address",
             "telephone" : "_pl_Telephone"
         },
         "messages": {
@@ -70,6 +76,16 @@
                 "dontmatch": "Hasło i potwierdzenie nie zgadzają się!"
             },
             "validate": {
+                "firstname": {
+                    "required": "_pl_Your first name is required.",
+                    "minlength": "_pl_Your first name is required to be at least 2 characters",
+                    "maxlength": "_pl_Your first name cannot be longer than 50 characters"
+                },
+                "lastname": {
+                    "required": "_pl_Your last name is required.",
+                    "minlength": "_pl_Your last name is required to be at least 2 characters",
+                    "maxlength": "_pl_Your last name cannot be longer than 50 characters"
+                },
                 "newpassword": {
                     "required": "Twoje hasło jest wymagane.",
                     "minlength": "Twoje hasło powinno mieć minimum 5 znaków",
@@ -86,6 +102,9 @@
                     "invalid": "Twój e-mail jest błędny.",
                     "minlength": "Twój e-mail musi mieć przynajmniej 5 liter",
                     "maxlength": "Your e-mail nie może być dłuższe niż 50 liter"
+                },
+                "streetaddress": {
+                    "required": "_pl_Your street address is required."
                 },
                 "telephone": {
                     "required": "_pl_Twój telephone number jest wymagany.",

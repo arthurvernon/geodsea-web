@@ -31,11 +31,11 @@ public class Person extends Participant implements Serializable {
     @Size(min = 0, max = 100)
     private String password;
 
-    @Size(min = 0, max = 50)
+    @Size(min = 2, max = 50)
     @Column(name = "first_name")
     private String firstName;
 
-    @Size(min = 0, max = 50)
+    @Size(min = 2, max = 50)
     @Column(name = "last_name")
     private String lastName;
 
@@ -53,7 +53,6 @@ public class Person extends Participant implements Serializable {
     @DateTimeFormat(style="S-")
     private Date birthDate;
 
-
     /**
      * The telephone number upon which the person can be contacted in emergencies
      */
@@ -61,6 +60,10 @@ public class Person extends Participant implements Serializable {
     @Pattern(regexp="^\\(?(\\d{2,3})\\)?[- ]?(\\d{3,4})[- ]?(\\d{4})$",
             message="{invalid.phonenumber}")
     private String telephone;
+
+    @Size(min = 0, max = 100)
+    @Column(name = "STREET_ADDRESS", nullable = true)
+    private String streetAddress;
 
 
     @JsonIgnore
@@ -133,6 +136,14 @@ public class Person extends Participant implements Serializable {
         this.birthDate = birthDate;
     }
 
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -142,6 +153,7 @@ public class Person extends Participant implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", telephone='" + email + '\'' +
+                ", street addr.='" + streetAddress + '\'' +
                 ", langKey='" + langKey + '\'' +
                 "}";
     }

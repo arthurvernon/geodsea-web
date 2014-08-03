@@ -4,7 +4,7 @@
 var httpHeaders;
 
 var geodseaApp = angular.module('geodseaApp', ['http-auth-interceptor', 'tmh.dynamicLocale',
-    'ngResource', 'ngRoute', 'ngCookies', 'geodseaAppUtils', 'pascalprecht.translate', 'truncate']);
+    'ngResource', 'ngRoute', 'ngCookies', 'geodseaAppUtils', 'pascalprecht.translate', 'truncate', 'ngAutocomplete']);
 
 
 geodseaApp

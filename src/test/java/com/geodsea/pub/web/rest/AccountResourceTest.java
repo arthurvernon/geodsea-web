@@ -97,6 +97,7 @@ public class AccountResourceTest {
         person.setFirstName("john");
         person.setLastName("doe");
         person.setEmail("john.doe@jhipter.com");
+        person.setStreetAddress("1 my street, Suburbia, State, Country, 99999");
         person.setAuthorities(authorities);
         when(userService.getUserWithAuthorities()).thenReturn(person);
 
@@ -108,6 +109,7 @@ public class AccountResourceTest {
                 .andExpect(jsonPath("$.firstName").value("john"))
                 .andExpect(jsonPath("$.lastName").value("doe"))
                 .andExpect(jsonPath("$.email").value("john.doe@jhipter.com"))
+                .andExpect(jsonPath("$.streetAddress").value("1 my street, Suburbia, State, Country, 99999"))
                 .andExpect(jsonPath("$.roles").value(AuthoritiesConstants.ADMIN));
     }
 

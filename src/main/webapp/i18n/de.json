@@ -50,6 +50,10 @@
             "ru": "Russisch"
         },
         "form": {
+            "firstname": "_de_First Name",
+            "firstname.placeholder": "_de_Enter your first name",
+            "lastname": "_de_Last Name",
+            "lastname.placeholder": "_de_Enter your last name",
             "username": "Name",
             "username.placeholder": "Ihr Name",
             "newpassword": "Neues Passwort",
@@ -58,6 +62,8 @@
             "confirmpassword.placeholder": "Bestätigen Sie ihr neues Passwort",
             "email": "E-Mail Adresse",
             "email.placeholder": "Ihre E-Mail Adresse",
+            "streetaddress": "_de_Street Address",
+            "streetaddress.placeholder": "_de_Your street address",
             "telephone" : "_de_Telephone"
         },
         "messages": {
@@ -69,6 +75,16 @@
                 "dontmatch": "Das bestätigte Passwort entspricht nicht dem neuen Passwort!"
             },
             "validate": {
+                "firstname": {
+                    "required": "_de_Your first name is required.",
+                    "minlength": "_de_Your first name is required to be at least 2 characters",
+                    "maxlength": "_de_Your first name cannot be longer than 50 characters"
+                },
+                "lastname": {
+                    "required": "_de_Your last name is required.",
+                    "minlength": "_de_Your last name is required to be at least 2 characters",
+                    "maxlength": "_de_Your last name cannot be longer than 50 characters"
+                },
                 "newpassword": {
                     "required": "Ein neues Passwort wird benötigt.",
                     "minlength": "Das neue Passwort muss mindestens 5 Zeichen lang sein",
@@ -85,6 +101,9 @@
                     "invalid": "Ihre E-Mail Adresse ist ungültig.",
                     "minlength": "Ihre E-Mail Adresse muss mindestens 5 Zeichen lang sein",
                     "maxlength": "Ihre E-Mail Adresse darf nicht länger als 50 Zeichen sein"
+                },
+                "streetaddress": {
+                    "required": "_de_Your street address is required."
                 },
                 "telephone": {
                     "required": "_de_Ihre telephone number wird benötigt.",

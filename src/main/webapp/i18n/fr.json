@@ -51,6 +51,10 @@
             "ru": "Russe"
         },
         "form": {
+            "firstname": "_fr_First Name",
+            "firstname.placeholder": "_fr_Enter your first name",
+            "lastname": "_fr_Last Name",
+            "lastname.placeholder": "_fr_Enter your last name",
             "username": "Nom d'utilisateur",
             "username.placeholder": "Votre nom d'utilisateur",
             "newpassword": "Nouveau mot de passe",
@@ -59,6 +63,8 @@
             "confirmpassword.placeholder": "Confirmation du nouveau mot de passe",
             "email": "Email",
             "email.placeholder": "Votre email",
+            "streetaddress": "_fr_Street Address",
+            "streetaddress.placeholder": "_fr_Your street address",
             "telephone" : "_fr_Telephone"
         },
         "messages": {
@@ -70,6 +76,16 @@
                 "dontmatch": "Le nouveau mot de passe et sa confirmation ne sont pas égaux!"
             },
             "validate": {
+                "firstname": {
+                    "required": "_fr_Your first name is required.",
+                    "minlength": "_fr_Your first name is required to be at least 2 characters",
+                    "maxlength": "_fr_Your first name cannot be longer than 50 characters"
+                },
+                "lastname": {
+                    "required": "_fr_Your last name is required.",
+                    "minlength": "_fr_Your last name is required to be at least 2 characters",
+                    "maxlength": "_fr_Your last name cannot be longer than 50 characters"
+                },
                 "newpassword": {
                     "required": "Votre mot de passe est requis.",
                     "minlength": "Votre mot de passe doit comporter au moins 5 caractères",
@@ -86,6 +102,9 @@
                     "minlength": "Votre email doit comporter au moins 5 caractères",
                     "maxlength": "Votre email ne doit pas comporter plus de 50 caractères",
                     "invalid": "Votre email n'est pas valide."
+                },
+                "streetaddress": {
+                    "required": "_fr_Your street address is required."
                 },
                 "telephone": {
                     "required": "_fr_Votre telephone number est requis.",

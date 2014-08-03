@@ -50,6 +50,10 @@
             "ru": "Русский"
         },
         "form": {
+            "firstname": "_ru_First Name",
+            "firstname.placeholder": "_ru_Enter your first name",
+            "lastname": "_ru_Last Name",
+            "lastname.placeholder": "_ru_Enter your last name",
             "username": "Логин",
             "username.placeholder": "Ваш логин",
             "newpassword": "Новый пароль",
@@ -58,6 +62,8 @@
             "confirmpassword.placeholder": "Подтвердите новый пароль",
             "email": "E-mail",
             "email.placeholder": "Ваш e-mail",
+            "streetaddress": "_ru_Street Address",
+            "streetaddress.placeholder": "_ru_Your street address",
             "telephone" : "_ru_Telephone"
         },
         "messages": {
@@ -69,6 +75,16 @@
                 "dontmatch": "Пароль и его подтверждение не совпадают!"
             },
             "validate": {
+                "firstname": {
+                    "required": "_ru_Your first name is required.",
+                    "minlength": "_ru_Your first name is required to be at least 2 characters",
+                    "maxlength": "_ru_Your first name cannot be longer than 50 characters"
+                },
+                "lastname": {
+                    "required": "_ru_Your last name is required.",
+                    "minlength": "_ru_Your last name is required to be at least 2 characters",
+                    "maxlength": "_ru_Your last name cannot be longer than 50 characters"
+                },
                 "newpassword": {
                     "required": "Пароль должен быть указан.",
                     "minlength": "Длина пароля должна быть хотя-бы 5 символов",
@@ -85,6 +101,9 @@
                     "invalid": "E-mail не верен.",
                     "minlength": "Длина e-mail должна быть хотя-бы 5 символов",
                     "maxlength": "E-mail не может быть длиннее чем 50 символов"
+                },
+                "streetaddress": {
+                    "required": "_ru_Your street address is required."
                 },
                 "telephone": {
                     "required": "_ru_telephone number должен быть указан.",

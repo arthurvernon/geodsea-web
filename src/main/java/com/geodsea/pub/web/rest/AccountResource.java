@@ -75,7 +75,7 @@ public class AccountResource {
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         } else {
             person = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(), userDTO.getFirstName(),
-                    userDTO.getLastName(), userDTO.getEmail().toLowerCase(), userDTO.getLangKey());
+                    userDTO.getLastName(), userDTO.getEmail().toLowerCase(), userDTO.getStreetAddress(), userDTO.getLangKey());
             final Locale locale = Locale.forLanguageTag(person.getLangKey());
             String content = createHtmlContentFromTemplate(person, locale, request, response);
             mailService.sendActivationEmail(person.getEmail(), content, locale);
@@ -134,6 +134,7 @@ public class AccountResource {
                 person.getEmail(),
                 person.getLangKey(),
                 person.getTelephone(),
+                person.getStreetAddress(),
                 roles),
             HttpStatus.OK);
     }
@@ -146,7 +147,7 @@ public class AccountResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public void saveAccount(@RequestBody UserDTO userDTO) {
-        userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail());
+        userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getStreetAddress());
     }
 
     /**

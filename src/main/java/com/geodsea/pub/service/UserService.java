@@ -52,7 +52,7 @@ public class UserService {
 
         // activate given user for the registration key.
         if (person != null) {
-            if (person.getRegistrationTokenExpires().getTime() > System.currentTimeMillis())
+            if (person.getRegistrationTokenExpires().getTime() < System.currentTimeMillis())
             {
                 log.info("User account {} not activated as it has expired", person);
                 personRepository.delete(person);
@@ -64,11 +64,14 @@ public class UserService {
             personRepository.save(person);
             log.debug("Activated user: {}", person);
         }
+        else
+            log.warn("Failed to identify person with the registration key: " + key);
+
         return person;
     }
 
     public Person createUserInformation(String login, String password, String firstName, String lastName, String email,
-                                      String langKey) {
+                                        String streetAddress, String langKey) {
         Person newPerson = new Person();
         String encryptedPassword = passwordEncoder.encode(password);
         newPerson.setParticipantName(login);
@@ -77,6 +80,7 @@ public class UserService {
         newPerson.setFirstName(firstName);
         newPerson.setLastName(lastName);
         newPerson.setEmail(email);
+        newPerson.setStreetAddress(streetAddress);
         newPerson.setLangKey(langKey);
         // new user is not active
         newPerson.setEnabled(false);
@@ -96,7 +100,7 @@ public class UserService {
         return newPerson;
     }
 
-    public void updateUserInformation(String firstName, String lastName, String email) {
+    public void updateUserInformation(String firstName, String lastName, String email, String address) {
         Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
         currentPerson.setFirstName(firstName);
         currentPerson.setLastName(lastName);
