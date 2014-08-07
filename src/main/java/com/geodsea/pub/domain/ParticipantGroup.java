@@ -36,7 +36,6 @@ public class ParticipantGroup extends Participant {
      * </p>
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "participantGroup")
-//    @JoinColumn(name="ORGANISATION_ID")
     private List<Member> members;
 
     public String getWebsiteURL() {
