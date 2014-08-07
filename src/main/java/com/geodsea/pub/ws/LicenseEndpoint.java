@@ -25,14 +25,35 @@ public class LicenseEndpoint {
 
     private final Logger log = LoggerFactory.getLogger(LicenseEndpoint.class);
 
-    public LicenseEndpoint()
-    {
+    public LicenseEndpoint() {
         super();
     }
 
+    /**
+     * Get to this service via http://localhost:8080/ws with a soap body containing a
+     * LicenseRequest element, e.g.
+     * <code>
+     * <pre>
+     * &lt;soapenv:Envelope
+     *    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+     *    xmlns:lic="http://www.geodsea.com/License"&gt;
+     *    &lt;soapenv:Header/&gt;
+     *    &lt;soapenv:Body&gt;
+     *       &lt;lic:LicenseRequest&gt;
+     *         &lt;licenseNumber&gt;dsadad&lt;/licenseNumber&gt;
+     *       &lt;/lic:LicenseRequest&gt;
+     *     &lt;/soapenv:Body&gt;
+     *  &lt;/soapenv:Envelope&gt;
+     *     </pre>
+     * </code>
+     *
+     * @param request
+     * @return
+     */
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "LicenseRequest")
     @Timed
-    @ResponsePayload public LicenseResponse getLicense(@RequestPayload LicenseRequest request) {
+    @ResponsePayload
+    public LicenseResponse getLicense(@RequestPayload LicenseRequest request) {
         log.debug("REST request to obtain license details for license:{}", request.getLicenseNumber());
         LicenseResponse details = new LicenseResponse();
         GregorianCalendar c = new GregorianCalendar();

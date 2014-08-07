@@ -167,6 +167,15 @@ public class WebConfigurer implements ServletContextInitializer {
         atmosphereServlet.setAsyncSupported(true);
     }
 
+
+    /**
+     * This is required to allow web services to be implemented in this application.
+     * <p>
+     *     The path for all web services currently is /ws hence the license service is accessible via
+     *     http://localhost:8080/ws
+     * </p>
+     * @param servletContext
+     */
     private void initDispatcherServlet(ServletContext servletContext) {
 
         log.debug("Registering WS Servlet");
