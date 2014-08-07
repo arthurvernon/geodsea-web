@@ -367,6 +367,10 @@
     },
     "vessel": {
         "storagetype":{
+            "null": {
+                "description": "Needs to be defined.",
+                "name": "Not specified"
+            },
             "HOME": {
                 "description": "Vessel is kept at a person's home.",
                 "name": "Home"
