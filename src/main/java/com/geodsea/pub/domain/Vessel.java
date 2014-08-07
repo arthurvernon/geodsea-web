@@ -53,6 +53,7 @@ public class Vessel implements Serializable {
      * It applies to small craft of all types and materials, of hull length up to 24 m. It does not apply to beach or bathing toys
      * </p>
      * <p>Value is the raw number excluding special characters like "-" and spaces.</p>
+     * TODO place a unique constraint on this value.
      */
     @Column(name="HIN", nullable = true)
     @Size(min=12, max = 14)
