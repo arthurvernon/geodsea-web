@@ -67,6 +67,7 @@ public class VesselResourceTest {
 
         vessel = new Vessel();
         vessel.setId(DEFAULT_ID);
+        vessel.setHullIdentificationNumber("123456789012");
         vessel.setVesselType(VesselType.CABIN);
         vessel.setVesselName(DEFAULT_SAMPLE_TEXT_ATTR);
         vessel.setLength(18);

@@ -2,122 +2,164 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <h1 translate="register.title">Registration</h1>
-
-            <div class="alert alert-success" ng-show="success" translate="register.messages.success">
-                <strong>Registration saved!</strong> Please check your email for confirmation.
-            </div>
-
-            <div class="alert alert-danger" ng-show="error" translate="register.messages.error.fail">
-                <strong>Registration failed!</strong> Please check your input and try again.
-            </div>
-
-            <div class="alert alert-danger" ng-show="errorUserExists" translate="register.messages.error.userexists">
-                <strong>Login name already registered!</strong> Please choose another one.
-            </div>
-
-            <div class="alert alert-danger" ng-show="doNotMatch" translate="global.messages.error.dontmatch">
-                The password and its confirmation do not match!
-            </div>
-
-            <form ng-show="!success" name="form" role="form" novalidate
+            <form name="form" role="form" novalidate
                   class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
                   ng-submit="register()">
 
-                <div class="form-group">
-                    <label translate="global.form.username">Login</label>
-                    <input type="text" class="form-control" name="login" placeholder="{{'global.form.username.placeholder' | translate}}"
-                           ng-model="registerAccount.login" ng-minlength=1 ng-maxlength=50 required>
-                    <div class="error"
-                         ng-show="form.login.$dirty && form.login.$invalid">
-                        <small class="error"
-                               ng-show="form.login.$error.required" translate="register.messages.validate.login.required">
-                            Your login is required.
-                        </small>
-                        <small class="error"
-                               ng-show="form.login.$error.minlength" translate="register.messages.validate.login.minlength">
-                            Your login is required to be at least 1 character
-                        </small>
-                        <small class="error"
-                               ng-show="form.login.$error.maxlength" translate="register.messages.validate.login.maxlength">
-                            Your login cannot be longer than 50 characters
-                        </small>
-                    </div>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                            ng-click="clear()">&times;</button>
+                    <h4 class="modal-title" id="myVesselLabel" translate="vessel.form.title">Create or edit a
+                        Vessel</h4>
                 </div>
-                <div class="form-group">
-                    <label translate="global.form.email">E-mail</label>
-                    <input type="email" class="form-control" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
-                           ng-model="registerAccount.email" ng-minlength=5 ng-maxlength=100 required>
-                    <div class="error"
-                         ng-show="form.email.$dirty && form.email.$invalid">
-                        <small class="error"
-                               ng-show="form.email.$error.required" translate="global.messages.validate.email.required">
-                            Your e-mail is required.
-                        </small>
-                        <small class="error"
-                               ng-show="form.email.$error.email" translate="global.messages.validate.email.invalid">
-                            Your e-mail is invalid.
-                        </small>
-                        <small class="error"
-                               ng-show="form.email.$error.minlength" translate="global.messages.validate.email.minlength">
-                            Your e-mail is required to be at least 5 characters
-                        </small>
-                        <small class="error"
-                               ng-show="form.email.$error.maxlength" translate="global.messages.validate.email.maxlength">
-                            Your e-mail cannot be longer than 100 characters
-                        </small>
-                    </div>
+                <div class="alert alert-success" ng-show="success" translate="vessel.messages.success">
+                    <strong>Vessel saved!</strong>
                 </div>
-                <div class="form-group">
-                    <label translate="global.form.newpassword">New password</label>
-                    <input type="password" class="form-control" name="password" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
-                           ng-model="registerAccount.password" ng-minlength=5 ng-maxlength=50 required>
-                    <div class="error"
-                         ng-show="form.password.$dirty && form.password.$invalid">
-                        <small class="error"
-                               ng-show="form.password.$error.required" translate="global.messages.validate.newpassword.required">
-                            Your password is required.
-                        </small>
-                        <small class="error"
-                               ng-show="form.password.$error.minlength" translate="global.messages.validate.newpassword.minlength">
-                            Your password is required to be at least 5 characters
-                        </small>
-                        <small class="error"
-                               ng-show="form.password.$error.maxlength" translate="global.messages.validate.newpassword.maxlength">
-                            Your password cannot be longer than 50 characters
-                        </small>
-                    </div>
-                    <password-strength-bar password-to-check="registerAccount.password"></password-strength-bar>
+                <div class="alert alert-danger" ng-show="error" translate="vessel.messages.error">
+                    <strong>An error has occurred!</strong> Vessel could not be saved.
                 </div>
-                <div class="form-group">
-                    <label translate="global.form.confirmpassword">New password confirmation</label>
-                    <input type="password" class="form-control" name="confirmPassword" placeholder="{{'global.form.confirmpassword.placeholder' | translate}}"
-                           ng-model="confirmPassword" ng-minlength=5 ng-maxlength=50 required>
-                    <div class="error"
-                         ng-show="form.confirmPassword.$dirty && form.confirmPassword.$invalid">
-                        <small class="error"
-                               ng-show="form.confirmPassword.$error.required" translate="global.messages.validate.confirmpassword.required">
-                            Your password confirmation is required.
-                        </small>
-                        <small class="error"
-                               ng-show="form.confirmPassword.$error.minlength" translate="global.messages.validate.confirmpassword.minlength">
-                            Your password confirmation is required to be at least 5 characters
-                        </small>
-                        <small class="error"
-                               ng-show="form.confirmPassword.$error.maxlength" translate="global.messages.validate.confirmpassword.maxlength">
-                            Your password confirmation cannot be longer than 50 characters
-                        </small>
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label>ID</label>
+                        <input type="text" class="form-control" name="id"
+                               ng-model="vessel.id" readonly>
+                    </div>
+
+                    <!-- Vessel Name -->
+                    <div class="form-group">
+                        <label translate="vessel.form.name.label">Vessel Name</label>
+                        <input type="text" class="form-control" name="vesselname"
+                               ng-model="vessel.vesselName" ng-minlength=5 ng-maxlength=50 required>
+
+                        <div class="error" ng-show="form.vesselname.$dirty && form.vesselname.$invalid">
+                            <small class="error"
+                                   ng-show="form.vesselname.$error.required"
+                                   translate="vessel.form.vesselname.required">
+                                A vessel name is required.
+                            </small>
+                            <small class="error"
+                                   ng-show="form.vesselname.$error.minlength"
+                                   translate="vessel.form.vesselname.minlength">
+                                A name must be at least 5 characters long
+                            </small>
+                            <small class="error"
+                                   ng-show="form.vesselname.$error.maxlength"
+                                   translate="vessel.form.vesselname.maxlength">
+                                A name may not be more than 40 characters long.
+                            </small>
+                        </div>
+                    </div>
+
+
+                    <!-- Vessel Type -->
+                    <div class="form-group">
+                        <label translate="vessel.form.type.label">Vessel Type</label>
+                        <select class="form-control" name="vesselType"
+                                ng-model="vessel.vesselType" ng-selected="vessel.vesselType" required>
+                            <optgroup label="{{ 'vessel.type.motorised' | translate }}">
+                                <option translate="vessel.type.BOW_RIDER.name">BOW_RIDER</option>
+                                <option translate="vessel.type.HALF_CABIN.name">HALF_CABIN</option>
+                                <option translate="vessel.type.WALK_AROUND.name">WALK_AROUND</option>
+                                <option translate="vessel.type.CENTER_CONSOLE.name">CENTER_CONSOLE</option>
+                                <option translate="vessel.type.OPEN_BOAT.name">OPEN_BOAT</option>
+                                <option translate="vessel.type.FLY_BRIDGE.name">FLY_BRIDGE</option>
+                                <option translate="vessel.type.PERSONAL_WATER_CRAFT.name">PERSONAL_WATER_CRAFT
+                                </option>
+                            </optgroup>
+                            <optgroup label="{{ 'vessel.type.unmotorised' | translate }}">
+                                <option translate="vessel.type.OPEN_COCKPIT.name">OPEN_COCKPIT</option>
+                                <option translate="vessel.type.CABIN.name">CABIN</option>
+                                <option translate="vessel.type.ROW_BOAT.name">ROW_BOAT</option>
+                                <option translate="vessel.type.SEA_KAYAK.name">SEA_KAYAK</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- Hull Identification Number -->
+                    <div class="form-group">
+                        <label translate="vessel.form.hin.label">Hull Identification Number</label>
+                        <input type="text" class="form-control" name="hin"
+                               placeholder="{{'vessel.form.hin.placeholder' | translate}}"
+                               ng-model="vessel.hullIdentificationNumber" ng-minlength=12 ng-maxlength=14 required>
+
+                        <div class="error" ng-show="form.hin.$dirty && form.hin.$invalid">
+                            <small class="error"
+                                   ng-show="form.hin.$error.required" translate="vessel.form.hin.required">
+                                The hull identification number is required.
+                            </small>
+                            <small class="error"
+                                   ng-show="form.hin.$error.minlength" translate="vessel.form.hin.minlength">
+                                A hull identification number is at least 12 digits long
+                            </small>
+                            <small class="error"
+                                   ng-show="form.hin.$error.maxlength" translate="vessel.form.hin.maxlength">
+                                A hull identification number is no more than 14 digits long.
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- length -->
+                    <div class="form-group">
+                        <label translate="vessel.form.length.label">Length (m)</label>
+                        <input type="number" ng-model="vessel.length" name="length"
+                               min="1" max="80"/>
+                        <div class="error" ng-show="form.length.$dirty && form.length.$invalid">
+                            <small class="error" ng-show="form.length.$error.required"
+                                   translate="vessel.form.length.required">
+                                Length of the vessel is required.
+                            </small>
+                            <small class="error" ng-show="form.length.$error.number"
+                                   translate="vessel.form.length.nan">This is not a valid number.
+                            </small>
+                            <small class="error" ng-show="form.length.$error.min || form.length.$error.max"
+                                   translate="vessel.form.length.range">
+                                Length must be in the range 1-80 metres.
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- length -->
+                    <div class="form-group">
+                        <label translate="vessel.form.fuelcapacity.label">Length (m)</label>
+                        <input type="number" ng-model="vessel.fuelCapacity" name="fuelcapacity"
+                               min="0" max="1000"/>
+                        <div class="error" ng-show="form.fuelcapacity.$dirty && form.fuelcapacity.$invalid">
+                            <small class="error" ng-show="form.fuelcapacity.$error.number"
+                                   translate="vessel.form.length.nan">This is not a valid number.
+                            </small>
+                            <small class="error" ng-show="form.fuelcapacity.$error.min || form.fuelcapacity.$error.max"
+                                   translate="vessel.form.fuelcapacity.range">
+                                Fuel capacity must be between 0 and 1000.
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Storage location -->
+                    <div class="form-group">
+                        <label translate="vessel.form.storagetype.label">Storage Type</label>
+                        <select class="form-control" name="storageType"
+                                ng-model="vessel.storageType" ng-selected="vessel.storageType" required>
+                            <option translate="vessel.storagetype.HOME.name">HOME</option>
+                            <option translate="vessel.storagetype.PEN.name">PEN</option>
+                            <option translate="vessel.storagetype.BOAT_YARD.name">BOAT_YARD</option>
+                            <option translate="vessel.storagetype.STACKER.name">STACKER</option>
+                            <option translate="vessel.storagetype.MOORING.name">MOORING</option>
+                            <option translate="vessel.storagetype.JETTY.name">JETTY</option>
+                        </select>
                     </div>
                 </div>
 
-                <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" translate="register.form.button">Register</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                    </button>
+                    <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-save"></span> Register
+                    </button>
+                </div>
             </form>
-            <p></p>
-            <div class="alert alert-warning" translate="global.messages.info.authenticated">
-                If you want to <a href="#/login">authenticate</a>, you can try the default login="admin" and
-                password="admin".
-            </div>
         </div>
-        <div class="col-md-2"></div>
     </div>
 </div>

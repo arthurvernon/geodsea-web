@@ -37,7 +37,7 @@
                         <div class="form-group">
                             <label translate="vessel.form.name.label">Vessel Name</label>
                             <input type="text" class="form-control" name="vesselname"
-                                   ng-model="vessel.vesselName" ng-minlength=1 ng-maxlength=50 required>
+                                   ng-model="vessel.vesselName" ng-minlength=5 ng-maxlength=50 required>
 
                             <div class="error" ng-show="form.vesselname.$dirty && form.vesselname.$invalid">
                                 <small class="error"
@@ -153,11 +153,8 @@
                                 <option translate="vessel.storagetype.STACKER.name">STACKER</option>
                                 <option translate="vessel.storagetype.MOORING.name">MOORING</option>
                                 <option translate="vessel.storagetype.JETTY.name">JETTY</option>
-
                             </select>
                         </div>
-
-
                     </div>
 
                     <div class="modal-footer">

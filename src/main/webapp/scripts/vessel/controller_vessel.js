@@ -19,6 +19,23 @@ geodseaApp.controller('VesselController', ['$scope', 'resolvedVessel', 'Vessel',
                 {"name": "SEA_KAYAK", "motorised": false}
             ];
 
+        $scope.storageTypes =
+            [
+                {"name": "HOME"},
+                {"name": "PEN"},
+                {"name": "BOAT_YARD"},
+                {"name": "STACKER"},
+                {"name": "MOORING"},
+                {"name": "JETTY"}
+            ]
+
+        $scope.register = function(){
+            Vessel.save($scope.vessel, function(){
+                window.alert("vessel saved");
+                $scope.clear();
+                // TODO go somewhere else. Do something.
+            });
+        };
 
         $scope.create = function () {
             Vessel.save($scope.vessel,
@@ -42,6 +59,7 @@ geodseaApp.controller('VesselController', ['$scope', 'resolvedVessel', 'Vessel',
         };
 
         $scope.clear = function () {
-            $scope.vessel = {id: null, sampleTextAttribute: null, sampleDateAttribute: null};
+            $scope.vessel = {id: null, vesselName: null, hullIdentificationNumber : null,
+                     vesselType: null, vesselLength : null, fuelCapacity: null, storageType: null};
         };
     }]);

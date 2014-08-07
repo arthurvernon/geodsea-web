@@ -17,7 +17,7 @@ geodseaApp
                     }
                 })
                 .when('/register/vessel', {
-                    templateUrl: 'views/vessels.html',
+                    templateUrl: 'views/registervessel.html',
                     controller: 'VesselController',
                     resolve:{
                         resolvedVessel: ['Vessel', function (Vessel) {
