@@ -16,6 +16,7 @@ import org.springframework.boot.context.embedded.ServletContextInitializer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.ws.transport.http.MessageDispatcherServlet;
 
 import javax.inject.Inject;
 import javax.servlet.*;
@@ -47,6 +48,7 @@ public class WebConfigurer implements ServletContextInitializer {
 
         initMetrics(servletContext, disps);
         initAtmosphereServlet(servletContext);
+        initDispatcherServlet(servletContext);
         if (env.acceptsProfiles(Constants.SPRING_PROFILE_PRODUCTION)) {
             initStaticResourcesProductionFilter(servletContext, disps);
             initCachingHttpHeadersFilter(servletContext, disps);
@@ -163,6 +165,24 @@ public class WebConfigurer implements ServletContextInitializer {
         atmosphereServlet.addMapping("/websocket/*");
         atmosphereServlet.setLoadOnStartup(3);
         atmosphereServlet.setAsyncSupported(true);
+    }
+
+    private void initDispatcherServlet(ServletContext servletContext) {
+
+        log.debug("Registering WS Servlet");
+
+        MessageDispatcherServlet mds = new MessageDispatcherServlet();
+        mds.setTransformWsdlLocations(true);
+
+        ServletRegistration.Dynamic servlet =
+                servletContext.addServlet("wsServlet", mds);
+
+        // Have to do this to stop the default configuration looking for something.
+        servlet.setInitParameter("contextConfigLocation", "");
+
+        servlet.addMapping("/ws/*");
+        servlet.setAsyncSupported(true);
+        servlet.setLoadOnStartup(4);
     }
 
     /**

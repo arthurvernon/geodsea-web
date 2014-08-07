@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:gs="http://www.geodsea.com/License">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <gs:LicenseRequest>
+            <licenseNumber>12345</licenseNumber>
+        </gs:LicenseRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
