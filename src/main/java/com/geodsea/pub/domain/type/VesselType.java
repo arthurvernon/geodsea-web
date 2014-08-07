@@ -44,12 +44,12 @@ public enum VesselType {
     PERSONAL_WATER_CRAFT(true),
 
     /**
-     * Like a racing yacht - has no cockpit or superstructure, e.g. catemaran or mono-hull with self draining deck.
+     * Like a racing yacht - has no cockpit or superstructure, e.g. a mono-hull with self draining deck.
      */
     OPEN_COCKPIT (false),
 
     /**
-     * Standard sailing/cruisiung yacht with sleeping quarters
+     * Standard sailing/cruising yacht with sleeping quarters
      */
     CABIN(false),
 
