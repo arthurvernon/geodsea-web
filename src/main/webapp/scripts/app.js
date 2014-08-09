@@ -3,6 +3,11 @@
 /* App Module */
 var httpHeaders;
 
+/*
+ The Angular module API allows us to declare a module using the angular.module() API method.
+ When declaring a module, we need to pass two parameters to the method. The first is the name of
+ the module we are creating. The second is the list of dependencies, otherwise known as injectables.
+ */
 var geodseaApp = angular.module('geodseaApp', ['http-auth-interceptor', 'tmh.dynamicLocale',
     'ngResource', 'ngRoute', 'ngCookies', 'geodseaAppUtils', 'pascalprecht.translate', 'truncate', 'ngAutocomplete']);
 
