@@ -74,6 +74,11 @@ geodseaApp.controller('RegisterController', ['$scope', '$translate', 'Register',
             } else {
                 $scope.registerAccount.langKey = $translate.use();
                 $scope.doNotMatch = null;
+                $scope.registerAccount.addressParts=$scope.details.address_components;
+                $scope.registerAccount.point ={
+                    "lat" : $scope.details.geometry.location.k,
+                    "lon" : $scope.details.geometry.location.B
+                };
                 Register.save($scope.registerAccount,
                     function (value, responseHeaders) {
                         $scope.error = null;

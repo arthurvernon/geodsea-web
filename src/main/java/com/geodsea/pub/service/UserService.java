@@ -1,5 +1,6 @@
 package com.geodsea.pub.service;
 
+import com.geodsea.pub.domain.Address;
 import com.geodsea.pub.domain.Authority;
 import com.geodsea.pub.domain.PersistentToken;
 import com.geodsea.pub.domain.Person;
@@ -9,7 +10,6 @@ import com.geodsea.pub.repository.PersistentTokenRepository;
 import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.security.SecurityUtils;
 import com.geodsea.pub.service.util.RandomUtil;
-import org.jadira.usertype.dateandtime.joda.PersistentDateTime;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -71,7 +71,7 @@ public class UserService {
     }
 
     public Person createUserInformation(String login, String password, String firstName, String lastName, String email,
-                                        String streetAddress, String langKey) {
+                                        Address address, String langKey) {
         Person newPerson = new Person();
         String encryptedPassword = passwordEncoder.encode(password);
         newPerson.setParticipantName(login);
@@ -80,7 +80,7 @@ public class UserService {
         newPerson.setFirstName(firstName);
         newPerson.setLastName(lastName);
         newPerson.setEmail(email);
-        newPerson.setStreetAddress(streetAddress);
+        newPerson.setAddress(address);
         newPerson.setLangKey(langKey);
         // new user is not active
         newPerson.setEnabled(false);

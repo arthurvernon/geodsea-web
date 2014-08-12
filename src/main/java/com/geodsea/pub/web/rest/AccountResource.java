@@ -1,15 +1,22 @@
 package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.geodsea.pub.domain.Address;
 import com.geodsea.pub.domain.Authority;
 import com.geodsea.pub.domain.PersistentToken;
 import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.repository.PersistentTokenRepository;
 import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.security.SecurityUtils;
+import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.service.MailService;
 import com.geodsea.pub.service.UserService;
 import com.geodsea.pub.web.rest.dto.UserDTO;
+import com.geodsea.pub.web.rest.dto.UserRegistrationDTO;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +63,9 @@ public class AccountResource {
     private UserService userService;
 
     @Inject
+    private GisService gisService;
+
+    @Inject
     private PersistentTokenRepository persistentTokenRepository;
 
     @Inject
@@ -68,14 +78,19 @@ public class AccountResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<?> registerAccount(@RequestBody UserDTO userDTO, HttpServletRequest request,
+    public ResponseEntity<?> registerAccount(@RequestBody UserRegistrationDTO userRegistrationDTO, HttpServletRequest request,
                                              HttpServletResponse response) {
-        Person person = personRepository.getUserByParticipantName(userDTO.getLogin());
+        Person person = personRepository.getUserByParticipantName(userRegistrationDTO.getLogin());
         if (person != null) {
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         } else {
-            person = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(), userDTO.getFirstName(),
-                    userDTO.getLastName(), userDTO.getEmail().toLowerCase(), userDTO.getStreetAddress(), userDTO.getLangKey());
+            Point point = gisService.createPointFromLatLong(userRegistrationDTO.getPoint().getLat(), userRegistrationDTO.getPoint().getLon());
+            Address address = new Address(userRegistrationDTO.getStreetAddress(), point);
+            person = userService.createUserInformation(userRegistrationDTO.getLogin(), userRegistrationDTO.getPassword(),
+                    userRegistrationDTO.getFirstName(), userRegistrationDTO.getLastName(),
+                    userRegistrationDTO.getEmail().toLowerCase(),
+                    address,
+                    userRegistrationDTO.getLangKey());
             final Locale locale = Locale.forLanguageTag(person.getLangKey());
             String content = createHtmlContentFromTemplate(person, locale, request, response);
             mailService.sendActivationEmail(person.getEmail(), content, locale);
@@ -134,7 +149,7 @@ public class AccountResource {
                 person.getEmail(),
                 person.getLangKey(),
                 person.getTelephone(),
-                person.getStreetAddress(),
+                person.getAddress().getFormatted(),
                 roles),
             HttpStatus.OK);
     }

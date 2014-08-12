@@ -1,6 +1,7 @@
 package com.geodsea.pub.web.rest;
 
 import com.geodsea.pub.Application;
+import com.geodsea.pub.domain.Address;
 import com.geodsea.pub.domain.Authority;
 import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.repository.PersonRepository;
@@ -97,7 +98,7 @@ public class AccountResourceTest {
         person.setFirstName("john");
         person.setLastName("doe");
         person.setEmail("john.doe@jhipter.com");
-        person.setStreetAddress("1 my street, Suburbia, State, Country, 99999");
+        person.setAddress(new Address("1 my street, Suburbia, State, Country, 99999", null));
         person.setAuthorities(authorities);
         when(userService.getUserWithAuthorities()).thenReturn(person);
 

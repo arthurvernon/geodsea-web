@@ -14,7 +14,7 @@
     <changeSet id="1" author="Arthur Vernon">
 
         <sqlFile path="participant.sql" relativeToChangelogFile="true"/>
-
+<!--
         <createTable tableName="T_AUTHORITY" schemaName="BOAT">
             <column name="name" type="varchar(255)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -75,7 +75,7 @@
                                  referencedColumnNames="person_id"
                                  referencedTableName="T_PERSON"
                                  referencedTableSchemaName="BOAT"/>
-
+-->
         <loadData encoding="UTF-8"
                   file="config/liquibase/participants.csv"
                   separator=";"
