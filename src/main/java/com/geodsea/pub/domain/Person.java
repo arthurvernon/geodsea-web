@@ -23,7 +23,6 @@ import java.util.Set;
 @Entity
 @Table(name = "T_PERSON", schema = "BOAT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-//@DiscriminatorValue("P")
 @PrimaryKeyJoinColumn(name="PERSON_ID", referencedColumnName = "ID")
 public class Person extends Participant implements Serializable {
 
@@ -61,10 +60,13 @@ public class Person extends Participant implements Serializable {
             message="{invalid.phonenumber}")
     private String telephone;
 
-    @Size(min = 0, max = 100)
-    @Column(name = "STREET_ADDRESS", nullable = true)
-    private String streetAddress;
 
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="formatted", column = @Column(name="ADDRESS_FORMATTED")),
+            @AttributeOverride(name="point", column = @Column(name="ADDRESS_POINT"))
+    })
+    private Address address;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "person")
@@ -136,12 +138,12 @@ public class Person extends Participant implements Serializable {
         this.birthDate = birthDate;
     }
 
-    public String getStreetAddress() {
-        return streetAddress;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override
@@ -153,7 +155,7 @@ public class Person extends Participant implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", telephone='" + email + '\'' +
-                ", street addr.='" + streetAddress + '\'' +
+                ", address.='" + address + '\'' +
                 ", langKey='" + langKey + '\'' +
                 "}";
     }
