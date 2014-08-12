@@ -13,7 +13,7 @@ spring:
         password: geodsea
 
     jpa:
-        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
         database: POSTGRESQL
         openInView: false
         show_sql: false
