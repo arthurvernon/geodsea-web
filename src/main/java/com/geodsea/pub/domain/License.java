@@ -49,8 +49,8 @@ public abstract class License {
     /**
      * The organisation role that granted the license
      */
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(nullable = false, name="LICENSOR_ID")
+    @ManyToOne()
+    @JoinColumn(name="LICENSOR_ID")
     private Licensor licensor;
 
     /**

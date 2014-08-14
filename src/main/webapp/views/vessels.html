@@ -42,17 +42,17 @@
                             <div class="error" ng-show="form.vesselname.$dirty && form.vesselname.$invalid">
                                 <small class="error"
                                        ng-show="form.vesselname.$error.required"
-                                       translate="vessel.form.vesselname.required">
+                                       translate="vessel.form.name.required">
                                     A vessel name is required.
                                 </small>
                                 <small class="error"
                                        ng-show="form.vesselname.$error.minlength"
-                                       translate="vessel.form.vesselname.minlength">
+                                       translate="vessel.form.name.minlength">
                                     A name must be at least 5 characters long
                                 </small>
                                 <small class="error"
                                        ng-show="form.vesselname.$error.maxlength"
-                                       translate="vessel.form.vesselname.maxlength">
+                                       translate="vessel.form.name.maxlength">
                                     A name may not be more than 40 characters long.
                                 </small>
                             </div>
@@ -128,7 +128,7 @@
 
                         <!-- length -->
                         <div class="form-group">
-                            <label translate="vessel.form.fuelcapacity.label">Length (m)</label>
+                            <label translate="vessel.form.fuelcapacity.label">Fuel Capacity (l)</label>
                             <input type="number" ng-model="vessel.fuelCapacity" name="fuelcapacity"
                                    min="0" max="1000"/>
                             <div class="error" ng-show="form.fuelcapacity.$dirty && form.fuelcapacity.$invalid">

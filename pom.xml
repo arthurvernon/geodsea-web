@@ -436,6 +436,12 @@
             <version>1.6.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.5</version>
+        </dependency>
+
         <!--
              You need the JAXB API to be able to annotate your classes.
              However, starting with Java 6 that API is included in the
@@ -465,7 +471,9 @@
             <groupId>org.postgis</groupId>
             <artifactId>postgis-jdbc</artifactId>
             <version>${postgis.version}</version>
-            <scope>provided</scope>
+
+            <!-- TODO Change to provided when deploying to tomcat! -->
+            <!--<scope>provided</scope>-->
         </dependency>
 
         <!-- Database dependencies-->

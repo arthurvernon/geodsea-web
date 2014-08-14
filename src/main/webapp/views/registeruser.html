@@ -73,7 +73,7 @@
                 <div class="form-group">
                     <label translate="global.form.username">Login</label>
                     <input type="text" class="form-control" name="login" placeholder="{{'global.form.username.placeholder' | translate}}"
-                           ng-model="registerAccount.login" ng-minlength=1 ng-maxlength=50 required>
+                           ng-model="registerAccount.login" ng-minlength=1 ng-maxlength=50 required ensureUnique>
                     <div class="error"
                          ng-show="form.login.$dirty && form.login.$invalid">
                         <small class="error"

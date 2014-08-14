@@ -136,7 +136,7 @@ geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authS
                     AccessToken.set(data);
 
                     Account.get(function(data) {
-                        Session.create(data.login, data.firstName, data.lastName, data.email, data.telephone, data.roles);
+                        Session.create(data.id, data.login, data.firstName, data.lastName, data.email, data.telephone, data.roles);
                         $rootScope.account = Session;
                         authService.loginConfirmed(data);
                     });

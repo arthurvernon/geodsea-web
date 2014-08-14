@@ -1,7 +1,9 @@
 package com.geodsea.pub.config;
 
 import com.codahale.metrics.servlets.MetricsServlet;
+import com.geodsea.ws.LicenseRequest;
 import com.geodsea.ws.ObjectFactory;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -11,8 +13,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.util.ClassUtils;
+import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.context.MessageContext;
@@ -23,6 +27,8 @@ import org.springframework.ws.server.endpoint.adapter.method.MarshallingPayloadM
 import org.springframework.ws.server.endpoint.adapter.method.MethodArgumentResolver;
 import org.springframework.ws.server.endpoint.adapter.method.MethodReturnValueHandler;
 import org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor;
+import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
+import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.transport.http.WsdlDefinitionHandlerAdapter;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
@@ -35,12 +41,17 @@ import org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.PropertyException;
 import javax.xml.transform.TransformerException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Arthur Vernon on 5/08/2014.
+ * Just a sample for testing.
  */
 @EnableWs
 @Configuration
@@ -80,6 +91,36 @@ public class WSConfigurer extends WsConfigurerAdapter {
     }
 
 
+    @Bean(name = "messageSender")
+    public HttpComponentsMessageSender messageSender() {
+        HttpComponentsMessageSender messageSender = new HttpComponentsMessageSender();
+
+        // TODO remove this line
+        messageSender.setCredentials(new UsernamePasswordCredentials("username", "password"));
+        return messageSender;
+    }
+
+    @Bean(name="webServiceTemplate")
+    public WebServiceTemplate apacheHttpClientWS()
+    {
+        SaajSoapMessageFactory factory = new SaajSoapMessageFactory();
+        Map<String, Object> props = new HashMap<String, Object>();
+        props.put("messageSender", messageSender());
+        props.put("defaultUri", "http://localhost:8080/ws");
+        factory.setMessageProperties(props);
+        factory.afterPropertiesSet();
+        WebServiceTemplate t = new WebServiceTemplate(factory);
+        Jaxb2Marshaller marshaller = marshaller();
+        t.setMarshaller(marshaller);
+        t.setUnmarshaller(marshaller);
+        return t;
+    }
+
+    private Jaxb2Marshaller marshaller() {
+        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+        marshaller.setClassesToBeBound(LicenseRequest.class);
+        return marshaller;
+    }
 
     private class MyInterceptor extends PayloadLoggingInterceptor implements EndpointInterceptor {
 

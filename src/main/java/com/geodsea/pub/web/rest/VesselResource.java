@@ -39,7 +39,7 @@ public class VesselResource {
     public ResponseEntity<Vessel> create(@RequestBody Vessel vessel) {
         log.debug("REST request to save Vessel : {}", vessel);
         Vessel saved = vesselRepository.save(vessel);
-        log.debug("Created a vessel with id: " + saved.getId());
+        log.debug("Created/Saved a vessel with id: " + saved.getId());
         return new ResponseEntity<Vessel>(saved, HttpStatus.OK);
     }
 
@@ -56,18 +56,6 @@ public class VesselResource {
         log.debug("REST request to get all Vessels returned " + vessels.size() + " vessels.");
 
         return vessels;
-    }
-
-    @RequestMapping(value = "/rest/vesseltypes",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public List<VesselType> getAllVesselTypes() {
-        log.debug("REST request to get all Vessels");
-        VesselType[] types = VesselType.values();
-        log.debug("REST request to get all Vessels returned " + types.length + " vessel types.");
-
-        return Arrays.asList(types);
     }
 
     /**

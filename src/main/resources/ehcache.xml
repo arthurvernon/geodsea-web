@@ -21,6 +21,10 @@
            timeToLiveSeconds="3600">
     </cache>
 
+    <cache name="com.geodsea.pub.domain.Vessel"
+           timeToLiveSeconds="3600">
+    </cache>
+
     <cache name="com.geodsea.pub.domain.Authority"
            timeToLiveSeconds="3600">
     </cache>

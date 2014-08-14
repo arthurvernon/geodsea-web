@@ -467,6 +467,10 @@
             "storagetype": "Storage Type"
         },
         "form": {
+            "lookup":{
+                "label" : "Load details using license"
+            },
+
             "title": "Create/Edit a Vessel",
             "hin": {
                 "label": "Hull Identification Number",
@@ -479,6 +483,14 @@
                 "label": "Vessel Type",
                 "placeholder": "Select from the list",
                 "required": "The vessel type is required"
+            },
+            "hullcolor": {
+                "label": "Hull Color",
+                "required": "The hull color is required"
+            },
+            "superstructurecolor": {
+                "label": "Superstructure Color",
+                "required": "The superstructure color is required"
             },
             "name": {
                 "label": "Vessel Name",
@@ -510,7 +522,24 @@
         },
         "messages": {
             "error": "<strong>An error has occurred!</strong> Vessel could not be saved.",
-            "success": "<strong>Vessel saved!</strong>"
+            "success": "<strong>Vessel saved!</strong>",
+            "nolicensorws" : "<strong>This agency does not provide this service!</strong> You must enter the details manually."
+        },
+        "registration" :{
+            "form":{
+                "title" : "Register a Vessel",
+                "number" :{
+                    "label" : "Registration Number"
+                },
+                "licensor" :{
+                    "label" : "Licensing Agency",
+                    "incorrect" : "Wrong agency?"
+                }
+            },
+            "licensepopup" :{
+                "button": "Get From License",
+                "title" : "Enter License Details"
+            }
         }
     }
 }

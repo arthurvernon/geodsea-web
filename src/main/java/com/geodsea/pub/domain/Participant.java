@@ -30,11 +30,11 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
     @Column(name = "ENABLED", nullable = true)
     private boolean enabled;
 
-    @Column(name="REGISTRATION_TOKEN_EXPIRES", nullable = false)
+    @Column(name="REGISTRATION_TOKEN_EXPIRES", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date registrationTokenExpires;
 
-    @Column(name="REGISTRATION_TOKEN", nullable = false, length = 30)
+    @Column(name="REGISTRATION_TOKEN", nullable = true, length = 30)
     private String registrationToken;
 
     /**

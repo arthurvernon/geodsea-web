@@ -1,165 +1,253 @@
 <div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <form name="form" role="form" novalidate
+<div class="row">
+<div class="col-md-2"></div>
+<div class="col-md-8">
+
+<h2 translate="vessel.registration.form.title">Vessel Registration</h2>
+
+<div class="alert alert-success" ng-show="success" translate="vessel.messages.success">
+    <strong>Vessel saved!</strong>
+</div>
+<div class="alert alert-danger" ng-show="error" translate="vessel.messages.error">
+    <strong>An error has occurred!</strong> Vessel could not be saved.
+</div>
+
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#enterRegistrationModal" ng-click="clear()">
+    <span class="glyphicon glyphicon-flash"></span><span ng-translate="vessel.registration.licensepopup.button">Get From License</span>
+</button>
+<div class="modal fade" id="enterRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="myRegistrationLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="licensorform" role="form" novalidate
                   class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
-                  ng-submit="register()">
+                  ng-submit="populate()">
 
                 <div class="modal-header">
+
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                             ng-click="clear()">&times;</button>
-                    <h4 class="modal-title" id="myVesselLabel" translate="vessel.form.title">Create or edit a
-                        Vessel</h4>
+                    <h4 class="modal-title" id="myRegistrationLabel" translate="vessel.registration.licensepopup.title">Enter License Details</h4>
                 </div>
-                <div class="alert alert-success" ng-show="success" translate="vessel.messages.success">
-                    <strong>Vessel saved!</strong>
+                <div class="alert alert-danger" ng-hide="licensor.webServiceURL" translate="vessel.messages.nolicensorws">
+                    This agency does not currently support this service.
                 </div>
-                <div class="alert alert-danger" ng-show="error" translate="vessel.messages.error">
-                    <strong>An error has occurred!</strong> Vessel could not be saved.
-                </div>
-
                 <div class="modal-body">
 
-                    <div class="form-group">
-                        <label>ID</label>
-                        <input type="text" class="form-control" name="id"
-                               ng-model="vessel.id" readonly>
+                    <!-- the agency the back end suggests -->
+                    <div class="form-group check-element animate-show" ng-hide="checked">
+                        <label translate="vessel.registration.form.licensor.label">Licensing Agency</label>
+                        <input type="text" class="form-control" name="licensor"
+                               ng-model="licensor.groupName" ng-minlength=5 ng-maxlength=30 required readonly>
+                    </div>
+                    <div class="form-group check-element animate-show"  ng-hide="checked">
+                        <label translate="vessel.registration.form.licensor.incorrect">Wrong agency?</label>
+                        <input type="checkbox" ng-model="checked" ng-change="loadLicensors()">
+                    </div>
+                    <div class="form-group check-element animate-show" ng-show="checked">
+                        <label translate="vessel.registration.form.licensor.label">Licensing Agency</label>
+                        <select ng-model="licensor" ng-options="l.groupName group by l.region for l in licensorList">
+                        </select>
                     </div>
 
-                    <!-- Vessel Name -->
                     <div class="form-group">
-                        <label translate="vessel.form.name.label">Vessel Name</label>
-                        <input type="text" class="form-control" name="vesselname"
-                               ng-model="vessel.vesselName" ng-minlength=5 ng-maxlength=50 required>
+                        <label translate="vessel.registration.form.number.label">Registration Number</label>
+                        <input type="text" class="form-control" name="registrationnumber"
+                               ng-model="registration.number" ng-minlength=5 ng-maxlength=30 required>
 
-                        <div class="error" ng-show="form.vesselname.$dirty && form.vesselname.$invalid">
+                        <div class="error" ng-show="form.registrationnumber.$dirty && form.registrationnumber.$invalid">
                             <small class="error"
-                                   ng-show="form.vesselname.$error.required"
-                                   translate="vessel.form.vesselname.required">
+                                   ng-show="form.registrationnumber.$error.required"
+                                   translate="vessel.form.registrationnumber.required">
                                 A vessel name is required.
                             </small>
                             <small class="error"
-                                   ng-show="form.vesselname.$error.minlength"
-                                   translate="vessel.form.vesselname.minlength">
+                                   ng-show="form.registrationnumber.$error.minlength"
+                                   translate="vessel.form.registrationnumber.minlength">
                                 A name must be at least 5 characters long
                             </small>
                             <small class="error"
-                                   ng-show="form.vesselname.$error.maxlength"
-                                   translate="vessel.form.vesselname.maxlength">
+                                   ng-show="form.registrationnumber.$error.maxlength"
+                                   translate="vessel.form.registrationnumber.maxlength">
                                 A name may not be more than 40 characters long.
                             </small>
                         </div>
                     </div>
-
-
-                    <!-- Vessel Type -->
-                    <div class="form-group">
-                        <label translate="vessel.form.type.label">Vessel Type</label>
-                        <select class="form-control" name="vesselType"
-                                ng-model="vessel.vesselType" ng-selected="vessel.vesselType" required>
-                            <optgroup label="{{ 'vessel.type.motorised' | translate }}">
-                                <option translate="vessel.type.BOW_RIDER.name">BOW_RIDER</option>
-                                <option translate="vessel.type.HALF_CABIN.name">HALF_CABIN</option>
-                                <option translate="vessel.type.WALK_AROUND.name">WALK_AROUND</option>
-                                <option translate="vessel.type.CENTER_CONSOLE.name">CENTER_CONSOLE</option>
-                                <option translate="vessel.type.OPEN_BOAT.name">OPEN_BOAT</option>
-                                <option translate="vessel.type.FLY_BRIDGE.name">FLY_BRIDGE</option>
-                                <option translate="vessel.type.PERSONAL_WATER_CRAFT.name">PERSONAL_WATER_CRAFT
-                                </option>
-                            </optgroup>
-                            <optgroup label="{{ 'vessel.type.unmotorised' | translate }}">
-                                <option translate="vessel.type.OPEN_COCKPIT.name">OPEN_COCKPIT</option>
-                                <option translate="vessel.type.CABIN.name">CABIN</option>
-                                <option translate="vessel.type.ROW_BOAT.name">ROW_BOAT</option>
-                                <option translate="vessel.type.SEA_KAYAK.name">SEA_KAYAK</option>
-                            </optgroup>
-                        </select>
-                    </div>
-
-                    <!-- Hull Identification Number -->
-                    <div class="form-group">
-                        <label translate="vessel.form.hin.label">Hull Identification Number</label>
-                        <input type="text" class="form-control" name="hin"
-                               placeholder="{{'vessel.form.hin.placeholder' | translate}}"
-                               ng-model="vessel.hullIdentificationNumber" ng-minlength=12 ng-maxlength=14 required>
-
-                        <div class="error" ng-show="form.hin.$dirty && form.hin.$invalid">
-                            <small class="error"
-                                   ng-show="form.hin.$error.required" translate="vessel.form.hin.required">
-                                The hull identification number is required.
-                            </small>
-                            <small class="error"
-                                   ng-show="form.hin.$error.minlength" translate="vessel.form.hin.minlength">
-                                A hull identification number is at least 12 digits long
-                            </small>
-                            <small class="error"
-                                   ng-show="form.hin.$error.maxlength" translate="vessel.form.hin.maxlength">
-                                A hull identification number is no more than 14 digits long.
-                            </small>
-                        </div>
-                    </div>
-
-                    <!-- length -->
-                    <div class="form-group">
-                        <label translate="vessel.form.length.label">Length (m)</label>
-                        <input type="number" ng-model="vessel.length" name="length"
-                               min="1" max="80"/>
-                        <div class="error" ng-show="form.length.$dirty && form.length.$invalid">
-                            <small class="error" ng-show="form.length.$error.required"
-                                   translate="vessel.form.length.required">
-                                Length of the vessel is required.
-                            </small>
-                            <small class="error" ng-show="form.length.$error.number"
-                                   translate="vessel.form.length.nan">This is not a valid number.
-                            </small>
-                            <small class="error" ng-show="form.length.$error.min || form.length.$error.max"
-                                   translate="vessel.form.length.range">
-                                Length must be in the range 1-80 metres.
-                            </small>
-                        </div>
-                    </div>
-
-                    <!-- length -->
-                    <div class="form-group">
-                        <label translate="vessel.form.fuelcapacity.label">Length (m)</label>
-                        <input type="number" ng-model="vessel.fuelCapacity" name="fuelcapacity"
-                               min="0" max="1000"/>
-                        <div class="error" ng-show="form.fuelcapacity.$dirty && form.fuelcapacity.$invalid">
-                            <small class="error" ng-show="form.fuelcapacity.$error.number"
-                                   translate="vessel.form.length.nan">This is not a valid number.
-                            </small>
-                            <small class="error" ng-show="form.fuelcapacity.$error.min || form.fuelcapacity.$error.max"
-                                   translate="vessel.form.fuelcapacity.range">
-                                Fuel capacity must be between 0 and 1000.
-                            </small>
-                        </div>
-                    </div>
-
-                    <!-- Storage location -->
-                    <div class="form-group">
-                        <label translate="vessel.form.storagetype.label">Storage Type</label>
-                        <select class="form-control" name="storageType"
-                                ng-model="vessel.storageType" ng-selected="vessel.storageType" required>
-                            <option translate="vessel.storagetype.HOME.name">HOME</option>
-                            <option translate="vessel.storagetype.PEN.name">PEN</option>
-                            <option translate="vessel.storagetype.BOAT_YARD.name">BOAT_YARD</option>
-                            <option translate="vessel.storagetype.STACKER.name">STACKER</option>
-                            <option translate="vessel.storagetype.MOORING.name">MOORING</option>
-                            <option translate="vessel.storagetype.JETTY.name">JETTY</option>
-                        </select>
-                    </div>
                 </div>
-
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelLookup()">
+                        <span class="glyphicon glyphicon-ban-circle"></span>Cancel
                     </button>
-                    <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-save"></span> Register
+                    <button type="button" ng-disabled="licensorform.$invalid" class="btn btn-primary"
+                            ng-click="lookup(licensor.id, registration.number)">
+                        <span class="glyphicon glyphicon-download"></span>Lookup
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<form name="form" role="form" novalidate
+      class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
+      ng-submit="register()">
+
+    <div class="form-group">
+        <label>ID</label>
+        <input type="text" class="form-control" name="id"
+               ng-model="vessel.id" readonly>
+    </div>
+
+    <!-- Vessel Name -->
+    <div class="form-group">
+        <label translate="vessel.form.name.label">Vessel Name</label>
+        <input type="text" class="form-control" name="vesselname"
+               ng-model="vessel.vesselName" ng-minlength=5 ng-maxlength=50 required>
+
+        <div class="error" ng-show="form.vesselname.$dirty && form.vesselname.$invalid">
+            <small class="error"
+                   ng-show="form.vesselname.$error.required"
+                   translate="vessel.form.vesselname.required">
+                A vessel name is required.
+            </small>
+            <small class="error"
+                   ng-show="form.vesselname.$error.minlength"
+                   translate="vessel.form.vesselname.minlength">
+                A name must be at least 5 characters long
+            </small>
+            <small class="error"
+                   ng-show="form.vesselname.$error.maxlength"
+                   translate="vessel.form.vesselname.maxlength">
+                A name may not be more than 40 characters long.
+            </small>
+        </div>
+    </div>
+
+
+    <!-- Vessel Type -->
+    <div class="form-group">
+        <label translate="vessel.form.type.label">Vessel Type</label>
+        <select class="form-control" name="vesselType"
+                ng-model="vessel.vesselType" ng-selected="vessel.vesselType" required>
+            <optgroup label="{{ 'vessel.type.motorised' | translate }}">
+                <option translate="vessel.type.BOW_RIDER.name">BOW_RIDER</option>
+                <option translate="vessel.type.HALF_CABIN.name">HALF_CABIN</option>
+                <option translate="vessel.type.WALK_AROUND.name">WALK_AROUND</option>
+                <option translate="vessel.type.CENTER_CONSOLE.name">CENTER_CONSOLE</option>
+                <option translate="vessel.type.OPEN_BOAT.name">OPEN_BOAT</option>
+                <option translate="vessel.type.FLY_BRIDGE.name">FLY_BRIDGE</option>
+                <option translate="vessel.type.PERSONAL_WATER_CRAFT.name">PERSONAL_WATER_CRAFT
+                </option>
+            </optgroup>
+            <optgroup label="{{ 'vessel.type.unmotorised' | translate }}">
+                <option translate="vessel.type.OPEN_COCKPIT.name">OPEN_COCKPIT</option>
+                <option translate="vessel.type.CABIN.name">CABIN</option>
+                <option translate="vessel.type.ROW_BOAT.name">ROW_BOAT</option>
+                <option translate="vessel.type.SEA_KAYAK.name">SEA_KAYAK</option>
+            </optgroup>
+        </select>
+    </div>
+
+    <!-- Hull Identification Number -->
+    <div class="form-group">
+        <label translate="vessel.form.hin.label">Hull Identification Number</label>
+        <input type="text" class="form-control" name="hin"
+               placeholder="{{'vessel.form.hin.placeholder' | translate}}"
+               ng-model="vessel.hullIdentificationNumber" ng-minlength=12 ng-maxlength=14 required>
+
+        <div class="error" ng-show="form.hin.$dirty && form.hin.$invalid">
+            <small class="error"
+                   ng-show="form.hin.$error.required" translate="vessel.form.hin.required">
+                The hull identification number is required.
+            </small>
+            <small class="error"
+                   ng-show="form.hin.$error.minlength" translate="vessel.form.hin.minlength">
+                A hull identification number is at least 12 digits long
+            </small>
+            <small class="error"
+                   ng-show="form.hin.$error.maxlength" translate="vessel.form.hin.maxlength">
+                A hull identification number is no more than 14 digits long.
+            </small>
+        </div>
+    </div>
+
+    <!-- length -->
+    <div class="form-group">
+        <label translate="vessel.form.length.label">Length (m)</label>
+        <input type="number" ng-model="vessel.length" name="length"
+               min="1" max="80"/>
+
+        <div class="error" ng-show="form.length.$dirty && form.length.$invalid">
+            <small class="error" ng-show="form.length.$error.required"
+                   translate="vessel.form.length.required">
+                Length of the vessel is required.
+            </small>
+            <small class="error" ng-show="form.length.$error.number"
+                   translate="vessel.form.length.nan">This is not a valid number.
+            </small>
+            <small class="error" ng-show="form.length.$error.min || form.length.$error.max"
+                   translate="vessel.form.length.range">
+                Length must be in the range 1-80 metres.
+            </small>
+        </div>
+    </div>
+
+    <!-- length -->
+    <div class="form-group">
+        <label translate="vessel.form.fuelcapacity.label">Length (m)</label>
+        <input type="number" ng-model="vessel.fuelCapacity" name="fuelcapacity"
+               min="0" max="1000"/>
+
+        <div class="error" ng-show="form.fuelcapacity.$dirty && form.fuelcapacity.$invalid">
+            <small class="error" ng-show="form.fuelcapacity.$error.number"
+                   translate="vessel.form.length.nan">This is not a valid number.
+            </small>
+            <small class="error" ng-show="form.fuelcapacity.$error.min || form.fuelcapacity.$error.max"
+                   translate="vessel.form.fuelcapacity.range">
+                Fuel capacity must be between 0 and 1000.
+            </small>
+        </div>
+    </div>
+
+    <!-- Hull color -->
+    <div class="form-group">
+        <label translate="vessel.form.hullcolor.label">Hull Color</label>
+        <input type="color" name="hullcolor" ng-model="vessel.hullColor">
+    </div>
+
+
+    <!-- superstructure color -->
+    <div class="form-group">
+        <label translate="vessel.form.superstructurecolor.label">Superstructure Color</label>
+        <input type="color" name="superstructurecolor" ng-model="vessel.superstructureColor">
+    </div>
+
+    <!-- Storage location -->
+    <div class="form-group">
+        <label translate="vessel.form.storagetype.label">Storage Type</label>
+        <select class="form-control" name="storageType"
+                ng-model="vessel.storageType" ng-selected="vessel.storageType" required>
+            <option translate="vessel.storagetype.HOME.name">HOME</option>
+            <option translate="vessel.storagetype.PEN.name">PEN</option>
+            <option translate="vessel.storagetype.BOAT_YARD.name">BOAT_YARD</option>
+            <option translate="vessel.storagetype.STACKER.name">STACKER</option>
+            <option translate="vessel.storagetype.MOORING.name">MOORING</option>
+            <option translate="vessel.storagetype.JETTY.name">JETTY</option>
+        </select>
+    </div>
+    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+    </button>
+    <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
+        <span class="glyphicon glyphicon-save"></span> Register
+    </button>
+
+</form>
+</div>
+<div class="col-md-2"></div>
+</div>
+
+</div>
+
+
+

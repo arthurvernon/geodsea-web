@@ -1,10 +1,12 @@
 package com.geodsea.pub.domain;
 
 import com.vividsolutions.jts.geom.Polygon;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
-import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * An activity, performed by a Government agency, to confirm the authenticity of boating licenses within a particular jurisdiction.
@@ -34,15 +36,27 @@ public class Licensor {
      *     verification of a boating license via a web service.
      * </p>
      */
-    @Column(name = "WS_URL_LICENSE_CHECK", nullable = true, length = 100)
-    private String boatLicenceWebServiceURL;
+    @Column(name = "LICENSE_WS_URL", nullable = true, length = 100)
+    private String licenceWsURL;
+
+    @Column(name = "LICENSE_WS_USERNAME", nullable = true, length = 20)
+    private String licenseWsUsername;
+
+
+    @Column(name = "LICENSE_WS_PASSWORD", nullable = true, length = 20)
+    private String licenseWsPassword;
+
+//    /**
+//     * The license checks performed within the context of this system.
+//     */
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "licensor")
+//    private List<License> licenses;
 
     /**
-     * The license checks performed within the context of this system.
+     * The region in described in the language of the provider
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "licensor")
-//    @JoinColumn(name="ROLE_LICENSING_ID")
-    private List<License> licenses;
+    @Column(name = "region", nullable = true, length = 50)
+    private String region;
 
     /**
      * The region over which the licensing authority has jurisdiction.
@@ -55,6 +69,12 @@ public class Licensor {
         super();
     }
 
+    public Licensor(ParticipantGroup participant, String licenceWsURL, String region) {
+        this.participant = participant;
+        this.licenceWsURL = licenceWsURL;
+        this.region = region;
+    }
+
     public ParticipantGroup getParticipant() {
         return participant;
     }
@@ -63,21 +83,21 @@ public class Licensor {
         this.participant = participant;
     }
 
-    public String getBoatLicenceWebServiceURL() {
-        return boatLicenceWebServiceURL;
+    public String getLicenceWsURL() {
+        return licenceWsURL;
     }
 
-    public void setBoatLicenceWebServiceURL(String boatLicenceWebServiceURL) {
-        this.boatLicenceWebServiceURL = boatLicenceWebServiceURL;
+    public void setLicenceWsURL(String licenceWsURL) {
+        this.licenceWsURL = licenceWsURL;
     }
 
-    public List<License> getLicenses() {
-        return licenses;
-    }
-
-    public void setLicenses(List<License> licenses) {
-        this.licenses = licenses;
-    }
+//    public List<License> getLicenses() {
+//        return licenses;
+//    }
+//
+//    public void setLicenses(List<License> licenses) {
+//        this.licenses = licenses;
+//    }
 
     public Polygon getJurisdiction() {
         return jurisdiction;
@@ -94,4 +114,29 @@ public class Licensor {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getLicenseWsPassword() {
+        return licenseWsPassword;
+    }
+
+    public void setLicenseWsPassword(String licenseWsPassword) {
+        this.licenseWsPassword = licenseWsPassword;
+    }
+
+    public String getLicenseWsUsername() {
+        return licenseWsUsername;
+    }
+
+    public void setLicenseWsUsername(String licenseWsUsername) {
+        this.licenseWsUsername = licenseWsUsername;
+    }
+
 }

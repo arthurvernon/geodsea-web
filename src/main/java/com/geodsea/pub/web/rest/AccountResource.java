@@ -149,7 +149,7 @@ public class AccountResource {
                 person.getEmail(),
                 person.getLangKey(),
                 person.getTelephone(),
-                person.getAddress().getFormatted(),
+                person.getAddress() != null ? person.getAddress().getFormatted() : null,
                 roles),
             HttpStatus.OK);
     }

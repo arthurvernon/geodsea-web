@@ -7,8 +7,8 @@ geodseaApp
                 .when('/vessel', {
                     templateUrl: 'views/vessels.html',
                     controller: 'VesselController',
-                    resolve:{
-                        resolvedVessel: ['Vessel', function (Vessel) {
+                    resolve: {
+                        vesselList: ['Vessel', function (Vessel) {
                             return Vessel.query();
                         }]
                     },
@@ -18,10 +18,10 @@ geodseaApp
                 })
                 .when('/register/vessel', {
                     templateUrl: 'views/registervessel.html',
-                    controller: 'VesselController',
-                    resolve:{
-                        resolvedVessel: ['Vessel', function (Vessel) {
-                            return Vessel.query();
+                    controller: 'VesselRegistrationController',
+                    resolve: {
+                        licensorList: ['Licensor', function (Licensor) {
+                            return Licensor.query();
                         }]
                     },
                     access: {

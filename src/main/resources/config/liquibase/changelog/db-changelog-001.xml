@@ -123,4 +123,8 @@
 
     </changeSet>
 
+    <changeSet id="1000" author="Arthur Vernon">
+        <sqlFile path="data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>
