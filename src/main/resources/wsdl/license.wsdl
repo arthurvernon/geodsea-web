@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="license" targetNamespace="http://www.geodsea.com/License"
+                  xmlns:tns="http://www.geodsea.com/License" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <wsdl:types>
+
+        <xs:schema targetNamespace="http://www.geodsea.com/License" xmlns:s1="http://www.geodsea.com/License"
+                   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:element name="Vessel" type="s1:Vessel"/>
+            <xs:complexType name="Vessel">
+                <xs:annotation>
+                    <xs:documentation>The boat that the license pertains to</xs:documentation>
+                </xs:annotation>
+                <xs:sequence minOccurs="1" maxOccurs="1">
+                    <xs:element name="fuelCapacity" type="xs:int" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>Maximum number of litres of fuel that the boat can carry.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="hullColor" type="xs:string" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The primary color of the hull above the water line.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="hullIdentificationNumber" type="xs:string" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The Hull Identification Number (HIN) is a 12 or 14 character serial number
+                                that
+                                uniquely identifies a boat.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="length" type="xs:int" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The length of the craft in meters.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="superstructureColor" type="xs:string" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The colour (or colours) of the superstructure.
+                                &lt;p&gt; A reasonable size field if allowed for at this stage so that a person could
+                                enter
+                                multiple colours. TODO Need to ascertain if the requirement is for only a dominant
+                                colour to be
+                                registered.
+                                &lt;/p&gt;</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="totalHP" type="xs:int" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>Total horse power of a motorized boat.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="vesselName" type="xs:string" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The name given to the vessel.
+                                &lt;p&gt; This is optional as many craft, particularly those that are not powered, will
+                                not have
+                                a name.
+                                &lt;/p&gt;</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="vesselType" type="xs:string" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>A classification of the vessel that would provide the best clue from a
+                                distance to
+                                identify the vessel.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Owners" type="s1:Owners"/>
+            <xs:complexType name="Owners">
+                <xs:annotation>
+                    <xs:documentation>The owners of the boat</xs:documentation>
+                </xs:annotation>
+                <xs:sequence minOccurs="1" maxOccurs="10">
+                    <xs:choice minOccurs="1" maxOccurs="10">
+                        <xs:element name="personOwner" type="s1:Person" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="businessOwner" type="s1:Business" minOccurs="1" maxOccurs="1"/>
+                    </xs:choice>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="VesselType">
+                <xs:annotation>
+                    <xs:documentation>Value in brackets indicated if the type is motorised or not
+
+                        BOW_RIDER(true): A boat where there is a seating section in front of the windscreen.
+
+                        HALF_CABIN(true): Enclosed section in the front of the boat, e.g. with bunks.
+
+                        WALK_AROUND(true): Enclosed center console with the ability to walk abound the deck.
+
+                        CENTER_CONSOLE(true): Basic kind of boat with a steering wheel and console suitable for
+                        fishing/diving
+                        with lots of surrounding deck space.
+
+                        OPEN_BOAT(true): No superstructure, like and aluminium of fiberglass dinghy.
+
+                        FLY_BRIDGE(true): Larger vessel with an elevated platform to skipper the vessel from.
+
+                        PERSONAL_WATER_CRAFT(true): Motorised still but limited for one or two people, e.g. a Jet ski
+
+                        OPEN_COCKPIT (false): Like a racing yacht - has no cockpit or superstructure, e.g. catemaran or
+                        mono-hull with self draining deck.
+
+                        CABIN(false): Standard sailing/cruising yacht with sleeping quarters.
+
+                        ROW_BOAT(false): Non-powered small open vessel.
+
+                        SEA_KAYAK(false): Any paddle craft.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="BOW_RIDER"/>
+                    <xs:enumeration value="CABIN"/>
+                    <xs:enumeration value="CENTER_CONSOLE"/>
+                    <xs:enumeration value="FLY_BRIDGE"/>
+                    <xs:enumeration value="HALF_CABIN"/>
+                    <xs:enumeration value="OPEN_BOAT"/>
+                    <xs:enumeration value="OPEN_COCKPIT"/>
+                    <xs:enumeration value="PERSONAL_WATER_CRAFT"/>
+                    <xs:enumeration value="ROW_BOAT"/>
+                    <xs:enumeration value="SEA_KAYAK"/>
+                    <xs:enumeration value="WALK_AROUND"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="Person" type="s1:Person"/>
+            <xs:complexType name="Person">
+                <xs:choice minOccurs="1" maxOccurs="1">
+                    <xs:element name="birthDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="email" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="firstName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="formatted" type="xs:string" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>formatted address per
+                                https://developers.google.com/maps/documentation/geocoding/#XML
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="lastName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="telephone" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                </xs:choice>
+            </xs:complexType>
+            <xs:element name="Business" type="s1:Business"/>
+            <xs:complexType name="Business">
+                <xs:sequence>
+                    <xs:element name="businessIdentifier" type="xs:string" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>A number that uniquely identifies the business within this particular
+                                country.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="formatted" type="xs:string" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>Formatted address per
+                                https://developers.google.com/maps/documentation/geocoding/#XML
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The name of the business</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="contactPerson" type="s1:Person" minOccurs="1" maxOccurs="1"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="License" type="s1:License"/>
+            <xs:complexType name="License">
+                <xs:sequence minOccurs="1" maxOccurs="1">
+                    <xs:element name="licenseNumber" type="xs:string" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>"Immutable" license number for the license, that is if and when the
+                                license is
+                                verified by the licensing authority.
+                                &lt;p&gt; Once verified then the license number may not be altered.
+                                &lt;/p&gt;</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="maxPeople" type="xs:int" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The number of persons the vessel is licensed to carry</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="validFrom" type="xs:date" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The date from which the user or the authority specifies that the license
+                                is valid
+                                until.
+                                &lt;p&gt; If the license is verified then this value may only be altered by the
+                                jurisdiction
+                                issuing the license.
+                                &lt;/p&gt;</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="validTo" type="xs:date" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The date to which the user or the authority specifies that the license is
+                                valid
+                                until.
+                                &lt;p&gt; If the license is verified then this value may only be altered by the
+                                jurisdiction
+                                issuing the license.
+                                &lt;/p&gt;</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+
+            <!-- For JABX to work out of the box the root element cannot refer to a type.
+            It must contain an acutal definition.
+             EA will not support this so you need to modify the output EA produces. -->
+            <xs:element name="LicenseRequest">
+                <xs:complexType>
+                    <xs:sequence minOccurs="1" maxOccurs="1">
+                        <xs:element name="licenseNumber" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <!-- For JABX to work out of the box the root element cannot refer to a type.
+            It must contain an acutal definition.
+             EA will not support this so you need to modify the output EA produces. -->
+            <xs:element name="LicenseResponse">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="Vessel" type="s1:Vessel" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="Owners" type="s1:Owners" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="currentLicense" type="s1:License" minOccurs="0" maxOccurs="1"/>
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+
+
+    </wsdl:types>
+    <wsdl:message name="LicenseResponse">
+        <wsdl:part name="licenseOut" element="tns:LicenseResponse"/>
+    </wsdl:message>
+    <wsdl:message name="LicenseRequest">
+        <wsdl:part name="licenseIn" element="tns:LicenseRequest"/>
+    </wsdl:message>
+    <wsdl:portType name="LicensePortTypeSOAP">
+        <wsdl:operation name="LicenseSOAP">
+            <wsdl:input name="Request" message="tns:LicenseRequest"/>
+            <wsdl:output name="Response" message="tns:LicenseResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="LicensePortTypeHTTP">
+        <wsdl:operation name="LicenseHTTP">
+            <wsdl:input name="Request" message="tns:LicenseRequest"/>
+            <wsdl:output name="Response" message="tns:LicenseResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="LicenseBindingHTTP" type="tns:LicensePortTypeHTTP">
+        <http:binding verb="GET"/>
+        <wsdl:operation name="LicenseHTTP">
+            <http:operation location=""/>
+            <wsdl:input name="Request"/>
+            <wsdl:output name="Response"/>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="LicenseBindingSOAP" type="tns:LicensePortTypeSOAP">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="LicenseSOAP">
+            <soap:operation soapAction="http://localhost:8080/geodsea/services/license" style="document"/>
+            <wsdl:input name="Request">
+                <soap:body use="formatted"/>
+            </wsdl:input>
+            <wsdl:output name="Response">
+                <soap:body use="formatted"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="License">
+        <wsdl:port name="LicensePortSOAP" binding="tns:LicenseBindingSOAP">
+            <soap:address location="http://www.geodsea.com/License/SamplePortSOAP"/>
+        </wsdl:port>
+        <wsdl:port name="LicensePortHTTP" binding="tns:LicenseBindingHTTP">
+            <http:address location="http://www.geodsea.com/License/SamplePortHTTP"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,92 @@
+<div>
+
+    <h2>Licensors</h2>
+
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveLicensorModal" ng-click="clear()">
+        <span class="glyphicon glyphicon-flash"></span> Create a new Licensor
+    </button>
+    <div class="modal fade" id="saveLicensorModal" tabindex="-1" role="dialog" aria-labelledby="myLicensorLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="form" role="form" novalidate
+                      class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
+                      ng-submit="create()">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" id="myLicensorLabel">Create or edit a Licensor</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input type="text" class="form-control" name="id"
+                                   ng-model="licensor.id" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Organisation</label>
+                            <input type="text" class="form-control" name="groupname"
+                                   ng-model="licensor.groupName" ng-minlength=1 ng-maxlength=50 required>
+                        </div>
+                        <div class="form-group">
+                            <label>Region</label>
+                            <input type="text" class="form-control" name="groupname"
+                                   ng-model="licensor.region" ng-minlength=1 ng-maxlength=100>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Web Service URL</label>
+                            <input type="url" class="form-control" name="wsurl"
+                                   ng-model="licensor.webServiceURL" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                        </button>
+                        <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-save"></span> Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Organisation</th>
+                    <th>Region</th>
+                    <th>Web Service URL</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="licensor in licensors">
+                    <td>{{licensor.id}}</td>
+                    <td>{{licensor.groupName}}</td>
+                    <td>{{licensor.region}}</td>
+                    <td>{{licensor.webServiceURL}}</td>
+                    <td>
+                        <button type="submit"
+                                ng-click="update(licensor.id)"
+                                class="btn">
+                            <span class="glyphicon glyphicon-pencil"></span> Edit
+                        </button>
+                        <button type="submit"
+                                ng-click="delete(licensor.id)"
+                                class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span> Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
