@@ -39,13 +39,9 @@ geodseaApp.controller('VesselController', ['$scope', 'vesselList', 'Vessel',
     }]);
 
 
-geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'VesselRegistration', 'UserLicensor', 'Licensor',
+geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'VesselRegistration', 'LicensorUserMatch', 'Licensor',
     'licensorList',
-    function ($scope, Vessel, VesselRegistration, UserLicensor, Licensor, licensorList) {
-
-//        $scope.licensorList = null;
-//        [{"id":1,"participantGroupId":5,"groupName":"Department of Transport",
-//          "webServiceURL":"http://localhost:8080/ws","region":"Western Australia"}];
+    function ($scope, Vessel, VesselRegistration, LicensorUserMatch, Licensor, licensorList) {
 
         $scope.licensorList = licensorList;
         $scope.registration = null;
@@ -64,13 +60,12 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'Vess
         };
 
         $scope.populate = function () {
-            VesselRegistration.get($scope.registration.number, function()
-            {
-                window.alert('got registration details from license');
-            },
-            function(){
-                window.alert('failed to load registration details for license');
-            });
+            VesselRegistration.get($scope.registration.number, function () {
+                    window.alert('got registration details from license');
+                },
+                function () {
+                    window.alert('failed to load registration details for license');
+                });
         }
 
         $scope.enterRegistration = function () {
@@ -78,27 +73,30 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'Vess
 
         };
 
-        $scope.lookup = function(licensorid, registrationnumber){
+        /*
+         * Lookup a specific license by calling the underlying web service
+         * Of that licensing agency
+         */
+        $scope.lookup = function (licensorid, registrationnumber) {
 
             window.alert('lookup license ' + registrationnumber + ' on licensor ' + licensorid);
         };
 
         /*
-         * load up all the licensors
+         * load up all the licensors into the licensorList object
          */
-        $scope.loadLicensors = function() {
-                Licensor.get(function (list) {
-                    $scope.licensorList = list;
-                });
+        $scope.loadLicensors = function () {
+            Licensor.get(function (list) {
+                $scope.licensorList = list;
+            });
         };
 
         $scope.clear = function () {
             $scope.checked = null;
-            UserLicensor.get({username: $scope.account.login}, function(licensor)
-                {
+            LicensorUserMatch.get({username: $scope.account.login}, function (licensor) {
                     $scope.licensor = licensor;
                 },
-                function(){
+                function () {
                     window.alert('failed to load registration details for license');
                 });
 

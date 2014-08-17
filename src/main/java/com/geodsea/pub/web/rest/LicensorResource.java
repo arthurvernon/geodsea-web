@@ -84,6 +84,19 @@ public class LicensorResource {
 
 
     /**
+     * DELETE  /rest/licensors/:id -> delete the "id" licensor.
+     */
+    @RequestMapping(value = "/rest/licensors/{id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void delete(@PathVariable Long id) {
+        log.debug("REST request to delete Licensor : {}", id);
+        licensorRepository.delete(id);
+    }
+
+    /**
+     * Get the licencing agency that covers the user's home address.
      * GET  /rest/userlicensor/:username  -> get the "id" licensor.
      *
      */
@@ -103,16 +116,4 @@ public class LicensorResource {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-
-    /**
-     * DELETE  /rest/licensors/:id -> delete the "id" licensor.
-     */
-    @RequestMapping(value = "/rest/licensors/{id}",
-            method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public void delete(@PathVariable Long id) {
-        log.debug("REST request to delete Licensor : {}", id);
-        licensorRepository.delete(id);
-    }
 }
