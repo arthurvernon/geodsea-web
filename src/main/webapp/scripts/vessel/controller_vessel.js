@@ -39,9 +39,9 @@ geodseaApp.controller('VesselController', ['$scope', 'vesselList', 'Vessel',
     }]);
 
 
-geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'VesselRegistration', 'LicensorUserMatch', 'Licensor',
-    'licensorList',
-    function ($scope, Vessel, VesselRegistration, LicensorUserMatch, Licensor, licensorList) {
+geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'VesselRegistration', 'LicensorLicenseLookup',
+    'LicensorUserMatch', 'Licensor', 'licensorList',
+    function ($scope, Vessel, VesselRegistration, LicensorLicenseLookup, LicensorUserMatch, Licensor, licensorList) {
 
         $scope.licensorList = licensorList;
         $scope.registration = null;
@@ -77,9 +77,15 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'Vess
          * Lookup a specific license by calling the underlying web service
          * Of that licensing agency
          */
-        $scope.lookup = function (licensorid, registrationnumber) {
+        $scope.lookup = function (licensorid, regNo) {
 
-            window.alert('lookup license ' + registrationnumber + ' on licensor ' + licensorid);
+            LicensorLicenseLookup.get({ id: licensorid, registration: regNo }, function(resp)
+            {
+                $scope.license = resp;
+            },
+            function(err){
+
+            })
         };
 
         /*

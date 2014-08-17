@@ -8,6 +8,7 @@ import com.geodsea.pub.repository.LicenseVesselRepository;
 import com.geodsea.pub.repository.LicensorRepository;
 import com.geodsea.pub.service.LicenseService;
 import com.geodsea.pub.service.SkipperService;
+import com.geodsea.pub.web.rest.dto.LicensorDTO;
 import com.geodsea.ws.LicenseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,32 +89,7 @@ public class LicenceVesselResource {
         return new ResponseEntity<>(licenseVessel, HttpStatus.OK);
     }
 
-    /**
-     * GET  /rest/licensevessels/:id -> get the "id" vessel license.
-     */
-    @RequestMapping(value = "rest/licensor/{licensorId}/license/{regNo}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<LicenseVessel> webServiceCall(@PathVariable Long licensorId, @PathVariable String regNo, HttpServletResponse response) {
-        log.debug("REST request to get Vessel license details");
 
-        Licensor licensor = licensorRepository.findOne(licensorId);
-        if (licensor == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        LicenseResponse licenseResponse = licenseService.customSendAndReceive(licensor, regNo);
-
-        // TODO store owner details and the like from the response
-        // TODO provide association from vessel to owner & participant
-        // TODO verify that the person requesting is an owner of the vessel
-        // TODO fill out the details before returning
-        LicenseVessel vessel = new LicenseVessel();
-
-
-        return new ResponseEntity<>(vessel, HttpStatus.OK);
-    }
 
     /**
      * DELETE  /rest/licensevessels/:id -> delete the "id" vessel license.

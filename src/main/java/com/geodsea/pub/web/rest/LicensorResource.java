@@ -1,6 +1,7 @@
 package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.geodsea.pub.domain.LicenseVessel;
 import com.geodsea.pub.domain.Licensor;
 import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.repository.LicensorRepository;
@@ -8,6 +9,7 @@ import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.service.LicenseService;
 import com.geodsea.pub.service.UserService;
 import com.geodsea.pub.web.rest.dto.LicensorDTO;
+import com.geodsea.ws.LicenseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -128,6 +130,35 @@ public class LicensorResource {
                 l.getLicenceWsURL(), l.getRegion());
 
         return new ResponseEntity<>(licensorDTO, HttpStatus.OK);
+    }
+
+    /**
+     * Get the licence details as supplied by the licensing agency.
+     * GET /rest/licensor/:id/registration/:registration
+     *
+     */
+    @RequestMapping(value = "/rest/licensors/{licensorId}/registration/{registration}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<LicenseResponse> getLicensorLocalToUser(@PathVariable Long licensorId, @PathVariable String registration, HttpServletResponse response) {
+
+        log.debug("REST request to get Vessel license details");
+
+        Licensor licensor = licensorRepository.findOne(licensorId);
+        if (licensor == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        LicenseResponse licenseResponse = licenseService.customSendAndReceive(licensor, registration);
+
+        // TODO store owner details and the like from the response
+        // TODO provide association from vessel to owner & participant
+        // TODO verify that the person requesting is an owner of the vessel
+        // TODO fill out the details before returning
+
+
+        return new ResponseEntity<>(licenseResponse, HttpStatus.OK);
     }
 
 }

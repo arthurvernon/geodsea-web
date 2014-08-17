@@ -24,11 +24,11 @@ geodseaApp.factory('LicensorUserMatch', ['$resource',
     }]);
 
 /**
- * Serivce to obtain the license details from a licensro via a web service lookup.
+ * Obtain the license details from a licensor via a web service lookup.
  */
 geodseaApp.factory('LicensorLicenseLookup', ['$resource',
     function ($resource) {
-        return $resource('app/rest/licensor/:id/registration/:reg', {}, {
+        return $resource('app/rest/licensors/:id/registration/:registration', {}, {
             'get': { method: 'GET'}
         });
     }]);

@@ -17,6 +17,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -62,7 +63,13 @@ public class LicenseService {
         licensor = licensorRepository.save(licensor);
     }
 
-    // send to an explicit URI
+
+    /**
+     * obtain from the liscensor the details pertaining to the specified registration/license number.
+     * @param licensor
+     * @param licenseNumber
+     * @return
+     */
     public LicenseResponse customSendAndReceive(Licensor licensor, String licenseNumber) {
         ObjectFactory of = new ObjectFactory();
         LicenseRequest request = of.createLicenseRequest();
@@ -79,7 +86,7 @@ public class LicenseService {
     }
 
     /**
-     * Provide a list of Licensors that issue licenses for the location identifed by the address.
+     * Provide a list of Licensors that issue licenses for the location identified by the address.
      * <p>
      *     There may not be a licensor defined for this location, in which case, no licensors will be returned.
      * </p>
@@ -97,6 +104,8 @@ public class LicenseService {
      */
     public List<Licensor> getLocalLicensor(Address address)
     {
+        if (address == null)
+            return new ArrayList<Licensor>();
         return licensorRepository.getLicensorForLocation(address.getPoint());
     }
 }
