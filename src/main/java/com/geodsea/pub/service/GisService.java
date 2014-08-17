@@ -32,7 +32,9 @@ public class GisService {
 
     public Point createPointFromLatLong(double lat, double lon)
     {
-        return factory.createPoint(new Coordinate(lat, lon));
+        // y => latitude (North South)
+        // x => longitude (East/West)
+        return factory.createPoint(new Coordinate(lon, lat));
     }
 
 }
