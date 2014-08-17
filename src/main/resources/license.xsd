@@ -11,9 +11,12 @@
                     <xs:documentation>Maximum number of litres of fuel that the boat can carry.</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="hullColor" type="xs:string" minOccurs="1" maxOccurs="1">
+            <xs:element name="hullColor" type="s1:HTMLColor" minOccurs="1" maxOccurs="1">
                 <xs:annotation>
-                    <xs:documentation>The primary color of the hull above the water line.</xs:documentation>
+                    <xs:documentation>The primary color of the hull above the water line.
+                        Value should be a 7 character hex code as define for a HTML color, e.g. #000000 for black
+                        and #ffffff for white http://www.w3schools.com/html/html_colors.asp
+                    </xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="hullIdentificationNumber" type="xs:string" minOccurs="1" maxOccurs="1">
@@ -23,18 +26,17 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element name="superstructureColor" type="s1:HTMLColor" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>The colour (or colours) of the superstructure.
+                        Value should be a 7 character hex code as define for a HTML color, e.g. #000000 for black
+                        and #ffffff for white http://www.w3schools.com/html/html_colors.asp.
+                        &lt;/p&gt;</xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element name="length" type="xs:int" minOccurs="1" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>The length of the craft in meters.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="superstructureColor" type="xs:string" minOccurs="1" maxOccurs="1">
-                <xs:annotation>
-                    <xs:documentation>The colour (or colours) of the superstructure.
-                        &lt;p&gt; A reasonable size field if allowed for at this stage so that a person could enter
-                        multiple colours. TODO Need to ascertain if the requirement is for only a dominant colour to be
-                        registered.
-                        &lt;/p&gt;</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="totalHP" type="xs:int" minOccurs="1" maxOccurs="1">
@@ -215,4 +217,12 @@
             </xs:all>
         </xs:complexType>
     </xs:element>
+
+    <xs:simpleType name="HTMLColor">
+        <xs:restriction base="xs:string">
+            <!--<xs:pattern value="#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})"/>-->
+            <xs:pattern value="#[A-Fa-f0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
 </xs:schema>

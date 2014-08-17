@@ -126,11 +126,11 @@
                             </div>
                         </div>
 
-                        <!-- length -->
+                        <!-- fuel Capacity -->
                         <div class="form-group">
                             <label translate="vessel.form.fuelcapacity.label">Fuel Capacity (l)</label>
                             <input type="number" ng-model="vessel.fuelCapacity" name="fuelcapacity"
-                                   min="0" max="1000"/>
+                                   min="0" max="3000"/>
                             <div class="error" ng-show="form.fuelcapacity.$dirty && form.fuelcapacity.$invalid">
                                 <small class="error" ng-show="form.fuelcapacity.$error.number"
                                        translate="vessel.form.length.nan">This is not a valid number.
@@ -140,6 +140,19 @@
                                     Fuel capacity must be between 0 and 1000.
                                 </small>
                             </div>
+                        </div>
+
+                        <!-- Hull color -->
+                        <div class="form-group">
+                            <label translate="vessel.form.hullcolor.label">Hull Color</label>
+                            <input type="color" name="hullcolor" ng-model="vessel.hullColor">
+                        </div>
+
+
+                        <!-- superstructure color -->
+                        <div class="form-group">
+                            <label translate="vessel.form.superstructurecolor.label">Superstructure Color</label>
+                            <input type="color" name="superstructurecolor" ng-model="vessel.superstructureColor">
                         </div>
 
                         <!-- Storage location -->

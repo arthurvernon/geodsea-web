@@ -68,7 +68,7 @@ public class LicenseEndpoint {
 
         vessel.setFuelCapacity(1300);
         vessel.setHullColor("#FEFEFE");
-        vessel.setSuperstructureColor("#FEFEFE");
+        vessel.setSuperstructureColor("#C0C0C0");
         vessel.setHullIdentificationNumber("AUSTA36119H899");
         vessel.setLength(12);
         vessel.setTotalHP(500);

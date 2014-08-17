@@ -15,37 +15,35 @@
                 <xs:sequence minOccurs="1" maxOccurs="1">
                     <xs:element name="fuelCapacity" type="xs:int" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
-                            <xs:documentation>Maximum number of litres of fuel that the boat can carry.
-                            </xs:documentation>
+                            <xs:documentation>Maximum number of litres of fuel that the boat can carry.</xs:documentation>
                         </xs:annotation>
                     </xs:element>
-                    <xs:element name="hullColor" type="xs:string" minOccurs="1" maxOccurs="1">
+                    <xs:element name="hullColor" type="s1:HTMLColor" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
-                            <xs:documentation>The primary color of the hull above the water line.</xs:documentation>
+                            <xs:documentation>The primary color of the hull above the water line.
+                                Value should be a 7 character hex code as define for a HTML color, e.g. #000000 for black
+                                and #ffffff for white http://www.w3schools.com/html/html_colors.asp
+                            </xs:documentation>
                         </xs:annotation>
                     </xs:element>
                     <xs:element name="hullIdentificationNumber" type="xs:string" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
-                            <xs:documentation>The Hull Identification Number (HIN) is a 12 or 14 character serial number
-                                that
+                            <xs:documentation>The Hull Identification Number (HIN) is a 12 or 14 character serial number that
                                 uniquely identifies a boat.
                             </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="superstructureColor" type="s1:HTMLColor" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The colour (or colours) of the superstructure.
+                                Value should be a 7 character hex code as define for a HTML color, e.g. #000000 for black
+                                and #ffffff for white http://www.w3schools.com/html/html_colors.asp.
+                                &lt;/p&gt;</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                     <xs:element name="length" type="xs:int" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
                             <xs:documentation>The length of the craft in meters.</xs:documentation>
-                        </xs:annotation>
-                    </xs:element>
-                    <xs:element name="superstructureColor" type="xs:string" minOccurs="1" maxOccurs="1">
-                        <xs:annotation>
-                            <xs:documentation>The colour (or colours) of the superstructure.
-                                &lt;p&gt; A reasonable size field if allowed for at this stage so that a person could
-                                enter
-                                multiple colours. TODO Need to ascertain if the requirement is for only a dominant
-                                colour to be
-                                registered.
-                                &lt;/p&gt;</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                     <xs:element name="totalHP" type="xs:int" minOccurs="1" maxOccurs="1">
@@ -56,16 +54,14 @@
                     <xs:element name="vesselName" type="xs:string" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
                             <xs:documentation>The name given to the vessel.
-                                &lt;p&gt; This is optional as many craft, particularly those that are not powered, will
-                                not have
+                                &lt;p&gt; This is optional as many craft, particularly those that are not powered, will not have
                                 a name.
                                 &lt;/p&gt;</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                     <xs:element name="vesselType" type="xs:string" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
-                            <xs:documentation>A classification of the vessel that would provide the best clue from a
-                                distance to
+                            <xs:documentation>A classification of the vessel that would provide the best clue from a distance to
                                 identify the vessel.
                             </xs:documentation>
                         </xs:annotation>
@@ -94,8 +90,7 @@
 
                         WALK_AROUND(true): Enclosed center console with the ability to walk abound the deck.
 
-                        CENTER_CONSOLE(true): Basic kind of boat with a steering wheel and console suitable for
-                        fishing/diving
+                        CENTER_CONSOLE(true): Basic kind of boat with a steering wheel and console suitable for fishing/diving
                         with lots of surrounding deck space.
 
                         OPEN_BOAT(true): No superstructure, like and aluminium of fiberglass dinghy.
@@ -134,7 +129,7 @@
                     <xs:element name="birthDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
                     <xs:element name="email" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="firstName" type="xs:string" minOccurs="1" maxOccurs="1"/>
-                    <xs:element name="formatted" type="xs:string" minOccurs="1" maxOccurs="1">
+                    <xs:element name="formattedAddress" type="xs:string" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
                             <xs:documentation>formatted address per
                                 https://developers.google.com/maps/documentation/geocoding/#XML
@@ -150,12 +145,11 @@
                 <xs:sequence>
                     <xs:element name="businessIdentifier" type="xs:string" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
-                            <xs:documentation>A number that uniquely identifies the business within this particular
-                                country.
+                            <xs:documentation>A number that uniquely identifies the business within this particular country.
                             </xs:documentation>
                         </xs:annotation>
                     </xs:element>
-                    <xs:element name="formatted" type="xs:string" minOccurs="1" maxOccurs="1">
+                    <xs:element name="formattedAddress" type="xs:string" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
                             <xs:documentation>Formatted address per
                                 https://developers.google.com/maps/documentation/geocoding/#XML
@@ -175,8 +169,7 @@
                 <xs:sequence minOccurs="1" maxOccurs="1">
                     <xs:element name="licenseNumber" type="xs:string" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
-                            <xs:documentation>"Immutable" license number for the license, that is if and when the
-                                license is
+                            <xs:documentation>"Immutable" license number for the license, that is if and when the license is
                                 verified by the licensing authority.
                                 &lt;p&gt; Once verified then the license number may not be altered.
                                 &lt;/p&gt;</xs:documentation>
@@ -189,22 +182,18 @@
                     </xs:element>
                     <xs:element name="validFrom" type="xs:date" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
-                            <xs:documentation>The date from which the user or the authority specifies that the license
-                                is valid
+                            <xs:documentation>The date from which the user or the authority specifies that the license is valid
                                 until.
-                                &lt;p&gt; If the license is verified then this value may only be altered by the
-                                jurisdiction
+                                &lt;p&gt; If the license is verified then this value may only be altered by the jurisdiction
                                 issuing the license.
                                 &lt;/p&gt;</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                     <xs:element name="validTo" type="xs:date" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
-                            <xs:documentation>The date to which the user or the authority specifies that the license is
-                                valid
+                            <xs:documentation>The date to which the user or the authority specifies that the license is valid
                                 until.
-                                &lt;p&gt; If the license is verified then this value may only be altered by the
-                                jurisdiction
+                                &lt;p&gt; If the license is verified then this value may only be altered by the jurisdiction
                                 issuing the license.
                                 &lt;/p&gt;</xs:documentation>
                         </xs:annotation>
@@ -235,6 +224,14 @@
                     </xs:all>
                 </xs:complexType>
             </xs:element>
+
+            <xs:simpleType name="HTMLColor">
+                <xs:restriction base="xs:string">
+                    <!--<xs:pattern value="#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})"/>-->
+                    <xs:pattern value="#[A-Fa-f0-9]{6}"/>
+                </xs:restriction>
+            </xs:simpleType>
+
         </xs:schema>
 
 
