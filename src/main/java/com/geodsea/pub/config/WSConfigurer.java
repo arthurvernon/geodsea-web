@@ -2,6 +2,7 @@ package com.geodsea.pub.config;
 
 import com.codahale.metrics.servlets.MetricsServlet;
 import com.geodsea.ws.LicenseRequest;
+import com.geodsea.ws.LicenseResponse;
 import com.geodsea.ws.ObjectFactory;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.slf4j.Logger;
@@ -65,16 +66,6 @@ public class WSConfigurer extends WsConfigurerAdapter {
         interceptors.add(new MyInterceptor());
     }
 
-
-//    @Bean
-//    public ServletRegistrationBean dispatcherServlet(ApplicationContext applicationContext) {
-//        MessageDispatcherServlet servlet = new MessageDispatcherServlet();
-//        servlet.setApplicationContext(applicationContext);
-//        servlet.setTransformWsdlLocations(true);
-//        return new ServletRegistrationBean(servlet, "/ws/*");
-//    }
-
-
     @Bean(name = "licenses")
     public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema licenseSchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
@@ -118,7 +109,7 @@ public class WSConfigurer extends WsConfigurerAdapter {
 
     private Jaxb2Marshaller marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setClassesToBeBound(LicenseRequest.class);
+        marshaller.setClassesToBeBound(LicenseRequest.class , LicenseResponse.class);
         return marshaller;
     }
 
