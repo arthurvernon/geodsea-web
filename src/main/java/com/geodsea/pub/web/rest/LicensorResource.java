@@ -1,13 +1,11 @@
 package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.geodsea.pub.domain.LicenseVessel;
 import com.geodsea.pub.domain.Licensor;
 import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.repository.LicensorRepository;
 import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.service.LicenseService;
-import com.geodsea.pub.service.UserService;
 import com.geodsea.pub.web.rest.dto.LicensorDTO;
 import com.geodsea.ws.LicenseResponse;
 import org.slf4j.Logger;
@@ -150,7 +148,7 @@ public class LicensorResource {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        LicenseResponse licenseResponse = licenseService.customSendAndReceive(licensor, registration);
+        LicenseResponse licenseResponse = licenseService.lookupLicense(licensor, registration);
 
         // TODO store owner details and the like from the response
         // TODO provide association from vessel to owner & participant

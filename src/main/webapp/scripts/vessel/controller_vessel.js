@@ -82,6 +82,9 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'Vess
             LicensorLicenseLookup.get({ id: licensorid, registration: regNo }, function(resp)
             {
                 $scope.license = resp;
+                $scope.vessel = resp.vessel;
+                $('#enterRegistrationModal').modal('hide');
+
             },
             function(err){
 

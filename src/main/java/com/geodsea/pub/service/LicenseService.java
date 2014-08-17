@@ -70,13 +70,19 @@ public class LicenseService {
      * @param licenseNumber
      * @return
      */
-    public LicenseResponse customSendAndReceive(Licensor licensor, String licenseNumber) {
+    public LicenseResponse lookupLicense(Licensor licensor, String licenseNumber) {
+
+        log.info("Looking up license: {} from licensor {} via WS: {}", licenseNumber,
+                licensor.getParticipant().getPublishedName(), licensor.getLicenceWsURL());
+
         ObjectFactory of = new ObjectFactory();
         LicenseRequest request = of.createLicenseRequest();
         request.setLicenseNumber(licenseNumber);
 
         if (licensor.getLicenseWsUsername() != null)
-            messageSender.setCredentials(new UsernamePasswordCredentials(licensor.getLicenseWsUsername(), licensor.getLicenseWsPassword()));
+            messageSender.setCredentials(new UsernamePasswordCredentials(
+                    licensor.getLicenseWsUsername(),
+                    licensor.getLicenseWsPassword()));
         else
             messageSender.setCredentials(null);
 

@@ -1,9 +1,7 @@
 package com.geodsea.pub.ws;
 
 import com.codahale.metrics.annotation.Timed;
-import com.geodsea.ws.License;
-import com.geodsea.ws.LicenseRequest;
-import com.geodsea.ws.LicenseResponse;
+import com.geodsea.ws.*;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,12 +56,41 @@ public class LicenseEndpoint {
         LicenseResponse details = new LicenseResponse();
         GregorianCalendar c = new GregorianCalendar();
         XMLGregorianCalendar cal = new XMLGregorianCalendarImpl(c);
-        License license = new License();
+        ObjectFactory of = new ObjectFactory();
+
+        Vessel vessel = of.createVessel();
+        License license = of.createLicense();
+        Owners owners = of.createOwners();
+        Person person = of.createPerson();
+        Business business = of.createBusiness();
+        owners.getPersonOwnerOrBusinessOwner().add(person);
+        owners.getPersonOwnerOrBusinessOwner().add(business);
+
+        vessel.setFuelCapacity(1300);
+        vessel.setHullColor("#FEFEFE");
+        vessel.setSuperstructureColor("#FEFEFE");
+        vessel.setHullIdentificationNumber("AUSTA36119H899");
+        vessel.setLength(12);
+        vessel.setTotalHP(500);
+        vessel.setVesselName("Some Name");
+        vessel.setVesselType("CABIN");
+
+        person.setFirstName("FirstName");
+        person.setLastName("LastName");
+
+        business.setBusinessIdentifier("123456789");
+        business.setContactPerson(person);
+        business.setFormattedAddress("1 Some Way, Someplace, State, Country");
+        business.setName("Business Name");
+
         license.setMaxPeople(2);
         license.setLicenseNumber(request.getLicenseNumber());
         license.setValidFrom(cal);
         license.setValidTo(cal);
+
         details.setCurrentLicense(license);
+        details.setVessel(vessel);
+        details.setOwners(owners);
         return details;
     }
 

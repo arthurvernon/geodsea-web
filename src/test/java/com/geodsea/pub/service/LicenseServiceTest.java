@@ -2,10 +2,7 @@ package com.geodsea.pub.service;
 
 import com.geodsea.pub.Application;
 import com.geodsea.pub.domain.Licensor;
-import com.geodsea.pub.domain.PersistentToken;
-import com.geodsea.pub.domain.Person;
 import com.geodsea.ws.LicenseResponse;
-import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -37,7 +34,7 @@ public class LicenseServiceTest {
         licensor.setLicenceWsURL("http://localhost:8080/ws");
         licensor.setLicenseWsUsername("username");
         licensor.setLicenseWsPassword("password");
-        LicenseResponse response = licenseService.customSendAndReceive(licensor, "123456");
+        LicenseResponse response = licenseService.lookupLicense(licensor, "123456");
 
 
     }
