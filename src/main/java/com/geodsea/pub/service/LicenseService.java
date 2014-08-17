@@ -1,5 +1,6 @@
 package com.geodsea.pub.service;
 
+import com.geodsea.pub.domain.Address;
 import com.geodsea.pub.domain.Licensor;
 import com.geodsea.pub.domain.ParticipantGroup;
 import com.geodsea.pub.repository.LicensorRepository;
@@ -16,6 +17,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
 import javax.inject.Inject;
+import java.util.List;
 
 @Service
 @Transactional
@@ -74,5 +76,27 @@ public class LicenseService {
         LicenseResponse response = (LicenseResponse) webServiceTemplate.marshalSendAndReceive(licensor.getLicenceWsURL(), request);
 
         return response;
+    }
+
+    /**
+     * Provide a list of Licensors that issue licenses for the location identifed by the address.
+     * <p>
+     *     There may not be a licensor defined for this location, in which case, no licensors will be returned.
+     * </p>
+     * <p>
+     *     Typically there would be one licensor defined where a system is in use.
+     * </p>
+     * <p>
+     *     Depending upon how boundaries are defined by authorities, there may be an overlap where this address
+     *     is within the area defined for two or more licensors. This can occur on state and international boundaries
+     *     e.g. along a river where for the sake of simplicity an authority marks a straight line that includes territory
+     *     within an adjacent jurisdiction.
+     * </p>
+     * @param address the point to resolve a licensing authority for.
+     * @return a non-null list of zero or more authorities.
+     */
+    public List<Licensor> getLocalLicensor(Address address)
+    {
+        return licensorRepository.getLicensorForLocation(address.getPoint());
     }
 }

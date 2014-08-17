@@ -2,8 +2,11 @@ package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.geodsea.pub.domain.Licensor;
+import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.repository.LicensorRepository;
+import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.service.LicenseService;
+import com.geodsea.pub.service.UserService;
 import com.geodsea.pub.web.rest.dto.LicensorDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +34,9 @@ public class LicensorResource {
 
     @Inject
     private LicenseService licenseService;
+
+    @Inject
+    private PersonRepository personRepository;
 
     /**
      * POST  /rest/licensors -> Create a new licensor.
@@ -107,13 +113,21 @@ public class LicensorResource {
     public ResponseEntity<LicensorDTO> getLicensorLocalToUser(@PathVariable String username, HttpServletResponse response) {
         log.debug("REST request to get Licensor closest to user: {}", username);
 
-//        if (licensor == null) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-        LicensorDTO dto = new LicensorDTO((long)1, (long)5,
-                "Dept of Transport WA",
-                "http://www.transport.wa.gov.au", "Western Australia");
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+
+        Person person = personRepository.getUserByParticipantName(username);
+
+        List<Licensor> licensors = licenseService.getLocalLicensor(person.getAddress());
+
+        if (licensors == null || licensors.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
+        Licensor l = licensors.get(0);
+        LicensorDTO licensorDTO = new LicensorDTO(l.getId(), l.getParticipant().getId(), l.getParticipant().getPublishedName(),
+                l.getLicenceWsURL(), l.getRegion());
+
+        return new ResponseEntity<>(licensorDTO, HttpStatus.OK);
     }
 
 }
