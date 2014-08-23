@@ -20,24 +20,6 @@ angular.module('geodseaApp')
             }
         };
     }])
-    .directive('ensureUnique', ['$http', function(http) {
-        return {
-            require: 'ngModel',
-            link: function(scope, ele, attrs, controller) {
-                scope.$watch(attrs.ngModel, function () {
-                    $http({
-                        method: 'POST',
-                        url: '/app/rest/' + attrs.ensureUnique,
-                        data: {'field': attrs.ensureUnique}
-                    }).success(function (data, status, headers, cfg) {
-                        controller.$setValidity('unique', data.isUnique);
-                    }).error(function (data, status, headers, cfg) {
-                        controller.$setValidity('unique', false);
-                    });
-                });
-            }
-        };
-    }])
     .directive('activeLink', ['$location', function(location) {
         return {
             restrict: 'A',

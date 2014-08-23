@@ -62,9 +62,10 @@
             "confirmpassword.placeholder": "Подтвердите новый пароль",
             "email": "E-mail",
             "email.placeholder": "Ваш e-mail",
-            "streetaddress": "_ru_Street Address",
-            "streetaddress.placeholder": "_ru_Your street address",
-            "telephone" : "_ru_Telephone"
+            "address": "_ru_Street Address",
+            "address.placeholder": "_ru_Your street address",
+            "telephone" : "_ru_Telephone"            ,
+            "telephone.placeholder": "_ru_Telephone number incl. area code"
         },
         "messages": {
             "info": {
@@ -102,7 +103,7 @@
                     "minlength": "Длина e-mail должна быть хотя-бы 5 символов",
                     "maxlength": "E-mail не может быть длиннее чем 50 символов"
                 },
-                "streetaddress": {
+                "address": {
                     "required": "_ru_Your street address is required."
                 },
                 "telephone": {

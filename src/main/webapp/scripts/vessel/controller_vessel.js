@@ -59,12 +59,13 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'Vess
                 });
         };
 
-        $scope.populate = function () {
+        $scope.populateVesselFromLicense = function () {
             VesselRegistration.get($scope.registration.number, function () {
                     window.alert('got registration details from license');
                 },
                 function () {
-                    window.alert('failed to load registration details for license');
+                    window.alert('failed to load registration details for license using registration number ' +
+                        $scope.registration.number);
                 });
         }
 
@@ -106,7 +107,7 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'Vess
                     $scope.licensor = licensor;
                 },
                 function () {
-                    window.alert('failed to load registration details for license');
+                    window.alert('failed to load licensor for user: ' + $scope.account.login);
                 });
 
             $scope.licensor = {id: null, name: null};

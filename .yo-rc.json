@@ -3,7 +3,7 @@
     "baseName": "geodsea",
     "packageName": "com.geodsea.pub",
     "packageFolder": "com/geodsea/pub",
-    "authenticationType": "token",
+    "authenticationType": "cookie",
     "hibernateCache": "ehcache",
     "clusteredHttpSession": "no",
     "websocket": "atmosphere",

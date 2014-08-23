@@ -63,9 +63,10 @@
             "confirmpassword.placeholder": "Potwierdź nowe hasło",
             "email": "E-mail",
             "email.placeholder": "Twój e-mail",
-            "streetaddress": "_pl_Street Address",
-            "streetaddress.placeholder": "_pl_Your street address",
-            "telephone" : "_pl_Telephone"
+            "address": "_pl_Street Address",
+            "address.placeholder": "_pl_Your street address",
+            "telephone" : "_pl_Telephone",
+            "telephone.placeholder": "_pl_Telephone number incl. area code"
         },
         "messages": {
             "info": {
@@ -103,7 +104,7 @@
                     "minlength": "Twój e-mail musi mieć przynajmniej 5 liter",
                     "maxlength": "Your e-mail nie może być dłuższe niż 50 liter"
                 },
-                "streetaddress": {
+                "address": {
                     "required": "_pl_Your street address is required."
                 },
                 "telephone": {

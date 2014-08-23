@@ -12,7 +12,8 @@
     <strong>An error has occurred!</strong> Vessel could not be saved.
 </div>
 
-<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#enterRegistrationModal" ng-click="clear()">
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#enterRegistrationModal"
+        ng-click="clear()" ng-show="account.address">
     <span class="glyphicon glyphicon-flash"></span><span ng-translate="vessel.registration.licensepopup.button">Get From License</span>
 </button>
 <div class="modal fade" id="enterRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="myRegistrationLabel"
@@ -21,7 +22,7 @@
         <div class="modal-content">
             <form name="licensorform" role="form" novalidate
                   class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
-                  ng-submit="populate()">
+                  ng-submit="populateVesselFromLicense()">
 
                 <div class="modal-header">
 

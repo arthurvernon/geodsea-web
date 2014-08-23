@@ -1,7 +1,6 @@
 'use strict';
 
 /* App Module */
-var httpHeaders;
 
 /*
  The Angular module API allows us to declare a module using the angular.module() API method.
@@ -179,14 +178,13 @@ geodseaApp
             tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js')
             tmhDynamicLocaleProvider.useCookieStorage('NG_TRANSLATE_LANG_KEY');
             
-            httpHeaders = $httpProvider.defaults.headers;
         }])
         .run(['$rootScope', '$location', '$http', 'AuthenticationSharedService', 'Session', 'USER_ROLES',
             function($rootScope, $location, $http, AuthenticationSharedService, Session, USER_ROLES) {
                 $rootScope.$on('$routeChangeStart', function (event, next) {
                     $rootScope.isAuthorized = AuthenticationSharedService.isAuthorized;
                     $rootScope.userRoles = USER_ROLES;
-                    AuthenticationSharedService.valid(next.access.authorizedRoles);
+                    AuthenticationSharedService.revalidate(next.access.authorizedRoles);
                 });
 
                 // Call when the the client is confirmed
@@ -199,7 +197,7 @@ geodseaApp
 
                 // Call when the 401 response is returned by the server
                 $rootScope.$on('event:auth-loginRequired', function(rejection) {
-                    Session.invalidate();
+                    Session.invalidateSession();
                     $rootScope.authenticated = false;
                     if ($location.path() !== "/" && $location.path() !== "" && $location.path() !== "/register/user" &&
                             $location.path() !== "/activate") {

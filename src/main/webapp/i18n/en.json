@@ -61,9 +61,10 @@
             "confirmpassword.placeholder": "Confirm the new password",
             "email": "E-mail",
             "email.placeholder": "Your e-mail address",
-            "streetaddress": "Street Address",
-            "streetaddress.placeholder": "Enter your home address (not a PO Box number)",
-            "telephone": "Telephone"
+            "address": "Street Address",
+            "address.placeholder": "Enter your home address (not a PO Box number)",
+            "telephone": "Telephone",
+            "telephone.placeholder": "Telephone number incl. area code"
         },
         "messages": {
             "info": {
@@ -101,7 +102,7 @@
                     "minlength": "Your e-mail is required to be at least 5 characters",
                     "maxlength": "Your e-mail cannot be longer than 50 characters"
                 },
-                "streetaddress": {
+                "address": {
                     "required": "Your street address is required."
                 },
                 "telephone": {

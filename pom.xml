@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.geodsea.pub</groupId>
+    <groupId>com.geodsea.web</groupId>
     <artifactId>geodsea</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -115,7 +115,6 @@
         <liquibase-slf4j.version>1.2.1</liquibase-slf4j.version>
         <metrics-spring.version>3.0.1</metrics-spring.version>
         <postgresql.version>9.3-1100-jdbc41</postgresql.version>
-        <spring-security-oauth2.version>2.0.0.RC2</spring-security-oauth2.version>
         <spring-ws.version>2.2.0.RELEASE</spring-ws.version>
         <jaxb-api.version>2.2.11</jaxb-api.version>
         <swagger-springmvc.version>0.8.2</swagger-springmvc.version>
@@ -396,11 +395,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-            <version>${spring-security-oauth2.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.jhipster.loaded</groupId>

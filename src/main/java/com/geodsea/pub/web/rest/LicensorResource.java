@@ -1,6 +1,7 @@
 package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.geodsea.pub.domain.Address;
 import com.geodsea.pub.domain.Licensor;
 import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.repository.LicensorRepository;
@@ -66,6 +67,7 @@ public class LicensorResource {
         for (Licensor l : licensors)
             dtoList.add(new LicensorDTO(l.getId(), l.getParticipant().getId(), l.getParticipant().getPublishedName(),
                     l.getLicenceWsURL(), l.getRegion()));
+        log.debug("Located " + dtoList.size() + " licensors");
         return dtoList;
     }
 
@@ -115,6 +117,9 @@ public class LicensorResource {
 
 
         Person person = personRepository.getUserByParticipantName(username);
+        Address address = person.getAddress();
+        if (address == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         List<Licensor> licensors = licenseService.getLocalLicensor(person.getAddress());
 

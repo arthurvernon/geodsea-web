@@ -63,9 +63,10 @@
             "confirmpassword.placeholder": "Confirmation du nouveau mot de passe",
             "email": "Email",
             "email.placeholder": "Votre email",
-            "streetaddress": "_fr_Street Address",
-            "streetaddress.placeholder": "_fr_Your street address",
-            "telephone" : "_fr_Telephone"
+            "address": "_fr_Street Address",
+            "address.placeholder": "_fr_Your street address",
+            "telephone" : "_fr_Telephone",
+            "telephone.placeholder": "_fr_Telephone number incl. area code"
         },
         "messages": {
             "info": {
@@ -103,7 +104,7 @@
                     "maxlength": "Votre email ne doit pas comporter plus de 50 caractères",
                     "invalid": "Votre email n'est pas valide."
                 },
-                "streetaddress": {
+                "address": {
                     "required": "_fr_Your street address is required."
                 },
                 "telephone": {

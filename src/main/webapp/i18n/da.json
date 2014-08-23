@@ -61,9 +61,10 @@
             "confirmpassword.placeholder": "Bekræft det nye kodeord",
             "email": "E-mail",
             "email.placeholder": "Din e-mail adresse",
-            "streetaddress": "_da_Street Address",
-            "streetaddress.placeholder": "_da_Your street address",
-            "telephone" : "_da_Telephone"
+            "address": "_da_Street Address",
+            "address.placeholder": "_da_Your street address",
+            "telephone" : "_da_Telephone",
+            "telephone.placeholder": "_da_Telephone number incl. area code"
         },
         "messages": {
             "info": {
@@ -101,7 +102,7 @@
                     "minlength": "Din e-mail adresse skal som minimum være på 5 tegn",
                     "maxlength": "Din e-mail adresse må ikke overskride 50 tegn"
                 },
-                "streetaddress": {
+                "address": {
                     "required": "_da_Your street address is required."
                 },
                 "telephone": {

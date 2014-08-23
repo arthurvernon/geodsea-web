@@ -106,12 +106,6 @@
 
     </changeSet>
 
-    <!-- Manage the OAuth authentication -->
-    <changeSet id="2" author="jhipster">
-
-        <sqlFile path="oauth.sql" relativeToChangelogFile="true"/>
-
-    </changeSet>
 
 
     <changeSet id="100" author="Arthur Vernon">

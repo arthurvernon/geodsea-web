@@ -1,5 +1,6 @@
 package com.geodsea.pub.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Type;
 
@@ -21,6 +22,7 @@ public class Address {
 
     @Column(name = "POINT", nullable = true)
     @Type(type = "org.hibernate.spatial.GeometryType")
+    @JsonIgnore
     private Point point;
 
     public Address(String formatted, Point point) {
@@ -51,4 +53,17 @@ public class Address {
     public String toString() {
         return formatted;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        if (formatted != null ? !formatted.equals(address.formatted) : address.formatted != null) return false;
+
+        return true;
+    }
+
 }

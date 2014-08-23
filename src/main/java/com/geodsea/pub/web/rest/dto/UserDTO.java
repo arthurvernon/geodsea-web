@@ -18,7 +18,11 @@ public class UserDTO {
     
     private String langKey;
 
-    private String streetAddress;
+    private String address;
+
+    private List<AddressPartDTO> addressParts;
+
+    private PointDTO point;
 
     private List<String> roles;
 
@@ -26,7 +30,7 @@ public class UserDTO {
     }
 
     public UserDTO(String login, String password, String firstName, String lastName, String email, String langKey,
-                   String telephone, String streetAddress,
+                   String telephone, String address, List<AddressPartDTO> addressParts, PointDTO point,
                    List<String> roles) {
         this.login = login;
         this.password = password;
@@ -35,7 +39,9 @@ public class UserDTO {
         this.email = email;
         this.langKey = langKey;
         this.telephone = telephone;
-        this.streetAddress = streetAddress;
+        this.address = address;
+        this.addressParts = addressParts;
+        this.point = point;
         this.roles = roles;
     }
 
@@ -75,13 +81,30 @@ public class UserDTO {
         this.telephone = telephone;
     }
 
-    public String getStreetAddress() {
-        return streetAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
+
+    public List<AddressPartDTO> getAddressParts() {
+        return addressParts;
+    }
+
+    public void setAddressParts(List<AddressPartDTO> addressParts) {
+        this.addressParts = addressParts;
+    }
+
+    public PointDTO getPoint() {
+        return point;
+    }
+
+    public void setPoint(PointDTO point) {
+        this.point = point;
+    }
+
 
 
     @Override
@@ -95,7 +118,7 @@ public class UserDTO {
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", email='").append(email).append('\'');
         sb.append(", telephone='").append(telephone).append('\'');
-        sb.append(", address='").append(streetAddress).append('\'');
+        sb.append(", address='").append(address).append('\'');
         sb.append(", langKey='").append(langKey).append('\'');
         sb.append(", roles=").append(roles);
         sb.append('}');

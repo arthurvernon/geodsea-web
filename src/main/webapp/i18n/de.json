@@ -62,9 +62,10 @@
             "confirmpassword.placeholder": "Bestätigen Sie ihr neues Passwort",
             "email": "E-Mail Adresse",
             "email.placeholder": "Ihre E-Mail Adresse",
-            "streetaddress": "_de_Street Address",
-            "streetaddress.placeholder": "_de_Your street address",
-            "telephone" : "_de_Telephone"
+            "address": "_de_Street Address",
+            "address.placeholder": "_de_Your street address",
+            "telephone" : "_de_Telephone",
+            "telephone.placeholder": "_de_Telephone number incl. area code"
         },
         "messages": {
             "info": {
@@ -102,7 +103,7 @@
                     "minlength": "Ihre E-Mail Adresse muss mindestens 5 Zeichen lang sein",
                     "maxlength": "Ihre E-Mail Adresse darf nicht länger als 50 Zeichen sein"
                 },
-                "streetaddress": {
+                "address": {
                     "required": "_de_Your street address is required."
                 },
                 "telephone": {

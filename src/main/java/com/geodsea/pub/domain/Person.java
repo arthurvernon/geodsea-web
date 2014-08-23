@@ -53,10 +53,16 @@ public class Person extends Participant implements Serializable {
     private Date birthDate;
 
     /**
-     * The telephone number upon which the person can be contacted in emergencies
+     * The telephone number upon which the person can be contacted in emergencies.
+     * <p>
+     *     (optional) Two or 3 digits in round brackets for an area code
+     *     optional - (dash) or blank space
+     *     3-4 digits optionally followed by a dash or a space followed by another 4 digits
+     * </p>
+     * >
      */
     @Column(name="TELEPHONE", nullable = true)
-    @Pattern(regexp="^\\(?(\\d{2,3})\\)?[- ]?(\\d{3,4})[- ]?(\\d{4})$",
+    @Pattern(regexp="^((\\+\\d{2,4}[- ]?)?((\\d{1,4})|(\\(\\d{1,4}\\)))[- ]?)?(\\d{3,4})([- ])?(\\d{3,4})$",
             message="{invalid.phonenumber}")
     private String telephone;
 

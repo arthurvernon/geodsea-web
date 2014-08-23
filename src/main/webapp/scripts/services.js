@@ -93,20 +93,24 @@ geodseaApp.factory('AuditsService', ['$http',
 
 geodseaApp.factory('Session', [
     function () {
-        this.create = function (login, firstName, lastName, email, telephone, userRoles) {
+        this.createSession = function (id, login, firstName, lastName, email, telephone, address, userRoles) {
+            this.id= id;
             this.login = login;
             this.firstName = firstName;
             this.lastName = lastName;
             this.email = email;
             this.telephone = telephone;
+            this.address = address;
             this.userRoles = userRoles;
         };
-        this.invalidate = function () {
+        this.invalidateSession = function () {
+            this.id = null;
             this.login = null;
             this.firstName = null;
             this.lastName = null;
             this.email = null;
             this.telephone = null;
+            this.address = null;
             this.userRoles = null;
         };
         return this;
@@ -119,47 +123,38 @@ geodseaApp.constant('USER_ROLES', {
         owner: 'ROLE_OWNER'
     });
 
-geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authService', 'Session', 'Account', 'Base64Service', 'AccessToken', 
-    function ($rootScope, $http, authService, Session, Account, Base64Service, AccessToken) {
+geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authService', 'Session', 'Account',
+    function ($rootScope, $http, authService, Session, Account) {
         return {
             login: function (param) {
-                var data = "username=" + param.username + "&password=" + param.password + "&grant_type=password&scope=read%20write&client_secret=mySecretOAuthSecret&client_id=geodseaapp";
-                $http.post('oauth/token', data, {
+                var data ="j_username=" + param.username +"&j_password=" + param.password +"&_spring_security_remember_me=" + param.rememberMe +"&submit=Login";
+                $http.post('app/authentication', data, {
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                        "Accept": "application/json",
-                        "Authorization": "Basic " + Base64Service.encode("geodseaapp" + ':' + "mySecretOAuthSecret")
+                        "Content-Type": "application/x-www-form-urlencoded"
                     },
                     ignoreAuthModule: 'ignoreAuthModule'
                 }).success(function (data, status, headers, config) {
-                    httpHeaders.common['Authorization'] = 'Bearer ' + data.access_token;
-                    AccessToken.set(data);
 
                     Account.get(function(data) {
-                        Session.create(data.id, data.login, data.firstName, data.lastName, data.email, data.telephone, data.roles);
+
+                        Session.createSession(data.id, data.login, data.firstName, data.lastName, data.email, data.telephone, data.address, data.roles);
                         $rootScope.account = Session;
                         authService.loginConfirmed(data);
                     });
                 }).error(function (data, status, headers, config) {
                     $rootScope.authenticationError = true;
-                    Session.invalidate();
+                    Session.invalidateSession();
                 });
             },
-            valid: function (authorizedRoles) {
-                if(AccessToken.get() !== null) {
-                    httpHeaders.common['Authorization'] = 'Bearer ' + AccessToken.get();
-                }
+            revalidate: function (authorizedRoles) {
 
                 $http.get('protected/transparent.gif', {
                     ignoreAuthModule: 'ignoreAuthModule'
                 }).success(function (data, status, headers, config) {
-                    if (!Session.login || AccessToken.get() != undefined) {
-                        if (AccessToken.get() == undefined || AccessToken.expired()) {
-                            $rootScope.authenticated = false
-                            return;
-                        }
+                    if (!Session.login) {
                         Account.get(function(data) {
-                            Session.create(data.login, data.firstName, data.lastName, data.email, data.telephone, data.roles);
+
+                            Session.createSession(data.id, data.login, data.firstName, data.lastName, data.email, data.telephone, data.address, data.roles);
                             $rootScope.account = Session;
 
                             if (!$rootScope.isAuthorized(authorizedRoles)) {
@@ -201,11 +196,9 @@ geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authS
                 $rootScope.authenticationError = false;
                 $rootScope.authenticated = false;
                 $rootScope.account = null;
-                AccessToken.remove();
 
                 $http.get('app/logout');
-                Session.invalidate();
-                delete httpHeaders.common['Authorization'];
+                Session.invalidateSession();
                 authService.loginCancelled();
             }
         };

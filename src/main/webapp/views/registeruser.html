@@ -119,14 +119,14 @@
 
                 <!-- street address -->
                 <div class="form-group">
-                    <label translate="global.form.streetaddress">Street Address</label>
-                    <input type="text" id="streetaddress" ng-model="registerAccount.streetAddress" class="form-control"
+                    <label translate="global.form.address">Street Address</label>
+                    <input type="text" id="address" ng-model="registerAccount.address" class="form-control"
                            ng-autocomplete options="options" details="details"
-                           placeholder="{{'global.form.streetaddress.placeholder' | translate}}"
+                           placeholder="{{'global.form.address.placeholder' | translate}}"
                             />
-                    <div class="error" ng-show="form.streetaddress.$dirty && form.streetaddress.$invalid">
+                    <div class="error" ng-show="form.address.$dirty && form.address.$invalid">
                         <small class="error"
-                               ng-show="form.streetaddress.$error.required" translate="global.messages.validate.streetaddress.required">
+                               ng-show="form.address.$error.required" translate="global.messages.validate.address.required">
                             Your street address is required.
                         </small>
                     </div>

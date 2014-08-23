@@ -91,52 +91,5 @@ angular.module('geodseaAppUtils', [])
                 localStorage.clear();
             }
         };
-    })
-    .factory('AccessToken', ['$location', '$http', 'StorageService', '$rootScope',
-        function($location, $http, StorageService, $rootScope) {
-            var TOKEN = 'token';
-            var service = {};
-            var token = null;
-
-            service.get = function() {
-                // read the token from the localStorage
-                if (token == null) {
-                    token = StorageService.get(TOKEN);
-                }
-
-                if (token != null) {
-                    return token.access_token;
-                }
-
-                return null;
-            };
-
-            service.set = function(oauthResponse) {
-                token = {};
-                token.access_token = oauthResponse.access_token;
-                setExpiresAt(oauthResponse);
-                StorageService.save(TOKEN, token);
-                return token
-            };
-
-            service.remove = function() {
-                token = null;
-                StorageService.remove(TOKEN);
-                return token;
-            };
-
-            service.expired = function() {
-                return (token && token.expires_at && token.expires_at < new Date().getTime())
-            };
-
-            var setExpiresAt = function(oauthResponse) {
-                if (token) {
-                    var now = new Date();
-                    var minutes = parseInt(oauthResponse.expires_in) / 60;
-                    token.expires_at = new Date(now.getTime() + minutes*60000).getTime()
-                }
-            };
-
-            return service;
-        }]);
+    });
 

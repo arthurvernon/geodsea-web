@@ -46,9 +46,16 @@ geodseaApp.controller('SettingsController', ['$scope', 'Account',
     function ($scope, Account) {
         $scope.success = null;
         $scope.error = null;
+
         $scope.settingsAccount = Account.get();
 
         $scope.save = function () {
+            $scope.settingsAccount.addressParts=$scope.details.address_components;
+            $scope.settingsAccount.point ={
+                "lat" : $scope.details.geometry.location.k,
+                "lon" : $scope.details.geometry.location.B
+            };
+
             Account.save($scope.settingsAccount,
                 function (value, responseHeaders) {
                     $scope.error = null;

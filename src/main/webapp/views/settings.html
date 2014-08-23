@@ -4,6 +4,7 @@
         <div class="col-md-8">
             <h2 translate="settings.title" translate-values="{username: '{{account.login}}'}">User settings for [<b>{{settingsAccount.login}}</b>]</h2>
 
+            {{settingsAccount.address}}
             <div class="alert alert-success" ng-show="success" translate="settings.messages.success">
                 <strong>Settings saved!</strong>
             </div>
@@ -81,9 +82,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label translate="global.form.telephone">E-mail</label>
-                    <input type="email" class="form-control" name="email" placeholder="{{'global.form.telephone.placeholder' | translate}}"
-                           ng-model="settingsAccount.telephone" ng-minlength=5 ng-maxlength=100 required>
+                    <label translate="global.form.telephone">telephone</label>
+                    <input type="tel" class="form-control" name="telephone" placeholder="{{'global.form.telephone.placeholder' | translate}}"
+                           ng-model="settingsAccount.telephone" ng-minlength=5 ng-maxlength=100
+                           ng-pattern="/^((\+\d{2,4}[- ]?)?((\d{1,4})|(\(\d{1,4}\)))[- ]?)?(\d{3,4})([- ])?(\d{3,4})$/"
+                           required>
                     <div class="error"
                          ng-show="form.telephone.$dirty && form.telephone.$invalid">
                         <small class="error"
@@ -95,12 +98,30 @@
                             Your telephone number is invalid.
                         </small>
                         <small class="error"
+                               ng-show="form.telephone.$error.pattern" translate="global.messages.validate.telephone.invalid">
+                            Your telephone number is invalid.
+                        </small>
+                        <small class="error"
                                ng-show="form.telephone.$error.minlength" translate="global.messages.validate.telephone.minlength">
                             Your telephone number is required to be at least 5 characters
                         </small>
                         <small class="error"
                                ng-show="form.telephone.$error.maxlength" translate="global.messages.validate.telephone.maxlength">
                             Your telephone number cannot be longer than 100 characters
+                        </small>
+                    </div>
+                </div>
+                <!-- street address -->
+                <div class="form-group">
+                    <label translate="global.form.address">Street Address</label>
+                    <input type="text" id="address" ng-model="settingsAccount.address" class="form-control"
+                           ng-autocomplete options="options" details="details"
+                           placeholder="{{'global.form.address.placeholder' | translate}}"
+                            />
+                    <div class="error" ng-show="form.address.$dirty && form.address.$invalid">
+                        <small class="error"
+                               ng-show="form.address.$error.required" translate="global.messages.validate.address.required">
+                            Your street address is required.
                         </small>
                     </div>
                 </div>

@@ -100,11 +100,17 @@ public class UserService {
         return newPerson;
     }
 
-    public void updateUserInformation(String firstName, String lastName, String email, String address) {
+    public void updateUserInformation(String firstName, String lastName, String email, String telephone, Address address) {
         Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
         currentPerson.setFirstName(firstName);
         currentPerson.setLastName(lastName);
         currentPerson.setEmail(email);
+        currentPerson.setTelephone(telephone);
+
+        // Only update address if there was a change. No change might imply no point details!
+        if (address != null && ! address.equals(currentPerson.getAddress()))
+            currentPerson.setAddress(address);
+
         personRepository.save(currentPerson);
         log.debug("Changed Information for User: {}", currentPerson);
     }
