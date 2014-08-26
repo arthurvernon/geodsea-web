@@ -116,12 +116,38 @@ public class UserService {
         log.debug("Changed Information for User: {}", currentPerson);
     }
 
-    public void changePassword(String password) {
+    /**
+     * Update the password, but only if the user supplies the correct existing password.
+     * @param oldPassword current user's password
+     * @param newPassword new password to store.
+     * @throws IllegalArgumentException if the oldPassword supplied is not the current user's password.
+     */
+    public void changePassword(String oldPassword, String newPassword) {
         Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
-        String encryptedPassword = passwordEncoder.encode(password);
-        currentPerson.setPassword(encryptedPassword);
-        personRepository.save(currentPerson);
-        log.debug("Changed password for User: {}", currentPerson);
+
+        String dbValue = currentPerson.getPassword();
+
+        if (passwordEncoder.matches(oldPassword, dbValue))
+        {
+            String encryptedPassword = passwordEncoder.encode(newPassword);
+            currentPerson.setPassword(encryptedPassword);
+            personRepository.save(currentPerson);
+            log.debug("Changed password for User: {}", currentPerson);
+        }
+        else
+            throw new IllegalArgumentException("Old password is incorrect");
+    }
+
+    public void resetPassword(String question, String answer, String password) {
+        Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
+        if (currentPerson.getQuestion().equals(question) && currentPerson.getAnswer().equalsIgnoreCase(answer)) {
+            String encryptedPassword = passwordEncoder.encode(password);
+            currentPerson.setPassword(encryptedPassword);
+            personRepository.save(currentPerson);
+            log.debug("Changed password for User: {}", currentPerson);
+        }
+        else
+            throw new IllegalArgumentException("Incorrect answer");
     }
 
     @Transactional(readOnly = true)

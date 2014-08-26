@@ -11,6 +11,7 @@ import com.geodsea.pub.security.SecurityUtils;
 import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.service.MailService;
 import com.geodsea.pub.service.UserService;
+import com.geodsea.pub.web.rest.dto.PasswordChangeDTO;
 import com.geodsea.pub.web.rest.dto.UserDTO;
 import com.vividsolutions.jts.geom.Point;
 import org.apache.commons.lang.StringUtils;
@@ -179,13 +180,40 @@ public class AccountResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<?> changePassword(@RequestBody String password) {
-        if (StringUtils.isEmpty(password)) {
+    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO change) {
+        if (StringUtils.isEmpty(change.getNewPassword())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        userService.changePassword(password);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            userService.changePassword(change.getOldPassword(), change.getNewPassword());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (IllegalArgumentException ex)
+        {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
+
+    /**
+     * POST  /rest/change_password -> changes the current user's password
+     */
+    @RequestMapping(value = "/rest/account/reset_password",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<?> resetPassword(@RequestBody String question, @RequestBody String answer, @RequestBody String password) {
+        if (StringUtils.isEmpty(answer)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        try {
+            userService.resetPassword(question, answer, password);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (IllegalStateException ex){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
 
     /**
      * GET  /rest/account/sessions -> get the current open sessions.

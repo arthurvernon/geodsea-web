@@ -55,6 +55,8 @@
             "lastname.placeholder": "Enter your last name",
             "username": "Login",
             "username.placeholder": "Enter a unique username, maybe your email address?",
+            "oldpassword": "Current password",
+            "oldpassword.placeholder": "Current password",
             "newpassword": "New password",
             "newpassword.placeholder": "New password",
             "confirmpassword": "New password confirmation",

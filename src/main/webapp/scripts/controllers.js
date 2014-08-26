@@ -122,17 +122,17 @@ geodseaApp.controller('ActivationController', ['$scope', '$routeParams', 'Activa
             });
     }]);
 
-geodseaApp.controller('PasswordController', ['$scope', 'Password',
-    function ($scope, Password) {
+geodseaApp.controller('PasswordController', ['$scope', 'PasswordChange',
+    function ($scope, PasswordChange) {
         $scope.success = null;
         $scope.error = null;
         $scope.doNotMatch = null;
         $scope.changePassword = function () {
-            if ($scope.password != $scope.confirmPassword) {
+            if ($scope.password.newPassword != $scope.confirmPassword) {
                 $scope.doNotMatch = "ERROR";
             } else {
                 $scope.doNotMatch = null;
-                Password.save($scope.password,
+                PasswordChange.save($scope.password,
                     function (value, responseHeaders) {
                         $scope.error = null;
                         $scope.success = 'OK';

@@ -56,6 +56,8 @@
             "lastname.placeholder": "_de_Enter your last name",
             "username": "Name",
             "username.placeholder": "Ihr Name",
+            "oldpassword": "_de_Current password",
+            "oldpassword.placeholder": "_de_Current password",
             "newpassword": "Neues Passwort",
             "newpassword.placeholder": "Neues Passwort",
             "confirmpassword": "Neues Passwort bestätigen",

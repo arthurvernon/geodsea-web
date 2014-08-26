@@ -55,6 +55,8 @@
             "lastname.placeholder": "_da_Enter your last name",
             "username": "Brugernavn",
             "username.placeholder": "Dit brugernavn",
+            "oldpassword": "_da_Current password",
+            "oldpassword.placeholder": "_da_Current password",
             "newpassword": "Nyt kodeord",
             "newpassword.placeholder": "Indtast det nye kodeord",
             "confirmpassword": "Bekræft det nye kodeordet",

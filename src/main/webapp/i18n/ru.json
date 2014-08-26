@@ -56,6 +56,8 @@
             "lastname.placeholder": "_ru_Enter your last name",
             "username": "Логин",
             "username.placeholder": "Ваш логин",
+            "oldpassword": "_ru_Current password",
+            "oldpassword.placeholder": "_ru_Current password",
             "newpassword": "Новый пароль",
             "newpassword.placeholder": "Новый пароль",
             "confirmpassword": "Подтверждение нового пароля",
