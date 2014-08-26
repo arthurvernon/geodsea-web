@@ -684,6 +684,53 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/geodsea-${version}.war.original"
+                                      tofile="${project.build.directory}/geodsea.war" />
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.4.7</version>
+
+                <configuration>
+                    <container>
+                        <containerId>tomcat7x</containerId>
+                        <type>remote</type>
+                    </container>
+                    <configuration>
+                        <type>runtime</type>
+                        <properties>
+                            <cargo.hostname>192.168.16.50</cargo.hostname>
+                            <cargo.remote.username>admin</cargo.remote.username>
+                            <cargo.remote.password>arthurros1</cargo.remote.password>
+                            <cargo.tomcat.manager.url>http://192.168.16.50:8888/manager/html</cargo.tomcat.manager.url>
+                        </properties>
+                    </configuration>
+                    <deployables>
+                        <deployable>
+                            <location>${basedir}/target/geodsea.war</location>
+                        </deployable>
+                    </deployables>
+
+                </configuration>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
