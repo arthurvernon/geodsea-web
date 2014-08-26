@@ -64,7 +64,11 @@
             "address": "_da_Street Address",
             "address.placeholder": "_da_Your street address",
             "telephone" : "_da_Telephone",
-            "telephone.placeholder": "_da_Telephone number incl. area code"
+            "telephone.placeholder": "_da_Telephone number incl. area code",
+            "question" : "_da_Secret Question",
+            "question.placeholder": "_da_Your secret question",
+            "answer" : "_da_Answer",
+            "answer.placeholder": "_da_Enter answer"
         },
         "messages": {
             "info": {
@@ -110,6 +114,16 @@
                     "invalid": "_da_Din telephone number er ugyldig!",
                     "minlength": "_da_Din telephone number skal som minimum være på 5 tegn",
                     "maxlength": "_da_Din tepehone numebr må ikke overskride 50 tegn"
+                },
+                "question": {
+                    "required": "_da_A secret question must be specified.",
+                    "minlength": "_da_A question must contain at least two characters",
+                    "maxlength": "_da_A question can be no longer than 100 characters"
+                },
+                "answer": {
+                    "required": "_da_An answer to the question must be specified.",
+                    "minlength": "_da_An answer must contain at least two characters",
+                    "maxlength": "_da_An answer may be no longer than 50 characters"
                 }
             }
         }

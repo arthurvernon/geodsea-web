@@ -18,6 +18,11 @@ public class UserDTO {
     
     private String langKey;
 
+
+    private String question;
+
+    private String answer;
+
     private String address;
 
     private List<AddressPartDTO> addressParts;
@@ -30,7 +35,7 @@ public class UserDTO {
     }
 
     public UserDTO(String login, String password, String firstName, String lastName, String email, String langKey,
-                   String telephone, String address, List<AddressPartDTO> addressParts, PointDTO point,
+                   String telephone, String question, String answer, String address, List<AddressPartDTO> addressParts, PointDTO point,
                    List<String> roles) {
         this.login = login;
         this.password = password;
@@ -39,6 +44,8 @@ public class UserDTO {
         this.email = email;
         this.langKey = langKey;
         this.telephone = telephone;
+        this.question = question;
+        this.answer = answer;
         this.address = address;
         this.addressParts = addressParts;
         this.point = point;
@@ -105,7 +112,21 @@ public class UserDTO {
         this.point = point;
     }
 
+    public String getQuestion() {
+        return question;
+    }
 
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
 
     @Override
     public String toString() {
@@ -119,6 +140,8 @@ public class UserDTO {
         sb.append(", email='").append(email).append('\'');
         sb.append(", telephone='").append(telephone).append('\'');
         sb.append(", address='").append(address).append('\'');
+        sb.append(", question='").append(question).append('\'');
+        sb.append(", answer='").append(answer).append('\'');
         sb.append(", langKey='").append(langKey).append('\'');
         sb.append(", roles=").append(roles);
         sb.append('}');

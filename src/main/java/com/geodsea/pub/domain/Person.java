@@ -46,6 +46,15 @@ public class Person extends Participant implements Serializable {
     @Column(name = "lang_key")
     private String langKey;
 
+    @Size(min = 2, max = 100)
+    @Column(name = "question", nullable = false)
+    private String question;
+
+    @Size(min = 2, max = 50)
+    @Column(name = "answer", nullable = false)
+    private String answer;
+
+
     @Column(name="BIRTH_DATE", nullable = true)
     @Temporal(TemporalType.DATE)
     @Past()
@@ -150,6 +159,22 @@ public class Person extends Participant implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     @Override

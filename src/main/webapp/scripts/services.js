@@ -93,13 +93,15 @@ geodseaApp.factory('AuditsService', ['$http',
 
 geodseaApp.factory('Session', [
     function () {
-        this.createSession = function (id, login, firstName, lastName, email, telephone, address, userRoles) {
+        this.createSession = function (id, login, firstName, lastName, email, telephone, question, answer, address, userRoles) {
             this.id= id;
             this.login = login;
             this.firstName = firstName;
             this.lastName = lastName;
             this.email = email;
             this.telephone = telephone;
+            this.question = question;
+            this.answer = answer;
             this.address = address;
             this.userRoles = userRoles;
         };
@@ -110,6 +112,8 @@ geodseaApp.factory('Session', [
             this.lastName = null;
             this.email = null;
             this.telephone = null;
+            this.question = null;
+            this.answer = null;
             this.address = null;
             this.userRoles = null;
         };
@@ -127,7 +131,8 @@ geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authS
     function ($rootScope, $http, authService, Session, Account) {
         return {
             login: function (param) {
-                var data ="j_username=" + param.username +"&j_password=" + param.password +"&_spring_security_remember_me=" + param.rememberMe +"&submit=Login";
+                var data ="j_username=" + param.username +"&j_password=" + param.password +"&_spring_security_remember_me="
+                    + param.rememberMe +"&submit=Login";
                 $http.post('app/authentication', data, {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
@@ -137,7 +142,8 @@ geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authS
 
                     Account.get(function(data) {
 
-                        Session.createSession(data.id, data.login, data.firstName, data.lastName, data.email, data.telephone, data.address, data.roles);
+                        Session.createSession(data.id, data.login, data.firstName, data.lastName, data.email,
+                            data.telephone, data.question, data.answer, data.address, data.roles);
                         $rootScope.account = Session;
                         authService.loginConfirmed(data);
                     });
@@ -154,7 +160,8 @@ geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authS
                     if (!Session.login) {
                         Account.get(function(data) {
 
-                            Session.createSession(data.id, data.login, data.firstName, data.lastName, data.email, data.telephone, data.address, data.roles);
+                            Session.createSession(data.id, data.login, data.firstName, data.lastName, data.email,
+                                data.telephone, data.question, data.answer, data.address, data.roles);
                             $rootScope.account = Session;
 
                             if (!$rootScope.isAuthorized(authorizedRoles)) {

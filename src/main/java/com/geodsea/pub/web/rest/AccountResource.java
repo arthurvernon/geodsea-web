@@ -93,6 +93,7 @@ public class AccountResource {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
+
     /**
      * GET  /rest/activate -> activate the registered user.
      */
@@ -130,25 +131,27 @@ public class AccountResource {
     public ResponseEntity<UserDTO> getAccount() {
         Person person = userService.getUserWithAuthorities();
         if (person == null) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         List<String> roles = new ArrayList<>();
         for (Authority authority : person.getAuthorities()) {
             roles.add(authority.getName());
         }
         return new ResponseEntity<>(
-            new UserDTO(
-                person.getParticipantName(),
-                null,
-                person.getFirstName(),
-                person.getLastName(),
-                person.getEmail(),
-                person.getLangKey(),
-                person.getTelephone(),
-                person.getAddress() != null ? person.getAddress().getFormatted() : null,
-                    null, null,
-                roles),
-            HttpStatus.OK);
+                new UserDTO(
+                        person.getParticipantName(),
+                        null,
+                        person.getFirstName(),
+                        person.getLastName(),
+                        person.getEmail(),
+                        person.getLangKey(),
+                        person.getTelephone(),
+                        person.getQuestion(),
+                        person.getAnswer(),
+                        person.getAddress() != null ? person.getAddress().getFormatted() : null,
+                        null, null,
+                        roles),
+                HttpStatus.OK);
     }
 
     /**
@@ -160,11 +163,13 @@ public class AccountResource {
     @Timed
     public void saveAccount(@RequestBody UserDTO userDTO) {
         Address address = null;
-        if (userDTO.getAddress() != null) {
+        if (userDTO.getPoint() != null) {
             Point point = gisService.createPointFromLatLong(userDTO.getPoint().getLat(), userDTO.getPoint().getLon());
             address = new Address(userDTO.getAddress(), point);
         }
-        userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getTelephone(), address);
+        userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
+                userDTO.getTelephone(), userDTO.getQuestion(), userDTO.getAnswer(), address);
+
     }
 
     /**
@@ -195,22 +200,22 @@ public class AccountResource {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(
-            persistentTokenRepository.findByPerson(person),
-            HttpStatus.OK);
+                persistentTokenRepository.findByPerson(person),
+                HttpStatus.OK);
     }
 
     /**
      * DELETE  /rest/account/sessions?series={series} -> invalidate an existing session.
-     *
+     * <p/>
      * - You can only delete your own sessions, not any other user's session
      * - If you delete one of your existing sessions, and that you are currently logged in on that session, you will
-     *   still be able to use that session, until you quit your browser: it does not work in real time (there is
-     *   no API for that), it only removes the "remember me" cookie
+     * still be able to use that session, until you quit your browser: it does not work in real time (there is
+     * no API for that), it only removes the "remember me" cookie
      * - This is also true if you invalidate your current session: you will still be able to use it until you close
-     *   your browser or that the session times out. But automatic login (the "remember me" cookie) will not work
-     *   anymore.
-     *   There is an API to invalidate the current session, but there is no API to check which session uses which
-     *   cookie.
+     * your browser or that the session times out. But automatic login (the "remember me" cookie) will not work
+     * anymore.
+     * There is an API to invalidate the current session, but there is no API to check which session uses which
+     * cookie.
      */
     @RequestMapping(value = "/rest/account/sessions/{series}",
             method = RequestMethod.DELETE)
@@ -231,8 +236,8 @@ public class AccountResource {
         Map<String, Object> variables = new HashMap<String, Object>();
         variables.put("user", person);
         variables.put("baseUrl", request.getScheme() + "://" +   // "http" + "://
-                                 request.getServerName() +       // "myhost"
-                                 ":" + request.getServerPort());
+                request.getServerName() +       // "myhost"
+                ":" + request.getServerPort());
         IWebContext context = new SpringWebContext(request, response, servletContext,
                 locale, variables, applicationContext);
         return templateEngine.process(MailService.EMAIL_ACTIVATION_PREFIX + MailService.TEMPLATE_SUFFIX, context);

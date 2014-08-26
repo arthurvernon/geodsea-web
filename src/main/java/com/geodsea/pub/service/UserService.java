@@ -52,8 +52,7 @@ public class UserService {
 
         // activate given user for the registration key.
         if (person != null) {
-            if (person.getRegistrationTokenExpires().getTime() < System.currentTimeMillis())
-            {
+            if (person.getRegistrationTokenExpires().getTime() < System.currentTimeMillis()) {
                 log.info("User account {} not activated as it has expired", person);
                 personRepository.delete(person);
                 return null;
@@ -63,8 +62,7 @@ public class UserService {
             person.setRegistrationTokenExpires(null);
             personRepository.save(person);
             log.debug("Activated user: {}", person);
-        }
-        else
+        } else
             log.warn("Failed to identify person with the registration key: " + key);
 
         return person;
@@ -100,15 +98,18 @@ public class UserService {
         return newPerson;
     }
 
-    public void updateUserInformation(String firstName, String lastName, String email, String telephone, Address address) {
+    public void updateUserInformation(String firstName, String lastName, String email, String telephone, String question,
+                                      String answer, Address address) {
         Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
         currentPerson.setFirstName(firstName);
         currentPerson.setLastName(lastName);
         currentPerson.setEmail(email);
         currentPerson.setTelephone(telephone);
+        currentPerson.setQuestion(question);
+        currentPerson.setAnswer(answer);
 
         // Only update address if there was a change. No change might imply no point details!
-        if (address != null && ! address.equals(currentPerson.getAddress()))
+        if (address != null && !address.equals(currentPerson.getAddress()))
             currentPerson.setAddress(address);
 
         personRepository.save(currentPerson);

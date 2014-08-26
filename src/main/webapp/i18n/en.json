@@ -64,7 +64,11 @@
             "address": "Street Address",
             "address.placeholder": "Enter your home address (not a PO Box number)",
             "telephone": "Telephone",
-            "telephone.placeholder": "Telephone number incl. area code"
+            "telephone.placeholder": "Telephone number incl. area code",
+            "question" : "Secret Question",
+            "question.placeholder": "Your secret question",
+            "answer" : "Answer",
+            "answer.placeholder": "Enter answer"
         },
         "messages": {
             "info": {
@@ -110,6 +114,16 @@
                     "invalid": "Your telephone number is invalid.",
                     "minlength": "Your telephone number is required to be at least 5 characters",
                     "maxlength": "Your telephone number cannot be longer than 50 characters"
+                },
+                "question": {
+                    "required": "A secret question must be specified.",
+                    "minlength": "A question must contain at least two characters",
+                    "maxlength": "A question can be no longer than 100 characters"
+                },
+                "answer": {
+                    "required": "An answer to the question must be specified.",
+                    "minlength": "An answer must contain at least two characters",
+                    "maxlength": "An answer may be no longer than 50 characters"
                 }
             }
         }
@@ -183,12 +197,12 @@
             "validate": {
                 "firstname": {
                     "required": "Your first name is required.",
-                    "minlength": "Your first name is required to be at least 1 character",
+                    "minlength": "Your first name is required to be at least one character",
                     "maxlength": "Your first name cannot be longer than 50 characters"
                 },
                 "lastname": {
                     "required": "Your last name is required.",
-                    "minlength": "Your last name is required to be at least 1 character",
+                    "minlength": "Your last name is required to be at least one character",
                     "maxlength": "Your last name cannot be longer than 50 characters"
                 }
             }

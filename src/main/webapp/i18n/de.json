@@ -65,7 +65,11 @@
             "address": "_de_Street Address",
             "address.placeholder": "_de_Your street address",
             "telephone" : "_de_Telephone",
-            "telephone.placeholder": "_de_Telephone number incl. area code"
+            "telephone.placeholder": "_de_Telephone number incl. area code",
+            "question" : "_de_Secret Question",
+            "question.placeholder": "_de_Your secret question",
+            "answer" : "_de_Answer",
+            "answer.placeholder": "_de_Enter answer"
         },
         "messages": {
             "info": {
@@ -111,6 +115,16 @@
                     "invalid": "_de_Ihre telephone number ist ungültig.",
                     "minlength": "_de_Ihre telephone number muss mindestens 5 Zeichen lang sein",
                     "maxlength": "_de_Ihre telephone number darf nicht länger als 50 Zeichen sein"
+                },
+                "question": {
+                    "required": "_de_A secret question must be specified.",
+                    "minlength": "_de_A question must contain at least two characters",
+                    "maxlength": "_de_A question can be no longer than 100 characters"
+                },
+                "answer": {
+                    "required": "_de_An answer to the question must be specified.",
+                    "minlength": "_de_An answer must contain at least two characters",
+                    "maxlength": "_de_An answer may be no longer than 50 characters"
                 }
             }
         }

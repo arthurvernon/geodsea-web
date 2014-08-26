@@ -65,7 +65,11 @@
             "address": "_ru_Street Address",
             "address.placeholder": "_ru_Your street address",
             "telephone" : "_ru_Telephone"            ,
-            "telephone.placeholder": "_ru_Telephone number incl. area code"
+            "telephone.placeholder": "_ru_Telephone number incl. area code",
+            "question" : "_ru_Secret Question",
+            "question.placeholder": "_ru_Your secret question",
+            "answer" : "_ru_Answer",
+            "answer.placeholder": "_ru_Enter answer"
         },
         "messages": {
             "info": {
@@ -111,6 +115,16 @@
                     "invalid": "_ru_telephone number не верен.",
                     "minlength": "_ru_Длина telephone number должна быть хотя-бы 5 символов",
                     "maxlength": "_ru_telephone number не может быть длиннее чем 50 символов"
+                },
+                "question": {
+                    "required": "_ru_A secret question must be specified.",
+                    "minlength": "_ru_A question must contain at least two characters",
+                    "maxlength": "_ru_A question can be no longer than 100 characters"
+                },
+                "answer": {
+                    "required": "_ru_An answer to the question must be specified.",
+                    "minlength": "_ru_An answer must contain at least two characters",
+                    "maxlength": "_ru_An answer may be no longer than 50 characters"
                 }
             }
         }

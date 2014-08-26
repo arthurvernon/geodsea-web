@@ -66,7 +66,11 @@
             "address": "_pl_Street Address",
             "address.placeholder": "_pl_Your street address",
             "telephone" : "_pl_Telephone",
-            "telephone.placeholder": "_pl_Telephone number incl. area code"
+            "telephone.placeholder": "_pl_Telephone number incl. area code",
+            "question" : "_pl_Secret Question",
+            "question.placeholder": "_pl_Your secret question",
+            "answer" : "_pl_Answer",
+            "answer.placeholder": "_pl_Enter answer"
         },
         "messages": {
             "info": {
@@ -112,6 +116,16 @@
                     "invalid": "_pl_Twój telephone number jest błędny.",
                     "minlength": "_pl_Twój telephone number musi mieć przynajmniej 5 liter",
                     "maxlength": "_pl_Your telephone number nie może być dłuższe niż 50 liter"
+                },
+                "question": {
+                    "required": "_pl_A secret question must be specified.",
+                    "minlength": "_pl_A question must contain at least two characters",
+                    "maxlength": "_pl_A question can be no longer than 100 characters"
+                },
+                "answer": {
+                    "required": "_pl_An answer to the question must be specified.",
+                    "minlength": "_pl_An answer must contain at least two characters",
+                    "maxlength": "_pl_An answer may be no longer than 50 characters"
                 }
             }
         }

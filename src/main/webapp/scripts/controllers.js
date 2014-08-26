@@ -50,11 +50,13 @@ geodseaApp.controller('SettingsController', ['$scope', 'Account',
         $scope.settingsAccount = Account.get();
 
         $scope.save = function () {
-            $scope.settingsAccount.addressParts=$scope.details.address_components;
-            $scope.settingsAccount.point ={
-                "lat" : $scope.details.geometry.location.k,
-                "lon" : $scope.details.geometry.location.B
-            };
+            if (typeof($scope.details) != 'undefined') {
+                $scope.settingsAccount.addressParts = $scope.details.address_components;
+                $scope.settingsAccount.point = {
+                    "lat": $scope.details.geometry.location.k,
+                    "lon": $scope.details.geometry.location.B
+                };
+            }
 
             Account.save($scope.settingsAccount,
                 function (value, responseHeaders) {
@@ -81,10 +83,10 @@ geodseaApp.controller('RegisterController', ['$scope', '$translate', 'Register',
             } else {
                 $scope.registerAccount.langKey = $translate.use();
                 $scope.doNotMatch = null;
-                $scope.registerAccount.addressParts=$scope.details.address_components;
-                $scope.registerAccount.point ={
-                    "lat" : $scope.details.geometry.location.k,
-                    "lon" : $scope.details.geometry.location.B
+                $scope.registerAccount.addressParts = $scope.details.address_components;
+                $scope.registerAccount.point = {
+                    "lat": $scope.details.geometry.location.k,
+                    "lon": $scope.details.geometry.location.B
                 };
                 Register.save($scope.registerAccount,
                     function (value, responseHeaders) {
@@ -95,7 +97,7 @@ geodseaApp.controller('RegisterController', ['$scope', '$translate', 'Register',
                     function (httpResponse) {
                         $scope.success = null;
                         if (httpResponse.status === 304 &&
-                                httpResponse.data.error && httpResponse.data.error === "Not Modified") {
+                            httpResponse.data.error && httpResponse.data.error === "Not Modified") {
                             $scope.error = null;
                             $scope.errorUserExists = "ERROR";
                         } else {
@@ -162,7 +164,7 @@ geodseaApp.controller('SessionsController', ['$scope', 'resolvedSessions', 'Sess
         };
     }]);
 
- geodseaApp.controller('TrackerController', ['$scope',
+geodseaApp.controller('TrackerController', ['$scope',
     function ($scope) {
         // This controller uses the Atmosphere framework to keep a Websocket connection opened, and receive
         // user activities in real-time.
@@ -173,14 +175,14 @@ geodseaApp.controller('SessionsController', ['$scope', 'resolvedSessions', 'Sess
         $scope.trackerTransport = 'websocket';
 
         $scope.trackerRequest = { url: 'websocket/tracker',
-            contentType : "application/json",
-            transport : $scope.trackerTransport ,
-            trackMessageLength : true,
-            reconnectInterval : 5000,
+            contentType: "application/json",
+            transport: $scope.trackerTransport,
+            trackMessageLength: true,
+            reconnectInterval: 5000,
             enableXDR: true,
-            timeout : 60000 };
+            timeout: 60000 };
 
-        $scope.trackerRequest.onOpen = function(response) {
+        $scope.trackerRequest.onOpen = function (response) {
             $scope.trackerTransport = response.transport;
             $scope.trackerRequest.uuid = response.request.uuid;
         };
@@ -190,7 +192,7 @@ geodseaApp.controller('SessionsController', ['$scope', 'resolvedSessions', 'Sess
             var activity = atmosphere.util.parseJSON(message);
             var existingActivity = false;
             for (var index = 0; index < $scope.activities.length; index++) {
-                if($scope.activities[index].sessionId == activity.sessionId) {
+                if ($scope.activities[index].sessionId == activity.sessionId) {
                     existingActivity = true;
                     if (activity.page == "logout") {
                         $scope.activities.splice(index, 1);
@@ -211,18 +213,18 @@ geodseaApp.controller('SessionsController', ['$scope', 'resolvedSessions', 'Sess
 geodseaApp.controller('MetricsController', ['$scope', 'MetricsService', 'HealthCheckService', 'ThreadDumpService',
     function ($scope, MetricsService, HealthCheckService, ThreadDumpService) {
 
-        $scope.refresh = function() {
-            HealthCheckService.check().then(function(data) {
+        $scope.refresh = function () {
+            HealthCheckService.check().then(function (data) {
                 $scope.healthCheck = data;
             });
 
             $scope.metrics = MetricsService.get();
 
-            $scope.metrics.$get({}, function(items) {
+            $scope.metrics.$get({}, function (items) {
 
                 $scope.servicesStats = {};
                 $scope.cachesStats = {};
-                angular.forEach(items.timers, function(value, key) {
+                angular.forEach(items.timers, function (value, key) {
                     if (key.indexOf("web.rest") != -1 || key.indexOf("service") != -1) {
                         $scope.servicesStats[key] = value;
                     }
@@ -245,8 +247,8 @@ geodseaApp.controller('MetricsController', ['$scope', 'MetricsService', 'HealthC
 
         $scope.refresh();
 
-        $scope.threadDump = function() {
-            ThreadDumpService.dump().then(function(data) {
+        $scope.threadDump = function () {
+            ThreadDumpService.dump().then(function (data) {
                 $scope.threadDump = data;
 
                 $scope.threadDumpRunnable = 0;
@@ -254,7 +256,7 @@ geodseaApp.controller('MetricsController', ['$scope', 'MetricsService', 'HealthC
                 $scope.threadDumpTimedWaiting = 0;
                 $scope.threadDumpBlocked = 0;
 
-                angular.forEach(data, function(value, key) {
+                angular.forEach(data, function (value, key) {
                     if (value.threadState == 'RUNNABLE') {
                         $scope.threadDumpRunnable += 1;
                     } else if (value.threadState == 'WAITING') {
@@ -272,7 +274,7 @@ geodseaApp.controller('MetricsController', ['$scope', 'MetricsService', 'HealthC
             });
         };
 
-        $scope.getLabelClass = function(threadState) {
+        $scope.getLabelClass = function (threadState) {
             if (threadState == 'RUNNABLE') {
                 return "label-success";
             } else if (threadState == 'WAITING') {
@@ -298,22 +300,22 @@ geodseaApp.controller('LogsController', ['$scope', 'resolvedLogs', 'LogsService'
 
 geodseaApp.controller('AuditsController', ['$scope', '$translate', '$filter', 'AuditsService',
     function ($scope, $translate, $filter, AuditsService) {
-        $scope.onChangeDate = function() {
-            AuditsService.findByDates($scope.fromDate, $scope.toDate).then(function(data){
+        $scope.onChangeDate = function () {
+            AuditsService.findByDates($scope.fromDate, $scope.toDate).then(function (data) {
                 $scope.audits = data;
             });
         };
 
         // Date picker configuration
-        $scope.today = function() {
+        $scope.today = function () {
             // Today + 1 day - needed if the current day must be included
             var today = new Date();
-            var tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1); // create new increased date
+            var tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1); // create new increased date
 
             $scope.toDate = $filter('date')(tomorrow, "yyyy-MM-dd");
         };
 
-        $scope.previousMonth = function() {
+        $scope.previousMonth = function () {
             var fromDate = new Date();
             if (fromDate.getMonth() == 0) {
                 fromDate = new Date(fromDate.getFullYear() - 1, 0, fromDate.getDate());
@@ -326,8 +328,8 @@ geodseaApp.controller('AuditsController', ['$scope', '$translate', '$filter', 'A
 
         $scope.today();
         $scope.previousMonth();
-        
-        AuditsService.findByDates($scope.fromDate, $scope.toDate).then(function(data){
+
+        AuditsService.findByDates($scope.fromDate, $scope.toDate).then(function (data) {
             $scope.audits = data;
         });
     }]);

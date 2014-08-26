@@ -178,6 +178,50 @@
                     </div>
                 </div>
 
+                <!-- Secret Question -->
+                <div class="form-group">
+                    <label translate="global.form.question">Secret Question</label>
+                    <input type="text" class="form-control" name="question" placeholder="{{'global.form.question.placeholder' | translate}}"
+                           ng-model="registerAccount.question" ng-minlength=2 ng-maxlength=100
+                           required>
+                    <div class="error" ng-show="form.question.$dirty && form.question.$invalid">
+                        <small class="error"
+                               ng-show="form.question.$error.required" translate="global.messages.validate.question.required">
+                            A question is required
+                        </small>
+                        <small class="error"
+                               ng-show="form.question.$error.minlength" translate="global.messages.validate.question.minlength">
+                            A question must contain at least two characters.
+                        </small>
+                        <small class="error"
+                               ng-show="form.question.$error.maxlength" translate="global.messages.validate.question.maxlength">
+                            A question must be no more than 100 characters
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Answer to secret question -->
+                <div class="form-group">
+                    <label translate="global.form.answer">Answer</label>
+                    <input type="text" class="form-control" name="answer" placeholder="{{'global.form.answer.placeholder' | translate}}"
+                           ng-model="registerAccount.answer" ng-minlength=2 ng-maxlength=50
+                           required>
+                    <div class="error" ng-show="form.answer.$dirty && form.answer.$invalid">
+                        <small class="error"
+                               ng-show="form.answer.$error.required" translate="global.messages.validate.answer.required">
+                            An answer to the question is required
+                        </small>
+                        <small class="error"
+                               ng-show="form.answer.$error.minlength" translate="global.messages.validate.answer.minlength">
+                            An answer must contain at least two characters.
+                        </small>
+                        <small class="error"
+                               ng-show="form.answer.$error.maxlength" translate="global.messages.validate.answer.maxlength">
+                            A question must be no more than 100 characters
+                        </small>
+                    </div>
+                </div>
+
                 <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" translate="register.form.button">Register</button>
             </form>
             <p></p>
