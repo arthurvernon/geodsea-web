@@ -8,10 +8,12 @@ import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.repository.PersistentTokenRepository;
 import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.security.SecurityUtils;
+import com.geodsea.pub.service.ActionRefusedException;
 import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.service.MailService;
 import com.geodsea.pub.service.UserService;
 import com.geodsea.pub.web.rest.dto.PasswordChangeDTO;
+import com.geodsea.pub.web.rest.dto.QAndADTO;
 import com.geodsea.pub.web.rest.dto.UserDTO;
 import com.vividsolutions.jts.geom.Point;
 import org.apache.commons.lang.StringUtils;
@@ -110,6 +112,7 @@ public class AccountResource {
         return new ResponseEntity<String>(person.getParticipantName(), HttpStatus.OK);
     }
 
+
     /**
      * GET  /rest/authenticate -> check if the user is authenticated, and return its login.
      */
@@ -188,7 +191,7 @@ public class AccountResource {
             userService.changePassword(change.getOldPassword(), change.getNewPassword());
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        catch (IllegalArgumentException ex)
+        catch (ActionRefusedException ex)
         {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -209,7 +212,7 @@ public class AccountResource {
             userService.resetPassword(question, answer, password);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        catch (IllegalStateException ex){
+        catch (ActionRefusedException ex){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
@@ -257,6 +260,21 @@ public class AccountResource {
                 persistentTokenRepository.delete(decodedSeries);
             }
         }
+    }
+
+    /**
+     * GET  /rest/question-> activate the registered user.
+     */
+    @RequestMapping(value = "/rest/question/{user}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<QAndADTO> getSecretQuestion(@PathVariable String user) {
+        Person person = personRepository.getUserByParticipantName(user);
+        if (person == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<QAndADTO>(new QAndADTO(person.getQuestion()), HttpStatus.OK);
     }
 
     private String createHtmlContentFromTemplate(final Person person, final Locale locale, final HttpServletRequest request,

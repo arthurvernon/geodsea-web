@@ -120,9 +120,9 @@ public class UserService {
      * Update the password, but only if the user supplies the correct existing password.
      * @param oldPassword current user's password
      * @param newPassword new password to store.
-     * @throws IllegalArgumentException if the oldPassword supplied is not the current user's password.
+     * @throws ActionRefusedException if the oldPassword supplied is not the current user's password.
      */
-    public void changePassword(String oldPassword, String newPassword) {
+    public void changePassword(String oldPassword, String newPassword) throws ActionRefusedException {
         Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
 
         String dbValue = currentPerson.getPassword();
@@ -135,10 +135,17 @@ public class UserService {
             log.debug("Changed password for User: {}", currentPerson);
         }
         else
-            throw new IllegalArgumentException("Old password is incorrect");
+            throw new ActionRefusedException("Old password is incorrect");
     }
 
-    public void resetPassword(String question, String answer, String password) {
+    /**
+     * Reset the password to the new password when the right answer is provided for the question.
+     * @param question the question that was asked.
+     * @param answer the answer to the question posed
+     * @param password the password to apply to this account
+     * @throws ActionRefusedException if the answer is incorrect.
+     */
+    public void resetPassword(String question, String answer, String password) throws ActionRefusedException {
         Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
         if (currentPerson.getQuestion().equals(question) && currentPerson.getAnswer().equalsIgnoreCase(answer)) {
             String encryptedPassword = passwordEncoder.encode(password);
