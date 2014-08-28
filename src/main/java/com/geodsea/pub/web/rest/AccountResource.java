@@ -12,9 +12,7 @@ import com.geodsea.pub.service.ActionRefusedException;
 import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.service.MailService;
 import com.geodsea.pub.service.UserService;
-import com.geodsea.pub.web.rest.dto.PasswordChangeDTO;
-import com.geodsea.pub.web.rest.dto.QAndADTO;
-import com.geodsea.pub.web.rest.dto.UserDTO;
+import com.geodsea.pub.web.rest.dto.*;
 import com.vividsolutions.jts.geom.Point;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -197,26 +195,6 @@ public class AccountResource {
         }
     }
 
-    /**
-     * POST  /rest/change_password -> changes the current user's password
-     */
-    @RequestMapping(value = "/rest/account/reset_password",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<?> resetPassword(@RequestBody String question, @RequestBody String answer, @RequestBody String password) {
-        if (StringUtils.isEmpty(answer)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        try {
-            userService.resetPassword(question, answer, password);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch (ActionRefusedException ex){
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-    }
-
 
     /**
      * GET  /rest/account/sessions -> get the current open sessions.
@@ -265,17 +243,64 @@ public class AccountResource {
     /**
      * GET  /rest/question-> activate the registered user.
      */
-    @RequestMapping(value = "/rest/question/{user}",
+    @RequestMapping(value = "/rest/question/user/{user}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<QAndADTO> getSecretQuestion(@PathVariable String user) {
+    public ResponseEntity<QuestionDTO> getSecretQuestion(@PathVariable String user) {
         Person person = personRepository.getUserByParticipantName(user);
         if (person == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<QAndADTO>(new QAndADTO(person.getQuestion()), HttpStatus.OK);
+        return new ResponseEntity<QuestionDTO>(new QuestionDTO(person.getQuestion()), HttpStatus.OK);
     }
+
+    /**
+     * GET  /rest/question-> activate the registered user.
+     */
+    @RequestMapping(value = "/rest/question/answer",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<?> checkAnswer(@RequestBody AnswerDTO answer) {
+        if (answer == null || answer.incomplete())
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        Person person = personRepository.getUserByParticipantName(answer.getUsername());
+        if (person == null) {
+            log.debug("no such person");
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        if (answer.getQuestion().equals(person.getQuestion()) &&
+                answer.getAnswer().equalsIgnoreCase(person.getAnswer()))
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        else {
+            log.debug("Unexpected question or answer");
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    /**
+     * Reset the current user's password if the question and corresponding answers are correct.
+     * POST  /rest/question/reset->
+     */
+    @RequestMapping(value = "/rest/question/reset",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<?> resetPassword(@RequestBody ResetDTO reset) {
+        if (reset.incomplete())
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        try {
+            userService.resetPassword(reset.getUsername(), reset.getQuestion(), reset.getAnswer(), reset.getPassword());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (ActionRefusedException ex){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
 
     private String createHtmlContentFromTemplate(final Person person, final Locale locale, final HttpServletRequest request,
                                                  final HttpServletResponse response) {

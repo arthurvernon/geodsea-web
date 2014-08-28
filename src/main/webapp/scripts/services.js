@@ -29,7 +29,7 @@ geodseaApp.factory('PasswordChange', ['$resource',
 
 geodseaApp.factory('PasswordReset', ['$resource',
     function ($resource) {
-        return $resource('app/rest/account/reset_password', {}, {
+        return $resource('app/rest/question/reset', {}, {
         });
     }]);
 

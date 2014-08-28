@@ -145,16 +145,18 @@ public class UserService {
      * @param password the password to apply to this account
      * @throws ActionRefusedException if the answer is incorrect.
      */
-    public void resetPassword(String question, String answer, String password) throws ActionRefusedException {
-        Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
-        if (currentPerson.getQuestion().equals(question) && currentPerson.getAnswer().equalsIgnoreCase(answer)) {
+    public void resetPassword(String user, String question, String answer, String password) throws ActionRefusedException {
+        Person person = personRepository.getUserByParticipantName(user);
+        if (person == null)
+            throw new ActionRefusedException("No such user");
+        if (person.getQuestion().equals(question) && person.getAnswer().equalsIgnoreCase(answer)) {
             String encryptedPassword = passwordEncoder.encode(password);
-            currentPerson.setPassword(encryptedPassword);
-            personRepository.save(currentPerson);
-            log.debug("Changed password for User: {}", currentPerson);
+            person.setPassword(encryptedPassword);
+            personRepository.save(person);
+            log.debug("Changed password for User: {}", person);
         }
         else
-            throw new IllegalArgumentException("Incorrect answer");
+            throw new ActionRefusedException("Incorrect answer");
     }
 
     @Transactional(readOnly = true)
