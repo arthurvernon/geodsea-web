@@ -136,8 +136,9 @@ geodseaApp
                         authorizedRoles: [USER_ROLES.all]
                     }
                 })
-                .when('/rescue', {
-                    templateUrl: 'views/rescue.html',
+                .when('/rescue/:lang_param', {
+                    templateUrl: function(params){
+                        return 'views/rescue_' + params.lang_param + '.html';},
                     controller: 'HelpController',
                     access: {
                         authorizedRoles: [USER_ROLES.all]
@@ -181,6 +182,7 @@ geodseaApp
         }])
         .run(['$rootScope', '$location', '$http', 'AuthenticationSharedService', 'Session', 'USER_ROLES',
             function($rootScope, $location, $http, AuthenticationSharedService, Session, USER_ROLES) {
+                $rootScope.language = 'en';
                 $rootScope.$on('$routeChangeStart', function (event, next) {
                     $rootScope.isAuthorized = AuthenticationSharedService.isAuthorized;
                     $rootScope.userRoles = USER_ROLES;

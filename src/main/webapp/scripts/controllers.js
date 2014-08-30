@@ -14,10 +14,11 @@ geodseaApp.controller('HelpController', ['$scope',
     function ($scope) {
     }]);
 
-geodseaApp.controller('LanguageController', ['$scope', '$translate',
-    function ($scope, $translate) {
+geodseaApp.controller('LanguageController', ['$scope', '$translate', '$rootScope',
+    function ($scope, $translate, $rootScope) {
         $scope.changeLanguage = function (languageKey) {
             $translate.use(languageKey);
+            $rootScope.language = languageKey;
         };
     }]);
 
