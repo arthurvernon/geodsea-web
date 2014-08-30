@@ -1,25 +1,115 @@
 <div>
+    <h1>Introduction</h1>
 
-    <h2>Introduction</h2>
-    <p>Organisations responsible for sea search and rescue operations can utilise GeoDSea to maintain a situational
-        awareness of boating activity. Skippers may use the mobile app to automatically update information.
-        Alternatively the organisation may enter this in via an electronic form available in the Rescue Portal.</p>
+    <p>
+        Search and rescue operations (SRO) can utilise Geo d'Sea to track boating
+        activity within their area of interest.
+    </p>
 
-    <p>The organisation is then be automatically notified of those departing from locations within their area of
-        interest. Alternatively this information can be entered directly into the rescue portal.</p>
+    <p>
+        Journeys may be registered, updated and closed out by the SRO using the the Rescue portal. When boats
+        are overdue, the portal will alert the SRO.
+    </p>
 
-    <p> A colour-coded map indicates the status of boats display local reeither Local search and rescue organisations
+    <p>
+        Alternatively, skippers may keep the SRO informed by using one of the available mobile applications.
+        These can be downloaded from the iTunes or Google App store.
+    </p>
+
+    <h1>Setup</h1>
+
+    <p>
+        Setup of an SRO entails:
+    <ol>
+        <li>User registration</li>
+        <li>Organisation registration</li>
+        <li>Application by the organisation to perform the search and rescue role</li>
+        <li>Approval by the relevant authority for the organisation to perform the search and rescue role</li>
+        <li>Addition of members to the organisation</li>
+    </ol>
+    </p>
+
+        <h2>User Registration</h2>
+
+        <div ng-hide="authenticated">
+            <p>
+                You are already registered, so the first step for you is to register the organisation.
+            </p>
+        </div>
+        <div ng-hide="authenticated">
+        <p>
+            Before you can register a SRO, you must first be a registered user of Geo d'Sea.
+        </p>
+        <p>
+            If you are not already registered, then go to the <a href="#/register/user">user registration page</a>. Upon
+            completing the form, an email will be sent to the email address you specified. In it will be a link that you
+            need to click on to complete your registration process.
+        </p>
+
+        <p>
+            User registration is free.
+        </p>
+        <p>
+            To complete the rest of the registration process, <a href="#/login">log onto the system</a> and complete
+            the remainder of the steps.
+        </p>
+    </div>
+
+    <h2>Organisation Registration</h2>
+
+    <p>
+        A SRO must first define the organisation before it can establish the search and rescue role.
+        To do this, visit the <a href="#/register/organisation">organisation
+        registration</a> page.
+    </p>
+
+    <p>
+        The user who registered the organisation is automatically added as a member of that organisation.
+    </p>
+
+    <h2>Adding Search and Rescue Role</h2>
+
+    <p>
+        Geo d'Sea recognizes a number of different roles for organisations. One of those roles is search and rescue.
+        Another role is that of the authority that oversees SROs.
+    </p>
+
+    <p>
+        Prior to an SRO role being recognised, the relevant authority must approve the information supplied by the SRO.
+    </p>
+
+
+    <p>The important aspects of setting up this role are as follows.</p>
+
+    <h3>Define the area of interest</h3>
+
+    <p>
+        This is the region over which the SAR assumes responsibility for boating.
+    </p>
+
+    <p>
+        When a skipper uses the mobile app to start this journey, the system will then report this plan to the SROs
+        who have indicated a primary responsibility for that region.
+    </p>
+
+    <h3>Contact Information</h3>
+
+    <p>
+        Geo d'Sea maintains important contact information on behalf of SROs and provides this information to users via
+        the mobile application. This includes the radio call sign and a telephone number that the SRO can be reached on.
+    </p>
+
+    <h1>Tracking</h1>
+
+    <p> SARLocal search and rescue organisations
         maintain records of boating activities originating from within their area of interest. They then maintain a
         watch on their area or interest using maps and status displaystracked.</p>
 
-    <h3>Tracking Boats</h3>
-
-    <p>Members of registered Sea Rescue Organisations can use
-        <a href="/map2.html" href="@{/demo/map2}">Geo Tracker Sea Rescue Map</a>
+    <p>SARs can use <a href="#/sample">Geo Tracker Sea Rescue Map</a>
         to view active boats in their area of interest.</p>
 
     <p>Traditionally this information was maintained in a log, updated when a skipper radioed in his intentions and
-        later on again when the skipper returned. This information can now be maintained within BoatPort&reg;.
+        later on again when the skipper returned. This information can now be maintained within Geo d'Sea.
     </p>
 
     <p>Skippers who use the BoatTrack&reg; application will input this information directly, reducing the burden on
