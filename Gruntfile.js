@@ -11,7 +11,7 @@ var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
 
 module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
-  require('time-grunt')(grunt); 
+  require('time-grunt')(grunt);
 
   grunt.initConfig({
     yeoman: {
@@ -300,7 +300,7 @@ module.exports = function (grunt) {
         html: ['<%= yeoman.dist %>/*.html']
       }
     },
-    ngmin: {
+    ngAnnotate: {
       dist: {
         files: [{
           expand: true,
@@ -328,6 +328,44 @@ module.exports = function (grunt) {
           ]
         }
       }
+    },
+      // TODO this doesn't work and needs to be replaced with a call to the python script
+    'closure-compiler': {
+        frontend: {
+            closurePath: 'node_modules/google-closure-tools-latest',
+            js:
+                [
+                    'node_modules/google-closure-library-latest/lib/closure/goog/base.js',
+                    'node_modules/google-closure-library-latest/lib/closure/goog/string/string.js',
+                    'node_modules/google-closure-library-latest/lib/closure/goog/labs/useragent/util.js',
+                    'node_modules/google-closure-library-latest/lib/closure/goog/dom/nodetype.js',
+                    'node_modules/google-closure-library-latest/lib/closure/goog/debug/error.js',
+                    'node_modules/google-closure-library-latest/lib/closure/goog/asserts/asserts.js',
+                    'node_modules/google-closure-library-latest/lib/closure/goog/array/array.js',
+                    'node_modules/google-closure-library-latest/lib/closure/goog/object/object.js',
+                    'node_modules/google-closure-library-latest/lib/closure/goog/labs/useragent/browser.js',
+                    'node_modules/google-closure-library-latest/lib/closure/goog/labs/useragent/engine.js',
+                    'node_modules/google-closure-library-latest/lib/closure/goog/useragent/useragent.js',
+                    'src/main/webapp/bower_components/openlayers/src/ol/ol.js',
+                    'src/main/webapp/bower_components/openlayers/src/ol/layer/layer.js'
+                ],
+            jsOutputFile: 'src/main/webapp/bower_components/openlayers/ol.min.js',
+            maxBuffer: 500,
+//            cwd: 'D:/java/closure-library',
+            options: {
+                compilation_level: 'ADVANCED_OPTIMIZATIONS',
+                language_in: 'ECMASCRIPT5_STRICT'
+//                transform_amd_modules: undefined,
+//                process_common_js_modules: 'src/main/webapp/bower_components/openlayers/src/ol/ol.js',
+//                common_js_entry_module: 'src/main/webapp/bower_components/openlayers/src/ol/ol.js',
+//                externs: process.env.CLOSURE_PATH + '/closure/goog/useragent/useragent.js'
+//                externs: [
+//                        process.env.CLOSURE_PATH + '/closure/goog/useragent/useragent.js',
+//                        process.env.CLOSURE_PATH + '/closure/goog/base.js'
+//                        ]
+//                externs: 'D:/java/closure-library/closure/goog/useragent/useragent.js'
+            }
+        }
     }
   });
 
@@ -361,7 +399,7 @@ module.exports = function (grunt) {
     'autoprefixer',
     'concat',
     'copy:dist',
-    'ngmin',
+    'ngAnnotate',
     'cssmin',
     'replace',
     'uglify',
@@ -373,4 +411,12 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+    grunt.registerTask('printenv', function(){
+        console.log(process.env);
+    });
+
+  grunt.loadNpmTasks('closure-compiler');
+  grunt.loadNpmTasks('grunt-ng-annotate');
+
 };

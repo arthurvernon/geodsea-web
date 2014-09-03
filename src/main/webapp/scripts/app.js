@@ -158,6 +158,28 @@ geodseaApp
                         authorizedRoles: [USER_ROLES.all]
                     }
                 })
+                .when('/map', {
+                    templateUrl: 'views/map.html',
+                    controller: 'MapController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.all]
+                    },
+                    resolve: {
+//                        style: function() {
+//                            if (!angular.element('link#mapView').length) {
+//                                angular.element('head').append(
+//                                    '<link id="mapView" rel="stylesheet" href="http://openlayers.org/en/v3.0.0/css/ol.css" type="text/css">');
+//                            }
+//                        },
+//                        script: function() {
+//                            if (!angular.element('link#mapView').length) {
+//                                var head = angular.element('head');
+//                                head.append(
+//                                    '<script src="http://openlayers.org/en/v3.0.0/build/ol.js" type="text/javascript"></script>');
+//                                head.append('<style> .map { height: 400px; width: 100%;}</style>');
+//                            }
+//                        }
+                    }})
                 .otherwise({
                     templateUrl: 'views/main.html',
                     controller: 'MainController',
