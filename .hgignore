@@ -3,3 +3,4 @@ syntax: regexp
 ^src/main/webapp/bower_components
 ^node_modules
 ^target
+^.tmp
