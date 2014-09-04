@@ -192,7 +192,7 @@ CREATE TABLE BOAT.T_LICENSE_SKIPPER (
 );
 
 ALTER TABLE BOAT.T_LICENSE_SKIPPER OWNER TO geodsea;
-COMMENT ON TABLE BOAT.T_LICENSE_SKIPPER IS 'License granting a person a right to skipper a boat within the jurisdiction of the issuer';
+COMMENT ON TABLE BOAT.T_LICENSE_SKIPPER IS 'License granting a person a right to skipper a boat within the zone of the issuer';
 
 ----------------------------------------------------------
 -- A vessel license
@@ -205,7 +205,7 @@ CREATE TABLE BOAT.T_LICENSE_VESSEL (
 );
 
 ALTER TABLE BOAT.T_LICENSE_VESSEL OWNER TO geodsea;
-COMMENT ON TABLE BOAT.T_LICENSE_VESSEL IS 'license required to own a boat within the jurisdiction of the issuer';
+COMMENT ON TABLE BOAT.T_LICENSE_VESSEL IS 'license required to own a boat within the zone of the issuer';
 COMMENT ON COLUMN BOAT.T_LICENSE_VESSEL.MAX_PEOPLE IS 'The maximum number of persons allowed on this vessel';
 
 

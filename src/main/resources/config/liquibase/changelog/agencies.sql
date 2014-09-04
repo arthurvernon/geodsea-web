@@ -24,8 +24,8 @@ CREATE TABLE boat.T_LICENSOR (
   LICENSE_WS_URL      VARCHAR(100),
   LICENSE_WS_USERNAME VARCHAR(20),
   LICENSE_WS_PASSWORD VARCHAR(20),
-  REGION              VARCHAR(50),
-  JURISDICTION        geometry (POLYGON, 4326)
+  ZONE_TITLE           VARCHAR(50),
+  ZONE                geometry (POLYGON, 4326)
 );
 ALTER TABLE boat.T_LICENSOR OWNER TO geodsea;
 ALTER SEQUENCE BOAT.LICENSOR_ID_SEQ OWNED BY BOAT.T_LICENSOR.ID;
@@ -34,8 +34,8 @@ COMMENT ON TABLE BOAT.T_LICENSOR IS 'A role typically performed by a government 
 COMMENT ON COLUMN BOAT.T_LICENSOR.LICENSE_WS_URL IS 'The URL of the web service that may be called to confirm license details';
 COMMENT ON COLUMN BOAT.T_LICENSOR.LICENSE_WS_USERNAME IS 'The username if any to include in the header';
 COMMENT ON COLUMN BOAT.T_LICENSOR.LICENSE_WS_PASSWORD IS 'The password if any to include in the header';
-COMMENT ON COLUMN BOAT.T_LICENSOR.REGION IS 'A description of the jurisdiction in human readable form (not localised)';
-COMMENT ON COLUMN BOAT.T_LICENSOR.JURISDICTION IS 'The region over which this authority provides licenses.';
+COMMENT ON COLUMN BOAT.T_LICENSOR.ZONE_TITLE IS 'A description of the zone in human readable form (not localised)';
+COMMENT ON COLUMN BOAT.T_LICENSOR.ZONE IS 'The zone over which this authority provides licenses.';
 
 
 ----------------------------------------------------------
@@ -66,7 +66,8 @@ CREATE TABLE boat.T_RESCUE (
   ID             BIGINT      NOT NULL PRIMARY KEY DEFAULT nextval('BOAT.RESCUE_ID_SEQ'),
   PARTICIPANT_ID BIGINT      NOT NULL,
   CALLSIGN       VARCHAR(40) NOT NULL,
-  RESCUE_ZONE    geometry (POLYGON, 4326)
+  ZONE_TITLE      VARCHAR(50),
+  ZONE           geometry (POLYGON, 4326)
 );
 ALTER TABLE boat.T_RESCUE OWNER TO geodsea;
 ALTER SEQUENCE BOAT.RESCUE_ID_SEQ OWNED BY BOAT.T_RESCUE.ID;
@@ -76,5 +77,29 @@ REFERENCES BOAT.T_PARTICIPANT_GROUP (ID) ON DELETE CASCADE;
 
 
 COMMENT ON TABLE BOAT.T_RESCUE IS 'A sea rescue organisation details.';
-COMMENT ON COLUMN BOAT.T_RESCUE.RESCUE_ZONE IS 'The rescue zone the organisation is responsible for.';
+COMMENT ON COLUMN BOAT.T_RESCUE.ZONE IS 'The rescue zone the organisation is responsible for.';
 COMMENT ON COLUMN BOAT.T_RESCUE.CALLSIGN IS 'The call sign by which the rescue organisation goes by.';
+
+----------------------------------------------------------
+-- The legal jurisdiction role for sea rescue
+----------------------------------------------------------
+
+CREATE SEQUENCE BOAT.JURISDICTION_ID_SEQ INCREMENT 1 MINVALUE 1 START 1 CACHE 1;
+ALTER TABLE BOAT.JURISDICTION_ID_SEQ OWNER TO geodsea;
+
+CREATE TABLE boat.T_JURISDICTION (
+  ID             BIGINT      NOT NULL PRIMARY KEY DEFAULT nextval('BOAT.JURISDICTION_ID_SEQ'),
+  PARTICIPANT_ID BIGINT      NOT NULL,
+  ZONE_TITLE      VARCHAR(50),
+  ZONE           geometry (POLYGON, 4326)
+);
+ALTER TABLE boat.T_JURISDICTION OWNER TO geodsea;
+ALTER SEQUENCE BOAT.JURISDICTION_ID_SEQ OWNED BY BOAT.T_JURISDICTION.ID;
+
+ALTER TABLE BOAT.T_JURISDICTION ADD CONSTRAINT FK_JURISDICTION_PARTICIPANT FOREIGN KEY (PARTICIPANT_ID)
+REFERENCES BOAT.T_PARTICIPANT_GROUP (ID) ON DELETE CASCADE;
+
+
+COMMENT ON TABLE BOAT.T_JURISDICTION IS 'A sea rescue organisation details.';
+COMMENT ON COLUMN BOAT.T_JURISDICTION.ZONE_TITLE IS 'Description of the zone in the local language';
+COMMENT ON COLUMN BOAT.T_JURISDICTION.ZONE IS 'The rescue zone the organisation is responsible for.';

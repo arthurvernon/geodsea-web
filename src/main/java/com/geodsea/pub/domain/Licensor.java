@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * An activity, performed by a Government agency, to confirm the authenticity of boating licenses within a particular jurisdiction.
+ * An activity, performed by a Government agency, to confirm the authenticity of boating licenses within a particular zone.
  * <p>
  * The intent is that such authorities can enter a web service end-point which the application can call
  * in order to validate the details of a boat entered by a boat owner.
@@ -52,27 +52,21 @@ public class Licensor {
 //    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "licensor")
 //    private List<License> licenses;
 
-    /**
-     * The region in described in the language of the provider
-     */
-    @Column(name = "region", nullable = true, length = 50)
-    private String region;
-
-    /**
-     * The region over which the licensing authority has jurisdiction.
-     */
-    @Column(name="JURISDICTION", nullable = false)
-    @Type(type = "org.hibernate.spatial.GeometryType")
-    private Polygon jurisdiction;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="zone", column = @Column(name="ZONE")),
+            @AttributeOverride(name="zoneTitle", column = @Column(name="ZONE_TITLE"))
+    })
+    private Zone zone;
 
     public Licensor() {
         super();
     }
 
-    public Licensor(ParticipantGroup participant, String licenceWsURL, String region) {
+    public Licensor(ParticipantGroup participant, String licenceWsURL, String zoneTitle, Polygon zone ) {
         this.participant = participant;
         this.licenceWsURL = licenceWsURL;
-        this.region = region;
+        this.zone = new Zone(zoneTitle, zone);
     }
 
     public ParticipantGroup getParticipant() {
@@ -99,12 +93,12 @@ public class Licensor {
 //        this.licenses = licenses;
 //    }
 
-    public Polygon getJurisdiction() {
-        return jurisdiction;
+    public Zone getZone() {
+        return zone;
     }
 
-    public void setJurisdiction(Polygon jurisdiction) {
-        this.jurisdiction = jurisdiction;
+    public void setZone(Zone zone) {
+        this.zone = zone;
     }
 
     public Long getId() {
@@ -113,14 +107,6 @@ public class Licensor {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
     }
 
     public String getLicenseWsPassword() {

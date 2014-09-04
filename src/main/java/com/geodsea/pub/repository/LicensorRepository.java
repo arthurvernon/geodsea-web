@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface LicensorRepository extends JpaRepository<Licensor, Long> {
 
-    @Query("select l from Licensor l where contains(l.jurisdiction, ?1) = TRUE")
+    @Query("select l from Licensor l where contains(l.zone.zone, ?1) = TRUE")
     List<Licensor> getLicensorForLocation(Point point);
 
 

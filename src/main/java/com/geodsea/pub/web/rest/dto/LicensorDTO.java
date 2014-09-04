@@ -1,14 +1,5 @@
 package com.geodsea.pub.web.rest.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.geodsea.pub.domain.License;
-import com.geodsea.pub.domain.ParticipantGroup;
-import com.vividsolutions.jts.geom.Polygon;
-import org.hibernate.annotations.Type;
-
-import javax.persistence.*;
-import java.util.List;
-
 public class LicensorDTO {
 
     private Long id;
@@ -31,18 +22,25 @@ public class LicensorDTO {
     /**
      * The region in described in the language of the provider
      */
-    private String region;
+    private String zoneTitle;
+
+    /**
+     * The region in WKT form
+     */
+    private String zoneWKT;
+
 
     public LicensorDTO() {
         super();
     }
 
-    public LicensorDTO(Long id, Long participantGroupId, String groupName, String webServiceURL, String region) {
+    public LicensorDTO(Long id, Long participantGroupId, String groupName, String webServiceURL, String zoneTitle, String zoneWKT) {
         this.id = id;
         this.participantGroupId = participantGroupId;
         this.groupName = groupName;
         this.webServiceURL = webServiceURL;
-        this.region = region;
+        this.zoneTitle = zoneTitle;
+        this.zoneWKT = zoneWKT;
     }
 
     public Long getId() {
@@ -69,12 +67,20 @@ public class LicensorDTO {
         this.webServiceURL = webServiceURL;
     }
 
-    public String getRegion() {
-        return region;
+    public String getZoneTitle() {
+        return zoneTitle;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
+    public void setZoneTitle(String zoneTitle) {
+        this.zoneTitle = zoneTitle;
+    }
+
+    public String getZoneWKT() {
+        return zoneWKT;
+    }
+
+    public void setZoneWKT(String zoneWKT) {
+        this.zoneWKT = zoneWKT;
     }
 
     public String getGroupName() {

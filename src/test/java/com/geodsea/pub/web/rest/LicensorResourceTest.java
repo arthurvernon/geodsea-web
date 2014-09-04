@@ -1,34 +1,26 @@
 package com.geodsea.pub.web.rest;
 
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.inject.Inject;
 
 import com.geodsea.pub.domain.ParticipantGroup;
 import com.geodsea.pub.repository.ParticipantGroupRepository;
 import com.geodsea.pub.service.LicenseService;
-import com.geodsea.pub.service.UserService;
 import com.geodsea.pub.web.rest.dto.LicensorDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -73,7 +65,7 @@ public class LicensorResourceTest {
 
     private MockMvc restLicensorMockMvc;
 
-    private LicensorDTO licensor;
+    private LicensorDTO dto;
 
     private ParticipantGroup participantGroup;
 
@@ -94,11 +86,11 @@ public class LicensorResourceTest {
 
 //        when(licenseService.addOrUpdateLicensor();getUserWithAuthorities()).thenReturn(person);
 
-        licensor = new LicensorDTO();
-        licensor.setId(DEFAULT_ID);
+        dto = new LicensorDTO();
+        dto.setId(DEFAULT_ID);
         // relies on the test data. Does this work?
-    	licensor.setWebServiceURL(URL_BEFORE);
-    	licensor.setRegion(REGION_BEFORE);
+    	dto.setWebServiceURL(URL_BEFORE);
+    	dto.setZoneTitle(REGION_BEFORE);
     }
 
     @Test
@@ -106,14 +98,14 @@ public class LicensorResourceTest {
     public void testCRUDLicensor() throws Exception {
 
         participantGroup = participantGroupRepository.save(participantGroup);
-        licensor.setParticipantGroupId(participantGroup.getId());
+        dto.setParticipantGroupId(participantGroup.getId());
 
 //  These just don't work because an ID cannot be assumed.
 
 //        // Create Licensor
 //    	restLicensorMockMvc.perform(post("/app/rest/licensors")
 //    			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-//                .content(TestUtil.convertObjectToJsonBytes(licensor)))
+//                .content(TestUtil.convertObjectToJsonBytes(dto)))
 //                .andExpect(status().isOk());
 //
 //    	// Read Licensor
@@ -124,12 +116,12 @@ public class LicensorResourceTest {
 //    			.andExpect(jsonPath("$.region").value(REGION_BEFORE));
 //
 //    	// Update Licensor
-//    	licensor.setWebServiceURL(URL_AFTER);
-//    	licensor.setRegion(REGION_AFTER);
+//    	dto.setWebServiceURL(URL_AFTER);
+//    	dto.setZoneTitle(REGION_AFTER);
 //
 //    	restLicensorMockMvc.perform(post("/app/rest/licensors")
 //    			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-//                .content(TestUtil.convertObjectToJsonBytes(licensor)))
+//                .content(TestUtil.convertObjectToJsonBytes(dto)))
 //                .andExpect(status().isOk());
 //
 //    	// Read updated Licensor

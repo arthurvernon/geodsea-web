@@ -4,11 +4,18 @@ import com.codahale.metrics.annotation.Timed;
 import com.geodsea.pub.domain.Address;
 import com.geodsea.pub.domain.Licensor;
 import com.geodsea.pub.domain.Person;
+import com.geodsea.pub.domain.Zone;
 import com.geodsea.pub.repository.LicensorRepository;
 import com.geodsea.pub.repository.PersonRepository;
+import com.geodsea.pub.service.ActionRefusedException;
+import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.service.LicenseService;
 import com.geodsea.pub.web.rest.dto.LicensorDTO;
 import com.geodsea.ws.LicenseResponse;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -39,6 +46,10 @@ public class LicensorResource {
     @Inject
     private PersonRepository personRepository;
 
+    @Inject
+    private GisService gisService;
+
+
     /**
      * POST  /rest/licensors -> Create a new licensor.
      */
@@ -46,10 +57,26 @@ public class LicensorResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public void create(@RequestBody LicensorDTO dto) {
+    public ResponseEntity<?> create(@RequestBody LicensorDTO dto) {
         log.debug("REST request to create/save Licensor : {}", dto);
 
-        licenseService.addOrUpdateLicensor(dto.getId(), dto.getParticipantGroupId(), dto.getWebServiceURL(), dto.getRegion());
+        Polygon polygon = null;
+        try {
+            Geometry geometry = gisService.createFromWKT(dto.getZoneWKT());
+            if (geometry instanceof Polygon)
+                polygon = (Polygon) geometry;
+            else {
+                log.warn("Require a Polygon, not a " + geometry.getGeometryType());
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } catch (ParseException ex) {
+            log.warn("Invalid zone definition: " + ex.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Zone zone = new Zone(dto.getZoneTitle(), polygon);
+        licenseService.addOrUpdateLicensor(dto.getId(), dto.getParticipantGroupId(), dto.getWebServiceURL(), zone);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
@@ -65,8 +92,7 @@ public class LicensorResource {
 
         List<LicensorDTO> dtoList = new ArrayList<LicensorDTO>();
         for (Licensor l : licensors)
-            dtoList.add(new LicensorDTO(l.getId(), l.getParticipant().getId(), l.getParticipant().getPublishedName(),
-                    l.getLicenceWsURL(), l.getRegion()));
+            dtoList.add(createLicensorDTO(l));
         log.debug("Located " + dtoList.size() + " licensors");
         return dtoList;
     }
@@ -84,10 +110,16 @@ public class LicensorResource {
         if (licensor == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        LicensorDTO dto = new LicensorDTO(licensor.getId(), licensor.getParticipant().getId(),
-                licensor.getParticipant().getPublishedName(),
-                licensor.getLicenceWsURL(), licensor.getRegion());
+
+        LicensorDTO dto = createLicensorDTO(licensor);
         return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    private LicensorDTO createLicensorDTO(Licensor licensor) {
+        return new LicensorDTO(licensor.getId(), licensor.getParticipant().getId(),
+                licensor.getParticipant().getPublishedName(),
+                licensor.getLicenceWsURL(), licensor.getZone().getZoneTitle(),
+                gisService.toWKT(licensor.getZone().getZone()));
     }
 
 
@@ -106,7 +138,6 @@ public class LicensorResource {
     /**
      * Get the licencing agency that covers the user's home address.
      * GET  /rest/userlicensor/:username  -> get the "id" licensor.
-     *
      */
     @RequestMapping(value = "/rest/userlicensor/{username}",
             method = RequestMethod.GET,
@@ -129,8 +160,7 @@ public class LicensorResource {
 
 
         Licensor l = licensors.get(0);
-        LicensorDTO licensorDTO = new LicensorDTO(l.getId(), l.getParticipant().getId(), l.getParticipant().getPublishedName(),
-                l.getLicenceWsURL(), l.getRegion());
+        LicensorDTO licensorDTO = createLicensorDTO(l);
 
         return new ResponseEntity<>(licensorDTO, HttpStatus.OK);
     }
@@ -138,7 +168,6 @@ public class LicensorResource {
     /**
      * Get the licence details as supplied by the licensing agency.
      * GET /rest/licensor/:id/registration/:registration
-     *
      */
     @RequestMapping(value = "/rest/licensors/{licensorId}/registration/{registration}",
             method = RequestMethod.GET,

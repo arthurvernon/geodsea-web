@@ -3,6 +3,7 @@ package com.geodsea.pub.service;
 import com.geodsea.pub.domain.Address;
 import com.geodsea.pub.domain.Licensor;
 import com.geodsea.pub.domain.ParticipantGroup;
+import com.geodsea.pub.domain.Zone;
 import com.geodsea.pub.repository.LicensorRepository;
 import com.geodsea.pub.repository.ParticipantGroupRepository;
 import com.geodsea.ws.LicenseRequest;
@@ -38,7 +39,16 @@ public class LicenseService {
     @Inject
     private HttpComponentsMessageSender messageSender;
 
-    public void addOrUpdateLicensor(Long existingLicensorId, long participantGroupId, String webServiceURL, String region) {
+
+    /**
+     *
+     * @param existingLicensorId
+     * @param participantGroupId
+     * @param webServiceURL
+     * @param zone
+     * @throws ActionRefusedException if the zone is invalid.
+     */
+    public void addOrUpdateLicensor(Long existingLicensorId, long participantGroupId, String webServiceURL, Zone zone)  {
         Licensor licensor = null;
 
         // this convoluted piece of rubbish is required for testing because the client
@@ -52,11 +62,10 @@ public class LicenseService {
             licensor.setId(existingLicensorId);
         }
 
-        licensor.setLicenceWsURL(webServiceURL);
-        licensor.setRegion(region);
 
-        // TODO add in text area to define a region
-//        licensor.setJurisdiction();
+        licensor.setLicenceWsURL(webServiceURL);
+        licensor.setZone(zone);
+
         ParticipantGroup participant = participantGroupRepository.findOne(participantGroupId);
         licensor.setParticipant(participant);
 

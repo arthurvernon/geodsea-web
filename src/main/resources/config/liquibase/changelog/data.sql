@@ -11,7 +11,7 @@ UPDATE BOAT.T_PARTICIPANT_GROUP
 SET member_id = 1 where id = 5;
 
 -- WA department of transport
-INSERT INTO BOAT.T_LICENSOR (participant_id, LICENSE_WS_URL, LICENSE_WS_USERNAME, LICENSE_WS_PASSWORD, REGION, JURISDICTION)
+INSERT INTO BOAT.T_LICENSOR (participant_id, LICENSE_WS_URL, LICENSE_WS_USERNAME, LICENSE_WS_PASSWORD, ZONE_TITLE, ZONE)
 VALUES
   (5, 'http://127.0.0.1:8080/geodsea/ws', 'username', 'password', 'Western Australia',
    ST_GeomFromText(
@@ -31,7 +31,7 @@ UPDATE BOAT.T_PARTICIPANT_GROUP
 SET member_id = 2 where id = 6;
 
 
-INSERT INTO BOAT.T_LICENSOR (participant_id, LICENSE_WS_URL, LICENSE_WS_USERNAME, LICENSE_WS_PASSWORD, REGION, JURISDICTION)
+INSERT INTO BOAT.T_LICENSOR (participant_id, LICENSE_WS_URL, LICENSE_WS_USERNAME, LICENSE_WS_PASSWORD, ZONE_TITLE, ZONE)
 VALUES
   (6, 'http://http://www.maritime.nsw.gov.au:8080/ws', 'username', 'password', 'NSW',
    ST_GeomFromText(
