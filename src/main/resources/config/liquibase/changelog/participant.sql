@@ -41,7 +41,10 @@ CREATE TABLE BOAT.T_PARTICIPANT (
   CREATED_BY                 VARCHAR(50)  NULL DEFAULT 'system',
   CREATED_DATE               TIMESTAMP    NOT NULL DEFAULT now(),
   LAST_MODIFIED_BY           VARCHAR(50)  NULL,
-  LAST_MODIFIED_DATE         TIMESTAMP    NULL
+  LAST_MODIFIED_DATE         TIMESTAMP    NULL,
+  ADDRESS_FORMATTED VARCHAR(100) NULL,
+  ADDRESS_POINT     geometry (POINT, 4326)
+
 );
 
 ALTER TABLE BOAT.T_PARTICIPANT OWNER TO geodsea;
@@ -56,8 +59,11 @@ COMMENT ON COLUMN BOAT.T_PARTICIPANT.CREATED_BY IS 'The participant name of the 
 COMMENT ON COLUMN BOAT.T_PARTICIPANT.CREATED_DATE IS 'Date/time when the user created this participant';
 COMMENT ON COLUMN BOAT.T_PARTICIPANT.LAST_MODIFIED_BY IS 'The participant who last modified this record, null if it has not been modified';
 COMMENT ON COLUMN BOAT.T_PARTICIPANT.LAST_MODIFIED_DATE IS 'When (if ever) the participant''s details were last updated';
+COMMENT ON COLUMN BOAT.T_PARTICIPANT.ADDRESS_FORMATTED IS 'The google-defined address string';
+COMMENT ON COLUMN BOAT.T_PARTICIPANT.ADDRESS_POINT IS 'the location of the address as specified by google';
 
 CREATE INDEX PARTICIPANT_NAME_IDX ON BOAT.T_PARTICIPANT (PARTICIPANT_NAME);
+CREATE INDEX IDX_ADDRESS_GIST ON BOAT.T_PARTICIPANT USING GIST (ADDRESS_POINT);
 
 
 CREATE TABLE BOAT.T_PERSON (
@@ -71,31 +77,16 @@ CREATE TABLE BOAT.T_PERSON (
   PASSWORD          VARCHAR(150) NOT NULL,
   QUESTION          VARCHAR(100) NOT NULL,
   ANSWER            VARCHAR(50) NOT NULL,
-  LANGUAGE_KEY      VARCHAR(5),
-  ADDRESS_FORMATTED VARCHAR(100) NULL,
-  ADDRESS_POINT     geometry (POINT, 4326)
+  LANGUAGE_KEY      VARCHAR(5)
 
 );
 
 ALTER TABLE BOAT.T_PERSON OWNER TO geodsea;
 
 CREATE INDEX PER_EMAIL_IDX ON BOAT.T_PERSON (EMAIL);
-CREATE INDEX IDX_ADDRESS_GIST ON BOAT.T_PERSON USING GIST (ADDRESS_POINT);
 
 COMMENT ON COLUMN  BOAT.T_PERSON.QUESTION IS 'The question to ask in the event of a person forgetting their password';
 COMMENT ON COLUMN  BOAT.T_PERSON.ANSWER IS 'The answer to the question created on registration';
-
-------------------------------------------
--- Street Address for a person
-------------------------------------------
---
---CREATE TABLE BOAT.T_PERSON_ADDRESS (
---  participant_id BIGINT NOT NULL REFERENCES BOAT.T_PARTICIPANT ON DELETE CASCADE ON UPDATE RESTRICT,
---  address_id  BIGINT NOT NULL REFERENCES BOAT.T_ADDRESS ON DELETE CASCADE ON UPDATE RESTRICT,
---  PRIMARY KEY (participant_id, address_id)
---);
---ALTER TABLE BOAT.T_PERSON_ADDRESS OWNER TO geodsea;
-
 
 
 ----------------------------------------------------------

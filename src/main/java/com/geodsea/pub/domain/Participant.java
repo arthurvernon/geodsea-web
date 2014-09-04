@@ -57,6 +57,14 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Authority> authorities;
 
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="formatted", column = @Column(name="ADDRESS_FORMATTED")),
+            @AttributeOverride(name="point", column = @Column(name="ADDRESS_POINT"))
+    })
+    private Address address;
+
+
     protected Participant() {
     }
 
@@ -115,6 +123,14 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
 }

@@ -76,12 +76,6 @@ public class Person extends Participant implements Serializable {
     private String telephone;
 
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name="formatted", column = @Column(name="ADDRESS_FORMATTED")),
-            @AttributeOverride(name="point", column = @Column(name="ADDRESS_POINT"))
-    })
-    private Address address;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "person")
@@ -153,13 +147,6 @@ public class Person extends Participant implements Serializable {
         this.birthDate = birthDate;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
     public String getQuestion() {
         return question;
@@ -186,7 +173,6 @@ public class Person extends Participant implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", telephone='" + email + '\'' +
-                ", address.='" + address + '\'' +
                 ", langKey='" + langKey + '\'' +
                 "}";
     }
