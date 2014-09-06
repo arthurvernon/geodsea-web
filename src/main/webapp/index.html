@@ -69,11 +69,12 @@
                                     &#xA0;<span translate="global.menu.user.login">Authenticate</span></a></li>
                             </ul>
                         </li>
+
                         <!-- Register Menu -->
                         <li class="dropdown pointer">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
                                 <span>
-                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="glyphicon glyphicon-plus"></span>
                                     <span class="hidden-tablet" translate="global.menu.register.main">
                                         Register
                                     </span>
@@ -82,14 +83,28 @@
                             </a>
 
                             <ul class="dropdown-menu" ng-controller="MenuController">
-                                <li ng-switch-when="false"><a href="#/register/user"><span class="glyphicon glyphicon-plus-sign"></span>
+                                <li ng-switch-when="false"><a href="#/register/user">
+                                    <img src="bower_components/Bower-Glyphicons/glyphicons/glyphicons_003_user.png" alt="" class="img-responsive"/>
                                     &#xA0;<span translate="global.menu.register.user">User</span></a></li>
 
-                                <li ng-switch-when="true"><a href="#/register/vessel"><span class="glyphicon glyphicon-plus-sign"></span>
+                                <li ng-switch-when="true"><a href="#/register/vessel">
+                                    <img src="bower_components/Bower-Glyphicons/glyphicons/glyphicons_255_boat.png" alt="" class="img-responsive"/>
                                     &#xA0;<span translate="global.menu.register.vessel">Vessel</span></a></li>
 
-                                <li ng-switch-when="true"><a href="#/register/group"><span class="glyphicon glyphicon-plus-sign"></span>
+                                <li role="presentation" class="divider"></li>
+
+                                <li ng-switch-when="true"><a href="#/register/group">
+                                    <img src="bower_components/Bower-Glyphicons/glyphicons/glyphicons_043_group.png" alt="" class="img-responsive"/>
                                     &#xA0;<span translate="global.menu.register.group">Group</span></a></li>
+
+                                <li ng-switch-when="true"><a href="#/register/organisation">
+                                    <img src="bower_components/Bower-Glyphicons/glyphicons/glyphicons_089_building.png" alt="" class="img-responsive"/>
+                                    &#xA0;<span translate="global.menu.register.organisation">Organisation</span></a></li>
+
+                                <li ng-switch-when="true"><a href="#/register/member">
+                                    <img src="bower_components/Bower-Glyphicons/glyphicons/glyphicons_003_user.png" alt="" class="img-responsive"/>
+                                    &#xA0;<span translate="global.menu.register.member">Member</span></a></li>
+
                             </ul>
                         </li>
                         <!-- Admin menu -->

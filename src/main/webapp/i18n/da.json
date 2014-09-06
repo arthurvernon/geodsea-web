@@ -8,7 +8,9 @@
                 "main": "_da_Register",
                 "user" : "_da_Register User",
                 "vessel" : "_da_Register Vessel",
-                "group": "_da_Group"
+                "group": "_da_Group",
+                "organisation": "_da_Organisation",
+                "member" : "_da_Member"
             },
             "user": {
                 "main": "Konto",

@@ -8,7 +8,9 @@
                 "main": "_ru_Register",
                 "user" : "_ru_Register User",
                 "vessel" : "_ru_Register Vessel",
-                "group": "_ru_Group"
+                "group": "_ru_Group",
+                "organisation": "_ru_Organisation",
+                "member" : "_ru_Member"
             },
             "user": {
                 "main": "Профиль",

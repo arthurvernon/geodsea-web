@@ -8,7 +8,9 @@
                 "main" : "_de_Register",
                 "user" : "Registrierung",
                 "vessel" : "_de_Registrierung Vessel",
-                "group": "_de_Group"
+                "group": "_de_Group",
+                "organisation": "_de_Organisation",
+                "member" : "_de_Member"
             },
             "user": {
                 "main": "Zugang",

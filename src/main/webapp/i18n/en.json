@@ -9,7 +9,9 @@
                 "main": "Register",
                 "user": "User",
                 "vessel": "Vessel",
-                "group": "Group"
+                "group": "Group",
+                "organisation": "Organisation",
+                "member" : "Member"
             },
             "user": {
                 "main": "User",
