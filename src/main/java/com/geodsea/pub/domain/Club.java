@@ -3,19 +3,22 @@ package com.geodsea.pub.domain;
 import com.vividsolutions.jts.geom.Polygon;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
- * Activity typically performed by a sea rescue organisation.
+ * An organisation that undertakes events such as yacht races or fishing competitions and needs to be able
+ * to monitor the location of boats for a given period of time.
+ * <p>
+ *     For the club to be able to monitor the location of a boat, it must be able to obtain the permission
+ *     of the skipper.
+ * </p>
  */
 @Entity
-@Table(name = "T_RESCUE", schema = "BOAT")
-public class Rescue {
+@Table(name = "T_CLUB", schema = "BOAT")
+public class Club {
 
     @Id
-    @GeneratedValue(generator = "RESCUE_SEQ_GEN", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "RESCUE_SEQ_GEN", sequenceName = "BOAT.RESCUE_ID_SEQ")
+    @GeneratedValue(generator = "CLUB_SEQ_GEN", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "CLUB_SEQ_GEN", sequenceName = "BOAT.CLUB_ID_SEQ")
     private Long id;
 
     /**
@@ -25,14 +28,6 @@ public class Rescue {
     @JoinColumn(name="ORGANISATION_FK", referencedColumnName = "ORGANISATION_ID")
     private Organisation organisation;
 
-    /**
-     * For info see <a href="http://en.wikipedia.org/wiki/Call_sign>Call sign on Wikipedia</a>
-     */
-    @NotNull
-    @Size(min=4, max = 40)
-    @Column(name="callsign")
-    private String callsign;
-
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name="zone", column = @Column(name="ZONE")),
@@ -40,15 +35,14 @@ public class Rescue {
     })
     private Zone zone;
 
-    public Rescue()
+    public Club()
     {
         super();
     }
 
-    public Rescue(Organisation organisation, String callsign, String zoneTitle, Polygon zone) {
+    public Club(Organisation organisation, String callsign, String zoneTitle, Polygon zone) {
         super();
         this.zone = new Zone(zoneTitle, zone);
-        this.callsign = callsign;
         this.organisation = organisation;
     }
 
@@ -75,13 +69,4 @@ public class Rescue {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getCallsign() {
-        return callsign;
-    }
-
-    public void setCallsign(String callsign) {
-        this.callsign = callsign;
-    }
-
 }

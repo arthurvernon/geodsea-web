@@ -7,8 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import javax.inject.Inject;
 
-import com.geodsea.pub.domain.ParticipantGroup;
-import com.geodsea.pub.repository.ParticipantGroupRepository;
+import com.geodsea.pub.domain.Group;
+import com.geodsea.pub.domain.Organisation;
+import com.geodsea.pub.repository.GroupRepository;
 import com.geodsea.pub.service.LicenseService;
 import com.geodsea.pub.web.rest.dto.LicensorDTO;
 import org.junit.Before;
@@ -58,7 +59,7 @@ public class LicensorResourceTest {
     private LicensorRepository licensorRepository;
 
     @Inject
-    private ParticipantGroupRepository participantGroupRepository;
+    private GroupRepository groupRepository;
 
     @Inject
     LicenseService licenseService;
@@ -67,7 +68,7 @@ public class LicensorResourceTest {
 
     private LicensorDTO dto;
 
-    private ParticipantGroup participantGroup;
+    private Organisation organisation;
 
     @Before
     public void setup() {
@@ -79,10 +80,10 @@ public class LicensorResourceTest {
 
         this.restLicensorMockMvc = MockMvcBuilders.standaloneSetup(licensorResource).build();
 
-        participantGroup = new ParticipantGroup();
-        participantGroup.setEnabled(true);
-        participantGroup.setParticipantName("transport.nsw.gov.au");
-        participantGroup.setPublishedName("Marine and Harbours, NSW");
+        organisation = new Organisation();
+        organisation.setEnabled(true);
+        organisation.setParticipantName("transport.nsw.gov.au");
+        organisation.setPublishedName("Marine and Harbours, NSW");
 
 //        when(licenseService.addOrUpdateLicensor();getUserWithAuthorities()).thenReturn(person);
 
@@ -97,8 +98,8 @@ public class LicensorResourceTest {
     @Transactional
     public void testCRUDLicensor() throws Exception {
 
-        participantGroup = participantGroupRepository.save(participantGroup);
-        dto.setParticipantGroupId(participantGroup.getId());
+        organisation = groupRepository.save(organisation);
+        dto.setOrganisationId(organisation.getId());
 
 //  These just don't work because an ID cannot be assumed.
 

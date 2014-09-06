@@ -4,18 +4,19 @@
         "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
         "menu": {
             "home": "Accueil",
-            "account": {
+            "register": {
+                "main": "_fr_Register",
+                "user" : "_fr_Register User",
+                "vessel" : "_fr_Register Vessel",
+                "group": "_fr_Group"
+            },
+            "user": {
                 "main": "Compte",
                 "settings": "Profil",
                 "password": "Mot de passe",
                 "sessions": "Sessions",
                 "login": "S'authentifier",
-                "logout": "Déconnexion",
-                "register": {
-                    "user" : "_fr_Register User",
-                    "vessel" : "_fr_Register Vessel"
-                }
-
+                "logout": "Déconnexion"
             },
             "admin": {
                 "main" : "Admin",

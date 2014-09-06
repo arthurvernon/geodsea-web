@@ -1,11 +1,8 @@
 package com.geodsea.pub.service;
 
-import com.geodsea.pub.domain.Address;
-import com.geodsea.pub.domain.Licensor;
-import com.geodsea.pub.domain.ParticipantGroup;
-import com.geodsea.pub.domain.Zone;
+import com.geodsea.pub.domain.*;
 import com.geodsea.pub.repository.LicensorRepository;
-import com.geodsea.pub.repository.ParticipantGroupRepository;
+import com.geodsea.pub.repository.OrganisationRepository;
 import com.geodsea.ws.LicenseRequest;
 import com.geodsea.ws.LicenseResponse;
 import com.geodsea.ws.ObjectFactory;
@@ -31,7 +28,7 @@ public class LicenseService {
     private LicensorRepository licensorRepository;
 
     @Inject
-    private ParticipantGroupRepository participantGroupRepository;
+    private OrganisationRepository organisationRepository;
 
     @Inject
     private WebServiceTemplate webServiceTemplate;
@@ -43,12 +40,12 @@ public class LicenseService {
     /**
      *
      * @param existingLicensorId
-     * @param participantGroupId
+     * @param organisationId
      * @param webServiceURL
      * @param zone
      * @throws ActionRefusedException if the zone is invalid.
      */
-    public void addOrUpdateLicensor(Long existingLicensorId, long participantGroupId, String webServiceURL, Zone zone)  {
+    public void addOrUpdateLicensor(Long existingLicensorId, long organisationId, String webServiceURL, Zone zone)  {
         Licensor licensor = null;
 
         // this convoluted piece of rubbish is required for testing because the client
@@ -66,8 +63,8 @@ public class LicenseService {
         licensor.setLicenceWsURL(webServiceURL);
         licensor.setZone(zone);
 
-        ParticipantGroup participant = participantGroupRepository.findOne(participantGroupId);
-        licensor.setParticipant(participant);
+        Organisation organisation = organisationRepository.findOne(organisationId);
+        licensor.setOrgansation(organisation);
 
         licensor = licensorRepository.save(licensor);
     }
@@ -82,7 +79,7 @@ public class LicenseService {
     public LicenseResponse lookupLicense(Licensor licensor, String licenseNumber) {
 
         log.info("Looking up license: {} from licensor {} via WS: {}", licenseNumber,
-                licensor.getParticipant().getPublishedName(), licensor.getLicenceWsURL());
+                licensor.getOrgansation().getPublishedName(), licensor.getLicenceWsURL());
 
         ObjectFactory of = new ObjectFactory();
         LicenseRequest request = of.createLicenseRequest();

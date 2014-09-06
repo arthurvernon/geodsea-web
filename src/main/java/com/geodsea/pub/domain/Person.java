@@ -38,10 +38,6 @@ public class Person extends Participant implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @Email
-    @Size(min = 0, max = 100)
-    private String email;
-
     @Size(min = 2, max = 5)
     @Column(name = "lang_key")
     private String langKey;
@@ -60,6 +56,13 @@ public class Person extends Participant implements Serializable {
     @Past()
     @DateTimeFormat(style="S-")
     private Date birthDate;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="formatted", column = @Column(name="ADDRESS_FORMATTED")),
+            @AttributeOverride(name="point", column = @Column(name="ADDRESS_POINT"))
+    })
+    private Address address;
 
     /**
      * The telephone number upon which the person can be contacted in emergencies.
@@ -106,13 +109,6 @@ public class Person extends Participant implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getLangKey() {
         return langKey;
@@ -147,6 +143,13 @@ public class Person extends Participant implements Serializable {
         this.birthDate = birthDate;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public String getQuestion() {
         return question;
@@ -166,14 +169,10 @@ public class Person extends Participant implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
-                "login='" + getParticipantName() + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
+        return "Person{" + super.toString() +
+                "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", telephone='" + email + '\'' +
                 ", langKey='" + langKey + '\'' +
-                "}";
+                "} ";
     }
 }

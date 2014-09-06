@@ -693,7 +693,7 @@
                         <phase>package</phase>
                         <configuration>
                             <target>
-                                <copy file="${project.build.directory}/geodsea-${version}.war.original"
+                                <copy file="${project.build.directory}/geodsea-${project.version}.war.original"
                                       tofile="${project.build.directory}/geodsea.war" />
                             </target>
                         </configuration>

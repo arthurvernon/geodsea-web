@@ -4,17 +4,19 @@
         "browsehappy": "Du bruger en <strong>forældet</strong> browser. <a href=\"http://browsehappy.com/?locale=da\">Opgrader din browser</a> og få gavn af hele den tilgængelige funktionalitet.",
         "menu": {
             "home": "Forsiden",
+            "register": {
+                "main": "_da_Register",
+                "user" : "_da_Register User",
+                "vessel" : "_da_Register Vessel",
+                "group": "_da_Group"
+            },
             "user": {
                 "main": "Konto",
                 "settings": "Indstillinger",
                 "password": "Kodeord",
                 "sessions": "Sessions",
                 "login": "Log ind",
-                "logout": "Log ud",
-                "register": {
-                    "user" : "_da_Register User",
-                    "vessel" : "_da_Register Vessel"
-                }
+                "logout": "Log ud"
             },
             "admin": {
                 "main" : "Administration",

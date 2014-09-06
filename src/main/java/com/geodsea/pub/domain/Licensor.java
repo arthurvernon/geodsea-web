@@ -1,7 +1,6 @@
 package com.geodsea.pub.domain;
 
 import com.vividsolutions.jts.geom.Polygon;
-import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -26,8 +25,8 @@ public class Licensor {
 
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="PARTICIPANT_ID", referencedColumnName = "ID")
-    private ParticipantGroup participant;
+    @JoinColumn(name="ORGANISATION_FK", referencedColumnName = "ORGANISATION_ID")
+    private Organisation organsation;
 
     /**
      * A URL used to connect to the web service that implements the license inquiry web service.
@@ -46,12 +45,6 @@ public class Licensor {
     @Column(name = "LICENSE_WS_PASSWORD", nullable = true, length = 20)
     private String licenseWsPassword;
 
-//    /**
-//     * The license checks performed within the context of this system.
-//     */
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "licensor")
-//    private List<License> licenses;
-
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name="zone", column = @Column(name="ZONE")),
@@ -63,18 +56,18 @@ public class Licensor {
         super();
     }
 
-    public Licensor(ParticipantGroup participant, String licenceWsURL, String zoneTitle, Polygon zone ) {
-        this.participant = participant;
+    public Licensor(Organisation organisation, String licenceWsURL, String zoneTitle, Polygon zone ) {
+        this.organsation= organisation;
         this.licenceWsURL = licenceWsURL;
         this.zone = new Zone(zoneTitle, zone);
     }
 
-    public ParticipantGroup getParticipant() {
-        return participant;
+    public Organisation getOrgansation() {
+        return organsation;
     }
 
-    public void setParticipant(ParticipantGroup participant) {
-        this.participant = participant;
+    public void setOrgansation(Organisation organsation) {
+        this.organsation = organsation;
     }
 
     public String getLicenceWsURL() {
@@ -84,14 +77,6 @@ public class Licensor {
     public void setLicenceWsURL(String licenceWsURL) {
         this.licenceWsURL = licenceWsURL;
     }
-
-//    public List<License> getLicenses() {
-//        return licenses;
-//    }
-//
-//    public void setLicenses(List<License> licenses) {
-//        this.licenses = licenses;
-//    }
 
     public Zone getZone() {
         return zone;

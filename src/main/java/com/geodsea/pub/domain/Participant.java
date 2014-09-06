@@ -3,6 +3,7 @@ package com.geodsea.pub.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.geodsea.pub.domain.util.DateConstants;
 import org.hibernate.annotations.*;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -57,12 +58,10 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Authority> authorities;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name="formatted", column = @Column(name="ADDRESS_FORMATTED")),
-            @AttributeOverride(name="point", column = @Column(name="ADDRESS_POINT"))
-    })
-    private Address address;
+
+    @Email
+    @Size(min = 0, max = 100)
+    private String email;
 
 
     protected Participant() {
@@ -125,12 +124,19 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
         this.authorities = authorities;
     }
 
-    public Address getAddress() {
-        return address;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return "id=" + id +
+                ", enabled=" + enabled +
+                ", email='" + email + '\'';
+    }
 }

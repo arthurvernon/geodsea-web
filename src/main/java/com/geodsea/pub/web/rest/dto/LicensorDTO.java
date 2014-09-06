@@ -7,7 +7,7 @@ public class LicensorDTO {
     /**
      * this value needs to be set on the client to define the group that is a licensing agency.
      */
-    private Long participantGroupId;
+    private Long organisationId;
 
     /**
      * Immatable property defined by way of the participant.
@@ -34,9 +34,9 @@ public class LicensorDTO {
         super();
     }
 
-    public LicensorDTO(Long id, Long participantGroupId, String groupName, String webServiceURL, String zoneTitle, String zoneWKT) {
+    public LicensorDTO(Long id, Long organisationId, String groupName, String webServiceURL, String zoneTitle, String zoneWKT) {
         this.id = id;
-        this.participantGroupId = participantGroupId;
+        this.organisationId = organisationId;
         this.groupName = groupName;
         this.webServiceURL = webServiceURL;
         this.zoneTitle = zoneTitle;
@@ -51,12 +51,12 @@ public class LicensorDTO {
         this.id = id;
     }
 
-    public Long getParticipantGroupId() {
-        return participantGroupId;
+    public Long getOrganisationId() {
+        return organisationId;
     }
 
-    public void setParticipantGroupId(Long participantGroupId) {
-        this.participantGroupId = participantGroupId;
+    public void setOrganisationId(Long organisationId) {
+        this.organisationId = organisationId;
     }
 
     public String getWebServiceURL() {

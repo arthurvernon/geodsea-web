@@ -2,16 +2,15 @@
 -- Setup Dept of Transport with one member being Mr 'user'
 -------------------------------------
 
-INSERT INTO BOAT.T_PARTICIPANT_GROUP (id, published_name, website_url)
-VALUES (5, 'Department of Transport', 'http://www.transport.wa.gov.au');
-
-INSERT INTO BOAT.T_MEMBER (id, participant_group_id, participant_id, active, manager) VALUES (1, 5, 4, TRUE, TRUE);
-
-UPDATE BOAT.T_PARTICIPANT_GROUP
-SET member_id = 1 where id = 5;
-
 -- WA department of transport
-INSERT INTO BOAT.T_LICENSOR (participant_id, LICENSE_WS_URL, LICENSE_WS_USERNAME, LICENSE_WS_PASSWORD, ZONE_TITLE, ZONE)
+INSERT INTO BOAT.T_GROUP (GROUP_ID) VALUES (5);
+INSERT INTO BOAT.T_ORGANISATION (ORGANISATION_ID, PUBLISHED_NAME, WEBSITE_URL)
+VALUES (5, 'Department of Transport', 'http://www.transport.wa.gov.au');
+INSERT INTO BOAT.T_MEMBER (ID, GROUP_FK, PARTICIPANT_FK, active, manager) VALUES (1, 5, 4, TRUE, TRUE);
+UPDATE BOAT.T_GROUP
+SET CONTACT_MEMBER_ID = 1
+WHERE GROUP_ID = 5;
+INSERT INTO BOAT.T_LICENSOR (ORGANISATION_FK, LICENSE_WS_URL, LICENSE_WS_USERNAME, LICENSE_WS_PASSWORD, ZONE_TITLE, ZONE)
 VALUES
   (5, 'http://127.0.0.1:8080/geodsea/ws', 'username', 'password', 'Western Australia',
    ST_GeomFromText(
@@ -22,16 +21,17 @@ VALUES
 
 
 -- NSW
-INSERT INTO BOAT.T_PARTICIPANT_GROUP (id, published_name, website_url)
+INSERT INTO BOAT.T_GROUP (GROUP_ID) VALUES (6);
+INSERT INTO BOAT.T_ORGANISATION (ORGANISATION_ID, PUBLISHED_NAME, WEBSITE_URL)
 VALUES (6, 'Roads and Maritime', 'http://www.maritime.nsw.gov.au/');
 
-INSERT INTO BOAT.T_MEMBER (id, participant_group_id, participant_id, active, manager) VALUES (2, 6, 4, TRUE, TRUE);
+INSERT INTO BOAT.T_MEMBER (ID, GROUP_FK, PARTICIPANT_FK, active, manager) VALUES (2, 6, 4, TRUE, TRUE);
 
-UPDATE BOAT.T_PARTICIPANT_GROUP
-SET member_id = 2 where id = 6;
+UPDATE BOAT.T_GROUP
+SET CONTACT_MEMBER_ID = 2
+WHERE GROUP_ID = 6;
 
-
-INSERT INTO BOAT.T_LICENSOR (participant_id, LICENSE_WS_URL, LICENSE_WS_USERNAME, LICENSE_WS_PASSWORD, ZONE_TITLE, ZONE)
+INSERT INTO BOAT.T_LICENSOR (ORGANISATION_FK, LICENSE_WS_URL, LICENSE_WS_USERNAME, LICENSE_WS_PASSWORD, ZONE_TITLE, ZONE)
 VALUES
   (6, 'http://http://www.maritime.nsw.gov.au:8080/ws', 'username', 'password', 'NSW',
    ST_GeomFromText(

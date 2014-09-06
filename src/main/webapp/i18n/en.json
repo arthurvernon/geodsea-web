@@ -4,17 +4,20 @@
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
+            "register":
+            {
+                "main": "Register",
+                "user": "User",
+                "vessel": "Vessel",
+                "group": "Group"
+            },
             "user": {
                 "main": "User",
                 "settings": "Settings",
                 "password": "Password",
                 "sessions": "Sessions",
                 "login": "Authenticate",
-                "logout": "Log out",
-                "register": {
-                    "user": "Register User",
-                    "vessel": "Register Vessel"
-                }
+                "logout": "Log out"
             },
             "admin": {
                 "main": "Admin",

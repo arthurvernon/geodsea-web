@@ -4,18 +4,19 @@
         "browsehappy": "Ваш браузер <strong>устарел</strong>. Пожалуйста <a href=\"http://browsehappy.com/?locale=en\">обновите ваш браузер</a>.",
         "menu": {
             "home": "Главная",
-            "account": {
+            "register": {
+                "main": "_ru_Register",
+                "user" : "_ru_Register User",
+                "vessel" : "_ru_Register Vessel",
+                "group": "_ru_Group"
+            },
+            "user": {
                 "main": "Профиль",
                 "settings": "Настройки",
                 "password": "Пароль",
                 "sessions": "Сессии",
                 "login": "Authenticate",
-                "logout": "Выйти",
-                "register": {
-                    "user" : "_ru_Register User",
-                    "vessel" : "_ru_Register Vessel"
-                }
-
+                "logout": "Выйти"
             },
             "admin": {
                 "main" : "Администрирование",

@@ -1,11 +1,8 @@
 package com.geodsea.pub.domain;
 
 import com.vividsolutions.jts.geom.Polygon;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * Activity typically performed by a sea rescue organisation.
@@ -23,8 +20,8 @@ public class Jurisdiction {
      * A group may perform rescue activities from a number of locations, e.g. from Fremantle and from Rottnest.
      */
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="PARTICIPANT_ID", referencedColumnName = "ID")
-    private ParticipantGroup participant;
+    @JoinColumn(name="ORGANISATION_FK", referencedColumnName = "ORGANISATION_ID")
+    private Organisation organsation;
 
     @Embedded
     @AttributeOverrides({
@@ -38,18 +35,18 @@ public class Jurisdiction {
         super();
     }
 
-    public Jurisdiction(ParticipantGroup participantGroup, String callsign, String zoneTitle, Polygon zone) {
+    public Jurisdiction(Organisation organisation, String callsign, String zoneTitle, Polygon zone) {
         super();
         this.zone = new Zone(zoneTitle, zone);
-        this.participant = participantGroup;
+        this.organsation = organisation;
     }
 
-    public ParticipantGroup getParticipant() {
-        return participant;
+    public Organisation getOrgansation() {
+        return organsation;
     }
 
-    public void setParticipant(ParticipantGroup participant) {
-        this.participant = participant;
+    public void setOrgansation(Organisation organsation) {
+        this.organsation = organsation;
     }
 
     public Zone getZone() {

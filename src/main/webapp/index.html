@@ -67,11 +67,29 @@
                                     &#xA0;<span translate="global.menu.user.logout">Log out</span></a></li>
                                 <li ng-switch-when="false"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>
                                     &#xA0;<span translate="global.menu.user.login">Authenticate</span></a></li>
+                            </ul>
+                        </li>
+                        <!-- Register Menu -->
+                        <li class="dropdown pointer">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                                <span>
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="hidden-tablet" translate="global.menu.register.main">
+                                        Register
+                                    </span>
+                                    <b class="caret"></b>
+                                </span>
+                            </a>
+
+                            <ul class="dropdown-menu" ng-controller="MenuController">
                                 <li ng-switch-when="false"><a href="#/register/user"><span class="glyphicon glyphicon-plus-sign"></span>
-                                    &#xA0;<span translate="global.menu.user.register.user">Register</span></a></li>
-                                <li role="presentation" class="divider"></li>
+                                    &#xA0;<span translate="global.menu.register.user">User</span></a></li>
+
                                 <li ng-switch-when="true"><a href="#/register/vessel"><span class="glyphicon glyphicon-plus-sign"></span>
-                                    &#xA0;<span translate="global.menu.user.register.vessel">register Vessel</span></a></li>
+                                    &#xA0;<span translate="global.menu.register.vessel">Vessel</span></a></li>
+
+                                <li ng-switch-when="true"><a href="#/register/group"><span class="glyphicon glyphicon-plus-sign"></span>
+                                    &#xA0;<span translate="global.menu.register.group">Group</span></a></li>
                             </ul>
                         </li>
                         <!-- Admin menu -->

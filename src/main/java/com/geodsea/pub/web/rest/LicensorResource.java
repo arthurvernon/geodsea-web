@@ -75,7 +75,7 @@ public class LicensorResource {
         }
 
         Zone zone = new Zone(dto.getZoneTitle(), polygon);
-        licenseService.addOrUpdateLicensor(dto.getId(), dto.getParticipantGroupId(), dto.getWebServiceURL(), zone);
+        licenseService.addOrUpdateLicensor(dto.getId(), dto.getOrganisationId(), dto.getWebServiceURL(), zone);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -116,8 +116,8 @@ public class LicensorResource {
     }
 
     private LicensorDTO createLicensorDTO(Licensor licensor) {
-        return new LicensorDTO(licensor.getId(), licensor.getParticipant().getId(),
-                licensor.getParticipant().getPublishedName(),
+        return new LicensorDTO(licensor.getId(), licensor.getOrgansation().getId(),
+                licensor.getOrgansation().getPublishedName(),
                 licensor.getLicenceWsURL(), licensor.getZone().getZoneTitle(),
                 gisService.toWKT(licensor.getZone().getZone()));
     }

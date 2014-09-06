@@ -27,6 +27,6 @@ geodseaApp.controller('LicensorController', ['$scope', 'resolvedLicensor', 'Lice
         };
 
         $scope.clear = function () {
-            $scope.licensor = {id: null, participantGroupId: null, groupName: null, webServiceURL : null, region : null};
+            $scope.licensor = {id: null, organisationId: null, groupName: null, webServiceURL : null, region : null};
         };
     }]);

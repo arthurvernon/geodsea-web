@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * A member is a {@link Participant participant} who has a role (details TBD) within an
- * {@link ParticipantGroup organsation}.
+ * {@link Group organsation}.
  * <p>
  * A member's ability to do stuff is predicated on the person being {@link #active} and if the {@link #memberSince}
  * amd {@link #memberUntil} date ranges are set, then the current date is within those lower and upper bounds (respectively).
@@ -24,15 +24,15 @@ public class Member {
      * The person who is a member of the organisation.
      */
     @ManyToOne
-    @JoinColumn(nullable = false, name = "PARTICIPANT_ID")
+    @JoinColumn(nullable = false, name = "PARTICIPANT_FK")
     private Participant participant;
 
     /**
      * The group to which this person is a member.
      */
     @ManyToOne(cascade = CascadeType.DETACH )
-    @JoinColumn(nullable = false, name = "PARTICIPANT_GROUP_ID")
-    private ParticipantGroup participantGroup;
+    @JoinColumn(nullable = false, name = "GROUP_FK")
+    private Group group;
 
     /**
      * Optional date from which this participant became a member of the organisation.
@@ -59,22 +59,22 @@ public class Member {
         super();
     }
 
-    public Member(Participant participant, ParticipantGroup participantGroup, boolean active, boolean manager, Date memberSince, Date memberUntil) {
+    public Member(Participant participant, Group group, boolean active, boolean manager, Date memberSince, Date memberUntil) {
         super();
         this.participant = participant;
-        this.participantGroup = participantGroup;
+        this.group = group;
         this.active = active;
         this.memberSince = memberSince;
         this.manager = manager;
         this.memberUntil = memberUntil;
     }
 
-    public ParticipantGroup getParticipantGroup() {
-        return participantGroup;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setParticipantGroup(ParticipantGroup participantGroup) {
-        this.participantGroup = participantGroup;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public Date getMemberSince() {

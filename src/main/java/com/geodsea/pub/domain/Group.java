@@ -8,14 +8,10 @@ import java.util.List;
  * An organisation made up of members who fulfill may have roles and
  */
 @Entity
-@Table(name="T_PARTICIPANT_GROUP", schema = "BOAT")
-public class ParticipantGroup extends Participant {
+@Table(name="T_GROUP", schema = "BOAT")
+@PrimaryKeyJoinColumn(name="GROUP_ID", referencedColumnName = "ID")
+public class Group extends Participant {
 
-    @Column(name = "PUBLISHED_NAME", nullable = false, length = 100)
-    private String publishedName;
-
-    @Column(name = "WEBSITE_URL", nullable = true, length = 100)
-    private String websiteURL;
 
     /**
      * The contact person within the organsation.
@@ -24,7 +20,7 @@ public class ParticipantGroup extends Participant {
      * </p>
      */
     @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "CONTACT_MEMBER_ID")
     private Member contactMember;
 
 
@@ -35,16 +31,9 @@ public class ParticipantGroup extends Participant {
      * an organisation cannot be a member of itself, either directly or indirectly.
      * </p>
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "participantGroup")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
     private List<Member> members;
 
-    public String getWebsiteURL() {
-        return websiteURL;
-    }
-
-    public void setWebsiteURL(String websiteURL) {
-        this.websiteURL = websiteURL;
-    }
 
     public Member getContactMember() {
         return contactMember;
@@ -69,14 +58,6 @@ public class ParticipantGroup extends Participant {
         if (members == null)
             members = new ArrayList<Member>();
         members.add(member);
-    }
-
-    public String getPublishedName() {
-        return publishedName;
-    }
-
-    public void setPublishedName(String publishedName) {
-        this.publishedName = publishedName;
     }
 
     /**
@@ -108,7 +89,7 @@ public class ParticipantGroup extends Participant {
         for (Member m : members) {
             if (m.getParticipant().equals(participant))
                 return m;
-            else if (depth > 0 && m.getParticipant() instanceof ParticipantGroup) {
+            else if (depth > 0 && m.getParticipant() instanceof Group) {
                 Member found = lookup(participant, depth--);
                 if (found != null)
                     return found;
