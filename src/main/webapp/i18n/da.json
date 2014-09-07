@@ -2,48 +2,6 @@
     "global": {
         "title": "Geo d'Sea",
         "browsehappy": "Du bruger en <strong>forældet</strong> browser. <a href=\"http://browsehappy.com/?locale=da\">Opgrader din browser</a> og få gavn af hele den tilgængelige funktionalitet.",
-        "menu": {
-            "home": "Forsiden",
-            "register": {
-                "main": "_da_Register",
-                "user" : "_da_Register User",
-                "vessel" : "_da_Register Vessel",
-                "group": "_da_Group",
-                "organisation": "_da_Organisation",
-                "member" : "_da_Member"
-            },
-            "user": {
-                "main": "Konto",
-                "settings": "Indstillinger",
-                "password": "Kodeord",
-                "sessions": "Sessions",
-                "login": "Log ind",
-                "logout": "Log ud"
-            },
-            "admin": {
-                "main" : "Administration",
-                "tracker": "Brugersporing",
-                "metrics": "Målinger",
-                "logs": "Logs",
-                "audits": "Audits",
-                "apidocs": "API"
-            },
-            "language": "Sprog",
-            "help": {
-                "main" : "_da_Help",
-                "overview" : "_da_Overview",
-                "role" : "_da_Role",
-                "owner" : "_da_Boat Owner",
-                "skipper" : "_da_Skipper",
-                "rescue" : "_da_Rescue",
-                "club" : "_da_Club",
-                "friend" : "_da_Friend",
-                "about" : "_da_About",
-                "contact" : "_da_Contact",
-                "faq" : "_da_FAQ",
-                "privacy" : "Privacy"
-            }
-        },
         "language": {
             "da": "Dansk",
             "en": "Engelsk",
@@ -132,6 +90,54 @@
                     "maxlength": "_da_An answer may be no longer than 50 characters"
                 }
             }
+        }
+    },
+    "menu": {
+        "home": "Forsiden",
+        "register": {
+            "main": "_da_Register",
+            "user" : "_da_Register User",
+            "vessel" : "_da_Register Vessel",
+            "group": "_da_Group",
+            "organisation": "_da_Organisation",
+            "member" : "_da_Member"
+        },
+        "user": {
+            "main": "Konto",
+            "settings": "Indstillinger",
+            "password": "Kodeord",
+            "sessions": "Sessions",
+            "login": "Log ind",
+            "logout": "Log ud"
+        },
+        "admin": {
+            "main" : "Administration",
+            "tracker": "Brugersporing",
+            "metrics": "Målinger",
+            "logs": "Logs",
+            "audits": "Audits",
+            "apidocs": "API"
+        },
+        "language": "Sprog",
+        "help": {
+            "main" : "_da_Help",
+            "overview" : "_da_Overview",
+            "role" : "_da_Role",
+            "owner" : "_da_Boat Owner",
+            "skipper" : "_da_Skipper",
+            "rescue" : "_da_Rescue",
+            "club" : "_da_Club",
+            "friend" : "_da_Friend",
+            "about" : "_da_About",
+            "contact" : "_da_Contact",
+            "faq" : "_da_FAQ",
+            "privacy" : "Privacy"
+        }
+    },
+    "group" :
+    {
+        "registration":{
+            "title": "_da_Group Registration"
         }
     },
     "main": {

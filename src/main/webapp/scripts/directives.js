@@ -37,12 +37,13 @@ angular.module('geodseaApp')
                 });
             }
         };
-    }]).directive('passwordStrengthBar', function() {
+    }])
+    .directive('passwordStrengthBar', function() {
         return {
             replace: true,
             restrict: 'E',
             template: '<div id="strength">' +
-                      '<small translate="global.messages.validate.newpassword.strength">Password strength:</small>' +
+                      '<small translate="field.newpassword.strength">Password strength:</small>' +
                       '<ul id="strengthBar">' +
                         '<li class="point"></li><li class="point"></li><li class="point"></li><li class="point"></li><li class="point"></li>' +
                       '</ul>' +

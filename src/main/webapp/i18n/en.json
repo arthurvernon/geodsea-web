@@ -1,196 +1,253 @@
 {
-    "global": {
-        "title": "Geo d'Sea",
-        "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
-        "menu": {
-            "home": "Home",
-            "register":
-            {
-                "main": "Register",
-                "user": "User",
-                "vessel": "Vessel",
-                "group": "Group",
-                "organisation": "Organisation",
-                "member" : "Member"
-            },
-            "user": {
-                "main": "User",
-                "settings": "Settings",
-                "password": "Password",
-                "sessions": "Sessions",
-                "login": "Authenticate",
-                "logout": "Log out"
-            },
-            "admin": {
-                "main": "Admin",
-                "tracker": "User tracker",
-                "metrics": "Metrics",
-                "logs": "Logs",
-                "audits": "Audits",
-                "apidocs": "API"
-            },
-            "language": "Language",
-            "help": {
-                "main": "Help",
-                "overview": "Overview",
-                "role": "Role",
-                "owner": "Boat Owner",
-                "skipper": "Skipper",
-                "rescue": "Rescue",
-                "club": "Club",
-                "friend": "Friend",
-                "about": "About Us",
-                "contact": "Contact",
-                "faq": "FAQ",
-                "privacy": "Privacy"
-            }
+    "button":{
+        "authenticate": "Authenticate",
+        "register": "Register",
+        "login" : "Login",
+        "vessel.from.license": "Get From License",
+        "vessel.create": "Add a Vessel",
+        "group.create": "Add a Group",
+        "cancel" : "Cancel",
+        "save" : "Save",
+        "lookup" : "Lookup",
+        "register" : "Register"
+    },
+    "field": {
+        "address" :{
+            "label": "Street Address",
+            "placeholder": "Enter your home address (not a PO Box number)",
+            "required": "Your street address is required."
         },
-        "language": {
-            "da": "Danish",
-            "en": "English",
-            "fr": "French",
-            "de": "German",
-            "pl": "Polish",
-            "ru": "Russian"
+        "answer":{
+           "label": "Answer",
+            "placeholder": "Enter answer",
+            "required": "An answer to the question must be specified.",
+            "minlength": "An answer must contain at least two characters",
+            "maxlength": "An answer may be no longer than 50 characters"
         },
-        "form": {
-            "firstname": "First Name",
-            "firstname.placeholder": "Enter your first name",
-            "lastname": "Last Name",
-            "lastname.placeholder": "Enter your last name",
-            "username": "Login",
-            "username.placeholder": "Enter a unique username, maybe your email address?",
-            "oldpassword": "Current password",
-            "oldpassword.placeholder": "Current password",
-            "newpassword": "New password",
-            "newpassword.placeholder": "New password",
-            "confirmpassword": "New password confirmation",
-            "confirmpassword.placeholder": "Confirm the new password",
-            "email": "E-mail",
-            "email.placeholder": "Your e-mail address",
-            "address": "Street Address",
-            "address.placeholder": "Enter your home address (not a PO Box number)",
-            "telephone": "Telephone",
-            "telephone.placeholder": "Telephone number incl. area code",
-            "question" : "Secret Question",
-            "question.placeholder": "Your secret question",
-            "answer" : "Answer",
-            "answer.placeholder": "Enter answer"
+        "confirmpassword": {
+            "label" : "New password confirmation",
+            "placeholder": "Confirm the new password",
+            "required": "Your confirmation password is required.",
+            "minlength": "Your confirmation password is required to be at least 5 characters",
+            "maxlength": "Your confirmation password cannot be longer than 50 characters"
+
         },
-        "messages": {
-            "info": {
-                "authenticated": "If you want to <a href=\"#/login\">authenticate</a>, you can try the default accounts:<br/>- Admnistrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\").",
-                "register": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>"
-            },
-            "error": {
-                "dontmatch": "The password and its confirmation do not match!"
-            },
-            "validate": {
-                "firstname": {
-                    "required": "Your first name is required.",
-                    "minlength": "Your first name is required to be at least 2 characters",
-                    "maxlength": "Your first name cannot be longer than 50 characters"
-                },
-                "lastname": {
-                    "required": "Your last name is required.",
-                    "minlength": "Your last name is required to be at least 2 characters",
-                    "maxlength": "Your last name cannot be longer than 50 characters"
-                },
-                "newpassword": {
-                    "required": "Your password is required.",
-                    "minlength": "Your password is required to be at least 5 characters",
-                    "maxlength": "Your password cannot be longer than 50 characters",
-                    "strength": "Password strength:"
-                },
-                "confirmpassword": {
-                    "required": "Your confirmation password is required.",
-                    "minlength": "Your confirmation password is required to be at least 5 characters",
-                    "maxlength": "Your confirmation password cannot be longer than 50 characters"
-                },
-                "email": {
-                    "required": "Your e-mail is required.",
-                    "invalid": "Your e-mail is invalid.",
-                    "minlength": "Your e-mail is required to be at least 5 characters",
-                    "maxlength": "Your e-mail cannot be longer than 50 characters"
-                },
-                "address": {
-                    "required": "Your street address is required."
-                },
-                "telephone": {
-                    "required": "Your telephone number is required.",
-                    "invalid": "Your telephone number is invalid.",
-                    "minlength": "Your telephone number is required to be at least 5 characters",
-                    "maxlength": "Your telephone number cannot be longer than 50 characters"
-                },
-                "question": {
-                    "required": "A secret question must be specified.",
-                    "minlength": "A question must contain at least two characters",
-                    "maxlength": "A question can be no longer than 100 characters"
-                },
-                "answer": {
-                    "required": "An answer to the question must be specified.",
-                    "minlength": "An answer must contain at least two characters",
-                    "maxlength": "An answer may be no longer than 50 characters"
-                }
-            }
+
+        "email": {
+            "label" : "E-mail",
+            "placeholder": "Your e-mail address",
+            "required": "Your e-mail is required.",
+            "invalid": "Your e-mail is invalid.",
+            "minlength": "Your e-mail is required to be at least 5 characters",
+            "maxlength": "Your e-mail cannot be longer than 100 characters"
+        },
+
+        "firstname": {
+            "label" : "First Name",
+            "placeholder": "Enter your first name",
+            "required": "Your first name is required.",
+            "minlength": "Your first name is required to be at least 2 characters",
+            "maxlength": "Your first name cannot be longer than 50 characters"
+        },
+
+        "groupemail": {
+            "label" : "Group E-mail",
+            "placeholder": "An e-mail address to send a confirmation link to",
+            "required": "An e-mail address is required.",
+            "invalid": "The e-mail supplied is invalid.",
+            "minlength": "An e-mail address must be at least 5 characters",
+            "maxlength": "An e-mail address may be not longer than 100 characters"
+        },
+
+        "groupname": {
+            "label" : "Group Name",
+            "placeholder": "Enter a unique group name",
+            "required" : "A group name must be specified.",
+            "minlength" : "A group name must be at least 2 characters.",
+            "maxlength" : "A group name must be no more than 50 characters."
+        },
+
+        "id":{
+            "label" : "ID"
+        },
+
+        "lastname": {
+            "label": "Last Name",
+            "placeholder": "Enter your last name",
+            "required": "Your last name is required.",
+            "minlength": "Your last name is required to be at least 2 characters",
+            "maxlength": "Your last name cannot be longer than 50 characters"
+        },
+
+        "password": {
+            "label": "Password",
+            "placeholder": "Your password"
+        },
+
+        "rememberme": {
+            "label" : "Automatic Login"
+        },
+
+        "newpassword": {
+            "label": "New password",
+            "placeholder": "New password",
+            "required": "Your password is required.",
+            "minlength": "Your password is required to be at least 5 characters",
+            "maxlength": "Your password cannot be longer than 50 characters",
+            "strength": "Password strength:"
+
+        },
+        "oldpassword": {
+            "label": "Current password",
+            "placeholder": "Current password"
+        },
+        "question": {
+            "label": "Secret Question",
+            "placeholder": "Your secret question",
+            "required": "A secret question must be specified.",
+            "minlength": "A question must contain at least two characters",
+            "maxlength": "A question can be no longer than 100 characters"
+        },
+        "telephone": {
+            "label": "Telephone",
+            "placeholder": "Telephone number incl. area code",
+            "required": "Your telephone number is required.",
+            "invalid": "Your telephone number is invalid.",
+            "minlength": "Your telephone number is required to be at least 5 characters",
+            "maxlength": "Your telephone number cannot be longer than 50 characters"
+        },
+        "username": {
+            "label": "Login",
+            "placeholder": "Enter a unique username, maybe your email address?",
+            "required": "Your login is required.",
+            "minlength": "Your login is required to be at least 1 character",
+            "maxlength": "Your login cannot be longer than 50 characters"
         }
     },
-    "main": {
-        "title": "Welcome, Geo d'Sea!",
-        "subtitle": "Vessel Tracking Via Your Mobile",
-        "logged": {
-            "message": "You are logged in as user \"{{username}}\"."
+    "language": {
+        "da": "Danish",
+        "en": "English",
+        "fr": "French",
+        "de": "German",
+        "pl": "Polish",
+        "ru": "Russian"
+    },
+    "menu": {
+        "home": "Home",
+        "register": {
+            "main": "Register",
+            "user": "User",
+            "vessel": "Vessel",
+            "group": "Group",
+            "organisation": "Organisation",
+            "member": "Member"
         },
-        "question": "If you have any question on Geo d'Sea:",
-        "link": {
-            "wiki": "Geo d'Sea Wiki",
-            "bugtracker": "Geo d'Sea Bug Tracker",
-            "twitter": "contact @geodsea on Twitter"
+        "user": {
+            "main": "User",
+            "settings": "Settings",
+            "password": "Password",
+            "sessions": "Sessions",
+            "login": "Authenticate",
+            "logout": "Log out"
+        },
+        "admin": {
+            "main": "Admin",
+            "tracker": "User tracker",
+            "metrics": "Metrics",
+            "logs": "Logs",
+            "audits": "Audits",
+            "apidocs": "API"
+        },
+        "language": "Language",
+        "help": {
+            "main": "Help",
+            "overview": "Overview",
+            "role": "Role",
+            "owner": "Boat Owner",
+            "skipper": "Skipper",
+            "rescue": "Rescue",
+            "club": "Club",
+            "friend": "Friend",
+            "about": "About Us",
+            "contact": "Contact",
+            "faq": "FAQ",
+            "privacy": "Privacy"
+        }
+    },
+    "title" :  {
+        "logs": "Logs",
+        "overview": "Overview",
+        "main": "Geo d'Sea",
+        "main.subtitle": "Vessel Tracking Via Your Mobile",
+        "register.group": "Group Registration",
+        "register.user" : "User Registration",
+        "activation": "Activation",
+        "register.organisation": "Organisation Registration",
+        "register.vessel": "Vessel Registration",
+        "login": "Authentication",
+        "settings": "Settings for [<b>{{username}}</b>]"
+    },
+    "message":  {
+        "group.registration.intro" : "Upon completion of the registration process, you will receive an email setting out the conditions of use of this service.",
+        "youAre": "You are logged in as \"{{username}}\".",
+        "register": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>",
+        "welcome": "Welcome, Geo d'Sea!",
+        "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+        "info": {
+            "footer": " &copy; Copyright 2014, Arthur Vernon. Last updated on May 29, 2014.",
+            "wikilink": "Geo d'Sea Wiki",
+            "bugtrackerlink": "Geo d'Sea Bug Tracker",
+            "twitterlink": "contact @geodsea on Twitter"
+        },
+        "question" :{
+            "geodsea": "If you have any question on Geo d'Sea:"
+        }
+    },
+    "result":{
+        "register": {
+            "participant" : {
+                "saved": "<strong>Registration saved!</strong> Please check your email for confirmation.",
+                "failed": "<strong>Registration failed!</strong> Please try again later.",
+                "nameInUse": "<strong>Login name already registered!</strong> Please choose another one."
+            },
+            "group":{
+                "success" : "The group has been registered. Please check your email for confirmation and click on the link to activate this group.",
+                "fail" : "<strong>Registration failed!</strong> Please check your input and try again.",
+                "nameInUse" : "<strong>This name is already registered!</strong> Please choose another one."
+            },
+            "vessel" :{
+                "license" : {
+                    "lookup.failed" : "Failed to obtain details from the licensor. Press cancel and complete the form."
+                }
+            }
+        },
+        "authenticate": {
+            "failed": "<strong>Authentication failed!</strong> Please check your credentials and try again."
+        },
+        "password": {
+            "mismatch": "The password and its confirmation do not match!"
+        }
+
+    },
+    "table":{
+        "heading" :{
+            "id": "ID",
+            "login" : "Username",
+            "email" : "Email",
+            "contactPerson": "Contact Person",
+            "contactLogin": "Contact Login",
+            "contactEmail" : "Contact Email",
+            "contactPhone" : "Contact Phone"
         }
     },
     "activate": {
-        "title": "Activation",
         "messages": {
             "success": "<strong>Your user has been activated.</strong> Please <a href=\"#/login\">authenticate</a>.",
             "error": "<strong>Your user could not be activated.</strong> Please use the registration form to sign up."
         }
     },
-    "register": {
-        "title": "Registration",
-        "form": {
-            "button": "Register"
-        },
-        "messages": {
-            "validate": {
-                "login": {
-                    "required": "Your login is required.",
-                    "minlength": "Your login is required to be at least 1 character",
-                    "maxlength": "Your login cannot be longer than 50 characters"
-                }
-            },
-            "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
-            "error": {
-                "fail": "<strong>Registration failed!</strong> Please try again later.",
-                "userexists": "<strong>Login name already registered!</strong> Please choose another one."
-            }
-        }
-    },
-    "login": {
-        "title": "Authentication",
-        "form": {
-            "password": "Password",
-            "password.placeholder": "Your password",
-            "rememberme": "Automatic Login",
-            "button": "Authenticate"
-        },
-        "messages": {
-            "error": {
-                "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
-            }
-        }
-    },
+
     "settings": {
-        "title": "User settings for [<b>{{username}}</b>]",
         "form": {
             "firstname": "First Name",
             "firstname.placeholder": "Your first name",
@@ -334,7 +391,6 @@
         }
     },
     "logs": {
-        "title": "Logs",
         "nbloggers": "There are {{ total }} loggers.",
         "filter": "Filter",
         "table": {
@@ -372,11 +428,9 @@
         "title": "Error page!",
         "403": "You are not authorized to access the page."
     },
-    "footer": " &copy; Copyright 2014, Arthur Vernon. Last updated on May 29, 2014.",
 
     "help": {
         "overview": {
-            "title": "Overview",
             "headline": "Geo d'Sea provides the boating community with communication and monitoring tools that save both time and money.",
             "benefits": {
                 "leadin": "You can use this service as a:",
@@ -388,7 +442,7 @@
         }
     },
     "vessel": {
-        "storagetype":{
+        "storage":{
             "null": {
                 "description": "Needs to be defined.",
                 "name": "Not specified"
@@ -493,7 +547,6 @@
                 "label" : "Load details using license"
             },
 
-            "title": "Create/Edit a Vessel",
             "hin": {
                 "label": "Hull Identification Number",
                 "placeholder": "Enter HIN",
@@ -559,9 +612,12 @@
                 }
             },
             "licensepopup" :{
-                "button": "Get From License",
                 "title" : "Enter License Details"
             }
         }
+    },
+    "remove":{
+        "authenticated": "If you want to <a href=\"#/login\">authenticate</a>, you can try the default accounts:<br/>- Admnistrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\")."
     }
+
 }
