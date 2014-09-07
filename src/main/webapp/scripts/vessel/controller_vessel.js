@@ -60,6 +60,8 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'Vess
         };
 
         $scope.populateVesselFromLicense = function () {
+            $scope.error = null;
+
             VesselRegistration.get($scope.registration.number, function () {
                     window.alert('got registration details from license');
                 },
@@ -76,9 +78,9 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'Vess
 
         /*
          * Lookup a specific license by calling the underlying web service
-         * Of that licensing agency
+         * of that licensing agency
          */
-        $scope.lookup = function (licensorid, regNo) {
+        $scope.loadVesselFromLicense = function (licensorid, regNo) {
 
             LicensorLicenseLookup.get({ id: licensorid, registration: regNo }, function(resp)
             {
@@ -88,7 +90,7 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'Vess
 
             },
             function(err){
-
+                $scope.lookupfail = "ERROR";
             })
         };
 

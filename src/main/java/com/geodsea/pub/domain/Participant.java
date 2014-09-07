@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -64,7 +65,20 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
     private String email;
 
 
+    /**
+     * Create a disabled participant
+     */
     protected Participant() {
+    }
+
+    /**
+     * Create a disabled participant with no authorities
+     * @param participantName
+     * @param email
+     */
+    protected Participant(String participantName, String email) {
+        this.participantName = participantName;
+        this.email = email;
     }
 
     public void setId(Long id) {
@@ -124,6 +138,12 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
         this.authorities = authorities;
     }
 
+    public void addAuthority(Authority a)
+    {
+        if (authorities == null)
+            authorities = new HashSet<Authority>();
+        authorities.add(a);
+    }
 
     public String getEmail() {
         return email;

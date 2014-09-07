@@ -1,34 +1,28 @@
 package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.geodsea.pub.domain.Address;
-import com.geodsea.pub.domain.Authority;
-import com.geodsea.pub.domain.PersistentToken;
-import com.geodsea.pub.domain.Person;
+import com.geodsea.pub.domain.*;
+import com.geodsea.pub.repository.ParticipantRepository;
 import com.geodsea.pub.repository.PersistentTokenRepository;
 import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.security.SecurityUtils;
 import com.geodsea.pub.service.ActionRefusedException;
 import com.geodsea.pub.service.GisService;
-import com.geodsea.pub.service.MailService;
+import com.geodsea.pub.service.ParticipantService;
 import com.geodsea.pub.service.UserService;
 import com.geodsea.pub.web.rest.dto.*;
+import com.geodsea.pub.web.rest.mapper.Mapper;
 import com.vividsolutions.jts.geom.Point;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.context.SpringWebContext;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
@@ -40,21 +34,18 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/app")
-public class AccountResource {
+public class AccountResource extends ParticipantResource {
 
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
 
-    @Autowired
-    private ServletContext servletContext;
-
-    @Autowired
-    private ApplicationContext applicationContext;
-
-    @Inject
-    private SpringTemplateEngine templateEngine;
-
     @Inject
     private PersonRepository personRepository;
+
+    @Inject
+    private ParticipantRepository participantRepository;
+
+    @Inject
+    private ParticipantService participantService;
 
     @Inject
     private UserService userService;
@@ -65,8 +56,6 @@ public class AccountResource {
     @Inject
     private PersistentTokenRepository persistentTokenRepository;
 
-    @Inject
-    private MailService mailService;
 
     /**
      * POST  /rest/register -> register the user.
@@ -77,13 +66,14 @@ public class AccountResource {
     @Timed
     public ResponseEntity<?> registerAccount(@RequestBody UserDTO userDTO, HttpServletRequest request,
                                              HttpServletResponse response) {
-        Person person = personRepository.getUserByParticipantName(userDTO.getLogin());
-        if (person != null) {
+
+        if (participantService.nameInUse(userDTO.getLogin()))
+            // ensure that there is no other participant (person or group) with the same name
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
-        } else {
+        else {
             Point point = gisService.createPointFromLatLong(userDTO.getPoint().getLat(), userDTO.getPoint().getLon());
             Address address = new Address(userDTO.getAddress(), point);
-            person = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
+            Person person = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
                     userDTO.getFirstName(), userDTO.getLastName(),
                     userDTO.getEmail().toLowerCase(),
                     address,
@@ -103,11 +93,11 @@ public class AccountResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
-        Person person = userService.activateRegistration(key);
-        if (person == null) {
+        Participant participant = participantService.activateRegistration(key);
+        if (participant == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<String>(person.getParticipantName(), HttpStatus.OK);
+        return new ResponseEntity<String>(participant.getParticipantName(), HttpStatus.OK);
     }
 
 
@@ -140,19 +130,7 @@ public class AccountResource {
             roles.add(authority.getName());
         }
         return new ResponseEntity<>(
-                new UserDTO(
-                        person.getParticipantName(),
-                        null,
-                        person.getFirstName(),
-                        person.getLastName(),
-                        person.getEmail(),
-                        person.getLangKey(),
-                        person.getTelephone(),
-                        person.getQuestion(),
-                        person.getAnswer(),
-                        person.getAddress() != null ? person.getAddress().getFormatted() : null,
-                        null, null,
-                        roles),
+                Mapper.dto(person, roles),
                 HttpStatus.OK);
     }
 
@@ -188,9 +166,7 @@ public class AccountResource {
         try {
             userService.changePassword(change.getOldPassword(), change.getNewPassword());
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch (ActionRefusedException ex)
-        {
+        } catch (ActionRefusedException ex) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
@@ -295,22 +271,10 @@ public class AccountResource {
         try {
             userService.resetPassword(reset.getUsername(), reset.getQuestion(), reset.getAnswer(), reset.getPassword());
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch (ActionRefusedException ex){
+        } catch (ActionRefusedException ex) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
 
 
-    private String createHtmlContentFromTemplate(final Person person, final Locale locale, final HttpServletRequest request,
-                                                 final HttpServletResponse response) {
-        Map<String, Object> variables = new HashMap<String, Object>();
-        variables.put("user", person);
-        variables.put("baseUrl", request.getScheme() + "://" +   // "http" + "://
-                request.getServerName() +       // "myhost"
-                ":" + request.getServerPort());
-        IWebContext context = new SpringWebContext(request, response, servletContext,
-                locale, variables, applicationContext);
-        return templateEngine.process(MailService.EMAIL_ACTIVATION_PREFIX + MailService.TEMPLATE_SUFFIX, context);
-    }
 }

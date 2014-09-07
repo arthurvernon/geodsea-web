@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ws.WebServiceException;
+import org.springframework.ws.client.WebServiceIOException;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
@@ -71,7 +73,7 @@ public class LicenseService {
 
 
     /**
-     * obtain from the liscensor the details pertaining to the specified registration/license number.
+     * Obtain from the liscensor the details pertaining to the specified registration/license number.
      * @param licensor
      * @param licenseNumber
      * @return
@@ -92,9 +94,16 @@ public class LicenseService {
         else
             messageSender.setCredentials(null);
 
-        LicenseResponse response = (LicenseResponse) webServiceTemplate.marshalSendAndReceive(licensor.getLicenceWsURL(), request);
-
-        return response;
+        try {
+            LicenseResponse response = (LicenseResponse) webServiceTemplate.marshalSendAndReceive(licensor.getLicenceWsURL(), request);
+            return response;
+        }
+        catch (WebServiceException ex)
+        {
+            log.warn("Request to " + licensor.getLicenceWsURL() + " for license: "
+                    + licenseNumber + " failed. Cause:\n " + ex.getMessage());
+            return null;
+        }
     }
 
     /**

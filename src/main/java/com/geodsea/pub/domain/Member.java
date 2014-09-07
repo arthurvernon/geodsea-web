@@ -69,6 +69,15 @@ public class Member {
         this.memberUntil = memberUntil;
     }
 
+    /**
+     * Create an inactive manager
+     * @param participant
+     * @param group
+     */
+    public static Member inactiveManager(Participant participant, Group group) {
+        return new Member(participant, group, false, true, new Date(), null);
+    }
+
     public Group getGroup() {
         return group;
     }

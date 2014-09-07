@@ -18,7 +18,6 @@ public class UserDTO {
     
     private String langKey;
 
-
     private String question;
 
     private String answer;

@@ -37,7 +37,7 @@ public class UserServiceTest {
     private PersonRepository personRepository;
 
     @Inject
-    private UserService userService;
+    private ParticipantService participantService;
 
     @Test
     public void testRemoveOldPersistentTokens() {
@@ -47,7 +47,7 @@ public class UserServiceTest {
         LocalDate now = new LocalDate();
         generateUserToken(admin, "2222-2222", now.minusDays(32));
         assertThat(persistentTokenRepository.findByPerson(admin)).hasSize(existingCount + 2);
-        userService.removeOldPersistentTokens();
+        participantService.removeOldPersistentTokens();
         assertThat(persistentTokenRepository.findByPerson(admin)).hasSize(existingCount + 1);
     }
 

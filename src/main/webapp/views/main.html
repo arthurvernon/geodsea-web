@@ -4,40 +4,40 @@
             <span class="hipster img-responsive img-rounded"></span>
         </div>
         <div class="col-md-8">
-            <h1 translate="main.title">Welcome, GeodSea!</h1>
-            <p class="lead" translate="main.subtitle">This is your homepage</p>
+            <h1 translate="title.main">Welcome, GeodSea!</h1>
+            <p class="lead" translate="title.main.subtitle">This is your homepage</p>
 
             <div ng-switch="authenticated">
                 <div class="alert alert-success" ng-switch-when="true"
-                     translate="main.logged.message" translate-values="{username: '{{account.login}}'}">
+                     translate="message.youAre" translate-values="{username: '{{account.login}}'}">
                     You are logged in as user "Admin".
                 </div>
 
-                <div class="alert alert-warning" ng-switch-when="false" translate="global.messages.info.authenticated">
+                <div class="alert alert-warning" ng-switch-when="false" translate="message.info.authenticated">
                     If you want to <a href="#/login">authenticate</a>, you can try the default login="admin" and
                     password="admin".
                 </div>
 
-                <div class="alert alert-warning" ng-switch-when="false" translate="global.messages.info.register">
+                <div class="alert alert-warning" ng-switch-when="false" translate="message.info.register">
                     Don't have an account? <a href=\"#/register\">Register</a>
                 </div>
             </div>
 
-            <p translate="main.question">
+            <p translate="message.question.geodsea">
                 If you have any question on Geo d'Sea:
             </p>
 
             <ul>
                 <li><a href="https://bitbucket.org/arthurvernon/com.geodsea.web/issues?state=open" target="_blank"
-                       translate="main.link.bugtracker">Geo d'Sea bug tracker</a>
+                       translate="message.info.bugtrackerlink">Geo d'Sea bug tracker</a>
                     <span class="glyphicon glyphicon-share-alt"></span>
                 </li>
                 <li><a href="https://bitbucket.org/arthurvernon/com.geodsea.web/wiki/Home" target="_blank"
-                       translate="main.link.wiki">Geo d'Sea Wiki</a>
+                       translate="message.info.wikilink">Geo d'Sea Wiki</a>
                     <span class="glyphicon glyphicon-share-alt"></span>
                 </li>
                 <li><a href="https://twitter.com/geodsea" target="_blank"
-                       translate="main.link.twitter">contact @geodsea on Twitter</a>
+                       translate="message.info.twitterlink">contact @geodsea on Twitter</a>
                     <span class="glyphicon glyphicon-share-alt"></span>
                 </li>
             </ul>

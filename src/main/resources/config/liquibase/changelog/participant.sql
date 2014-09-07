@@ -71,11 +71,16 @@ COMMENT ON COLUMN BOAT.T_PERSON.ADDRESS_POINT IS 'the location of the address as
 
 CREATE TABLE BOAT.T_GROUP (
   GROUP_ID          BIGINT NOT NULL PRIMARY KEY REFERENCES BOAT.T_PARTICIPANT (ID) ON DELETE CASCADE,
-  CONTACT_MEMBER_ID BIGINT NULL
+  CONTACT_PERSON_ID BIGINT NULL
 );
 
 ALTER TABLE BOAT.T_GROUP OWNER TO geodsea;
-COMMENT ON COLUMN BOAT.T_GROUP.CONTACT_MEMBER_ID IS 'The member who is the contact person (the one who registered the organisation). Should be not null but Hibernate doesn''t handle bidirectional FKs';
+
+ALTER TABLE BOAT.T_GROUP ADD CONSTRAINT FK_GROUP_CONTACT_PERSON
+FOREIGN KEY (CONTACT_PERSON_ID) REFERENCES BOAT.T_PERSON (PERSON_ID) ON DELETE CASCADE;
+
+
+COMMENT ON COLUMN BOAT.T_GROUP.CONTACT_PERSON_ID IS 'The member who is the contact person (the one who registered the organisation). Should be not null but Hibernate doesn''t handle bidirectional FKs';
 
 ----------------------------------------------------------
 -- Group creation
@@ -128,12 +133,6 @@ COMMENT ON TABLE BOAT.T_MEMBER IS 'The participants within an group which may be
 COMMENT ON COLUMN BOAT.T_MEMBER.PARTICIPANT_FK IS 'The immutable person or or group that belongs to this organisation';
 COMMENT ON COLUMN BOAT.T_MEMBER.GROUP_FK IS 'The immutable group that has this member';
 
-----------------------------------------------------------
--- Constraint from organisation to member table for primary contact
-----------------------------------------------------------
-
-ALTER TABLE BOAT.T_GROUP ADD CONSTRAINT FK_PARTICIPANT_GROUP_CONTACT
-FOREIGN KEY (CONTACT_MEMBER_ID) REFERENCES BOAT.T_MEMBER (ID) ON DELETE CASCADE;
 
 
 --------------------------------

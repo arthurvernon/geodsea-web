@@ -2,26 +2,27 @@ package com.geodsea.pub.domain;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
- * An organisation made up of members who fulfill may have roles and
+ * An collection of members.
  */
 @Entity
-@Table(name="T_GROUP", schema = "BOAT")
-@PrimaryKeyJoinColumn(name="GROUP_ID", referencedColumnName = "ID")
+@Table(name = "T_GROUP", schema = "BOAT")
+@PrimaryKeyJoinColumn(name = "GROUP_ID", referencedColumnName = "ID")
 public class Group extends Participant {
 
 
     /**
-     * The contact person within the organsation.
+     * The contact person within the group.
      * <p>
-     * This is initally set to the person who registers the organisation.
+     * This is initially set to the person who registers the organisation.
      * </p>
      */
     @ManyToOne
-    @JoinColumn(name = "CONTACT_MEMBER_ID")
-    private Member contactMember;
+    @JoinColumn(name = "CONTACT_PERSON_ID")
+    private Person contactPerson;
 
 
     /**
@@ -34,13 +35,33 @@ public class Group extends Participant {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
     private List<Member> members;
 
-
-    public Member getContactMember() {
-        return contactMember;
+    public Group() {
+        super();
     }
 
-    public void setContactMember(Member contactMember) {
-        this.contactMember = contactMember;
+    /**
+     * Create a new group where the person is to be the contact member and is granted manager status.
+     * <p>
+     * The member is not active until the registration process is completed. This might be upon
+     * responding to the registration email for a private group. Otherwise it will be once the organisation
+     * is approved.
+     * </p>
+     *
+     * @param participantName
+     * @param email
+     * @param person
+     */
+    public Group(String participantName, String email, Person person) {
+        super(participantName, email);
+        this.contactPerson = person;
+    }
+
+    public Person getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(Person contactPerson) {
+        this.contactPerson = contactPerson;
     }
 
     public List<Member> getMembers() {
@@ -76,11 +97,11 @@ public class Group extends Participant {
     /**
      * Perform a lookup for the participant down n levels.
      * <p>
-     *
+     * <p/>
      * </p>
      *
      * @param participant
-     * @param depth a non-negative number where 0 is just this level
+     * @param depth       a non-negative number where 0 is just this level
      * @return
      */
     public Member lookup(Participant participant, int depth) {

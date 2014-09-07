@@ -32,7 +32,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                  <a class="navbar-brand" href="#"><span translate="global.title">geodsea</span></a>
+                  <a class="navbar-brand" href="#"><span translate="title.main">geodsea</span></a>
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="authenticated">
                     <!-- Home button -->
@@ -40,7 +40,7 @@
                         <li>
                             <a href="#">
                                 <span class="glyphicon glyphicon-home"></span>
-                                <span translate="global.menu.home">Home</span>
+                                <span translate="menu.home">Home</span>
                             </a>
                         </li>
 
@@ -49,7 +49,7 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
                                 <span>
                                     <span class="glyphicon glyphicon-user"></span>
-                                    <span class="hidden-tablet" translate="global.menu.user.main">
+                                    <span class="hidden-tablet" translate="menu.user.main">
                                         User
                                     </span>
                                     <b class="caret"></b>
@@ -58,15 +58,15 @@
 
                             <ul class="dropdown-menu" ng-controller="MenuController">
                                 <li ng-switch-when="true"><a href="#/settings"><span class="glyphicon glyphicon-wrench"></span>
-                                    &#xA0;<span translate="global.menu.user.settings">Settings</span></a></li>
+                                    &#xA0;<span translate="menu.user.settings">Settings</span></a></li>
                                 <li ng-switch-when="true"><a href="#/password"><span class="glyphicon glyphicon-lock"></span>
-                                    &#xA0;<span translate="global.menu.user.password">Password</span></a></li>
+                                    &#xA0;<span translate="menu.user.password">Password</span></a></li>
                                 <li ng-switch-when="true"><a href="#/sessions"><span class="glyphicon glyphicon-cloud"></span>
-                                    &#xA0;<span translate="global.menu.user.sessions">Sessions</span></a></li>
+                                    &#xA0;<span translate="menu.user.sessions">Sessions</span></a></li>
                                 <li ng-switch-when="true"><a href="#/logout"><span class="glyphicon glyphicon-log-out"></span>
-                                    &#xA0;<span translate="global.menu.user.logout">Log out</span></a></li>
+                                    &#xA0;<span translate="menu.user.logout">Log out</span></a></li>
                                 <li ng-switch-when="false"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>
-                                    &#xA0;<span translate="global.menu.user.login">Authenticate</span></a></li>
+                                    &#xA0;<span translate="menu.user.login">Authenticate</span></a></li>
                             </ul>
                         </li>
 
@@ -75,7 +75,7 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
                                 <span>
                                     <span class="glyphicon glyphicon-plus"></span>
-                                    <span class="hidden-tablet" translate="global.menu.register.main">
+                                    <span class="hidden-tablet" translate="menu.register.main">
                                         Register
                                     </span>
                                     <b class="caret"></b>
@@ -85,25 +85,25 @@
                             <ul class="dropdown-menu" ng-controller="MenuController">
                                 <li ng-switch-when="false"><a href="#/register/user">
                                     <img src="bower_components/Bower-Glyphicons/glyphicons/glyphicons_003_user.png" alt="" class="img-responsive"/>
-                                    &#xA0;<span translate="global.menu.register.user">User</span></a></li>
+                                    &#xA0;<span translate="menu.register.user">User</span></a></li>
 
                                 <li ng-switch-when="true"><a href="#/register/vessel">
                                     <img src="bower_components/Bower-Glyphicons/glyphicons/glyphicons_255_boat.png" alt="" class="img-responsive"/>
-                                    &#xA0;<span translate="global.menu.register.vessel">Vessel</span></a></li>
+                                    &#xA0;<span translate="menu.register.vessel">Vessel</span></a></li>
 
                                 <li role="presentation" class="divider"></li>
 
                                 <li ng-switch-when="true"><a href="#/register/group">
                                     <img src="bower_components/Bower-Glyphicons/glyphicons/glyphicons_043_group.png" alt="" class="img-responsive"/>
-                                    &#xA0;<span translate="global.menu.register.group">Group</span></a></li>
+                                    &#xA0;<span translate="menu.register.group">Group</span></a></li>
 
                                 <li ng-switch-when="true"><a href="#/register/organisation">
                                     <img src="bower_components/Bower-Glyphicons/glyphicons/glyphicons_089_building.png" alt="" class="img-responsive"/>
-                                    &#xA0;<span translate="global.menu.register.organisation">Organisation</span></a></li>
+                                    &#xA0;<span translate="menu.register.organisation">Organisation</span></a></li>
 
                                 <li ng-switch-when="true"><a href="#/register/member">
                                     <img src="bower_components/Bower-Glyphicons/glyphicons/glyphicons_003_user.png" alt="" class="img-responsive"/>
-                                    &#xA0;<span translate="global.menu.register.member">Member</span></a></li>
+                                    &#xA0;<span translate="menu.register.member">Member</span></a></li>
 
                             </ul>
                         </li>
@@ -112,21 +112,21 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
                                 <span>
                                     <span class="glyphicon glyphicon-tower"></span>
-                                    <span class="hidden-tablet" translate="global.menu.admin.main">Admin</span>
+                                    <span class="hidden-tablet" translate="menu.admin.main">Admin</span>
                                     <b class="caret"></b>
                                 </span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="#/tracker"><span class="glyphicon glyphicon-eye-open"></span>
-                                    &#xA0;<span translate="global.menu.admin.tracker">User tracking</span></a></li>
+                                    &#xA0;<span translate="menu.admin.tracker">User tracking</span></a></li>
                                 <li><a href="#/metrics"><span class="glyphicon glyphicon-dashboard"></span>
-                                    &#xA0;<span translate="global.menu.admin.metrics">Metrics</span></a></li>
+                                    &#xA0;<span translate="menu.admin.metrics">Metrics</span></a></li>
                                 <li><a href="#/audits"><span class="glyphicon glyphicon-bell"></span>
-                                    &#xA0;<span translate="global.menu.admin.audits">Audits</span></a></li>
+                                    &#xA0;<span translate="menu.admin.audits">Audits</span></a></li>
                                 <li><a href="#/logs"><span class="glyphicon glyphicon-tasks"></span>
-                                    &#xA0;<span translate="global.menu.admin.logs">Logs</span></a></li>
+                                    &#xA0;<span translate="menu.admin.logs">Logs</span></a></li>
                                 <li><a href="#/docs"><span class="glyphicon glyphicon-book"></span>
-                                    &#xA0;<span translate="global.menu.admin.apidocs">API Docs</span></a></li>
+                                    &#xA0;<span translate="menu.admin.apidocs">API Docs</span></a></li>
                             </ul>
                         </li>
                         <!-- Language menu -->
@@ -134,34 +134,34 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
                                 <span>
                                     <span class="glyphicon glyphicon-flag"></span>
-                                    <span class="hidden-tablet" translate="global.menu.language">Language</span>
+                                    <span class="hidden-tablet" translate="menu.language">Language</span>
                                     <b class="caret"></b>
                                 </span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li active-menu="da">
                                     <a href="#" ng-click="changeLanguage(&#x27;da&#x27;)"><span class="famfamfam-flag-dk"></span>
-                                        &#xA0;<span translate="global.language.da">Danish</span></a>
+                                        &#xA0;<span translate="language.da">Danish</span></a>
                                 </li>
                                 <li active-menu="en">
                                     <a href="#" ng-click="changeLanguage(&#x27;en&#x27;)"><span class="famfamfam-flag-gb"></span>
-                                        &#xA0;<span translate="global.language.en">English</span></a>
+                                        &#xA0;<span translate="language.en">English</span></a>
                                 </li>
                                 <li active-menu="fr">
                                     <a href="#" ng-click="changeLanguage(&#x27;fr&#x27;)"><span class="famfamfam-flag-fr"></span>
-                                        &#xA0;<span translate="global.language.fr">French</span></a>
+                                        &#xA0;<span translate="language.fr">French</span></a>
                                 </li>
                                 <li active-menu="de">
                                     <a href="#" ng-click="changeLanguage(&#x27;de&#x27;)"><span class="famfamfam-flag-de"></span>
-                                        &#xA0;<span translate="global.language.de">German</span></a>
+                                        &#xA0;<span translate="language.de">German</span></a>
                                 </li>
                                 <li active-menu="pl">
                                     <a href="#" ng-click="changeLanguage(&#x27;pl&#x27;)"><span class="famfamfam-flag-pl"></span>
-                                        &#xA0;<span translate="global.language.pl">Polish</span></a>
+                                        &#xA0;<span translate="language.pl">Polish</span></a>
                                 </li>
                                 <li active-menu="ru">
                                     <a href="#" ng-click="changeLanguage(&#x27;ru&#x27;)"><span class="famfamfam-flag-ru"></span>
-                                        &#xA0;<span translate="global.language.ru">Russian</span></a>
+                                        &#xA0;<span translate="language.ru">Russian</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -170,37 +170,37 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
                                 <span>
                                     <span class="glyphicon glyphicon-globe"></span>
-                                    <span class="hidden-tablet" translate="global.menu.help.main">Help</span>
+                                    <span class="hidden-tablet" translate="menu.help.main">Help</span>
                                     <b class="caret"></b>
                                 </span>
                             </a>
                             <ul class="dropdown-menu" ng-controller="HelpController">
                                 <li><a href="#/overview"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="global.menu.help.overview">Overview</span></a></li>
+                                    &#xA0;<span translate="menu.help.overview">Overview</span></a></li>
                                 <li role="presentation" class="divider"></li>
-                                <li role="presentation" class="dropdown-header"><span translate="global.menu.help.role">Role</span></li>
+                                <li role="presentation" class="dropdown-header"><span translate="menu.help.role">Role</span></li>
                                 <li><a href="#/owner"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="global.menu.help.owner">Boat Owner</span></a></li>
+                                    &#xA0;<span translate="menu.help.owner">Boat Owner</span></a></li>
 
                                 <li><a href="#/skipper"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="global.menu.help.skipper">Skipper</span></a></li>
+                                    &#xA0;<span translate="menu.help.skipper">Skipper</span></a></li>
 
                                 <li ><a ng-href="#/rescue/{{language}}"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="global.menu.help.rescue">Rescue</span></a></li>
+                                    &#xA0;<span translate="menu.help.rescue">Rescue</span></a></li>
 
 
                                 <li><a href="#/club"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="global.menu.help.club">Club</span></a></li>
+                                    &#xA0;<span translate="menu.help.club">Club</span></a></li>
 
                                 <li><a href="#/friend"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="global.menu.help.friend">Friends</span></a></li>
+                                    &#xA0;<span translate="menu.help.friend">Friends</span></a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li><a href="#/about"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="global.menu.help.about">About</span></a></li>
+                                    &#xA0;<span translate="menu.help.about">About</span></a></li>
                                 <li><a href="#/contact"><span class="glyphicon glyphicon-envelope"></span>
-                                    &#xA0;<span translate="global.menu.help.contact">Contact</span></a></li>
+                                    &#xA0;<span translate="menu.help.contact">Contact</span></a></li>
                                 <li><a href="#/faq"><span class="glyphicon glyphicon-question-sign"></span>
-                                    &#xA0;<span translate="global.menu.help.faq">FAQ</span></a></li>
+                                    &#xA0;<span translate="menu.help.faq">FAQ</span></a></li>
                             </ul>
                         </li>
 
@@ -212,7 +212,7 @@
             <div class="well" ng-view=""></div>
 
             <div class="footer">
-                <p translate="footer">This is your footer</p>
+                <p translate="message.info.footer">This is your footer</p>
             </div>
         </div>
 
@@ -273,6 +273,9 @@
         <script src="scripts/licensor/router_licensor.js"></script>
         <script src="scripts/licensor/controller_licensor.js"></script>
         <script src="scripts/licensor/service_licensor.js"></script>
+        <script src="scripts/group/router_group.js"></script>
+        <script src="scripts/group/controller_group.js"></script>
+        <script src="scripts/group/service_group.js"></script>
         <!-- endbuild -->
 </body>
 </html>

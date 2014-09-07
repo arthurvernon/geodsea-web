@@ -2,32 +2,32 @@
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <h1 translate="login.title">Authentication</h1>
+            <h1 translate="title.login">Authentication</h1>
 
             <div class="alert alert-danger" ng-show="authenticationError" translate="login.messages.error.authentication">
                 <strong>Authentication failed!</strong> Please check your credentials and try again.
             </div>
             <form class="form" role="form">
                 <div class="form-group">
-                    <label for="username" translate="global.form.username">Login</label>
-                    <input type="text" class="form-control" id="username" placeholder="{{'global.form.username.placeholder' | translate}}" ng-model="username">
+                    <label for="username" translate="field.username.label">Login</label>
+                    <input type="text" class="form-control" id="username" placeholder="{{'field.username.placeholder' | translate}}" ng-model="username">
                 </div>
                 <div class="form-group">
-                    <label for="password" translate="login.form.password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="{{'login.form.password.placeholder' | translate}}"
+                    <label for="password" translate="field.password.label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="{{'field.password.placeholder' | translate}}"
                            ng-model="password">
                 </div>
                 <div class="form-group">
                     <label for="rememberMe">
-                        {{"login.form.rememberme" | translate}}
+                        {{"field.rememberme.label" | translate}}
                         <input type="checkbox" class="checkbox inline_class" id="rememberMe"
                                ng-model="rememberMe" checked>
                     </label>
                 </div>
-                <button type="submit" class="btn btn-primary" ng-click="login()" translate="login.form.button">Authenticate</button>
+                <button type="submit" class="btn btn-primary" ng-click="login()" translate="button.login">Authenticate</button>
             </form>
             <p></p>
-            <div class="alert alert-warning" translate="global.messages.info.register">
+            <div class="alert alert-warning" translate="message.register">
                 You don't have an account yet? <a href=\"#/register\">Register a new account</a>
             </div>
         </div>

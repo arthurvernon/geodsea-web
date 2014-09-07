@@ -1,0 +1,88 @@
+<div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h1 translate="title.register.group">Register Group</h1>
+
+            <div class="alert alert-success" ng-show="success" translate="result.register.group.success">
+                <strong>Registration saved!</strong> Please check your email for confirmation.
+            </div>
+
+            <div class="alert alert-danger" ng-show="error" translate="result.register.group.fail">
+                <strong>Registration failed!</strong> Please check your input and try again.
+            </div>
+
+            <div class="alert alert-danger" ng-show="errorUserExists" translate="result.register.group.nameInUse">
+                <strong>This name is already registered!</strong> Please choose another one.
+            </div>
+
+            <p translate="message.group.registration.intro"></p>
+            <form name="form" role="form" novalidate
+                  class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
+                  ng-submit="registerGroup()">
+
+                <!-- group name -->
+                <div class="form-group">
+                    <label translate="field.groupname.label">Group Name</label>
+                    <input type="text" class="form-control" name="login"
+                           placeholder="{{'field.groupname.placeholder' | translate}}"
+                           ng-model="group.login" ng-minlength=2 ng-maxlength=50 required ensureUnique>
+
+                    <div class="error"
+                         ng-show="form.login.$dirty && form.login.$invalid">
+                        <small class="error"
+                               ng-show="form.login.$error.required" translate="field.groupname.required">
+                            Your login is required.
+                        </small>
+                        <small class="error"
+                               ng-show="form.login.$error.minlength" translate="field.groupname.minlength">
+                            A group name must be at least 2 characters.
+                        </small>
+                        <small class="error"
+                               ng-show="form.login.$error.maxlength" translate="field.groupname.maxlength">
+                            Your login cannot be longer than 50 characters
+                        </small>
+                    </div>
+                </div>
+
+                <!-- email address -->
+                <div class="form-group">
+                    <label translate="field.groupemail.label">E-mail</label>
+                    <input type="email" class="form-control" name="email"
+                           placeholder="{{'field.groupemail.placeholder' | translate}}"
+                           ng-model="group.email" ng-minlength=5 ng-maxlength=100 required>
+
+                    <div class="error"
+                         ng-show="form.email.$dirty && form.email.$invalid">
+                        <small class="error"
+                               ng-show="form.email.$error.required" translate="field.groupemail.required">
+                            Your e-mail is required.
+                        </small>
+                        <small class="error"
+                               ng-show="form.email.$error.email" translate="field.groupemail.invalid">
+                            Your e-mail is invalid.
+                        </small>
+                        <small class="error"
+                               ng-show="form.email.$error.minlength" translate="field.groupemail.minlength">
+                            Your e-mail is required to be at least 5 characters
+                        </small>
+                        <small class="error"
+                               ng-show="form.email.$error.maxlength" translate="field.groupemail.maxlength">
+                            Your e-mail cannot be longer than 100 characters
+                        </small>
+                    </div>
+                </div>
+                <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    &#xA0;<span translate="button.register">Register</span>
+                </button>
+
+                <button type="reset" class="btn btn-default" ng-click="back()">
+                    <span class="glyphicon glyphicon-ban-circle"></span>
+                    &#xA0;<span translate="button.cancel">Cancel</span>
+                </button>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>

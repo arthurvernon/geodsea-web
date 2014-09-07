@@ -1,7 +1,6 @@
 package com.geodsea.pub.service;
 
 import com.geodsea.pub.domain.Person;
-import com.geodsea.pub.domain.type.RoleType;
 import com.geodsea.pub.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -34,7 +33,7 @@ public class BaseService {
         }
     }
 
-    protected boolean userHasRole(RoleType role)
+    protected boolean userHasRole(String role)
     {
 
         // get security context from thread local
@@ -47,7 +46,7 @@ public class BaseService {
             return false;
 
         for (GrantedAuthority auth : authentication.getAuthorities()) {
-            if (role.toString().equals(auth.getAuthority()))
+            if (role.equals(auth.getAuthority()))
                 return true;
         }
 

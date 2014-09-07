@@ -184,13 +184,16 @@ public class LicensorResource {
 
         LicenseResponse licenseResponse = licenseService.lookupLicense(licensor, registration);
 
-        // TODO store owner details and the like from the response
-        // TODO provide association from vessel to owner & participant
-        // TODO verify that the person requesting is an owner of the vessel
-        // TODO fill out the details before returning
+        if (licenseResponse != null) {
+            // TODO store owner details and the like from the response
+            // TODO provide association from vessel to owner & participant
+            // TODO verify that the person requesting is an owner of the vessel
+            // TODO fill out the details before returning
 
-
-        return new ResponseEntity<>(licenseResponse, HttpStatus.OK);
+            return new ResponseEntity<LicenseResponse>(licenseResponse, HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

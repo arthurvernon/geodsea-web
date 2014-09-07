@@ -1,13 +1,11 @@
 package com.geodsea.pub.service;
 
-import com.geodsea.pub.domain.Address;
-import com.geodsea.pub.domain.Authority;
-import com.geodsea.pub.domain.PersistentToken;
-import com.geodsea.pub.domain.Person;
+import com.geodsea.pub.domain.*;
 import com.geodsea.pub.domain.util.DateConstants;
 import com.geodsea.pub.repository.AuthorityRepository;
 import com.geodsea.pub.repository.PersistentTokenRepository;
 import com.geodsea.pub.repository.PersonRepository;
+import com.geodsea.pub.security.AuthoritiesConstants;
 import com.geodsea.pub.security.SecurityUtils;
 import com.geodsea.pub.service.util.RandomUtil;
 import org.joda.time.DateTime;
@@ -30,7 +28,7 @@ import java.util.Set;
  */
 @Service
 @Transactional
-public class UserService {
+public class UserService  {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -40,33 +38,10 @@ public class UserService {
     @Inject
     private PersonRepository personRepository;
 
-    @Inject
-    private PersistentTokenRepository persistentTokenRepository;
 
     @Inject
     private AuthorityRepository authorityRepository;
 
-    public Person activateRegistration(String key) {
-        log.debug("Activating user for activation key {}", key);
-        Person person = personRepository.getUserByActivationKey(key);
-
-        // activate given user for the registration key.
-        if (person != null) {
-            if (person.getRegistrationTokenExpires().getTime() < System.currentTimeMillis()) {
-                log.info("User account {} not activated as it has expired", person);
-                personRepository.delete(person);
-                return null;
-            }
-            person.setEnabled(true);
-            person.setRegistrationToken(null);
-            person.setRegistrationTokenExpires(null);
-            personRepository.save(person);
-            log.debug("Activated user: {}", person);
-        } else
-            log.warn("Failed to identify person with the registration key: " + key);
-
-        return person;
-    }
 
     public Person createUserInformation(String login, String password, String firstName, String lastName, String email,
                                         Address address, String langKey) {
@@ -83,20 +58,17 @@ public class UserService {
         // new user is not active
         newPerson.setEnabled(false);
 
-        // new user gets registration key that will expire in 8 hours
-        newPerson.setRegistrationTokenExpires(new Date(System.currentTimeMillis() + 8 * DateConstants.HOURS));
-        newPerson.setRegistrationToken(RandomUtil.generateActivationKey());
+        ParticipantService.addRegistrationToken(newPerson);
 
-        Authority authority = authorityRepository.findOne("ROLE_USER");
-        Set<Authority> authorities = new HashSet<Authority>();
-        authorities.add(authority);
-        newPerson.setAuthorities(authorities);
+        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+        newPerson.addAuthority(authority);
 
         personRepository.save(newPerson);
 
         log.debug("Created Information for User: {}", newPerson);
         return newPerson;
     }
+
 
     public void updateUserInformation(String firstName, String lastName, String email, String telephone, String question,
                                       String answer, Address address) {
@@ -166,40 +138,4 @@ public class UserService {
         return currentPerson;
     }
 
-    /**
-     * Persistent Token are used for providing automatic authentication, they should be automatically deleted after
-     * 30 days.
-     * <p/>
-     * <p>
-     * This is scheduled to get fired everyday, at midnight.
-     * </p>
-     */
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void removeOldPersistentTokens() {
-        LocalDate now = new LocalDate();
-        List<PersistentToken> tokens = persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1));
-        for (PersistentToken token : tokens) {
-            log.debug("Deleting token {}", token.getSeries());
-            Person person = token.getPerson();
-            person.getPersistentTokens().remove(token);
-            persistentTokenRepository.delete(token);
-        }
-    }
-
-    /**
-     * Not activated users should be automatically deleted after 3 days.
-     * <p/>
-     * <p>
-     * This is scheduled to get fired everyday, at 01:00 (am).
-     * </p>
-     */
-    @Scheduled(cron = "0 0 1 * * ?")
-    public void removeNotActivatedUsers() {
-        DateTime now = new DateTime();
-        List<Person> persons = personRepository.findNotActivatedUsersByCreationDateBefore(now.minusDays(3));
-        for (Person person : persons) {
-            log.debug("Deleting not activated user {}", person.getParticipantName());
-            personRepository.delete(person);
-        }
-    }
 }

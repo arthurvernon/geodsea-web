@@ -3,7 +3,7 @@
     <h2 translate="vessel.list.title">Vessels</h2>
 
     <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveVesselModal" ng-click="clear()">
-        <span class="glyphicon glyphicon-flash"></span> Create a new Vessel
+        <span class="glyphicon glyphicon-flash"></span><span translate="button.vessel.create">Add a Vessel</span>
     </button>
     <div class="modal fade" id="saveVesselModal" tabindex="-1" role="dialog" aria-labelledby="myVesselLabel"
          aria-hidden="true">
@@ -160,22 +160,22 @@
                             <label translate="vessel.form.storagetype.label">Storage Type</label>
                             <select class="form-control" name="storageType"
                                     ng-model="vessel.storageType" ng-selected="vessel.storageType" required>
-                                <option translate="vessel.storagetype.HOME.name">HOME</option>
-                                <option translate="vessel.storagetype.PEN.name">PEN</option>
-                                <option translate="vessel.storagetype.BOAT_YARD.name">BOAT_YARD</option>
-                                <option translate="vessel.storagetype.STACKER.name">STACKER</option>
-                                <option translate="vessel.storagetype.MOORING.name">MOORING</option>
-                                <option translate="vessel.storagetype.JETTY.name">JETTY</option>
+                                <option translate="vessel.storage.HOME.name">HOME</option>
+                                <option translate="vessel.storage.PEN.name">PEN</option>
+                                <option translate="vessel.storage.BOAT_YARD.name">BOAT_YARD</option>
+                                <option translate="vessel.storage.STACKER.name">STACKER</option>
+                                <option translate="vessel.storage.MOORING.name">MOORING</option>
+                                <option translate="vessel.storage.JETTY.name">JETTY</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span><span translate="button.cancel">Cancel</span>
                         </button>
                         <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-save"></span> Save
+                            <span class="glyphicon glyphicon-save"></span><span translate="button.save">Save</span>
                         </button>
                     </div>
                 </form>
