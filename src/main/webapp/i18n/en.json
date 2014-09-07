@@ -9,7 +9,8 @@
         "cancel" : "Cancel",
         "save" : "Save",
         "lookup" : "Lookup",
-        "register" : "Register"
+        "register" : "Register",
+        "invalidate": "Invalidate"
     },
     "field": {
         "address" :{
@@ -178,6 +179,7 @@
         }
     },
     "title" :  {
+        "tracker": "Real-time user activities",
         "activation": "Activation",
         "activate" : "User/Group Activation",
         "logs": "Logs",
@@ -190,7 +192,9 @@
         "register.vessel": "Vessel Registration",
         "login": "Authentication",
         "password" : "Password Reset",
-        "settings": "Settings for [<b>{{username}}</b>]"
+        "passwordForUser": "Password for [<b>{{username}}</b>]",
+        "settings": "Settings for [<b>{{username}}</b>]",
+        "sessions": "Active sessions for [<b>{{username}}</b>]"
     },
     "message":  {
         "register": {
@@ -241,6 +245,10 @@
         },
         "question" :{
             "geodsea": "If you have any question on Geo d'Sea:"
+        },
+        "sessions": {
+            "success": "<strong>Session invalidated!</strong>",
+            "error": "<strong>An error has occured!</strong> The session could not be invalidated."
         }
 
     },
@@ -254,35 +262,14 @@
             "contactPerson": "Contact Person",
             "contactLogin": "Contact Login",
             "contactEmail" : "Contact Email",
-            "contactPhone" : "Contact Phone"
-        }
-    },
-    "password": {
-        "title": "Password for [<b>{{username}}</b>]",
-        "messages": {
-        }
-    },
-    "sessions": {
-        "title": "Active sessions for [<b>{{username}}</b>]",
-        "table": {
-            "ipaddress": "IP address",
-            "useragent": "User Agent",
-            "date": "Date",
-            "button": "Invalidate"
-        },
-        "messages": {
-            "success": "<strong>Session invalidated!</strong>",
-            "error": "<strong>An error has occured!</strong> The session could not be invalidated."
-        }
-    },
-    "tracker": {
-        "title": "Real-time user activities",
-        "table": {
-            "userlogin": "User",
+            "contactPhone" : "Contact Phone",
+            "user": "User",
             "ipaddress": "IP Address",
             "userAgent": "User agent",
             "page": "Current page",
-            "time": "Time"
+            "time": "Time",
+            "useragent": "User Agent",
+            "date": "Date"
         }
     },
     "metrics": {
