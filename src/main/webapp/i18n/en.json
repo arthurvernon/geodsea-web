@@ -178,6 +178,7 @@
         }
     },
     "title" :  {
+        "activation": "Activation",
         "activate" : "User/Group Activation",
         "logs": "Logs",
         "overview": "Overview",
@@ -185,13 +186,44 @@
         "main.subtitle": "Vessel Tracking Via Your Mobile",
         "register.group": "Group Registration",
         "register.user" : "User Registration",
-        "activation": "Activation",
         "register.organisation": "Organisation Registration",
         "register.vessel": "Vessel Registration",
         "login": "Authentication",
+        "password" : "Password Reset",
         "settings": "Settings for [<b>{{username}}</b>]"
     },
     "message":  {
+        "register": {
+            "participant" : {
+                "saved": "<strong>Registration saved!</strong> Please check your email for confirmation.",
+                "failed": "<strong>Registration failed!</strong> Please try again later.",
+                "nameInUse": "<strong>Login name already registered!</strong> Please choose another one."
+            },
+            "group":{
+                "success" : "The group has been registered. Please check your email for confirmation and click on the link to activate this group.",
+                "fail" : "<strong>Registration failed!</strong> Please check your input and try again.",
+                "nameInUse" : "<strong>This name is already registered!</strong> Please choose another one."
+            },
+            "vessel" :{
+                "license.lookup.failed" : "Failed to obtain details from the licensor. Press cancel and complete the form."
+            }
+        },
+        "authenticate": {
+            "failed": "<strong>Authentication failed!</strong> Please check your credentials and try again."
+        },
+        "password": {
+            "mismatch": "<strong>The passwords entered do not match!</strong>",
+            "save": {
+                "error": "<strong>An error has occured!</strong> The password could not be changed.",
+                "success": "<strong>Password changed!</strong>"
+            }
+        },
+        "user" :{
+            "save":{
+                "error": "<strong>An error has occured!</strong> User details could not be saved.",
+                "success": "<strong>User details saved!</strong>"
+            }
+        },
         "activate": {
             "success": "<strong>Your account has been activated.</strong> Click <a href=\"#/login\">here</a> to login or <a href=\"#\">here</a> to return to the home page.",
             "error": "<strong>Your account could not be activated.</strong> Please use the registration form to sign up."
@@ -210,37 +242,13 @@
         "question" :{
             "geodsea": "If you have any question on Geo d'Sea:"
         }
-    },
-    "result":{
-        "register": {
-            "participant" : {
-                "saved": "<strong>Registration saved!</strong> Please check your email for confirmation.",
-                "failed": "<strong>Registration failed!</strong> Please try again later.",
-                "nameInUse": "<strong>Login name already registered!</strong> Please choose another one."
-            },
-            "group":{
-                "success" : "The group has been registered. Please check your email for confirmation and click on the link to activate this group.",
-                "fail" : "<strong>Registration failed!</strong> Please check your input and try again.",
-                "nameInUse" : "<strong>This name is already registered!</strong> Please choose another one."
-            },
-            "vessel" :{
-                "license" : {
-                    "lookup.failed" : "Failed to obtain details from the licensor. Press cancel and complete the form."
-                }
-            }
-        },
-        "authenticate": {
-            "failed": "<strong>Authentication failed!</strong> Please check your credentials and try again."
-        },
-        "password": {
-            "mismatch": "The password and its confirmation do not match!"
-        }
 
     },
     "table":{
         "heading" :{
             "id": "ID",
             "login" : "Username",
+            "groupname" : "Group Name",
             "email" : "Email",
             "enabled" : "Enabled",
             "contactPerson": "Contact Person",
@@ -249,40 +257,9 @@
             "contactPhone" : "Contact Phone"
         }
     },
-
-    "settings": {
-        "form": {
-            "firstname": "First Name",
-            "firstname.placeholder": "Your first name",
-            "lastname": "Last Name",
-            "lastname.placeholder": "Your last name",
-            "button": "Save"
-        },
-        "messages": {
-            "error": "<strong>An error has occured!</strong> Settings could not be saved.",
-            "success": "<strong>Settings saved!</strong>",
-            "validate": {
-                "firstname": {
-                    "required": "Your first name is required.",
-                    "minlength": "Your first name is required to be at least one character",
-                    "maxlength": "Your first name cannot be longer than 50 characters"
-                },
-                "lastname": {
-                    "required": "Your last name is required.",
-                    "minlength": "Your last name is required to be at least one character",
-                    "maxlength": "Your last name cannot be longer than 50 characters"
-                }
-            }
-        }
-    },
     "password": {
         "title": "Password for [<b>{{username}}</b>]",
-        "form": {
-            "button": "Save"
-        },
         "messages": {
-            "error": "<strong>An error has occured!</strong> The password could not be changed.",
-            "success": "<strong>Password changed!</strong>"
         }
     },
     "sessions": {

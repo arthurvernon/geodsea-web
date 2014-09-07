@@ -4,19 +4,19 @@
         <div class="col-md-8">
             <h1 translate="title.register.user">Registration</h1>
 
-            <div class="alert alert-success" ng-show="success" translate="result.register.participant.saved">
+            <div class="alert alert-success" ng-show="success" translate="message.register.participant.saved">
                 <strong>Registration saved!</strong> Please check your email for confirmation.
             </div>
 
-            <div class="alert alert-danger" ng-show="error" translate="result.register.participant.failed">
+            <div class="alert alert-danger" ng-show="error" translate="message.register.participant.failed">
                 <strong>Registration failed!</strong> Please check your input and try again.
             </div>
 
-            <div class="alert alert-danger" ng-show="errorUserExists" translate="result.register.participant.nameInUse">
+            <div class="alert alert-danger" ng-show="errorUserExists" translate="message.register.participant.nameInUse">
                 <strong>Login name already registered!</strong> Please choose another one.
             </div>
 
-            <div class="alert alert-danger" ng-show="doNotMatch" translate="result.password.mismatch">
+            <div class="alert alert-danger" ng-show="doNotMatch" translate="message.password.mismatch">
                 The password and its confirmation do not match!
             </div>
 
