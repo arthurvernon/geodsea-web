@@ -16,17 +16,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "T_LICENSOR", schema = "BOAT")
-public class Licensor {
+public class Licensor extends OrganisationRole {
 
-    @Id
-    @GeneratedValue(generator = "LICENSOR_SEQ_GEN", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "LICENSOR_SEQ_GEN", sequenceName = "BOAT.LICENSOR_ID_SEQ")
-    private Long id;
-
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="ORGANISATION_FK", referencedColumnName = "ORGANISATION_ID")
-    private Organisation organsation;
 
     /**
      * A URL used to connect to the web service that implements the license inquiry web service.
@@ -45,30 +36,15 @@ public class Licensor {
     @Column(name = "LICENSE_WS_PASSWORD", nullable = true, length = 20)
     private String licenseWsPassword;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name="zone", column = @Column(name="ZONE")),
-            @AttributeOverride(name="zoneTitle", column = @Column(name="ZONE_TITLE"))
-    })
-    private Zone zone;
-
     public Licensor() {
         super();
     }
 
     public Licensor(Organisation organisation, String licenceWsURL, String zoneTitle, Polygon zone ) {
-        this.organsation= organisation;
+        super(organisation, new Zone(zoneTitle, zone));
         this.licenceWsURL = licenceWsURL;
-        this.zone = new Zone(zoneTitle, zone);
     }
 
-    public Organisation getOrgansation() {
-        return organsation;
-    }
-
-    public void setOrgansation(Organisation organsation) {
-        this.organsation = organsation;
-    }
 
     public String getLicenceWsURL() {
         return licenceWsURL;
@@ -76,22 +52,6 @@ public class Licensor {
 
     public void setLicenceWsURL(String licenceWsURL) {
         this.licenceWsURL = licenceWsURL;
-    }
-
-    public Zone getZone() {
-        return zone;
-    }
-
-    public void setZone(Zone zone) {
-        this.zone = zone;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getLicenseWsPassword() {

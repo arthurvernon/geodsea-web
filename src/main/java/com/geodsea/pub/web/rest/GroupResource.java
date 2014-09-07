@@ -69,7 +69,7 @@ public class GroupResource extends ParticipantResource {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        boolean sendEmail = false;
+        boolean creating = false;
         Group group = null;
         if (groupDTO.getId() != null) {
 
@@ -79,6 +79,8 @@ public class GroupResource extends ParticipantResource {
                 log.info("No such group: {}", groupDTO.getId());
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
+            else
+                log.debug("Updating existing group {}", groupDTO.getLogin());
         } else {
             // if this is a new group then there should no be a participant with the same name
             Participant p = participantRepository.getParticipantByParticipantName(groupParticipantName);
@@ -91,7 +93,7 @@ public class GroupResource extends ParticipantResource {
             group = new Group();
             group.setParticipantName(groupParticipantName);
             ParticipantService.addRegistrationToken(group);
-            sendEmail = true;
+            creating = true;
         }
 
         // use the userID to verify if the contact has changed.
@@ -117,11 +119,15 @@ public class GroupResource extends ParticipantResource {
         }
 
         group.setEmail(groupDTO.getEmail());
+        group.setEnabled(groupDTO.isEnabled());
         group.setContactPerson(contactPerson);
-        group.addMember(Member.inactiveManager(contactPerson, group));
+
+        if (creating)
+            group.addMember(Member.inactiveManager(contactPerson, group));
+
         groupRepository.save(group);
 
-        if(sendEmail)
+        if(creating)
         {
             log.debug("Sending group registration email to {}", group.getEmail());
             final Locale locale = Locale.forLanguageTag(contactPerson.getLangKey());
@@ -158,7 +164,7 @@ public class GroupResource extends ParticipantResource {
      */
     private GroupDTO toDto(Group group) {
 
-        GroupDTO dto = new GroupDTO(group.getId(), group.getParticipantName(), group.getEmail(),
+        GroupDTO dto = new GroupDTO(group.getId(), group.isEnabled(), group.getParticipantName(), group.getEmail(),
                 Mapper.dto(group.getContactPerson(), null));
         return dto;
     }

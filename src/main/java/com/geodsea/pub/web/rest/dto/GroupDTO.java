@@ -10,6 +10,8 @@ public class GroupDTO {
 
     private String email;
 
+    private boolean enabled;
+
     /**
      * Output only.
      * <p>If the contact person needs to be updated then this must be done with a specific service call.</p>
@@ -19,8 +21,9 @@ public class GroupDTO {
     public GroupDTO() {
     }
 
-    public GroupDTO(Long groupId, String login, String email, UserDTO contactPerson) {
+    public GroupDTO(Long groupId, boolean enabled, String login, String email, UserDTO contactPerson) {
         this.id = groupId;
+        this.enabled = enabled;
         this.contactPerson = contactPerson;
         this.login = login;
         this.email = email;
@@ -58,6 +61,14 @@ public class GroupDTO {
 
     public void setContactPerson(UserDTO contactPerson) {
         this.contactPerson = contactPerson;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

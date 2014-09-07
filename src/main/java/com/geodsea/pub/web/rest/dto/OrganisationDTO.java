@@ -15,10 +15,10 @@ public class OrganisationDTO extends GroupDTO {
     public OrganisationDTO() {
     }
 
-    public OrganisationDTO(Long orgId, String login, String email, UserDTO contactPerson, String telephone,
+    public OrganisationDTO(Long orgId, boolean enabled, String login, String email, UserDTO contactPerson, String telephone,
                            String address, List<AddressPartDTO> addressParts, PointDTO point,
                            List<String> roles) {
-        super(orgId, login, email, contactPerson);
+        super(orgId, enabled, login, email, contactPerson);
         this.telephone = telephone;
         this.address = address;
         this.addressParts = addressParts;

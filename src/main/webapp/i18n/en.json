@@ -42,6 +42,9 @@
             "maxlength": "Your e-mail cannot be longer than 100 characters"
         },
 
+        "enabled":{
+            "label" : "Enabled"
+        },
         "firstname": {
             "label" : "First Name",
             "placeholder": "Enter your first name",
@@ -175,6 +178,7 @@
         }
     },
     "title" :  {
+        "activate" : "User/Group Activation",
         "logs": "Logs",
         "overview": "Overview",
         "main": "Geo d'Sea",
@@ -188,6 +192,10 @@
         "settings": "Settings for [<b>{{username}}</b>]"
     },
     "message":  {
+        "activate": {
+            "success": "<strong>Your account has been activated.</strong> Click <a href=\"#/login\">here</a> to login or <a href=\"#\">here</a> to return to the home page.",
+            "error": "<strong>Your account could not be activated.</strong> Please use the registration form to sign up."
+        },
         "group.registration.intro" : "Upon completion of the registration process, you will receive an email setting out the conditions of use of this service.",
         "youAre": "You are logged in as \"{{username}}\".",
         "register": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>",
@@ -234,16 +242,11 @@
             "id": "ID",
             "login" : "Username",
             "email" : "Email",
+            "enabled" : "Enabled",
             "contactPerson": "Contact Person",
             "contactLogin": "Contact Login",
             "contactEmail" : "Contact Email",
             "contactPhone" : "Contact Phone"
-        }
-    },
-    "activate": {
-        "messages": {
-            "success": "<strong>Your user has been activated.</strong> Please <a href=\"#/login\">authenticate</a>.",
-            "error": "<strong>Your user could not be activated.</strong> Please use the registration form to sign up."
         }
     },
 
