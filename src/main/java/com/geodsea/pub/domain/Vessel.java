@@ -140,6 +140,17 @@ public class Vessel implements Serializable {
     @Enumerated(EnumType.STRING)
     private List<EmergencyEquipment> emergencyEquipment;
 
+    public Vessel()
+    {
+        super();
+    }
+
+    public Vessel(String name)
+    {
+        super();
+        this.vesselName = name;
+    }
+
     public long getId() {
         return id;
     }
