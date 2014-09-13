@@ -395,19 +395,6 @@
         "title": "Error page!",
         "403": "You are not authorized to access the page."
     },
-
-    "help": {
-        "overview": {
-            "headline": "Geo d'Sea provides the boating community with communication and monitoring tools that save both time and money.",
-            "benefits": {
-                "leadin": "You can use this service as a:",
-                "skipper": "To keep sea rescue and friends informed about your journey.<br> Receive noticies relevant to your location.",
-                "rescue": "To maintain a watch and manage an area of operations.<br> Receive alerts when vessels are overdue.",
-                "friend": "To track the location of people on-board the boat.<br>Exchange messages with each other.<br>Be informed of events relating to the vessel.",
-                "club": "To track the location of participants."
-            }
-        }
-    },
     "vessel": {
         "storage":{
             "null": {

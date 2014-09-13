@@ -16,7 +16,7 @@ geodseaApp
         function ($routeProvider, $httpProvider, $translateProvider, tmhDynamicLocaleProvider, USER_ROLES) {
             $routeProvider
                 .when('/register/user', {
-                    templateUrl: 'views/registeruser.html',
+                    templateUrl: 'views/register/user.html',
                     controller: 'RegisterController',
                     access: {
                         authorizedRoles: [USER_ROLES.all]
@@ -115,8 +115,9 @@ geodseaApp
                         authorizedRoles: [USER_ROLES.admin]
                     }
                 })
-                .when('/overview', {
-                    templateUrl: 'views/overview.html',
+                .when('/info/overview/:lang_param', {
+                    templateUrl: function(params){
+                        return 'views/info/overview_' + params.lang_param + '.html';},
                     controller: 'HelpController',
                     access: {
                         authorizedRoles: [USER_ROLES.all]
@@ -129,23 +130,33 @@ geodseaApp
                         authorizedRoles: [USER_ROLES.all]
                     }
                 })
-                .when('/skipper', {
-                    templateUrl: 'views/skipper.html',
-                    controller: 'HelpController',
-                    access: {
-                        authorizedRoles: [USER_ROLES.all]
-                    }
-                })
-                .when('/rescue/:lang_param', {
+                .when('/info/skipper/:lang_param', {
                     templateUrl: function(params){
-                        return 'views/rescue_' + params.lang_param + '.html';},
+                            return 'views/info/skipper_' + params.lang_param + '.html';},
                     controller: 'HelpController',
                     access: {
                         authorizedRoles: [USER_ROLES.all]
                     }
                 })
-                .when('/club', {
-                    templateUrl: 'views/club.html',
+                .when('/info/rescue/:lang_param', {
+                    templateUrl: function(params){
+                        return 'views/info/rescue_' + params.lang_param + '.html';},
+                    controller: 'HelpController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.all]
+                    }
+                })
+                .when('/info/about/:lang_param', {
+                    templateUrl: function(params){
+                        return 'views/info/about_' + params.lang_param + '.html';},
+                    controller: 'HelpController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.all]
+                    }
+                })
+                .when('/info/club/:lang_param', {
+                    templateUrl: function(params){
+                        return 'views/info/club_' + params.lang_param + '.html';},
                     controller: 'HelpController',
                     access: {
                         authorizedRoles: [USER_ROLES.all]

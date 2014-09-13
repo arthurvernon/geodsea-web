@@ -17,7 +17,7 @@ geodseaApp
                     }
                 })
                 .when('/register/group', {
-                    templateUrl: 'views/registergroup.html',
+                    templateUrl: 'views/register/group.html',
                     controller: 'GroupRegisterController',
                     access: {
                         authorizedRoles: [USER_ROLES.all]
