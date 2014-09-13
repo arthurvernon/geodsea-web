@@ -1,11 +1,13 @@
 package com.geodsea.pub.domain;
 
 
+import com.geodsea.pub.domain.util.ValidationUtil;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 /**
  * A public group that is allowed to perform select activities once approved.
@@ -21,6 +23,20 @@ public class Organisation extends Group {
 
     @Column(name = "WEBSITE_URL", nullable = true, length = 100)
     private String websiteURL;
+
+    /**
+     * The telephone number upon which the person can be contacted in emergencies.
+     * <p>
+     *     (optional) Two or 3 digits in round brackets for an area code
+     *     optional - (dash) or blank space
+     *     3-4 digits optionally followed by a dash or a space followed by another 4 digits
+     * </p>
+     * >
+     */
+    @Column(name="TELEPHONE", nullable = true)
+    @Pattern(regexp= ValidationUtil.TELEPHONE_REGEX,
+            message="{invalid.phonenumber}")
+    private String telephone;
 
     public Organisation(){
         super();
@@ -57,5 +73,11 @@ public class Organisation extends Group {
         this.publishedName = publishedName;
     }
 
+    public String getTelephone() {
+        return telephone;
+    }
 
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 }
