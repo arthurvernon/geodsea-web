@@ -7,9 +7,7 @@ import com.vividsolutions.jts.io.WKTWriter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import javax.validation.Validator;
 import java.util.regex.Pattern;
 
 

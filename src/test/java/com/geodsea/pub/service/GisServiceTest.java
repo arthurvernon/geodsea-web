@@ -1,13 +1,6 @@
 package com.geodsea.pub.service;
 
 import com.geodsea.pub.Application;
-import com.geodsea.pub.domain.Track;
-import com.geodsea.pub.domain.TrackLocation;
-import com.geodsea.pub.domain.Vessel;
-import com.geodsea.pub.repository.TrackRepository;
-import com.geodsea.pub.repository.VesselRepository;
-import com.vividsolutions.jts.geom.Point;
-import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -17,8 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 import static org.assertj.core.api.Assertions.*;
 
 /**
