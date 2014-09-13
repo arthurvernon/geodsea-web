@@ -1,9 +1,10 @@
 package com.geodsea.pub.web.rest.dto;
 
 /**
- * Created by Arthur Vernon on 12/08/2014.
+ * A geographical point expressed in degrees (minutes and seconds being fractions of the whole number.
  */
 public class PointDTO {
+
     private double lat;
     private double lon;
 
