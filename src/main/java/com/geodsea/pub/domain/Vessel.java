@@ -29,7 +29,7 @@ public class Vessel implements Serializable {
     @Id
     @GeneratedValue(generator = "VESSEL_SEQ_GEN", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "VESSEL_SEQ_GEN", sequenceName = "BOAT.VESSEL_ID_SEQ")
-    private long id;
+    private Long id;
 
     /**
      * See <a href="http://www.iso.org/iso/home/store/catalogue_ics/catalogue_detail_ics.htm?csnumber=37497">
@@ -145,17 +145,23 @@ public class Vessel implements Serializable {
         super();
     }
 
-    public Vessel(String name)
+    /**
+     * Essential fields to create a vessel.
+     * @param name
+     * @param type
+     */
+    public Vessel(String name, VesselType type)
     {
         super();
         this.vesselName = name;
+        this.vesselType = type;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
