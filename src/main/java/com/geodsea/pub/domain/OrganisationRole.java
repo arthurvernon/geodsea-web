@@ -14,7 +14,7 @@ public class OrganisationRole {
     private Long id;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "ORGANISATION_FK", referencedColumnName = "ORGANISATION_ID")
     private Organisation organsation;
 

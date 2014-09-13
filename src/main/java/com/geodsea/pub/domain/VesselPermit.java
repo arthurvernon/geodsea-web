@@ -24,7 +24,7 @@ public class VesselPermit {
     /**
      * Access to the person and any license that this person may have that entitles him to be in charge of a boat.
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private Skipper skipper;
 
     /**

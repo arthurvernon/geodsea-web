@@ -18,11 +18,11 @@ public class VesselOwner {
     @SequenceGenerator(name = "VESSEL_OWNER_SEQ_GEN", sequenceName = "BOAT.VESSEL_OWNER_ID_SEQ")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(nullable = false, name="BOAT_ID")
 	private Vessel vessel;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(nullable = false, name="PARTICIPANT_ID")
     private Participant owner;
 
