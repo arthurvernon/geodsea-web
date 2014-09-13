@@ -30,7 +30,7 @@ public class Member {
     /**
      * The group to which this person is a member.
      */
-    @ManyToOne(cascade = CascadeType.DETACH )
+    @ManyToOne()
     @JoinColumn(nullable = false, name = "GROUP_FK")
     private Group group;
 
