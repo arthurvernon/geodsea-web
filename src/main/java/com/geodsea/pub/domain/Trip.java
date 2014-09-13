@@ -1,12 +1,17 @@
 package com.geodsea.pub.domain;
 
+import com.geodsea.pub.service.util.TripSubmitChecks;
+import com.geodsea.pub.service.util.TripUpdateChecks;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A plan submitted by a boat (skipper) at the outset of a trip/journey.
@@ -22,8 +27,9 @@ public class Trip {
 
     @Id
     @GeneratedValue(generator = "TRIP_GEN", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "TRIP_GEN", sequenceName = "TRIP_ID_SEQ")
-    private long gid;
+    @SequenceGenerator(name = "TRIP_GEN", sequenceName = "BOAT.TRIP_ID_SEQ")
+    @Column(name="ID")
+    private long id;
 
 
     /**
@@ -70,6 +76,7 @@ public class Trip {
      */
     @Column(name = "SCHEDULED_START", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
+    @Future(groups = TripSubmitChecks.class)
     private Date scheduledStartTime;
 
     /**
@@ -77,6 +84,7 @@ public class Trip {
      */
     @Column(name = "ACTUAL_START", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
+    @Future(groups = TripSubmitChecks.class)
     private Date actualStartTime;
 
 
@@ -101,6 +109,7 @@ public class Trip {
      */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "SCHEDULED_END", nullable = true)
+    @Future(groups = TripSubmitChecks.class)
     private Date scheduledEndTime;
 
 
@@ -108,7 +117,7 @@ public class Trip {
      * The organisation that the system has ascertained is responsible for monitoring this trip.
      */
     @ManyToOne(optional = true)
-    @JoinColumn(name = "ROLE_RESCUE_ID", nullable = true)
+    @JoinColumn(name = "RESCUE_ID", nullable = true)
     private Rescue rescue;
 
     /**
@@ -141,8 +150,18 @@ public class Trip {
      *     The skipper must be identified so that the trip record is associated with at least one person.
      * </p>
      */
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     private Skipper skipper;
+
+    /**
+     * The frequency in seconds at which the vessel should report its location.
+     * <p>
+     *     Zero implies no obligation.
+     * </p>
+     */
+    @Column(name="REPORT_RATE", nullable = false)
+    @Min(value=0, groups= TripUpdateChecks.class)
+    private int reportRate;
 
     /**
      * The particular vessel that is intended to be used for this trip.
@@ -154,16 +173,50 @@ public class Trip {
     @JoinColumn(name = "VESSEL_ID", nullable = false)
     private Vessel vessel;
 
+    /**
+     * Actual tracking information, ie time at location.
+     */
+//    @OneToMany(fetch = FetchType.LAZY)
+    @ElementCollection
+    @CollectionTable(name="T_LOCATION_TIME", schema = "BOAT", joinColumns = @JoinColumn(name="TRIP_FK"))
+//    @JoinColumn(name = "TRIP_FK", referencedColumnName = "ID")
+//    @OrderColumn(name = "GPS_SIGNAL_TIME")
+    private List<LocationTime> locationTimes;
+
+
     public Trip() {
         super();
     }
 
-    public long getGid() {
-        return gid;
+    /**
+     * Create a plan for the trip
+     * @param vessel the vessel being taken on the trip.
+     * @param skipper the skipper in charge of the vessel
+     * @param headline a summary of the purpose of the trip, shared with SRO
+     * @param startTime planned start time for the trip
+     * @param endTime planned end time for the trip
+     * @param summary a personal summary of the trip, not shared with SRO
+     * @param wayPoints optional way points for journey, beginning with the starting location
+     * @param fuel number of litres of fuel
+     * @param people number of people on board
+     */
+    public Trip(Vessel vessel, Skipper skipper, String headline, Date startTime, Date endTime, String summary, MultiPoint wayPoints, int fuel, int people) {
+        this.vessel = vessel;
+        this.skipper = skipper;
+        this.headline = headline;
+        this.scheduledStartTime = startTime;
+        this.scheduledEndTime = endTime;
+        this.wayPoints = wayPoints;
+        this.fuelOnBoard = fuel;
+        this.peopleOnBoard = people;
     }
 
-    public void setGid(long gid) {
-        this.gid = gid;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public LineString getJourney() {
@@ -284,5 +337,43 @@ public class Trip {
 
     public void setVessel(Vessel vessel) {
         this.vessel = vessel;
+    }
+
+    public List<LocationTime> getLocationTimes() {
+        return locationTimes;
+    }
+
+    public void setLocationTimes(List<LocationTime> locationTimes) {
+        this.locationTimes = locationTimes;
+    }
+
+    public int getReportRate() {
+        return reportRate;
+    }
+
+    public void setReportRate(int reportRate) {
+        this.reportRate = reportRate;
+    }
+
+    /**
+     * Append any locations to the existing set.
+     * @param list
+     */
+    public void addAll(List<LocationTime> list) {
+        if (list == null || list.size() == 0)
+            return;
+
+        if (locationTimes == null)
+            locationTimes = list;
+        else
+            locationTimes.addAll(list);
+    }
+
+    public void add(LocationTime locationTime) {
+        if (locationTime == null)
+            return;
+        if (locationTimes == null)
+            locationTimes = new ArrayList<LocationTime>();
+        locationTimes.add(locationTime);
     }
 }
