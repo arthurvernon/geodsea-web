@@ -20,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -130,7 +129,7 @@ public class AccountResource extends ParticipantResource {
             roles.add(authority.getName());
         }
         return new ResponseEntity<>(
-                Mapper.dto(person, roles),
+                Mapper.user(person, roles),
                 HttpStatus.OK);
     }
 

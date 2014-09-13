@@ -22,7 +22,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -165,7 +164,7 @@ public class GroupResource extends ParticipantResource {
     private GroupDTO toDto(Group group) {
 
         GroupDTO dto = new GroupDTO(group.getId(), group.isEnabled(), group.getParticipantName(), group.getEmail(),
-                Mapper.dto(group.getContactPerson(), null));
+                Mapper.user(group.getContactPerson(), null));
         return dto;
     }
 
