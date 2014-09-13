@@ -16,7 +16,6 @@
                   ng-submit="save()">
 
                 <div class="form-group">
-                    {{settingsAccount}}
                     <label translate="field.firstname.label">First Name</label>
                     <input type="text" class="form-control" name="firstName" placeholder="{{'field..firstname.placeholder' | translate}}"
                            ng-model="settingsAccount.firstName" ng-minlength=1 ng-maxlength=50 required>
