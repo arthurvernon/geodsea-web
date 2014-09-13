@@ -94,8 +94,8 @@
     },
     "menu": {
         "home": "Forsiden",
-        "register": {
-            "main": "_da_Register",
+        "add": {
+            "main": "_da_Add",
             "user" : "_da_Register User",
             "vessel" : "_da_Register Vessel",
             "group": "_da_Group",

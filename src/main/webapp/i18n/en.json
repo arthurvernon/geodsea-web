@@ -138,8 +138,8 @@
     },
     "menu": {
         "home": "Home",
-        "register": {
-            "main": "Register",
+        "add": {
+            "main": "Add",
             "user": "User",
             "vessel": "Vessel",
             "group": "Group",

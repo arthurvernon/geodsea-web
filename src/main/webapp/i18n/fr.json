@@ -4,8 +4,8 @@
         "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
         "menu": {
             "home": "Accueil",
-            "register": {
-                "main": "_fr_Register",
+            "add": {
+                "main": "_fr_Add",
                 "user" : "_fr_Register User",
                 "vessel" : "_fr_Register Vessel",
                 "group": "_fr_Group",

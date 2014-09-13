@@ -4,8 +4,8 @@
         "browsehappy": "Ваш браузер <strong>устарел</strong>. Пожалуйста <a href=\"http://browsehappy.com/?locale=en\">обновите ваш браузер</a>.",
         "menu": {
             "home": "Главная",
-            "register": {
-                "main": "_ru_Register",
+            "add": {
+                "main": "_ru_Add",
                 "user" : "_ru_Register User",
                 "vessel" : "_ru_Register Vessel",
                 "group": "_ru_Group",

@@ -4,8 +4,8 @@
         "browsehappy": "Sie benutzen einen <strong>veralteten</strong> Browser. Bitte <a href=\"http://browsehappy.com/?locale=de/\">aktualisieren Sie Ihren Browser</a>, um die Benutzerfreundlichkeit zu erhöhen.",
         "menu": {
             "home": "Startseite",
-            "register": {
-                "main" : "_de_Register",
+            "add": {
+                "main" : "_de_Add",
                 "user" : "Registrierung",
                 "vessel" : "_de_Registrierung Vessel",
                 "group": "_de_Group",
