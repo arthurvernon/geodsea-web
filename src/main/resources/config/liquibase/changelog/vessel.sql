@@ -31,14 +31,6 @@ COMMENT ON COLUMN BOAT.T_VESSEL.TOTAL_HP IS 'Total horse power of a motorised bo
 COMMENT ON COLUMN BOAT.T_VESSEL.FUEL_CAPACITY_L IS 'Maximum number of litres of fuel that the boat can carry.';
 
 
-
-
-
-
-
-
-
-
 ----------------------------------------------------------
 -- The emergency equipment on the boat
 ----------------------------------------------------------
@@ -76,7 +68,6 @@ COMMENT ON COLUMN BOAT.T_VESSEL_OWNER.VESSEL_ID IS 'The vessel that is owned';
 COMMENT ON COLUMN BOAT.T_VESSEL_OWNER.PARTICIPANT_ID IS 'The participant (person or organisation) that owns the boat';
 
 
-
 ----------------------------------------------------------
 -- The skipper
 ----------------------------------------------------------
@@ -93,7 +84,6 @@ ALTER SEQUENCE BOAT.SKIPPER_ID_SEQ OWNED BY BOAT.T_SKIPPER.ID;
 COMMENT ON COLUMN BOAT.T_SKIPPER.PERSON_ID IS 'tag to identify that this person is a skipper';
 
 
-
 ----------------------------------------------------------
 -- A trip taken by a skipper on a vessel.
 ----------------------------------------------------------
@@ -102,7 +92,7 @@ CREATE SEQUENCE BOAT.TRIP_ID_SEQ INCREMENT 1 MINVALUE 1 START 1 CACHE 1;
 ALTER TABLE BOAT.TRIP_ID_SEQ OWNER TO geodsea;
 
 CREATE TABLE BOAT.T_TRIP (
-  GID             BIGINT PRIMARY KEY DEFAULT nextval('BOAT.TRIP_ID_SEQ'),
+  ID              BIGINT PRIMARY KEY DEFAULT nextval('BOAT.TRIP_ID_SEQ'),
   WAY_POINTS      geometry (MULTIPOINT, 4326),
   JOURNEY         geometry (LINESTRING, 4326),
   SUMMARY         VARCHAR(255) NULL,
@@ -114,6 +104,7 @@ CREATE TABLE BOAT.T_TRIP (
   SCHEDULED_END   TIMESTAMP    NULL,
   ACTUAL_END      TIMESTAMP    NULL,
   RESCUE_ID       BIGINT       NULL REFERENCES BOAT.T_RESCUE ON DELETE SET NULL ON UPDATE RESTRICT,
+  REPORT_RATE     INTEGER      NOT NULL DEFAULT 0,
   ADVISED_FIRST   TIMESTAMP,
   ADVISED_LAST    TIMESTAMP,
   SKIPPER_ID      BIGINT       NOT NULL REFERENCES BOAT.T_SKIPPER ON DELETE CASCADE ON UPDATE RESTRICT,
@@ -121,7 +112,7 @@ CREATE TABLE BOAT.T_TRIP (
 );
 
 ALTER TABLE BOAT.T_TRIP OWNER TO geodsea;
-ALTER SEQUENCE BOAT.TRIP_ID_SEQ OWNED BY BOAT.T_TRIP.GID;
+ALTER SEQUENCE BOAT.TRIP_ID_SEQ OWNED BY BOAT.T_TRIP.ID;
 
 COMMENT ON COLUMN BOAT.T_TRIP.JOURNEY IS 'A historical record of the journey that is maintained when the user enables tracking.';
 COMMENT ON COLUMN BOAT.T_TRIP.WAY_POINTS IS 'The start and end point of a trip with any number of points in-between.';
@@ -138,25 +129,62 @@ COMMENT ON COLUMN BOAT.T_TRIP.ADVISED_FIRST IS 'The date when the plan was first
 COMMENT ON COLUMN BOAT.T_TRIP.ADVISED_LAST IS 'The date when the plan was last advised to sea rescue.';
 COMMENT ON COLUMN BOAT.T_TRIP.SKIPPER_ID IS 'Who is the skipper for this trip.';
 COMMENT ON COLUMN BOAT.T_TRIP.VESSEL_ID IS 'Mandatory particular vessel that is intended to be used for this trip.';
+COMMENT ON COLUMN BOAT.T_TRIP.REPORT_RATE IS 'Rate in seconds to report location. Zero implies no reporting requirement';
+
 
 CREATE INDEX IDX_TRIP_WP_GIST ON BOAT.T_TRIP USING GIST (WAY_POINTS);
 CREATE INDEX IDX_TRIP_JOURNEY_GIST ON BOAT.T_TRIP USING GIST (JOURNEY);
 
+----------------------------------------------------------
+-- Location/Time of the boat during a trip
+----------------------------------------------------------
 
 
+CREATE TABLE BOAT.T_LOCATION_TIME (
+  TRIP_FK         BIGINT    NOT NULL,
+  TIME_RECEIVED   TIMESTAMP NOT NULL,
+  GPS_SIGNAL_TIME TIMESTAMP NOT NULL,
+  LOCATION        geometry (POINT, 4326),
+  PRIMARY KEY (TRIP_FK, GPS_SIGNAL_TIME)
+);
+ALTER TABLE boat.T_LOCATION_TIME OWNER TO geodsea;
+
+ALTER TABLE BOAT.T_LOCATION_TIME ADD CONSTRAINT FK_LOCATION_TIME_TRIP FOREIGN KEY (TRIP_FK)
+REFERENCES BOAT.T_TRIP (ID) ON DELETE CASCADE;
 
 
+---------------------------------------------------------
+-- Monitor
+-- Participants who can observe the trip
+----------------------------------------------------------
+
+CREATE SEQUENCE BOAT.MONITOR_ID_SEQ INCREMENT 1 MINVALUE 1 START 1 CACHE 1;
+ALTER TABLE BOAT.MONITOR_ID_SEQ OWNER TO geodsea;
 
 
+CREATE TABLE BOAT.T_MONITOR (
+  ID             BIGINT    NOT NULL PRIMARY KEY DEFAULT nextval('BOAT.MONITOR_ID_SEQ'),
+  PARTICIPANT_FK BIGINT    NOT NULL,
+  TRIP_FK        BIGINT    NOT NULL,
+  START_TIME     TIMESTAMP NULL,
+  FINISH_TIME    TIMESTAMP NULL
+);
+ALTER TABLE boat.T_MONITOR OWNER TO geodsea;
+ALTER SEQUENCE BOAT.MONITOR_ID_SEQ OWNED BY BOAT.T_MONITOR.ID;
 
+COMMENT ON TABLE BOAT.T_MONITOR IS 'Right of a participant to observe the trip';
+COMMENT ON COLUMN BOAT.T_MONITOR.START_TIME IS 'Optional time from when the monitor may view the trip. If not specified then from the trip start';
+COMMENT ON COLUMN BOAT.T_MONITOR.FINISH_TIME IS 'Optional time from when the monitor may view the trip. If not specified then it will be until the trip ends';
 
+ALTER TABLE BOAT.T_MONITOR ADD CONSTRAINT FK_MONITOR_TRIP FOREIGN KEY (TRIP_FK)
+REFERENCES BOAT.T_TRIP (ID) ON DELETE CASCADE;
 
+ALTER TABLE BOAT.T_MONITOR ADD CONSTRAINT FK_MONITOR_PARTICIPANT FOREIGN KEY (PARTICIPANT_FK)
+REFERENCES BOAT.T_PARTICIPANT (ID) ON DELETE CASCADE;
 
-
-
-
-
-
+CREATE INDEX IDX_TRACK_PARTICIPANT ON Boat.T_MONITOR (PARTICIPANT_FK);
+CREATE INDEX IDX_TRACK_PARTICIPANT_FINISH ON Boat.T_MONITOR (FINISH_TIME) WHERE FINISH_TIME IS NOT NULL;
+CREATE INDEX IDX_TRACK_PARTICIPANT_START ON Boat.T_MONITOR (START_TIME) WHERE START_TIME IS NOT NULL;
 
 
 ----------------------------------------------------------
