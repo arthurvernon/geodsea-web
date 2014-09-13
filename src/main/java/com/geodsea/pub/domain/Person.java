@@ -1,15 +1,12 @@
 package com.geodsea.pub.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.geodsea.pub.domain.util.ValidationUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.Email;
-import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -74,7 +71,7 @@ public class Person extends Participant implements Serializable {
      * >
      */
     @Column(name="TELEPHONE", nullable = true)
-    @Pattern(regexp="^((\\+\\d{2,4}[- ]?)?((\\d{1,4})|(\\(\\d{1,4}\\)))[- ]?)?(\\d{3,4})([- ])?(\\d{3,4})$",
+    @Pattern(regexp= ValidationUtil.TELEPHONE_REGEX,
             message="{invalid.phonenumber}")
     private String telephone;
 
