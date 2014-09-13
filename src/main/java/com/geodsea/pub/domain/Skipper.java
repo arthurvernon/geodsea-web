@@ -29,13 +29,30 @@ public class Skipper {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "skipper")
 	private List<VesselPermit> permits;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name="PERSON_ID")
 	private Person person;
 
 	public Skipper(){
     super();
 	}
+
+    /**
+     * Create a skipper with the minimum amount of information.
+     * @param person
+     */
+    public Skipper(Person person)
+    {
+        this.person = person;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public List<Trip> getTrips() {
         return trips;
