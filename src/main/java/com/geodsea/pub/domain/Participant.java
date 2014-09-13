@@ -1,7 +1,6 @@
 package com.geodsea.pub.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.geodsea.pub.domain.util.DateConstants;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Email;
 
@@ -59,6 +58,13 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Authority> authorities;
 
+    /**
+     * The tracks that this participant is permitted to see.
+     */
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name="PARTICIPANT_FK", referencedColumnName="ID")
+    private Set<Monitor> monitors;
 
     @Email
     @Size(min = 0, max = 100)
