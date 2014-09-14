@@ -40,9 +40,6 @@ public class SkipperService extends BaseService {
     @Inject
     private MonitorRepository monitorRepository;
 
-//    @Inject
-//    private LocationTimeRepository locationTimeRepository;
-
     private final Logger log = LoggerFactory.getLogger(SkipperService.class);
 
     public Trip addTripPlan(Trip trip) {
@@ -81,8 +78,9 @@ public class SkipperService extends BaseService {
         Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip, TripSubmitChecks.class);
 
         if (constraintViolations.size() > 0) {
-            for (ConstraintViolation<Trip> cv : constraintViolations)
-                log.debug(cv.getMessage());
+            if (log.isDebugEnabled())
+                for (ConstraintViolation<Trip> cv : constraintViolations)
+                    log.debug(cv.getMessage());
             throw new ConstraintViolationException(constraintViolations);
         }
 
