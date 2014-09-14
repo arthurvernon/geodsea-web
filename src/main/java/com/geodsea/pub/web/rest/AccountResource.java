@@ -166,7 +166,7 @@ public class AccountResource extends ParticipantResource {
             userService.changePassword(change.getOldPassword(), change.getNewPassword());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ActionRefusedException ex) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<String>(ex.getCode(), HttpStatus.CONFLICT);
         }
     }
 
