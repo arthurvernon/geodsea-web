@@ -145,6 +145,7 @@ geodseaApp.controller('PasswordController', ['$scope', 'PasswordChange',
         $scope.success = null;
         $scope.error = null;
         $scope.doNotMatch = null;
+        $scope.errorcode = null;
         $scope.changePassword = function () {
             if ($scope.password.newPassword != $scope.confirmPassword) {
                 $scope.doNotMatch = "ERROR";
@@ -154,10 +155,14 @@ geodseaApp.controller('PasswordController', ['$scope', 'PasswordChange',
                     function (value, responseHeaders) {
                         $scope.error = null;
                         $scope.success = 'OK';
+                        $scope.errorcode = null;
                     },
                     function (httpResponse) {
                         $scope.success = null;
-                        $scope.error = "ERROR";
+                        if (httpResponse.data)
+                            $scope.errorcode = "errors."+ httpResponse.data;
+                        else
+                            $scope.error = "ERROR";
                     });
             }
         };

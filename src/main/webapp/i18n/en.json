@@ -34,6 +34,12 @@
 
         },
 
+        "contact":{
+            "label" : "Contact Person",
+            "placeholder" : "Login name of the contact person",
+            "minlength" : "A login name must be at least 2 characters",
+            "maxlength" : "A login name may not be more than 100 characters"
+        },
         "email": {
             "label" : "E-mail",
             "placeholder": "Your e-mail address",
@@ -393,7 +399,17 @@
     },
     "errors": {
         "title": "Error page!",
-        "403": "You are not authorized to access the page."
+        "403": "You are not authorized to access the page.",
+        "IncorrectAnswer" : "The answer supplied does not match the answer previously defined",
+        "PasswordMismatch" : "The two versions of the new password are not the same",
+        "MissingEmail" : "The email address is not specified.",
+        "MissingGroupName" : "A unique (non-blank) name for the group is required.",
+        "NoSuchUser" : "There is no such user login name registered",
+        "NoSuchGroup" : "There is no such group name registered",
+        "NotAGroupMember" : "You are not a member of this group",
+        "NotAPerson" : "The logon entered is not that of a person",
+        "PermissionDenied" : "You do not have permission to perform this action",
+        "UsernameAlreadyExists" : "This name is already in use. try again"
     },
     "vessel": {
         "storage":{
