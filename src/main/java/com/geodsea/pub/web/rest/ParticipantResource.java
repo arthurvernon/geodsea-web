@@ -39,14 +39,18 @@ public class ParticipantResource {
                                                  final HttpServletResponse response) {
         Map<String, Object> variables = new HashMap<String, Object>();
         variables.put("participant", participant);
-        variables.put("baseUrl", request.getScheme() + "://" +   // "http" + "://
-                request.getServerName() +       // "myhost"
-                ":" + request.getServerPort() +
-                request.getContextPath());  // geodsea
+        variables.put("baseUrl", createBaseUrl(request));
         IWebContext context = new SpringWebContext(request, response, servletContext,
                 locale, variables, applicationContext);
         return templateEngine.process(MailService.EMAIL_ACTIVATION_PREFIX + MailService.TEMPLATE_SUFFIX, context);
     }
 
+
+    protected String createBaseUrl(HttpServletRequest request) {
+        return request.getScheme() + "://" +   // "http" + "://
+                request.getServerName() +       // "myhost"
+                ":" + request.getServerPort() +
+                request.getContextPath(); // geodsea
+    }
 
 }

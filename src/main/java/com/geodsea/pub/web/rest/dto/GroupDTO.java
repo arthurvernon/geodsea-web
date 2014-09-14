@@ -2,15 +2,14 @@ package com.geodsea.pub.web.rest.dto;
 
 import java.util.List;
 
-public class GroupDTO {
+public class GroupDTO extends ParticipantDAO {
 
-    private Long id;
 
-    private String login;
 
-    private String email;
-
-    private boolean enabled;
+    /**
+     * Username of the contact person
+     */
+    private String contactLogin;
 
     /**
      * Output only.
@@ -21,38 +20,10 @@ public class GroupDTO {
     public GroupDTO() {
     }
 
-    public GroupDTO(Long groupId, boolean enabled, String login, String email, UserDTO contactPerson) {
-        this.id = groupId;
-        this.enabled = enabled;
+    public GroupDTO(Long groupId, boolean enabled, String login, String email, String contactLogin, UserDTO contactPerson) {
+        super(groupId, login, enabled, email);
         this.contactPerson = contactPerson;
-        this.login = login;
-        this.email = email;
-    }
-
-
-    public String getLogin() {
-        return login;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        this.contactLogin = contactLogin;
     }
 
     public UserDTO getContactPerson() {
@@ -63,19 +34,19 @@ public class GroupDTO {
         this.contactPerson = contactPerson;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public String getContactLogin() {
+        return contactLogin;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setContactLogin(String contactLogin) {
+        this.contactLogin = contactLogin;
     }
 
     @Override
     public String toString() {
         return "GroupDTO{" +
-                "login='" + login + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+                "contactLogin='" + contactLogin + '\'' +
+                ", contactPerson=" + contactPerson +
+                "} " + super.toString();
     }
 }

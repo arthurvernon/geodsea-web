@@ -17,7 +17,7 @@ public class OrganisationDTO extends GroupDTO {
 
     public OrganisationDTO(Long orgId, boolean enabled, String login, String email, UserDTO contactPerson, String telephone,
                            String address, List<AddressPartDTO> addressParts, PointDTO point) {
-        super(orgId, enabled, login, email, contactPerson);
+        super(orgId, enabled, login, email, contactPerson != null ? contactPerson.getLogin(): null, contactPerson);
         this.telephone = telephone;
         this.address = address;
         this.addressParts = addressParts;

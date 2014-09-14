@@ -78,7 +78,7 @@ public class SkipperService extends BaseService {
 
         Trip trip = new Trip(vessel, skipper, headline, startTime, endTime, summary, wayPoints, fuel, people);
 
-        Set<ConstraintViolation<Trip>> constraintViolations = validator.validate( trip , TripSubmitChecks.class);
+        Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip, TripSubmitChecks.class);
 
         if (constraintViolations.size() > 0) {
             for (ConstraintViolation<Trip> cv : constraintViolations)
@@ -91,7 +91,7 @@ public class SkipperService extends BaseService {
         monitorRepository.save(new Monitor(trip, trip.getSkipper().getPerson()));
 
         // if way points are defined then we can include the Monitor
-        if (wayPoints != null && ! wayPoints.isEmpty()) {
+        if (wayPoints != null && !wayPoints.isEmpty()) {
             Point point = (Point) wayPoints.getGeometryN(0);
             establishSRO(trip, point);
         }
@@ -102,16 +102,15 @@ public class SkipperService extends BaseService {
 
     /**
      * Setup a sea rescue organisation based upon the location reported.
-     * @param trip the trip to monitor
+     *
+     * @param trip  the trip to monitor
      * @param point the location to attempt
      */
-    private void establishSRO(Trip trip, Point point)
-    {
+    private void establishSRO(Trip trip, Point point) {
         List<Rescue> sroList = rescueRepository.getRescueOrganisationsForLocation(point);
 
         // just take the first if more than one
-        if (sroList.size() > 0)
-        {
+        if (sroList.size() > 0) {
             Rescue firstSRO = sroList.get(0);
 
             trip.setRescue(firstSRO);
@@ -122,8 +121,7 @@ public class SkipperService extends BaseService {
             // it will expire on completion of the trip.
             Monitor monitor = new Monitor(trip, firstSRO.getOrgansation());
             monitorRepository.save(monitor);
-        }
-        else
+        } else
             log.info("No sea rescue organisation covers " + point);
     }
 
@@ -193,7 +191,7 @@ public class SkipperService extends BaseService {
         if (person == null) {
             throw new IllegalArgumentException("No such user: " + username);
         }
-        if (! person.isEnabled())
+        if (!person.isEnabled())
             throw new IllegalArgumentException("Disabled user: " + username);
 
         Skipper skipper = skipperRepository.findByPersonParticipantName(username);
@@ -210,17 +208,16 @@ public class SkipperService extends BaseService {
     public void removeSkipper(long skipperId) {
         Skipper skipper = skipperRepository.getOne(skipperId);
 
-        if (skipper != null)
-        {
+        if (skipper != null) {
             log.debug("Deleting skipper record for User: " + skipper.getPerson().getParticipantName());
             skipperRepository.delete(skipper);
-        }
-        else
+        } else
             log.debug("No such skipper: " + skipperId);
     }
 
     /**
      * Get the track history for this trip.
+     *
      * @param tripId
      * @return
      */
@@ -233,6 +230,7 @@ public class SkipperService extends BaseService {
 
     /**
      * Get the latest reported location (if any) in relation to the trip.
+     *
      * @param tripId
      * @return
      */
@@ -243,7 +241,7 @@ public class SkipperService extends BaseService {
         if (locations == null || locations.size() == 0)
             return null;
         else
-            return locations.get(locations.size()-1);
+            return locations.get(locations.size() - 1);
     }
 
     private Trip lookupTripAndCheckMonitor(long tripId, String participant) throws ActionRefusedException {
@@ -253,10 +251,9 @@ public class SkipperService extends BaseService {
             throw new IllegalArgumentException("No such trip: " + tripId);
 
         Monitor monitor = monitorRepository.findByParticipantParticipantName(participant);
-        if (monitor == null)
-        {
+        if (monitor == null) {
             log.warn("User: {} not permitted to access trip: {}", participant, tripId);
-            throw new ActionRefusedException("Participant" + participant + " is not permitted to access Trip: " + tripId);
+            throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "Participant" + participant + " is not permitted to access Trip: " + tripId);
         }
         return trip;
     }

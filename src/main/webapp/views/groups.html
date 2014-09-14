@@ -66,6 +66,48 @@
                             </div>
                         </div>
 
+                        <!-- contact person-->
+                        <div class="form-group">
+                            <label translate="field.contact.label">Contact Person</label>
+                            <input type="text" class="form-control" name="contact"
+                                   placeholder="{{'field.contact.placeholder' | translate}}"
+                                   ng-model="group.contactLogin" ng-minlength=2 ng-maxlength=100>
+
+                            <div class="error"
+                                 ng-show="form.contact.$dirty && form.contact.$invalid">
+                                <small class="error"
+                                       ng-show="form.contact.$error.minlength" translate="field.contact.minlength">
+                                    A login name must be at least 2 characters
+                                </small>
+                                <small class="error"
+                                       ng-show="form.contact.$error.maxlength" translate="field.contact.maxlength">
+                                    A login name may not be more than 100 characters
+                                </small>
+                            </div>
+                        </div>
+
+                        <select class="form-control" name="contactPerson"
+                                ng-model="group.contactLogin" ng-selected="group.contactLogin" required
+                                ng-options="member.">
+                            <optgroup label="{{ 'vessel.type.motorised' | translate }}">
+                                <option translate="vessel.type.BOW_RIDER.name">BOW_RIDER</option>
+                                <option translate="vessel.type.HALF_CABIN.name">HALF_CABIN</option>
+                                <option translate="vessel.type.WALK_AROUND.name">WALK_AROUND</option>
+                                <option translate="vessel.type.CENTER_CONSOLE.name">CENTER_CONSOLE</option>
+                                <option translate="vessel.type.OPEN_BOAT.name">OPEN_BOAT</option>
+                                <option translate="vessel.type.FLY_BRIDGE.name">FLY_BRIDGE</option>
+                                <option translate="vessel.type.PERSONAL_WATER_CRAFT.name">PERSONAL_WATER_CRAFT
+                                </option>
+                            </optgroup>
+                            <optgroup label="{{ 'vessel.type.unmotorised' | translate }}">
+                                <option translate="vessel.type.OPEN_COCKPIT.name">OPEN_COCKPIT</option>
+                                <option translate="vessel.type.CABIN.name">CABIN</option>
+                                <option translate="vessel.type.ROW_BOAT.name">ROW_BOAT</option>
+                                <option translate="vessel.type.SEA_KAYAK.name">SEA_KAYAK</option>
+                            </optgroup>
+                        </select>
+
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">

@@ -8,40 +8,35 @@ public class MemberDTO {
 
     private boolean manager;
 
+    private boolean active;
+
     private Date memberSince;
 
     private Date memberUntil;
 
-    private UserDTO contact;
-
-    private String login;
-
-    private String email;
-
+    private ParticipantDAO participant;
 
     public MemberDTO() {
     }
 
-    public MemberDTO(String login, String email) {
-        this.login = login;
-        this.email = email;
-    }
-
-
-    public String getLogin() {
-        return login;
-    }
-
-
-    public String getEmail() {
-        return email;
+    public MemberDTO(Long id, boolean manager, boolean active, Date memberSince, Date memberUntil, ParticipantDAO participant) {
+        this.id = id;
+        this.manager = manager;
+        this.active = active;
+        this.memberSince = memberSince;
+        this.memberUntil = memberUntil;
+        this.participant = participant;
     }
 
     @Override
     public String toString() {
-        return "GroupDTO{" +
-                "login='" + login + '\'' +
-                ", email='" + email + '\'' +
+        return "MemberDTO{" +
+                "id=" + id +
+                ", manager=" + manager +
+                ", active=" + active +
+                ", memberSince=" + memberSince +
+                ", memberUntil=" + memberUntil +
+                ", participant=" + participant +
                 '}';
     }
 }

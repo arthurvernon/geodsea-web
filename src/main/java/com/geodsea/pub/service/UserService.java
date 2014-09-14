@@ -44,7 +44,7 @@ public class UserService  {
 
 
     public Person createUserInformation(String login, String password, String firstName, String lastName, String email,
-                                        Address address, String langKey) {
+                                        Address address, String langKey, String question, String answer) {
         Person newPerson = new Person();
         String encryptedPassword = passwordEncoder.encode(password);
         newPerson.setParticipantName(login);
@@ -55,6 +55,9 @@ public class UserService  {
         newPerson.setEmail(email);
         newPerson.setAddress(address);
         newPerson.setLangKey(langKey);
+        newPerson.setQuestion(question);
+        newPerson.setAnswer(answer);
+
         // new user is not active
         newPerson.setEnabled(false);
 
@@ -107,7 +110,7 @@ public class UserService  {
             log.debug("Changed password for User: {}", currentPerson);
         }
         else
-            throw new ActionRefusedException("Old password is incorrect");
+            throw new ActionRefusedException(ErrorCode.PASSWORD_MISMATCH, "Old password is incorrect");
     }
 
     /**
@@ -119,16 +122,18 @@ public class UserService  {
      */
     public void resetPassword(String user, String question, String answer, String password) throws ActionRefusedException {
         Person person = personRepository.getUserByParticipantName(user);
-        if (person == null)
-            throw new ActionRefusedException("No such user");
+        if (person == null) {
+            log.info("Reset Password: No such user: {}", user);
+            throw new ActionRefusedException(ErrorCode.NO_SUCH_USER, "No such user: " + user);
+        }
         if (person.getQuestion().equals(question) && person.getAnswer().equalsIgnoreCase(answer)) {
             String encryptedPassword = passwordEncoder.encode(password);
             person.setPassword(encryptedPassword);
             personRepository.save(person);
-            log.debug("Changed password for User: {}", person);
+            log.debug("ResetPassword: Changed password for User: {}", person);
         }
         else
-            throw new ActionRefusedException("Incorrect answer");
+            throw new ActionRefusedException(ErrorCode.INCORRECT_ANSWER, "Incorrect answer");
     }
 
     @Transactional(readOnly = true)

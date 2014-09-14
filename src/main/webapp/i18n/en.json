@@ -204,6 +204,7 @@
     },
     "message":  {
         "register": {
+            "noaccount": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>",
             "participant" : {
                 "saved": "<strong>Registration saved!</strong> Please check your email for confirmation.",
                 "failed": "<strong>Registration failed!</strong> Please try again later.",
@@ -240,7 +241,6 @@
         },
         "group.registration.intro" : "Upon completion of the registration process, you will receive an email setting out the conditions of use of this service.",
         "youAre": "You are logged in as \"{{username}}\".",
-        "register": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>",
         "welcome": "Welcome, Geo d'Sea!",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "info": {

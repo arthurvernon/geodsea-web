@@ -2,12 +2,11 @@ package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.geodsea.pub.domain.*;
-import com.geodsea.pub.repository.GroupRepository;
-import com.geodsea.pub.repository.ParticipantRepository;
-import com.geodsea.pub.repository.PersonRepository;
-import com.geodsea.pub.security.SecurityUtils;
-import com.geodsea.pub.service.ParticipantService;
+import com.geodsea.pub.service.ActionRefusedException;
+import com.geodsea.pub.service.ErrorCode;
+import com.geodsea.pub.service.GroupService;
 import com.geodsea.pub.web.rest.dto.GroupDTO;
+import com.geodsea.pub.web.rest.dto.MemberDTO;
 import com.geodsea.pub.web.rest.dto.UserDTO;
 import com.geodsea.pub.web.rest.mapper.Mapper;
 import org.apache.commons.lang.StringUtils;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * REST controller for managing Group.
@@ -35,13 +33,7 @@ public class GroupResource extends ParticipantResource {
     private final Logger log = LoggerFactory.getLogger(GroupResource.class);
 
     @Inject
-    private GroupRepository groupRepository;
-
-    @Inject
-    private PersonRepository personRepository;
-
-    @Inject
-    private ParticipantRepository participantRepository;
+    private GroupService groupService;
 
     /**
      * Create a new group with the user nominated or the current user if no contact person login is specified.
@@ -60,82 +52,71 @@ public class GroupResource extends ParticipantResource {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        // with a non-null participant identifier
-        String groupParticipantName = groupDTO.getLogin();
-        if (groupParticipantName == null || groupParticipantName.trim().length() == 0)
-        {
-            log.info("Attempt to register a group with no login name");
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        boolean creating = false;
-        Group group = null;
-        if (groupDTO.getId() != null) {
-
-            // ID indicates that we are updating an existing group
-            group = groupRepository.findOne(groupDTO.getId());
-            if (group == null) {
-                log.info("No such group: {}", groupDTO.getId());
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
-            else
-                log.debug("Updating existing group {}", groupDTO.getLogin());
-        } else {
-            // if this is a new group then there should no be a participant with the same name
-            Participant p = participantRepository.getParticipantByParticipantName(groupParticipantName);
-            if (p != null) {
-                log.info("An participant exists with the name {}", groupParticipantName);
-                return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
-            }
-
-            // OK so we can setup the group.
-            group = new Group();
-            group.setParticipantName(groupParticipantName);
-            ParticipantService.addRegistrationToken(group);
-            creating = true;
-        }
-
-        // use the userID to verify if the contact has changed.
-        UserDTO userDTO = groupDTO.getContactPerson();
-        String contactParticipantName = null;
-        if (userDTO == null || (userDTO.getLogin() == null))
-            contactParticipantName = SecurityUtils.getCurrentLogin();
-        else
-            contactParticipantName = userDTO.getLogin();
-
-        Person contactPerson = personRepository.getUserByParticipantName(contactParticipantName);
-        if (contactPerson == null || ! contactPerson.isEnabled()) {
-            log.info("Not accepting group where " +
-                    (contactPerson == null? " no such person" : "user's account is disabled"));
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-            // setup the group with the person as the contact person with the status of inactive, but
-            // assigned the role of manager
+        // setup the group with the person as the contact person with the status of inactive, but
+        // assigned the role of manager
         if (StringUtils.isBlank(groupDTO.getEmail())) {
             log.info("No contact email address specified");
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<String>(ErrorCode.MISSING_EMAIL, HttpStatus.FORBIDDEN);
         }
 
-        group.setEmail(groupDTO.getEmail());
-        group.setEnabled(groupDTO.isEnabled());
-        group.setContactPerson(contactPerson);
+        String groupName = groupDTO.getLogin();
 
-        if (creating)
-            group.addMember(Member.inactiveManager(contactPerson, group));
-
-        groupRepository.save(group);
-
-        if(creating)
-        {
-            log.debug("Sending group registration email to {}", group.getEmail());
-            final Locale locale = Locale.forLanguageTag(contactPerson.getLangKey());
-            String content = createHtmlContentFromTemplate(group, locale, request, response);
-            mailService.sendActivationEmail(group.getEmail(), content, locale);
+        if (StringUtils.isBlank(groupDTO.getLogin())) {
+            log.info("No group name specified");
+            return new ResponseEntity<String>(ErrorCode.MISSING_GROUP_NAME, HttpStatus.FORBIDDEN);
         }
-        log.debug("REST saved Group : {}", group);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        if (groupDTO.getId() != null) {
+            try {
+                groupService.updateGroup(groupDTO.getId(), groupDTO.getEmail(), groupDTO.getContactLogin());
+                return new ResponseEntity<>(HttpStatus.OK);
+            } catch (ActionRefusedException ex) {
+                return new ResponseEntity<String>(ex.getCode(), HttpStatus.FORBIDDEN);
+            }
+        } else {
+            try {
+                UserDTO userDTO = groupDTO.getContactPerson();
+                String userName = null;
+                if (userDTO != null)
+                    userName = userDTO.getLogin();
+                groupService.createGroup(groupDTO.getLogin(), groupDTO.getEmail(), userName, createBaseUrl(request));
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            } catch (ActionRefusedException ex) {
+                if (ErrorCode.USERNAME_ALREADY_EXISTS.equals(ex.getCode()))
+                    return new ResponseEntity<String>(ex.getCode(), HttpStatus.NOT_MODIFIED);
+                else
+                    return new ResponseEntity<String>(ex.getCode(), HttpStatus.FORBIDDEN);
+            }
+        }
     }
+
+    /**
+     * GET  /rest/groups/:id/members -> get the members of the specified group.
+     */
+    @RequestMapping(value = "/rest/groups/{id}/members",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<?> getMembers(@PathVariable Long id, HttpServletResponse response) {
+        log.debug("REST request to get members of Group : {}", id);
+        try {
+
+            // permission denied or no such group
+            List<Member> members = groupService.getMembers(id);
+            List<MemberDTO> dtos = new ArrayList<MemberDTO>(members.size());
+            for (Member member : members)
+                dtos.add(Mapper.member(member));
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+
+        }
+        catch (ActionRefusedException ex)
+        {
+            if (ErrorCode.PERMISSION_DENIED.equals(ex.getCode()))
+                return new ResponseEntity<String>(ex.getCode(), HttpStatus.NOT_FOUND);
+            else
+                return new ResponseEntity<String>(ex.getCode(), HttpStatus.FORBIDDEN);
+        }
+    }
+
 
     /**
      * GET  /rest/groups -> get all the groups.
@@ -147,26 +128,14 @@ public class GroupResource extends ParticipantResource {
     public List<GroupDTO> getAll() {
         log.debug("REST request to get all Groups");
 
-        List<Group> groups = groupRepository.findAll();
+        List<Group> groups = groupService.getAllGroups();
         List<GroupDTO> dtos = new ArrayList<GroupDTO>();
         for (Group g : groups)
-            dtos.add(toDto(g));
+            dtos.add(Mapper.group(g));
 
         return dtos;
     }
 
-    /**
-     * Create a group including the contact person, but without the roles of the contact person.
-     *
-     * @param group
-     * @return
-     */
-    private GroupDTO toDto(Group group) {
-
-        GroupDTO dto = new GroupDTO(group.getId(), group.isEnabled(), group.getParticipantName(), group.getEmail(),
-                Mapper.user(group.getContactPerson(), null));
-        return dto;
-    }
 
     /**
      * GET  /rest/groups/:id -> get the "id" group.
@@ -177,11 +146,11 @@ public class GroupResource extends ParticipantResource {
     @Timed
     public ResponseEntity<GroupDTO> get(@PathVariable Long id, HttpServletResponse response) {
         log.debug("REST request to get Group : {}", id);
-        Group group = groupRepository.findOne(id);
+        Group group = groupService.lookupGroup(id);
         if (group == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(toDto(group), HttpStatus.OK);
+        return new ResponseEntity<>(Mapper.group(group), HttpStatus.OK);
     }
 
     /**
@@ -193,6 +162,6 @@ public class GroupResource extends ParticipantResource {
     @Timed
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete Group : {}", id);
-        groupRepository.delete(id);
+        groupService.deleteGroup(id);
     }
 }

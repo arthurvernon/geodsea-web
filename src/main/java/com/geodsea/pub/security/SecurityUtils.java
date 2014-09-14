@@ -18,6 +18,7 @@ public final class SecurityUtils {
 
     /**
      * Get the login of the current user.
+     * @return the username or null if no user is logged on
      */
     public static String getCurrentLogin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -55,5 +56,24 @@ public final class SecurityUtils {
         }
 
         return true;
+    }
+    public static boolean userHasRole(String role)
+    {
+
+        // get security context from thread local
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (context == null)
+            return false;
+
+        Authentication authentication = context.getAuthentication();
+        if (authentication == null)
+            return false;
+
+        for (GrantedAuthority auth : authentication.getAuthorities()) {
+            if (role.equals(auth.getAuthority()))
+                return true;
+        }
+
+        return false;
     }
 }

@@ -76,7 +76,7 @@ public class AccountResource extends ParticipantResource {
                     userDTO.getFirstName(), userDTO.getLastName(),
                     userDTO.getEmail().toLowerCase(),
                     address,
-                    userDTO.getLangKey());
+                    userDTO.getLangKey(), userDTO.getQuestion(), userDTO.getAnswer());
             final Locale locale = Locale.forLanguageTag(person.getLangKey());
             String content = createHtmlContentFromTemplate(person, locale, request, response);
             mailService.sendActivationEmail(person.getEmail(), content, locale);

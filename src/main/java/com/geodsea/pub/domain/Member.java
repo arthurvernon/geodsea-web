@@ -70,12 +70,12 @@ public class Member {
     }
 
     /**
-     * Create an inactive manager
+     * Create an active manager
      * @param participant
      * @param group
      */
-    public static Member inactiveManager(Participant participant, Group group) {
-        return new Member(participant, group, false, true, new Date(), null);
+    public static Member createActiveManager(Participant participant, Group group) {
+        return new Member(participant, group, true, true, new Date(), null);
     }
 
     public Group getGroup() {
@@ -133,4 +133,6 @@ public class Member {
     public void setManager(boolean manager) {
         this.manager = manager;
     }
+
+
 }

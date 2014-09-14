@@ -72,6 +72,29 @@
                         </small>
                     </div>
                 </div>
+
+
+
+                <!-- contact person-->
+                <div class="form-group">
+                    <label translate="field.contact.label">Contact Person</label>
+                    <input type="text" class="form-control" name="contact"
+                           placeholder="{{'field.contact.placeholder' | translate}}"
+                           ng-model="group.contactLogin" ng-minlength=2 ng-maxlength=100>
+
+                    <div class="error"
+                         ng-show="form.contact.$dirty && form.contact.$invalid">
+                        <small class="error"
+                               ng-show="form.contact.$error.minlength" translate="field.contact.minlength">
+                            A login name must be at least 2 characters
+                        </small>
+                        <small class="error"
+                               ng-show="form.contact.$error.maxlength" translate="field.contact.maxlength">
+                            A login name may not be more than 100 characters
+                        </small>
+                    </div>
+                </div>
+
                 <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
                     <span class="glyphicon glyphicon-plus"></span>
                     &#xA0;<span translate="button.register">Register</span>

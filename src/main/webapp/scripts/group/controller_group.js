@@ -73,6 +73,6 @@ geodseaApp.controller('GroupRegisterController', ['$scope', 'Group',
         };
 
         $scope.clear = function () {
-            $scope.group = {id: null, login: null, email: null};
+            $scope.group = {id: null, login: null, email: null, contact: null, contactPerson: null};
         };
     }]);
