@@ -1,0 +1,92 @@
+<div>
+
+    <h2 translate="title.members">Members</h2>
+
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveMemberModal" ng-click="clear()">
+        <span class="glyphicon glyphicon-flash"></span> <span translate="button.member.create">Add a Member</span>
+    </button>
+    <div class="modal fade" id="saveMemberModal" tabindex="-1" role="dialog" aria-labelledby="myMemberLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="form" role="form" novalidate
+                      class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
+                      ng-submit="create()">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" id="myMemberLabel" translate="title.member.edit">Create or edit a Member</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label translate="field.id.label">ID</label>
+                            <input type="text" class="form-control" name="id"
+                                   ng-model="member.id" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="field.membersince.label">Member Since</label>
+                            <input type="date" class="form-control" name="membersince"
+                                   ng-model="member.memberSince" >
+                        </div>
+                        <div class="form-group">
+                            <label translate="field.memberuntil.label">Member Since</label>
+                            <input type="date" class="form-control" name="memberuntil"
+                                   ng-model="member.memberUntil" >
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span><span translate="button.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-save"></span><span translate="button.save">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="table.heading.id">ID</th>
+                    <!--<th translate="table.heading.groupname">Group</th>-->
+                    <!--<th translate="table.heading.membername">Member</th>-->
+                    <th translate="table.heading.manager">Manager</th>
+                    <th translate="table.heading.active">Active</th>
+                    <th translate="table.heading.since">Since</th>
+                    <th translate="table.heading.until">Until</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="member in members">
+                    <td>{{member.id}}</td>
+                    <!--<td>{{member.group.participantName}}</td>-->
+                    <!--<td>{{member.participant.participantName}}</td>-->
+                    <td>{{member.manager}}</td>
+                    <td>{{member.active}}</td>
+                    <td>{{member.memberSince | date}}</td>
+                    <td>{{member.memberTile | date}}</td>
+                    <td>
+                        <button type="submit"
+                                ng-click="update(member.id)"
+                                class="btn">
+                            <span class="glyphicon glyphicon-pencil"></span> Edit
+                        </button>
+                        <button type="submit"
+                                ng-click="delete(member.id)"
+                                class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span> Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -8,6 +8,9 @@
                 <strong>Registration saved!</strong> Please check your email for confirmation.
             </div>
 
+            <div class="alert alert-danger" ng-show="errorcode" translate="{{errorcode}}">
+            </div>
+
             <div class="alert alert-danger" ng-show="error" translate="message.register.group.fail">
                 <strong>Registration failed!</strong> Please check your input and try again.
             </div>
@@ -21,26 +24,50 @@
                   class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
                   ng-submit="registerGroup()">
 
-                <!-- group name -->
+                <!-- unique group participant name -->
                 <div class="form-group">
-                    <label translate="field.groupname.label">Group Name</label>
+                    <label translate="field.grouplogin.label">Group Logon</label>
                     <input type="text" class="form-control" name="login"
-                           placeholder="{{'field.groupname.placeholder' | translate}}"
-                           ng-model="group.login" ng-minlength=2 ng-maxlength=50 required ensureUnique>
+                           placeholder="{{'field.grouplogin.placeholder' | translate}}"
+                           ng-model="group.login" ng-minlength=2 ng-maxlength=100 required>
 
                     <div class="error"
                          ng-show="form.login.$dirty && form.login.$invalid">
                         <small class="error"
-                               ng-show="form.login.$error.required" translate="field.groupname.required">
+                               ng-show="form.login.$error.required" translate="field.grouplogin.required">
+                            A unique account name is required.
+                        </small>
+                        <small class="error"
+                               ng-show="form.login.$error.minlength" translate="field.grouplogin.minlength">
+                            An account name must be at least 2 characters.
+                        </small>
+                        <small class="error"
+                               ng-show="form.login.$error.maxlength" translate="field.grouplogin.maxlength">
+                            Your login cannot be longer than 100 characters
+                        </small>
+                    </div>
+                </div>
+
+                <!-- local name-->
+                <div class="form-group">
+                    <label translate="field.groupname.label">Group Name</label>
+                    <input type="text" class="form-control" name="groupname"
+                           placeholder="{{'field.groupname.placeholder' | translate}}"
+                           ng-model="group.name" ng-minlength=2 ng-maxlength=100 required>
+
+                    <div class="error"
+                         ng-show="form.groupname.$dirty && form.groupname.$invalid">
+                        <small class="error"
+                               ng-show="form.groupname.$error.required" translate="field.groupname.required">
                             Your login is required.
                         </small>
                         <small class="error"
-                               ng-show="form.login.$error.minlength" translate="field.groupname.minlength">
+                               ng-show="form.groupname.$error.minlength" translate="field.groupname.minlength">
                             A group name must be at least 2 characters.
                         </small>
                         <small class="error"
                                ng-show="form.login.$error.maxlength" translate="field.groupname.maxlength">
-                            Your login cannot be longer than 50 characters
+                            Your login cannot be longer than 100 characters
                         </small>
                     </div>
                 </div>
@@ -80,7 +107,7 @@
                     <label translate="field.contact.label">Contact Person</label>
                     <input type="text" class="form-control" name="contact"
                            placeholder="{{'field.contact.placeholder' | translate}}"
-                           ng-model="group.contactLogin" ng-minlength=2 ng-maxlength=100>
+                           ng-model="group.contact.login" ng-minlength=2 ng-maxlength=100>
 
                     <div class="error"
                          ng-show="form.contact.$dirty && form.contact.$invalid">

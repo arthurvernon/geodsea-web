@@ -4,8 +4,6 @@ import java.util.List;
 
 public class OrganisationDTO extends GroupDTO {
 
-    private String telephone;
-
     private String address;
 
     private List<AddressPartDTO> addressParts;
@@ -15,10 +13,13 @@ public class OrganisationDTO extends GroupDTO {
     public OrganisationDTO() {
     }
 
-    public OrganisationDTO(Long orgId, boolean enabled, String login, String email, UserDTO contactPerson, String telephone,
+    public OrganisationDTO(Long orgId, String groupLogin, String groupName, String langKey, boolean enabled, String login, String email, ParticipantDTO contactPerson, String telephone,
                            String address, List<AddressPartDTO> addressParts, PointDTO point) {
-        super(orgId, enabled, login, email, contactPerson != null ? contactPerson.getLogin(): null, contactPerson);
-        this.telephone = telephone;
+
+        //Long groupId, String groupLogin, String groupName, String langKey, boolean enabled, String telephone,
+        //String email, ParticipantDTO contact)
+
+        super(orgId, groupLogin, groupName, langKey, enabled, telephone, email, contactPerson);
         this.address = address;
         this.addressParts = addressParts;
         this.point = point;
@@ -46,14 +47,6 @@ public class OrganisationDTO extends GroupDTO {
 
     public void setPoint(PointDTO point) {
         this.point = point;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
     }
 
     @Override

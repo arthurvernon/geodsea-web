@@ -7,7 +7,7 @@ import com.geodsea.pub.service.ErrorCode;
 import com.geodsea.pub.service.GroupService;
 import com.geodsea.pub.web.rest.dto.GroupDTO;
 import com.geodsea.pub.web.rest.dto.MemberDTO;
-import com.geodsea.pub.web.rest.dto.UserDTO;
+import com.geodsea.pub.web.rest.dto.ParticipantDTO;
 import com.geodsea.pub.web.rest.mapper.Mapper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -67,18 +67,25 @@ public class GroupResource extends ParticipantResource {
         }
         if (groupDTO.getId() != null) {
             try {
-                groupService.updateGroup(groupDTO.getId(), groupDTO.getEmail(), groupDTO.getContactLogin());
+                groupService.updateGroup(groupDTO.getId(), groupDTO.getEmail(), groupDTO.getContact().getLogin(),
+                        groupDTO.getName(), groupDTO.getLangKey(), groupDTO.isEnabled());
                 return new ResponseEntity<>(HttpStatus.OK);
             } catch (ActionRefusedException ex) {
                 return new ResponseEntity<String>(ex.getCode(), HttpStatus.FORBIDDEN);
             }
         } else {
             try {
-                UserDTO userDTO = groupDTO.getContactPerson();
+                ParticipantDTO contactDTO = groupDTO.getContact();
                 String userName = null;
-                if (userDTO != null)
-                    userName = userDTO.getLogin();
-                groupService.createGroup(groupDTO.getLogin(), groupDTO.getEmail(), userName, createBaseUrl(request));
+                if (contactDTO != null)
+                    userName = contactDTO.getLogin();
+                Group group = groupService.createGroup(groupDTO.getLogin(), groupDTO.getLangKey(), groupDTO.getName(),
+                        groupDTO.getEmail(), userName, groupDTO.isEnabled());
+
+                // send the email if not automatically enabled by an administrator.
+                if (!group.isEnabled())
+                    groupService.sendRegistrationEmail(group, createBaseUrl(request));
+
                 return new ResponseEntity<>(HttpStatus.CREATED);
             } catch (ActionRefusedException ex) {
                 if (ErrorCode.USERNAME_ALREADY_EXISTS.equals(ex.getCode()))
@@ -111,9 +118,9 @@ public class GroupResource extends ParticipantResource {
         catch (ActionRefusedException ex)
         {
             if (ErrorCode.PERMISSION_DENIED.equals(ex.getCode()))
-                return new ResponseEntity<String>(ex.getCode(), HttpStatus.NOT_FOUND);
-            else
                 return new ResponseEntity<String>(ex.getCode(), HttpStatus.FORBIDDEN);
+            else
+                return new ResponseEntity<String>(ex.getCode(), HttpStatus.NOT_FOUND);
         }
     }
 

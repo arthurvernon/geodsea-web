@@ -2,21 +2,17 @@ package com.geodsea.pub.web.rest.dto;
 
 import java.util.List;
 
-public class UserDTO extends ParticipantDAO {
+public class UserDTO extends ParticipantDTO {
 
 
     /**
      * Only defined when user first creates an account.
      */
     private String password;
-    
-    private String firstName;
-    
-    private String lastName;
 
-    private String telephone;
-    
-    private String langKey;
+    private String firstName;
+
+    private String lastName;
 
     private String question;
 
@@ -36,11 +32,9 @@ public class UserDTO extends ParticipantDAO {
     public UserDTO(long participantId, String login, boolean enabled, String firstName, String lastName, String email, String langKey,
                    String telephone, String question, String answer, String address, List<AddressPartDTO> addressParts, PointDTO point,
                    List<String> roles) {
-        super(participantId, login, enabled, email);
+        super(participantId, login, enabled, firstName + " " + lastName, email, langKey, telephone);
         this.firstName = firstName;
         this.lastName = lastName;
-        this.langKey = langKey;
-        this.telephone = telephone;
         this.question = question;
         this.answer = answer;
         this.address = address;
@@ -53,28 +47,8 @@ public class UserDTO extends ParticipantDAO {
         return password;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getLangKey() {
-        return langKey;
-    }
-
     public List<String> getRoles() {
         return roles;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
     }
 
     public String getAddress() {
@@ -117,20 +91,24 @@ public class UserDTO extends ParticipantDAO {
         this.answer = answer;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("UserDTO{");
         sb.append("login='").append(getLogin()).append('\'');
-        if(password != null) {
+        if (password != null) {
             sb.append(", password='").append(password.length()).append('\'');
         }
-        sb.append(", firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", telephone='").append(telephone).append('\'');
         sb.append(", address='").append(address).append('\'');
         sb.append(", question='").append(question).append('\'');
         sb.append(", answer='").append(answer).append('\'');
-        sb.append(", langKey='").append(langKey).append('\'');
         sb.append(", roles=").append(roles);
         sb.append("} ");
         sb.append(super.toString());

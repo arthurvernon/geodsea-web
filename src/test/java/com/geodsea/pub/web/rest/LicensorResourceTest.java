@@ -83,7 +83,7 @@ public class LicensorResourceTest {
         organisation = new Organisation();
         organisation.setEnabled(true);
         organisation.setParticipantName("transport.nsw.gov.au");
-        organisation.setPublishedName("Marine and Harbours, NSW");
+        organisation.setGroupName("Marine and Harbours, NSW");
 
 //        when(licenseService.addOrUpdateLicensor();getUserWithAuthorities()).thenReturn(person);
 

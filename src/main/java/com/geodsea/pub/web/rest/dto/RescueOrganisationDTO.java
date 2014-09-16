@@ -25,8 +25,12 @@ public class RescueOrganisationDTO extends OrganisationDTO {
     public RescueOrganisationDTO() {
     }
 
-    public RescueOrganisationDTO(Long orgId, boolean enabled, String login, String email, UserDTO contactPerson, String telephone, String address, List<AddressPartDTO> addressParts, PointDTO point, String rescueCallsign, String rescueZoneTitle, String rescueZone) {
-        super(orgId, enabled, login, email, contactPerson, telephone, address, addressParts, point);
+    public RescueOrganisationDTO(Long orgId, String groupLogin, String groupName, String langKey,  boolean enabled,
+                                 String login, String email, UserDTO contactPerson, String telephone, String address,
+                                 List<AddressPartDTO> addressParts, PointDTO point, String rescueCallsign,
+                                 String rescueZoneTitle, String rescueZone) {
+
+        super(orgId, groupLogin, groupName, langKey, enabled, login, email, contactPerson, telephone, address, addressParts, point);
         this.rescueCallsign = rescueCallsign;
         this.rescueZoneTitle = rescueZoneTitle;
         this.rescueZone = rescueZone;

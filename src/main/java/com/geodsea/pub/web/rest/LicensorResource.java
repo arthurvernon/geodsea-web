@@ -117,7 +117,7 @@ public class LicensorResource {
 
     private LicensorDTO createLicensorDTO(Licensor licensor) {
         return new LicensorDTO(licensor.getId(), licensor.getOrgansation().getId(),
-                licensor.getOrgansation().getPublishedName(),
+                licensor.getOrgansation().getGroupName(),
                 licensor.getLicenceWsURL(), licensor.getZone().getZoneTitle(),
                 gisService.toWKT(licensor.getZone().getZone()));
     }

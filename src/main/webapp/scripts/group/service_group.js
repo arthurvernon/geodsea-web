@@ -7,3 +7,11 @@ geodseaApp.factory('Group', ['$resource',
             'get': { method: 'GET'}
         });
     }]);
+
+geodseaApp.factory('GroupMember', ['$resource',
+    function ($resource) {
+        return $resource('app/rest/groups/:groupId/members', {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': { method: 'GET'}
+        });
+    }]);

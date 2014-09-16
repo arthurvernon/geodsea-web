@@ -55,7 +55,7 @@ public class GroupTest {
     public void testMemberQuery() throws ActionRefusedException {
 
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("user", "user"));
-        Group group = groupService.createGroup("DummyGroup", "nobody@nowhere.com", "user", "");
+        Group group = groupService.createGroup("DummyGroup", "en", "Dummy Group", "nobody@nowhere.com", "user", false);
 
         assertThat(groupService.getMembers(group.getId()).size()).isEqualTo(1);
 

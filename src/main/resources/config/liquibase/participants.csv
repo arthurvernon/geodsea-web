@@ -1,7 +1,7 @@
-id;participant_name;enabled;created_by;email
-1;system;true;system;nobody@geodsea.com
-2;anonymousUser;true;system;nobody@geodsea.com
-3;admin;true;system;nobody@geodsea.com
-4;user;true;system;nobody@geodsea.com
-5;transport.wa.gov.au;true;system;nobody@geodsea.com
-6;maritime.nsw.gov.au;true;system;nobody@geodsea.com
+id;participant_name;enabled;created_by;email;lang_key
+1;system;true;system;nobody@geodsea.com;en
+2;anonymousUser;true;system;nobody@geodsea.com;en
+3;admin;true;system;nobody@geodsea.com;en
+4;user;true;system;nobody@geodsea.com;en
+5;transport.wa.gov.au;true;system;nobody@geodsea.com;en
+6;maritime.nsw.gov.au;true;system;nobody@geodsea.com;en

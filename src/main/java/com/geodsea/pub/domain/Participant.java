@@ -46,17 +46,9 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
      */
     @Column(name = "PARTICIPANT_NAME", length = 50, nullable = false)
     @NotNull
-    @Size(min=2, max = 50)
+    @Size(min=2, max = 100)
     private String participantName;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "T_PARTICIPANT_AUTHORITY", schema = "BOAT",
-            joinColumns = {@JoinColumn(name = "participant_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "name", referencedColumnName = "name")})
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Authority> authorities;
 
     /**
      * The tracks that this participant is permitted to see.
@@ -67,8 +59,18 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
     private Set<Monitor> monitors;
 
     @Email
-    @Size(min = 0, max = 100)
+    @NotNull
+    @Size(min = 5, max = 100)
     private String email;
+
+    /**
+     * The ISO language code (lower-case)
+     */
+    @Size(min = 2, max = 5)
+    @NotNull
+    @Column(name = "lang_key", nullable = false)
+    private String langKey;
+
 
 
     /**
@@ -136,21 +138,6 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
         this.registrationToken = registrationToken;
     }
 
-    public Set<Authority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public void addAuthority(Authority a)
-    {
-        if (authorities == null)
-            authorities = new HashSet<Authority>();
-        authorities.add(a);
-    }
-
     public String getEmail() {
         return email;
     }
@@ -159,10 +146,20 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
         this.email = email;
     }
 
+    public String getLangKey() {
+        return langKey;
+    }
+
+    public void setLangKey(String langKey) {
+        this.langKey = langKey;
+    }
+
+
     @Override
     public String toString() {
         return "id=" + id +
                 ", enabled=" + enabled +
+                ", language=" + langKey +
                 ", email='" + email + '\'';
     }
 }

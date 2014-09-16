@@ -14,18 +14,49 @@ public class MemberDTO {
 
     private Date memberUntil;
 
-    private ParticipantDAO participant;
+    private ParticipantDTO participant;
+
+    private GroupDTO group;
 
     public MemberDTO() {
     }
 
-    public MemberDTO(Long id, boolean manager, boolean active, Date memberSince, Date memberUntil, ParticipantDAO participant) {
-        this.id = id;
+    public MemberDTO(Long memberId, ParticipantDTO participant, GroupDTO group, boolean manager, boolean active, Date memberSince, Date memberUntil) {
+        this.id = memberId;
         this.manager = manager;
         this.active = active;
         this.memberSince = memberSince;
         this.memberUntil = memberUntil;
         this.participant = participant;
+        this.group = group;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public boolean isManager() {
+        return manager;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public Date getMemberSince() {
+        return memberSince;
+    }
+
+    public Date getMemberUntil() {
+        return memberUntil;
+    }
+
+    public ParticipantDTO getParticipant() {
+        return participant;
+    }
+
+    public GroupDTO getGroup() {
+        return group;
     }
 
     @Override
@@ -37,6 +68,7 @@ public class MemberDTO {
                 ", memberSince=" + memberSince +
                 ", memberUntil=" + memberUntil +
                 ", participant=" + participant +
+                ", group=" + group +
                 '}';
     }
 }

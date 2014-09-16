@@ -81,7 +81,7 @@ public class LicenseService {
     public LicenseResponse lookupLicense(Licensor licensor, String licenseNumber) {
 
         log.info("Looking up license: {} from licensor {} via WS: {}", licenseNumber,
-                licensor.getOrgansation().getPublishedName(), licensor.getLicenceWsURL());
+                licensor.getOrgansation().getGroupName(), licensor.getLicenceWsURL());
 
         ObjectFactory of = new ObjectFactory();
         LicenseRequest request = of.createLicenseRequest();

@@ -1,9 +1,6 @@
 package com.geodsea.pub.service;
 
-import com.geodsea.pub.domain.Group;
-import com.geodsea.pub.domain.Member;
-import com.geodsea.pub.domain.Participant;
-import com.geodsea.pub.domain.Person;
+import com.geodsea.pub.domain.*;
 import com.geodsea.pub.repository.GroupRepository;
 import com.geodsea.pub.repository.MemberRepository;
 import com.geodsea.pub.repository.ParticipantRepository;
@@ -17,12 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import scala.collection.immutable.ListSet;
 
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
+import java.util.*;
 
 /**
  * Created by Arthur Vernon on 13/09/2014.
@@ -48,8 +46,10 @@ public class GroupService extends BaseService {
     @Inject
     MemberRepository memberRepository;
 
+    @Inject
+    Validator validator;
 
-    public void updateGroup(long groupId, String email, String username) throws ActionRefusedException {
+    public Group updateGroup(long groupId, String email, String contactPersonLogin, String groupName, String langKey, boolean enabled) throws ActionRefusedException {
 
         Group group = groupRepository.findOne(groupId);
         if (group == null) {
@@ -57,21 +57,36 @@ public class GroupService extends BaseService {
             throw new ActionRefusedException(ErrorCode.NO_SUCH_GROUP, "no such group: " + groupId);
         }
 
-        boolean updated = updateContactPerson(group, username);
-        updated = updateEmail(group, email) || updated;
+        updateContactPerson(group, contactPersonLogin);
+        group.setEmail(email);
+        group.setGroupName(groupName);
+        group.setLangKey(langKey);
 
-        if (updated)
-            groupRepository.save(group);
-
-    }
-
-    private boolean updateEmail(Group group, String email) {
-        if (StringUtils.isNotBlank(email))
-            if (!email.equals(group.getEmail())) {
-                group.setEmail(email);
-                return true;
+        // only allow the administrator to enable a disabled group.
+        // The only way a user can do it is through the initial registration process.
+        if (group.isEnabled() != enabled) {
+            if (enabled) {
+                if (SecurityUtils.userHasRole(AuthoritiesConstants.ADMIN))
+                    group.setEnabled(true);
+                else
+                    throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "Only an administrator may enable group: " + groupId);
+            } else {
+                group.setEnabled(false);
             }
-        return false;
+        }
+
+
+        Set<ConstraintViolation<Group>> constraintViolations = validator.validate(group);
+        if (constraintViolations.size() > 0) {
+            if (log.isDebugEnabled())
+                for (ConstraintViolation<Group> cv : constraintViolations)
+                    log.debug(cv.getMessage());
+            throw new ConstraintViolationException(constraintViolations);
+        }
+
+        group = groupRepository.save(group);
+
+        return group;
     }
 
     private boolean updateContactPerson(Group group, String username) throws ActionRefusedException {
@@ -97,14 +112,16 @@ public class GroupService extends BaseService {
      * The contact person will be the user specified or the current user if no username is specified.
      * </p>
      *
-     * @param groupName (hopefully) unique name for the group.
+     * @param participantName (hopefully) unique name for the group.
+     * @param groupName name in the user's language that the group goes - this may not be unique.
+     * @param langKey ISO (lowercase) langauge in which the group name is defined and which.
      * @param email     email address to which the registration confirmation can be sent.
      * @param username  optional, if specified the person who is to be setup as the contact person, otherwise the current user.
-     * @param baseUrl   the base URL for the website, if not specified no email will be sent
+     * @param enabled honoured only if the person making the request is an administrator.
      * @throws ActionRefusedException if the group name is already in use
      */
     @PreAuthorize("isAuthenticated()")
-    public Group createGroup(String groupName, String email, String username, String baseUrl) throws ActionRefusedException {
+    public Group createGroup(String participantName, String langKey, String groupName, String email, String username, boolean enabled) throws ActionRefusedException {
 
         // if this is a new group then there should no be a participant with the same name
         Participant participant = participantRepository.getParticipantByParticipantName(groupName);
@@ -115,8 +132,9 @@ public class GroupService extends BaseService {
 
         // OK so we can setup the group.
         Group group = new Group();
-        group.setParticipantName(groupName);
-        ParticipantService.addRegistrationToken(group);
+        group.setParticipantName(participantName);
+        group.setGroupName(groupName);
+        group.setLangKey(langKey);
 
         // if no username is offered then make the current user the contact person
         if (StringUtils.isBlank(username))
@@ -125,7 +143,14 @@ public class GroupService extends BaseService {
         Person person = lookupPerson(username);
 
         group.setEmail(email);
-        group.setEnabled(false);
+
+        if (enabled && SecurityUtils.userHasRole(AuthoritiesConstants.ADMIN))
+            group.setEnabled(true);
+        else {
+            ParticipantService.addRegistrationToken(group);
+            group.setEnabled(false);
+        }
+
         group.setContactPerson(person);
 
         Member member = Member.createActiveManager(person, group);
@@ -134,12 +159,22 @@ public class GroupService extends BaseService {
         groupRepository.save(group);
         memberRepository.save(member);
 
+        return group;
+    }
+
+    /**
+     *
+     * @param group the group that is to be emailed.
+     * @param baseUrl   the base URL for the website, if not specified no email will be sent
+     */
+    public void sendRegistrationEmail(Group group, String baseUrl)
+    {
         if (StringUtils.isNotBlank(baseUrl)) {
-            final Locale locale = Locale.forLanguageTag(person.getLangKey());
+            final Locale locale = Locale.forLanguageTag(group.getLangKey());
             String content = createHtmlContentFromTemplate(group, locale, baseUrl);
             mailService.sendActivationEmail(group.getEmail(), content, locale);
         }
-        return group;
+
     }
 
     /**
@@ -223,5 +258,135 @@ public class GroupService extends BaseService {
         throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User: " + person.getParticipantName() +
                 " is not an active manager of Group: " + groupId);
 
+    }
+
+    /**
+     * Active managers and administrators may add a new member to the group.
+     *
+     * @param groupName
+     * @param participantName
+     * @param active
+     * @param manager
+     * @param memberSince
+     * @param memberUntil
+     * @return
+     * @throws ActionRefusedException
+     */
+    public Member addMember(String groupName, String participantName, boolean active, boolean manager, Date memberSince,
+                            Date memberUntil) throws ActionRefusedException {
+
+        Person person = this.getPersonForPrincipal();
+        if (person == null)
+            throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User must be logged on to add group members.");
+
+        Group group = groupRepository.findByParticipantName(groupName);
+        if (group == null)
+            throw new ActionRefusedException(ErrorCode.NO_SUCH_GROUP, "No such group: " + groupName);
+
+        Participant participant = participantRepository.getParticipantByParticipantName(participantName);
+
+        Member loggedOnMember = memberRepository.findOne(person.getId());
+
+        checkAdministratorOrActiveManager(loggedOnMember);
+
+        // is the user an admin user or an active manager of the group?
+        Member member = new Member(participant, group, active, manager, memberSince, memberUntil);
+        member = memberRepository.save(member);
+
+        // not sure if this is necessary, but just in case.
+        group.addMember(member);
+        groupRepository.save(group);
+
+        return member;
+
+    }
+
+
+    @PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "')")
+    public List<Member> getAllMembers() {
+        return memberRepository.findAll();
+    }
+
+    /**
+     * Update the particulars of the specified member.
+     *
+     * @param memberId
+     * @param active
+     * @param manager
+     * @param memberSince
+     * @param memberUntil
+     */
+    public void updateMember(Long memberId, boolean active, boolean manager, Date memberSince, Date memberUntil) throws ActionRefusedException {
+        Person person = this.getPersonForPrincipal();
+        Member loggedOnMember = memberRepository.findOne(person.getId());
+
+        checkAdministratorOrActiveManager(loggedOnMember);
+        Member member = memberRepository.findOne(memberId);
+
+        if (member == null)
+            throw new ActionRefusedException(ErrorCode.NO_SUCH_MEMBER, "No such member: " + memberId);
+
+        member.setActive(active);
+        member.setManager(manager);
+        member.setMemberSince(memberSince);
+        member.setMemberUntil(memberUntil);
+
+        memberRepository.save(member);
+    }
+
+    /**
+     * Get the details for the specified member.
+     * <p>
+     * User must be the member himself, an active manager or an administrator to get the member's details.
+     * </p>
+     *
+     * @param memberId
+     * @return a non-null member
+     * @throws ActionRefusedException if there is no such member or the user does not have the permission
+     *                                to access this member.
+     */
+    public Member getMember(Long memberId) throws ActionRefusedException {
+        Person person = this.getPersonForPrincipal();
+        Member member = memberRepository.findOne(memberId);
+
+        //
+        if (!member.getParticipant().getParticipantName().equals(person.getAnswer())) {
+            Member loggedOnMember = memberRepository.findOne(person.getId());
+            checkAdministratorOrActiveManager(loggedOnMember);
+        }
+
+        if (member == null)
+            throw new ActionRefusedException(ErrorCode.NO_SUCH_MEMBER, "No such member: " + memberId);
+        return member;
+    }
+
+
+    /**
+     *
+     * @param loggedOnMember possibly null member
+     * @throws ActionRefusedException
+     */
+    private void checkAdministratorOrActiveManager(Member loggedOnMember) throws ActionRefusedException {
+        // is the user an admin user or an active manager of the group?
+        if (SecurityUtils.userHasRole(AuthoritiesConstants.ADMIN) ||
+                (loggedOnMember != null && loggedOnMember.isManager() && loggedOnMember.isActive()))
+            return;
+
+        throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User: " + SecurityUtils.getCurrentLogin() +
+                " is not an active manager of Group: " + loggedOnMember.getGroup().getParticipantName());
+
+    }
+
+    public void deleteMember(Long memberId) throws ActionRefusedException {
+
+        Person person = getPersonForPrincipal();
+        Member loggedOnMember = memberRepository.findOne(person.getId());
+        checkAdministratorOrActiveManager(loggedOnMember);
+
+        Member memberToDelete = memberRepository.findOne(memberId);
+        if (memberToDelete == null)
+            throw new ActionRefusedException(ErrorCode.NO_SUCH_MEMBER, "No such member: " + memberId);
+
+        memberRepository.delete(memberId);
     }
 }

@@ -12,6 +12,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -27,6 +28,15 @@ public class Person extends Participant implements Serializable {
     @Size(min = 0, max = 100)
     private String password;
 
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "T_PARTICIPANT_AUTHORITY", schema = "BOAT",
+            joinColumns = {@JoinColumn(name = "participant_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "name", referencedColumnName = "name")})
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Authority> authorities;
+
     @Size(min = 2, max = 50)
     @Column(name = "first_name")
     private String firstName;
@@ -34,10 +44,6 @@ public class Person extends Participant implements Serializable {
     @Size(min = 2, max = 50)
     @Column(name = "last_name")
     private String lastName;
-
-    @Size(min = 2, max = 5)
-    @Column(name = "lang_key")
-    private String langKey;
 
     @Size(min = 2, max = 100)
     @Column(name = "question", nullable = false)
@@ -107,14 +113,6 @@ public class Person extends Participant implements Serializable {
     }
 
 
-    public String getLangKey() {
-        return langKey;
-    }
-
-    public void setLangKey(String langKey) {
-        this.langKey = langKey;
-    }
-
 
     public Set<PersistentToken> getPersistentTokens() {
         return persistentTokens;
@@ -164,12 +162,26 @@ public class Person extends Participant implements Serializable {
         this.answer = answer;
     }
 
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public void addAuthority(Authority a)
+    {
+        if (authorities == null)
+            authorities = new HashSet<Authority>();
+        authorities.add(a);
+    }
+
     @Override
     public String toString() {
-        return "Person{" + super.toString() +
+        return "Person{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", langKey='" + langKey + '\'' +
-                "} ";
+                "} " + super.toString();
     }
 }

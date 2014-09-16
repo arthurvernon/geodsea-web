@@ -1,47 +1,47 @@
 {
-    "button":{
+    "button": {
         "authenticate": "Authenticate",
-        "register": "Register",
-        "login" : "Login",
+        "cancel": "Cancel",
+        "invalidate": "Invalidate",
+        "login": "Login",
         "vessel.from.license": "Get From License",
         "vessel.create": "Add a Vessel",
         "group.create": "Add a Group",
-        "cancel" : "Cancel",
-        "save" : "Save",
-        "lookup" : "Lookup",
-        "register" : "Register",
-        "invalidate": "Invalidate"
+        "member.create": "Add a Member",
+        "save": "Save",
+        "lookup": "Lookup",
+        "register": "Register"
     },
     "field": {
-        "address" :{
+        "address": {
             "label": "Street Address",
             "placeholder": "Enter your home address (not a PO Box number)",
             "required": "Your street address is required."
         },
-        "answer":{
-           "label": "Answer",
+
+        "answer": {
+            "label": "Answer",
             "placeholder": "Enter answer",
             "required": "An answer to the question must be specified.",
             "minlength": "An answer must contain at least two characters",
             "maxlength": "An answer may be no longer than 50 characters"
         },
         "confirmpassword": {
-            "label" : "New password confirmation",
+            "label": "New password confirmation",
             "placeholder": "Confirm the new password",
             "required": "Your confirmation password is required.",
             "minlength": "Your confirmation password is required to be at least 5 characters",
             "maxlength": "Your confirmation password cannot be longer than 50 characters"
 
         },
-
-        "contact":{
-            "label" : "Contact Person",
-            "placeholder" : "Login name of the contact person",
-            "minlength" : "A login name must be at least 2 characters",
-            "maxlength" : "A login name may not be more than 100 characters"
+        "contact": {
+            "label": "Contact Person's Login",
+            "placeholder": "Login name of the contact person",
+            "minlength": "A login name must be at least 2 characters",
+            "maxlength": "A login name may not be more than 100 characters"
         },
         "email": {
-            "label" : "E-mail",
+            "label": "E-mail",
             "placeholder": "Your e-mail address",
             "required": "Your e-mail is required.",
             "invalid": "Your e-mail is invalid.",
@@ -49,19 +49,26 @@
             "maxlength": "Your e-mail cannot be longer than 100 characters"
         },
 
-        "enabled":{
-            "label" : "Enabled"
+        "enabled": {
+            "label": "Enabled"
         },
         "firstname": {
-            "label" : "First Name",
+            "label": "First Name",
             "placeholder": "Enter your first name",
             "required": "Your first name is required.",
             "minlength": "Your first name is required to be at least 2 characters",
             "maxlength": "Your first name cannot be longer than 50 characters"
         },
 
+        "fuelcapacity": {
+            "label": "Fuel Capacity (l)",
+            "placeholder": "Enter fuel capacity in litres",
+            "required": "Fuel capacity is required for motorised vessels.",
+            "nan": "This is not a valid number.",
+            "range": "Length must be in the range 0-1000 litres."
+        },
         "groupemail": {
-            "label" : "Group E-mail",
+            "label": "Group E-mail",
             "placeholder": "An e-mail address to send a confirmation link to",
             "required": "An e-mail address is required.",
             "invalid": "The e-mail supplied is invalid.",
@@ -69,18 +76,38 @@
             "maxlength": "An e-mail address may be not longer than 100 characters"
         },
 
+        "grouplogin": {
+            "label": "Group Login",
+            "placeholder": "Enter a unique account",
+            "required": "A group login must be specified.",
+            "minlength": "A group login must be at least 2 characters.",
+            "maxlength": "A group login must be no more than 100 characters."
+        },
+
         "groupname": {
-            "label" : "Group Name",
-            "placeholder": "Enter a unique group name",
-            "required" : "A group name must be specified.",
-            "minlength" : "A group name must be at least 2 characters.",
-            "maxlength" : "A group name must be no more than 50 characters."
+            "label": "Group Name",
+            "placeholder": "A name in the local language",
+            "required": "A group name must be specified.",
+            "minlength": "A group name must be at least 2 characters.",
+            "maxlength": "A group name must be no more than 100 characters."
         },
 
-        "id":{
-            "label" : "ID"
+
+        "hin": {
+            "label": "Hull Identification Number",
+            "placeholder": "Enter HIN",
+            "required": "Your hull identification number is required",
+            "minlength": " A hull identification number is no less than 12 digits long",
+            "maxlength": "A hull identification number is no more than 14 digits long"
+        },
+        "hullcolor": {
+            "label": "Hull Color",
+            "required": "The hull color is required"
         },
 
+        "id": {
+            "label": "ID"
+        },
         "lastname": {
             "label": "Last Name",
             "placeholder": "Enter your last name",
@@ -89,15 +116,19 @@
             "maxlength": "Your last name cannot be longer than 50 characters"
         },
 
-        "password": {
-            "label": "Password",
-            "placeholder": "Your password"
+        "length": {
+            "label": "Length (m)",
+            "placeholder": "Enter length  in metres",
+            "required": "Length of the vessel is required.",
+            "nan": "This is not a valid number.",
+            "range": "Length must be in the range 1-80 metres."
         },
-
-        "rememberme": {
-            "label" : "Automatic Login"
+        "membersince":{
+            "label": "Member Since"
         },
-
+        "memberuntil":{
+            "label": "Member Until"
+        },
         "newpassword": {
             "label": "New password",
             "placeholder": "New password",
@@ -111,12 +142,30 @@
             "label": "Current password",
             "placeholder": "Current password"
         },
+        "password": {
+            "label": "Password",
+            "placeholder": "Your password"
+        },
+
+        "rememberme": {
+            "label": "Automatic Login"
+        },
+
         "question": {
             "label": "Secret Question",
             "placeholder": "Your secret question",
             "required": "A secret question must be specified.",
             "minlength": "A question must contain at least two characters",
             "maxlength": "A question can be no longer than 100 characters"
+        },
+        "storagetype": {
+            "label": "Storage Type",
+            "placeholder": "Choose a storage type",
+            "required": "The storage type is required"
+        },
+        "superstructurecolor": {
+            "label": "Superstructure Color",
+            "required": "The superstructure color is required"
         },
         "telephone": {
             "label": "Telephone",
@@ -132,6 +181,18 @@
             "required": "Your login is required.",
             "minlength": "Your login is required to be at least 1 character",
             "maxlength": "Your login cannot be longer than 50 characters"
+        },
+        "vesselname": {
+            "label": "Vessel Name",
+            "placeholder": "Enter name of vessel",
+            "required": "A vessel name is required",
+            "minlength": "A name must be at least 5 characters long",
+            "maxlength": "A name may not be more than 40 characters long"
+        },
+        "vesseltype": {
+            "label": "Vessel Type",
+            "placeholder": "Select from the list",
+            "required": "The vessel type is required"
         }
     },
     "language": {
@@ -184,39 +245,43 @@
             "privacy": "Privacy"
         }
     },
-    "title" :  {
+    "title": {
         "tracker": "Real-time user activities",
         "activation": "Activation",
-        "activate" : "User/Group Activation",
+        "activate": "User/Group Activation",
         "logs": "Logs",
         "overview": "Overview",
         "main": "Geo d'Sea",
         "main.subtitle": "Vessel Tracking Via Your Mobile",
+        "member.edit": "Create or Edit a Member",
         "register.group": "Group Registration",
-        "register.user" : "User Registration",
+        "register.user": "User Registration",
         "register.organisation": "Organisation Registration",
         "register.vessel": "Vessel Registration",
         "login": "Authentication",
-        "password" : "Password Reset",
+        "members": "Members",
+        "password": "Password Reset",
         "passwordForUser": "Password for [<b>{{username}}</b>]",
         "settings": "Settings for [<b>{{username}}</b>]",
-        "sessions": "Active sessions for [<b>{{username}}</b>]"
+        "sessions": "Active sessions for [<b>{{username}}</b>]",
+        "vessel": "Vessel",
+        "vessels": "Vessels"
     },
-    "message":  {
+    "message": {
         "register": {
-            "noaccount": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>",
-            "participant" : {
+            "noaccount": "You don't have an account yet? <a href=\"#/register/user\">Register a new account</a>",
+            "participant": {
                 "saved": "<strong>Registration saved!</strong> Please check your email for confirmation.",
                 "failed": "<strong>Registration failed!</strong> Please try again later.",
                 "nameInUse": "<strong>Login name already registered!</strong> Please choose another one."
             },
-            "group":{
-                "success" : "The group has been registered. Please check your email for confirmation and click on the link to activate this group.",
-                "fail" : "<strong>Registration failed!</strong> Please check your input and try again.",
-                "nameInUse" : "<strong>This name is already registered!</strong> Please choose another one."
+            "group": {
+                "success": "The group has been registered. Please check your email for confirmation and click on the link to activate this group.",
+                "fail": "<strong>Registration failed!</strong> Please check your input and try again.",
+                "nameInUse": "<strong>This name is already registered!</strong> Please choose another one."
             },
-            "vessel" :{
-                "license.lookup.failed" : "Failed to obtain details from the licensor. Press cancel and complete the form."
+            "vessel": {
+                "license.lookup.failed": "Failed to obtain details from the licensor. Press cancel and complete the form."
             }
         },
         "authenticate": {
@@ -229,8 +294,8 @@
                 "success": "<strong>Password changed!</strong>"
             }
         },
-        "user" :{
-            "save":{
+        "user": {
+            "save": {
                 "error": "<strong>An error has occured!</strong> User details could not be saved.",
                 "success": "<strong>User details saved!</strong>"
             }
@@ -239,7 +304,7 @@
             "success": "<strong>Your account has been activated.</strong> Click <a href=\"#/login\">here</a> to login or <a href=\"#\">here</a> to return to the home page.",
             "error": "<strong>Your account could not be activated.</strong> Please use the registration form to sign up."
         },
-        "group.registration.intro" : "Upon completion of the registration process, you will receive an email setting out the conditions of use of this service.",
+        "group.registration.intro": "Upon completion of the registration process, you will receive an email setting out the conditions of use of this service.",
         "youAre": "You are logged in as \"{{username}}\".",
         "welcome": "Welcome, Geo d'Sea!",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
@@ -249,7 +314,7 @@
             "bugtrackerlink": "Geo d'Sea Bug Tracker",
             "twitterlink": "contact @geodsea on Twitter"
         },
-        "question" :{
+        "question": {
             "geodsea": "If you have any question on Geo d'Sea:"
         },
         "sessions": {
@@ -258,24 +323,37 @@
         }
 
     },
-    "table":{
-        "heading" :{
-            "id": "ID",
-            "login" : "Username",
-            "groupname" : "Group Name",
-            "email" : "Email",
-            "enabled" : "Enabled",
+    "table": {
+        "heading": {
+            "active" : "Active",
             "contactPerson": "Contact Person",
             "contactLogin": "Contact Login",
-            "contactEmail" : "Contact Email",
-            "contactPhone" : "Contact Phone",
-            "user": "User",
+            "contactEmail": "Contact Email",
+            "contactPhone": "Contact Phone",
+            "date": "Date",
+            "email": "Email",
+            "enabled": "Enabled",
+            "fuelcapacity": "Fuel Capacity",
+            "groupemail": "Group Email",
+            "groupname": "Group Name",
+            "hin": "HIN",
             "ipaddress": "IP Address",
-            "userAgent": "User agent",
+            "id": "ID",
+            "length": "Length (m)",
+            "login": "Username",
+            "membername": "Member Name",
+            "manager": "Manager",
             "page": "Current page",
+            "since": "Since",
+            "storagetype": "Storage Type",
             "time": "Time",
+            "type": "Type",
+            "until": "Until",
+            "user": "User",
             "useragent": "User Agent",
-            "date": "Date"
+            "vesselname": "Vessel Name",
+            "vesseltype": "Vessel Type"
+
         }
     },
     "metrics": {
@@ -400,19 +478,20 @@
     "errors": {
         "title": "Error page!",
         "403": "You are not authorized to access the page.",
-        "IncorrectAnswer" : "The answer supplied does not match the answer previously defined",
-        "PasswordMismatch" : "The two versions of the new password are not the same",
-        "MissingEmail" : "The email address is not specified.",
-        "MissingGroupName" : "A unique (non-blank) name for the group is required.",
-        "NoSuchUser" : "There is no such user login name registered",
-        "NoSuchGroup" : "There is no such group name registered",
-        "NotAGroupMember" : "You are not a member of this group",
-        "NotAPerson" : "The logon entered is not that of a person",
-        "PermissionDenied" : "You do not have permission to perform this action",
-        "UsernameAlreadyExists" : "This name is already in use. try again"
+        "IncorrectAnswer": "The answer supplied does not match the answer previously defined",
+        "PasswordMismatch": "The two versions of the new password are not the same",
+        "MissingEmail": "The email address is not specified.",
+        "MissingGroupName": "A unique (non-blank) name for the group is required.",
+        "NoSuchUser": "There is no such user login name registered",
+        "NoSuchGroup": "There is no such group name registered",
+        "NotAGroupMember": "You are not a member of this group",
+        "NotAPerson": "The logon entered is not that of a person",
+        "PermissionDenied": "You do not have permission to perform this action",
+        "UsernameAlreadyExists": "This name is already in use. try again",
+        "NoSuchMember" : "No such member exists"
     },
     "vessel": {
-        "storage":{
+        "storage": {
             "null": {
                 "description": "Needs to be defined.",
                 "name": "Not specified"
@@ -502,91 +581,35 @@
                 "motorised": "No"
             }
         },
-        "list": {
-            "title": "Vessel",
-            "id": "id",
-            "hin": "HIN",
-            "type": "Type",
-            "length": "Length (m)",
-            "name": "Vessel Name",
-            "fuelcapacity": "Fuel Capacity",
-            "storagetype": "Storage Type"
-        },
         "form": {
-            "lookup":{
-                "label" : "Load details using license"
-            },
-
-            "hin": {
-                "label": "Hull Identification Number",
-                "placeholder": "Enter HIN",
-                "required": "Your hull identification number is required",
-                "minlength": " A hull identification number is no less than 12 digits long",
-                "maxlength": "A hull identification number is no more than 14 digits long"
-            },
-            "type": {
-                "label": "Vessel Type",
-                "placeholder": "Select from the list",
-                "required": "The vessel type is required"
-            },
-            "hullcolor": {
-                "label": "Hull Color",
-                "required": "The hull color is required"
-            },
-            "superstructurecolor": {
-                "label": "Superstructure Color",
-                "required": "The superstructure color is required"
-            },
-            "name": {
-                "label": "Vessel Name",
-                "placeholder": "Enter name of vessel",
-                "required": "A vessel name is required",
-                "minlength": "A name must be at least 5 characters long",
-                "maxlength": "A name may not be more than 40 characters long"
-            },
-            "length": {
-                "label": "Length (m)",
-                "placeholder": "Enter length  in metres",
-                "required": "Length of the vessel is required.",
-                "nan": "This is not a valid number.",
-                "range": "Length must be in the range 1-80 metres."
-            },
-            "fuelcapacity": {
-                "label": "Fuel Capacity (l)",
-                "placeholder": "Enter fuel capacity in litres",
-                "required": "Fuel capacity is required for motorised vessels.",
-                "nan": "This is not a valid number.",
-                "range": "Length must be in the range 0-1000 litres."
-            },
-            "storagetype": {
-                "label": "Storage Type",
-                "placeholder": "Choose a storage type",
-                "required": "The storage type is required"
+            "lookup": {
+                "label": "Load details using license"
             }
+
 
         },
         "messages": {
             "error": "<strong>An error has occurred!</strong> Vessel could not be saved.",
             "success": "<strong>Vessel saved!</strong>",
-            "nolicensorws" : "<strong>This agency does not provide this service!</strong> You must enter the details manually."
+            "nolicensorws": "<strong>This agency does not provide this service!</strong> You must enter the details manually."
         },
-        "registration" :{
-            "form":{
-                "title" : "Register a Vessel",
-                "number" :{
-                    "label" : "Registration Number"
+        "registration": {
+            "form": {
+                "title": "Register a Vessel",
+                "number": {
+                    "label": "Registration Number"
                 },
-                "licensor" :{
-                    "label" : "Licensing Agency",
-                    "incorrect" : "Wrong agency?"
+                "licensor": {
+                    "label": "Licensing Agency",
+                    "incorrect": "Wrong agency?"
                 }
             },
-            "licensepopup" :{
-                "title" : "Enter License Details"
+            "licensepopup": {
+                "title": "Enter License Details"
             }
         }
     },
-    "remove":{
+    "remove": {
         "authenticated": "If you want to <a href=\"#/login\">authenticate</a>, you can try the default accounts:<br/>- Admnistrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\")."
     }
 

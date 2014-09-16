@@ -1,11 +1,13 @@
 'use strict';
 
-geodseaApp.controller('GroupController', ['$scope', 'resolvedGroup', 'Group',
-    function ($scope, resolvedGroup, Group) {
+geodseaApp.controller('GroupController', ['$scope', 'resolvedGroup', 'Group','$translate','GroupMember',
+    function ($scope, resolvedGroup, Group, $translate, GroupMember) {
 
         $scope.groups = resolvedGroup;
-
         $scope.create = function () {
+            if (! $scope.group.id) {
+                $scope.group.langKey = $translate.use();
+            }
             Group.save($scope.group,
                 function () {
                     $scope.groups = Group.query();
@@ -15,6 +17,7 @@ geodseaApp.controller('GroupController', ['$scope', 'resolvedGroup', 'Group',
         };
 
         $scope.update = function (id) {
+            $scope.members = GroupMember.query({groupId: id});
             $scope.group = Group.get({id: id});
             $('#saveGroupModal').modal('show');
         };
@@ -26,13 +29,18 @@ geodseaApp.controller('GroupController', ['$scope', 'resolvedGroup', 'Group',
                 });
         };
 
-        $scope.clear = function () {
+        $scope.closing = function () {
+            $scope.members = null;
+            $scope.group = {id: null, login: null, email: null};
+        };
+
+        $scope.adding = function () {
             $scope.group = {id: null, login: null, email: null};
         };
     }]);
 
-geodseaApp.controller('GroupRegisterController', ['$scope', 'Group',
-    function ($scope, Group) {
+geodseaApp.controller('GroupRegisterController', ['$scope', 'Group', '$translate',
+    function ($scope, Group, $translate) {
 
         $scope.registerGroup = function () {
             $scope.error = null;
@@ -41,12 +49,15 @@ geodseaApp.controller('GroupRegisterController', ['$scope', 'Group',
 
             // update address details only if they are present.
             if (typeof($scope.details) != 'undefined') {
-                $scope.registerGroup.addressParts = $scope.details.address_components;
-                $scope.registerGroup.point = {
+                $scope.group.addressParts = $scope.details.address_components;
+                $scope.group.point = {
                     "lat": $scope.details.geometry.location.k,
                     "lon": $scope.details.geometry.location.B
                 };
+
             }
+
+            $scope.group.langKey = $translate.use();
 
             Group.save($scope.group,
                 function () {
@@ -61,7 +72,10 @@ geodseaApp.controller('GroupRegisterController', ['$scope', 'Group',
                         $scope.error = null;
                         $scope.errorUserExists = "ERROR";
                     } else {
-                        $scope.error = "ERROR";
+                        if (httpResponse.data)
+                            $scope.errorcode = "errors."+ httpResponse.data;
+                        else
+                            $scope.error = "ERROR";
                         $scope.errorUserExists = null;
                     }
                 });

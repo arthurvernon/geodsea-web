@@ -3,7 +3,6 @@ package com.geodsea.pub.web.rest.mapper;
 import com.geodsea.pub.domain.*;
 import com.geodsea.pub.web.rest.dto.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,11 +34,14 @@ public class Mapper {
     }
 
     public static OrganisationDTO organisation(Organisation org) {
-        return new OrganisationDTO(org.getId(),
+        //Long orgId, String groupLogin, String groupName, String langKey, boolean enabled, String login, String email, ParticipantDTO contactPerson, String telephone,
+        //String address, List<AddressPartDTO> addressParts, PointDTO point
+
+        return new OrganisationDTO(org.getId(), org.getParticipantName(), org.getGroupName(), org.getLangKey(),
                 org.isEnabled(),
                 org.getParticipantName(),
                 org.getEmail(),
-                user(org.getContactPerson(), null),
+                participant(org.getContactPerson()),
                 org.getTelephone(),
                 org.getAddress() != null ? org.getAddress().getFormatted() : null,
                 null,
@@ -47,22 +49,31 @@ public class Mapper {
     }
 
     public static GroupDTO group(Group group) {
-        return new GroupDTO(group.getId(), group.isEnabled(), group.getParticipantName(), group.getEmail(),
-                group.getContactPerson().getParticipantName(),
-                Mapper.user(group.getContactPerson(), null));
+
+        // Long groupId, String groupLogin, String groupName, String langKey, boolean enabled, String telephone,
+        // String email, ParticipantDTO contact
+        return new GroupDTO(group.getId(), group.getParticipantName(), group.getGroupName(), group.getLangKey(),
+                group.isEnabled(), group.getParticipantName(), group.getEmail(),participant(group.getContactPerson()));
     }
 
     public static MemberDTO member(Member member) {
-        return new MemberDTO(member.getId(), member.isManager(), member.isActive(), member.getMemberSince(), member.getMemberUntil(),
-                participant(member.getParticipant()));
+        return new MemberDTO(member.getId(), participant(member.getParticipant()), group(member.getGroup()),
+                member.isManager(), member.isActive(), member.getMemberSince(), member.getMemberUntil());
     }
 
-    private static ParticipantDAO participant(Participant participant) {
-        if (participant instanceof Person)
-            return user((Person) participant, null);
-        else if (participant instanceof Organisation)
-            return organisation((Organisation) participant);
+    private static ParticipantDTO participant(Participant participant) {
+
+        String name = null;
+        if (participant instanceof Person) {
+            Person p = (Person) participant;
+            name = p.getFirstName() + " " + p.getLastName();
+        }
         else
-            return group((Group) participant);
+        {
+            name = ((Group) participant).getGroupName();
+        }
+
+        return new ParticipantDTO(participant.getId(), participant.getParticipantName(), participant.isEnabled(), name,
+                participant.getEmail(), participant.getLangKey(), ((Person) participant).getTelephone());
     }
 }

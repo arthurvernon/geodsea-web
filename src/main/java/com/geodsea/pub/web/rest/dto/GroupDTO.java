@@ -1,52 +1,35 @@
 package com.geodsea.pub.web.rest.dto;
 
-import java.util.List;
+import com.geodsea.pub.domain.Participant;
 
-public class GroupDTO extends ParticipantDAO {
+public class GroupDTO extends ParticipantDTO {
 
-
-
-    /**
-     * Username of the contact person
-     */
-    private String contactLogin;
 
     /**
      * Output only.
      * <p>If the contact person needs to be updated then this must be done with a specific service call.</p>
      */
-    private UserDTO contactPerson;
+    private ParticipantDTO contact;
 
     public GroupDTO() {
     }
 
-    public GroupDTO(Long groupId, boolean enabled, String login, String email, String contactLogin, UserDTO contactPerson) {
-        super(groupId, login, enabled, email);
-        this.contactPerson = contactPerson;
-        this.contactLogin = contactLogin;
+    public GroupDTO(Long groupId, String groupLogin, String groupName, String langKey, boolean enabled, String telephone,
+                    String email, ParticipantDTO contact) {
+        super(groupId, groupLogin, enabled, groupName, email, langKey, telephone);
+        this.contact = contact;
     }
 
-    public UserDTO getContactPerson() {
-        return contactPerson;
+
+    public ParticipantDTO getContact() {
+        return contact;
     }
 
-    public void setContactPerson(UserDTO contactPerson) {
-        this.contactPerson = contactPerson;
-    }
-
-    public String getContactLogin() {
-        return contactLogin;
-    }
-
-    public void setContactLogin(String contactLogin) {
-        this.contactLogin = contactLogin;
-    }
 
     @Override
     public String toString() {
         return "GroupDTO{" +
-                "contactLogin='" + contactLogin + '\'' +
-                ", contactPerson=" + contactPerson +
+                ", contactPerson=" + contact +
                 "} " + super.toString();
     }
 }

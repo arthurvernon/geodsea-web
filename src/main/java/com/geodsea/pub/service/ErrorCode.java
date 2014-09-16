@@ -24,4 +24,5 @@ public class ErrorCode {
     public static final String NOT_A_GROUP_MEMBER = "NotAGroupMember";
     public static final String INCORRECT_ANSWER = "IncorrectAnswer";
     public static final String PERMISSION_DENIED = "PermissionDenied";
+    public static final String NO_SUCH_MEMBER = "NoSuchMember";
 }

@@ -24,7 +24,7 @@ public class Http401UnauthorizedEntryPoint implements AuthenticationEntryPoint {
      */
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException arg2) throws IOException,
             ServletException {
-        log.debug("Pre-authenticated entry point called. Rejecting access");
+        log.debug("Pre-authenticated entry point called. Rejecting access: " + request.getRequestURL());
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access Denied");
     }
 }

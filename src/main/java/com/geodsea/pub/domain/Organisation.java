@@ -18,8 +18,6 @@ import javax.validation.constraints.Pattern;
 @PrimaryKeyJoinColumn(name="ORGANISATION_ID", referencedColumnName = "GROUP_ID")
 public class Organisation extends Group {
 
-    @Column(name = "PUBLISHED_NAME", nullable = false, length = 100)
-    private String publishedName;
 
     @Column(name = "WEBSITE_URL", nullable = true, length = 100)
     private String websiteURL;
@@ -63,14 +61,6 @@ public class Organisation extends Group {
 
     public void setWebsiteURL(String websiteURL) {
         this.websiteURL = websiteURL;
-    }
-
-    public String getPublishedName() {
-        return publishedName;
-    }
-
-    public void setPublishedName(String publishedName) {
-        this.publishedName = publishedName;
     }
 
     public String getTelephone() {

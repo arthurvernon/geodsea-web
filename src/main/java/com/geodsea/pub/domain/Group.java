@@ -1,6 +1,8 @@
 package com.geodsea.pub.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +14,17 @@ import java.util.List;
 @Table(name = "T_GROUP", schema = "BOAT")
 @PrimaryKeyJoinColumn(name = "GROUP_ID", referencedColumnName = "ID")
 public class Group extends Participant {
+
+    /**
+     * A name, not necessarily unique, that the group is known by, defined in the language of the organisation.
+     * <p>
+     *     For organisations, this should be the official name of the organisation
+     * </p>
+     */
+    @Column(name = "GROUP_NAME", nullable = false, length = 100)
+    @Size(min=2, max=100)
+    @NotNull
+    private String groupName;
 
 
     /**
@@ -92,6 +105,14 @@ public class Group extends Participant {
      */
     public Member lookup(Participant participant) {
         return lookup(participant, 0);
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     /**

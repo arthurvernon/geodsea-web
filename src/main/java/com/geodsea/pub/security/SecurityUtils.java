@@ -57,6 +57,12 @@ public final class SecurityUtils {
 
         return true;
     }
+
+    /**
+     * @see com.geodsea.pub.security.AuthoritiesConstants
+     * @param role
+     * @return
+     */
     public static boolean userHasRole(String role)
     {
 
