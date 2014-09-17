@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface RescueRepository extends JpaRepository<Rescue, Long> {
 
-    @Query("select r from Rescue r where contains(r.zone.zone, ?1) = TRUE")
+    @Query("select r from Rescue r where intersects(r.zone.zone, ?1) = TRUE")
     List<Rescue> getRescueOrganisationsForLocation(Point point);
 
 }

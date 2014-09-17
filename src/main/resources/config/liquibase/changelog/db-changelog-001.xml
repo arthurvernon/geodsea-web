@@ -14,68 +14,7 @@
     <changeSet id="1" author="Arthur Vernon">
 
         <sqlFile path="participant.sql" relativeToChangelogFile="true"/>
-<!--
-        <createTable tableName="T_AUTHORITY" schemaName="BOAT">
-            <column name="name" type="varchar(255)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-        </createTable>
 
-        <createTable tableName="T_PARTICIPANT_AUTHORITY" schemaName="BOAT">
-            <column name="participant_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <addPrimaryKey columnNames="participant_id, name" tableName="T_PARTICIPANT_AUTHORITY" schemaName="BOAT"/>
-
-
-        <createIndex indexName="idx_participant_authority"
-                     tableName="T_PARTICIPANT_AUTHORITY"
-                     schemaName="BOAT"
-                     unique="true">
-            <column name="participant_id" type="bigint"/>
-            <column name="name" type="varchar(255)"/>
-        </createIndex>
-
-        <addForeignKeyConstraint baseColumnNames="name"
-                                 baseTableName="T_PARTICIPANT_AUTHORITY"
-                                 baseTableSchemaName="BOAT"
-                                 constraintName="fk_authority_name"
-                                 referencedColumnNames="name"
-                                 referencedTableName="T_AUTHORITY"
-                                 referencedTableSchemaName="BOAT"/>
-
-        <addForeignKeyConstraint baseColumnNames="participant_id"
-                                 baseTableName="T_PARTICIPANT_AUTHORITY"
-                                 baseTableSchemaName="BOAT"
-                                 constraintName="fk_user_login"
-                                 referencedColumnNames="id"
-                                 referencedTableName="T_PARTICIPANT"
-                                 referencedTableSchemaName="BOAT"/>
-
-
-        <createTable tableName="T_PERSISTENT_TOKEN" schemaName="BOAT">
-            <column name="series" type="varchar(255)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="person_id" type="bigint"/>
-            <column name="token_value" type="varchar(255)"/>
-            <column name="token_date" type="date"/>
-            <column name="ip_address" type="varchar(39)"/>
-            <column name="user_agent" type="varchar(255)"/>
-        </createTable>
-
-        <addForeignKeyConstraint baseColumnNames="person_id"
-                                 baseTableName="T_PERSISTENT_TOKEN"
-                                 constraintName="fk_user_persistent_token"
-                                 baseTableSchemaName="BOAT"
-                                 referencedColumnNames="person_id"
-                                 referencedTableName="T_PERSON"
-                                 referencedTableSchemaName="BOAT"/>
--->
         <loadData encoding="UTF-8"
                   file="config/liquibase/participants.csv"
                   separator=";"

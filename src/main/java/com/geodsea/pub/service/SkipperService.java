@@ -58,7 +58,8 @@ public class SkipperService extends BaseService {
      * @param people    number of people on board
      * @return a newly created trip
      */
-    public Trip createTripPlan(long vesselId, long skipperId, String headline, Date startTime, Date endTime, String summary, MultiPoint wayPoints, int fuel, int people) {
+    public Trip createTripPlan(long vesselId, long skipperId, String headline, Date startTime, Date endTime,
+                               String summary, MultiPoint wayPoints, int fuel, int people) {
         Skipper skipper = skipperRepository.getOne(skipperId);
         if (skipper == null)
             throw new IllegalArgumentException("No skipper with ID: " + skipperId);
@@ -155,6 +156,10 @@ public class SkipperService extends BaseService {
         if (trip == null)
             throw new IllegalArgumentException("No such trip: " + tripId);
 
+        // if no SRO has been established then do it now
+        if (trip.getRescue() == null)
+            establishSRO(trip,locationTime.getLocation());
+
         trip.add(locationTime);
 //        locationTimeRepository.save(locationTime);
         tripRepository.save(trip);
@@ -168,6 +173,10 @@ public class SkipperService extends BaseService {
 
         if (trip == null)
             throw new IllegalArgumentException("No such trip: " + tripId);
+
+        // if no SRO has been established then do it now
+        if (trip.getRescue() == null)
+            establishSRO(trip,locationTimes.get(0).getLocation());
 
         trip.addAll(locationTimes);
         tripRepository.save(trip);

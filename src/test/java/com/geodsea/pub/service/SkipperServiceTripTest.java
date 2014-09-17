@@ -90,7 +90,8 @@ public class SkipperServiceTripTest {
 
         // when a plan is made, the trip is defined.
         // vesselId, skipperId, headline, startTime, endTime, summary, MultiPoint wayPoints, int fuel, int people
-        Trip trip = skipperService.createTripPlan(vessel.getId(), skipper.getId(), "Test", new Date(currentTime), new Date(finish), "Summary", null, 100, 3);
+        Trip trip = skipperService.createTripPlan(vessel.getId(), skipper.getId(), "Test", new Date(currentTime),
+                new Date(finish), "Summary", null, 100, 3);
 
         // the person then makes a start
         trip = skipperService.getTrip(trip.getId());
@@ -111,6 +112,9 @@ public class SkipperServiceTripTest {
         LocationTime location = new LocationTime(point, locationReportTime, locationReportTime);
 
         skipperService.reportLocation(trip.getId(), location);
+
+        trip = skipperService.getTrip(trip.getId());
+        assertThat(trip.getRescue()).isNotNull();
 
         // some time later a location report is received.
         // and the location reports appended.

@@ -1,8 +1,6 @@
 package com.geodsea.pub.domain;
 
-import com.geodsea.pub.domain.util.DateConstants;
-import com.geodsea.pub.service.util.TripUpdateChecks;
-import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.MultiPolygon;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -42,7 +40,7 @@ public class Rescue extends OrganisationRole {
         super();
     }
 
-    public Rescue(Organisation organisation, String callsign, String zoneTitle, Polygon zone, Integer reportRate) {
+    public Rescue(Organisation organisation, String callsign, String zoneTitle, MultiPolygon zone, Integer reportRate) {
         super(organisation, new Zone(zoneTitle, zone));
         this.callsign = callsign;
         if (reportRate != null)

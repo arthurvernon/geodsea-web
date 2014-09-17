@@ -13,9 +13,8 @@ import com.geodsea.pub.service.LicenseService;
 import com.geodsea.pub.web.rest.dto.LicensorDTO;
 import com.geodsea.ws.LicenseResponse;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -60,13 +59,13 @@ public class LicensorResource {
     public ResponseEntity<?> create(@RequestBody LicensorDTO dto) {
         log.debug("REST request to create/save Licensor : {}", dto);
 
-        Polygon polygon = null;
+        MultiPolygon polygon = null;
         try {
             Geometry geometry = gisService.createFromWKT(dto.getZoneWKT());
-            if (geometry instanceof Polygon)
-                polygon = (Polygon) geometry;
+            if (geometry instanceof MultiPolygon)
+                polygon = (MultiPolygon) geometry;
             else {
-                log.warn("Require a Polygon, not a " + geometry.getGeometryType());
+                log.warn("Require a MultiPolygon, not a " + geometry.getGeometryType());
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         } catch (ParseException ex) {

@@ -37,11 +37,12 @@ public class LicensorTest {
 
     @Inject
     LicensorRepository licensorRepository;
+
     @Inject
     GisService gisService;
 
     @Test
-    public void testMemberQuery() throws ActionRefusedException {
+    public void testLicensorLocationQuery() throws ActionRefusedException {
 
         Point point = gisService.createPointFromLatLong(-32, 115);
         List<Licensor> licensor = licensorRepository.getLicensorForLocation(point);

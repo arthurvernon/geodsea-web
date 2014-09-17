@@ -1,6 +1,6 @@
 package com.geodsea.pub.domain;
 
-import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.MultiPolygon;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -40,7 +40,7 @@ public class Licensor extends OrganisationRole {
         super();
     }
 
-    public Licensor(Organisation organisation, String licenceWsURL, String zoneTitle, Polygon zone ) {
+    public Licensor(Organisation organisation, String licenceWsURL, String zoneTitle, MultiPolygon zone ) {
         super(organisation, new Zone(zoneTitle, zone));
         this.licenceWsURL = licenceWsURL;
     }

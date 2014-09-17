@@ -1,13 +1,11 @@
 package com.geodsea.pub.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.Size;
 
 /**
  * An address and corresponding geographic point.
@@ -20,7 +18,7 @@ public class Zone {
      */
     @Column(name = "ZONE", nullable = false)
     @Type(type = "org.hibernate.spatial.GeometryType")
-    private Polygon zone;
+    private MultiPolygon  zone;
 
     /**
      * The zoneDescription in described in the language of the provider
@@ -28,7 +26,7 @@ public class Zone {
     @Column(name = "ZONE_TITLE", nullable = true, length = 50)
     private String zoneTitle;
 
-    public Zone(String title, Polygon zone) {
+    public Zone(String title, MultiPolygon zone) {
         this.zone = zone;
         this.zoneTitle = title;
     }
@@ -36,11 +34,11 @@ public class Zone {
     public Zone() {
     }
 
-    public Polygon getZone() {
+    public MultiPolygon getZone() {
         return zone;
     }
 
-    public void setZone(Polygon zone) {
+    public void setZone(MultiPolygon zone) {
         this.zone = zone;
     }
 
