@@ -29,7 +29,7 @@ public class UserDTO extends ParticipantDTO {
     public UserDTO() {
     }
 
-    public UserDTO(long participantId, String login, boolean enabled, String firstName, String lastName, String email, String langKey,
+    public UserDTO(Long participantId, String login, boolean enabled, String firstName, String lastName, String email, String langKey,
                    String telephone, String question, String answer, String address, List<AddressPartDTO> addressParts, PointDTO point,
                    List<String> roles) {
         super(participantId, login, enabled, firstName + " " + lastName, email, langKey, telephone);

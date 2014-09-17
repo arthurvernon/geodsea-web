@@ -24,7 +24,7 @@ public class ParticipantDTO {
     public ParticipantDTO() {
     }
 
-    public ParticipantDTO(long id, String login, boolean enabled, String name, String email, String langKey, String telephone) {
+    public ParticipantDTO(Long id, String login, boolean enabled, String name, String email, String langKey, String telephone) {
         this.login = login;
         this.id = id;
         this.name = name;
