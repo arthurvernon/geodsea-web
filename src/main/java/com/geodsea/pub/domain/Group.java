@@ -34,7 +34,7 @@ public class Group extends Participant {
      * </p>
      */
     @ManyToOne
-    @JoinColumn(name = "CONTACT_PERSON_ID")
+    @JoinColumn(name = "CONTACT_PERSON_FK")
     private Person contactPerson;
 
 

@@ -52,7 +52,7 @@ public class PersistentToken implements Serializable {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "PERSON_FK", referencedColumnName = "ID")
     private Person person;
 
     public String getSeries() {

@@ -285,9 +285,7 @@ public class GroupService extends BaseService {
 
         Participant participant = participantRepository.getParticipantByParticipantName(participantName);
 
-        Member loggedOnMember = memberRepository.findOne(person.getId());
-
-        checkAdministratorOrActiveManager(loggedOnMember);
+        checkAdministratorOrActiveManager(group);
 
         // is the user an admin user or an active manager of the group?
         Member member = new Member(participant, group, active, manager, memberSince, memberUntil);
@@ -317,14 +315,14 @@ public class GroupService extends BaseService {
      * @param memberUntil
      */
     public void updateMember(Long memberId, boolean active, boolean manager, Date memberSince, Date memberUntil) throws ActionRefusedException {
-        Person person = this.getPersonForPrincipal();
-        Member loggedOnMember = memberRepository.findOne(person.getId());
 
-        checkAdministratorOrActiveManager(loggedOnMember);
+
+
         Member member = memberRepository.findOne(memberId);
-
         if (member == null)
             throw new ActionRefusedException(ErrorCode.NO_SUCH_MEMBER, "No such member: " + memberId);
+
+        checkAdministratorOrActiveManager(member.getGroup());
 
         member.setActive(active);
         member.setManager(manager);
@@ -346,46 +344,60 @@ public class GroupService extends BaseService {
      *                                to access this member.
      */
     public Member getMember(Long memberId) throws ActionRefusedException {
-        Person person = this.getPersonForPrincipal();
         Member member = memberRepository.findOne(memberId);
+        if (member == null)
+            throw new ActionRefusedException(ErrorCode.NO_SUCH_MEMBER, "No such member: " + memberId);
+
+        Person person = this.getPersonForPrincipal();
 
         //
         if (!member.getParticipant().getParticipantName().equals(person.getAnswer())) {
-            Member loggedOnMember = memberRepository.findOne(person.getId());
-            checkAdministratorOrActiveManager(loggedOnMember);
+            checkAdministratorOrActiveManager(member.getGroup());
         }
 
-        if (member == null)
-            throw new ActionRefusedException(ErrorCode.NO_SUCH_MEMBER, "No such member: " + memberId);
         return member;
     }
 
 
     /**
      *
-     * @param loggedOnMember possibly null member
+     * @param group the group to check the permissions of the current user
      * @throws ActionRefusedException
      */
-    private void checkAdministratorOrActiveManager(Member loggedOnMember) throws ActionRefusedException {
+    private void checkAdministratorOrActiveManager(Group group) throws ActionRefusedException {
+
+        if (!SecurityUtils.isAuthenticated())
+            throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User is not authenticated");
+
         // is the user an admin user or an active manager of the group?
-        if (SecurityUtils.userHasRole(AuthoritiesConstants.ADMIN) ||
-                (loggedOnMember != null && loggedOnMember.isManager() && loggedOnMember.isActive()))
+        if (SecurityUtils.userHasRole(AuthoritiesConstants.ADMIN))
+            return;
+
+        Person person = getPersonForPrincipal();
+        Member loggedOnMember = memberRepository.getMemberByGroupIdAndParticipantParticipantName(group.getId(), person.getParticipantName());
+
+        if (loggedOnMember == null)
+            throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User: " + SecurityUtils.getCurrentLogin() +
+                    " is not member of Group: " + group.getParticipantName());
+
+        if (loggedOnMember.isManager() && loggedOnMember.isActive())
             return;
 
         throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User: " + SecurityUtils.getCurrentLogin() +
-                " is not an active manager of Group: " + loggedOnMember.getGroup().getParticipantName());
+                " is not an active manager of Group: " + group.getParticipantName());
 
     }
 
     public void deleteMember(Long memberId) throws ActionRefusedException {
 
-        Person person = getPersonForPrincipal();
-        Member loggedOnMember = memberRepository.findOne(person.getId());
-        checkAdministratorOrActiveManager(loggedOnMember);
-
         Member memberToDelete = memberRepository.findOne(memberId);
         if (memberToDelete == null)
             throw new ActionRefusedException(ErrorCode.NO_SUCH_MEMBER, "No such member: " + memberId);
+
+        Group group = memberToDelete.getGroup();
+
+        checkAdministratorOrActiveManager(group);
+
 
         memberRepository.delete(memberId);
     }

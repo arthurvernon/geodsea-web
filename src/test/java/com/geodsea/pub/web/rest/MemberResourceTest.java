@@ -9,6 +9,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import javax.inject.Inject;
 
+import com.geodsea.pub.security.AuthoritiesConstants;
+import com.geodsea.pub.service.GroupService;
+import com.geodsea.pub.web.rest.dto.MemberDTO;
+import com.geodsea.pub.web.rest.mapper.Mapper;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +20,9 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -30,6 +37,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.geodsea.pub.Application;
 import com.geodsea.pub.domain.Member;
 import com.geodsea.pub.repository.MemberRepository;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 
 /**
@@ -57,31 +67,39 @@ public class MemberResourceTest {
     private static final String UPD_SAMPLE_TEXT_ATTR = "sampleTextAttributeUpt";
 
     @Inject
-    private MemberRepository memberRepository;
+    private GroupService groupService;
 
     private MockMvc restMemberMockMvc;
     
-    private Member member;
+    private MemberDTO memberDTO;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         MemberResource memberResource = new MemberResource();
-        ReflectionTestUtils.setField(memberResource, "memberRepository", memberRepository);
+        ReflectionTestUtils.setField(memberResource, "groupService", groupService);
 
         this.restMemberMockMvc = MockMvcBuilders.standaloneSetup(memberResource).build();
 
-        member = new Member();
+        // these values match the initial settings (active manager)
+        Member member = new Member();
         member.setId(DEFAULT_ID);
+        member.setActive(true);
+        member.setManager(true);
+        memberDTO = Mapper.member(member);
     }
 
     @Test
     public void testCRUDMember() throws Exception {
 
-    	// Create Member
+        Collection<SimpleGrantedAuthority> auths = Arrays.asList(new SimpleGrantedAuthority[]{new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN)});
+        // create a member as the administrator.
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin", auths));
+
+        // Update Member
     	restMemberMockMvc.perform(post("/app/rest/members")
     			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(member)))
+                .content(TestUtil.convertObjectToJsonBytes(memberDTO)))
                 .andExpect(status().isOk());
 
     	// Read Member

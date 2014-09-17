@@ -30,7 +30,7 @@ public class Skipper {
 	private List<VesselPermit> permits;
 
     @OneToOne(optional = false)
-    @JoinColumn(name="PERSON_ID")
+    @JoinColumn(name="PERSON_FK")
 	private Person person;
 
 	public Skipper(){

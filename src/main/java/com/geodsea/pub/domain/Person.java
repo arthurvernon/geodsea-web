@@ -21,7 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "T_PERSON", schema = "BOAT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@PrimaryKeyJoinColumn(name="PERSON_ID", referencedColumnName = "ID")
+@PrimaryKeyJoinColumn(name="ID", referencedColumnName = "ID")
 public class Person extends Participant implements Serializable {
 
     @JsonIgnore
