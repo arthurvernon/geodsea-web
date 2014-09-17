@@ -18,6 +18,9 @@ public class Mapper {
      * @return
      */
     public static UserDTO user(Person person, List<String> roles) {
+        if (person == null)
+            return null;
+
         return new UserDTO(person.getId(),
                 person.getParticipantName(),
                 person.isEnabled(),
@@ -34,6 +37,8 @@ public class Mapper {
     }
 
     public static OrganisationDTO organisation(Organisation org) {
+        if (org == null)
+            return null;
         //Long orgId, String groupLogin, String groupName, String langKey, boolean enabled, String login, String email, ParticipantDTO contactPerson, String telephone,
         //String address, List<AddressPartDTO> addressParts, PointDTO point
 
@@ -50,6 +55,8 @@ public class Mapper {
 
     public static GroupDTO group(Group group) {
 
+        if (group == null)
+            return null;
         // Long groupId, String groupLogin, String groupName, String langKey, boolean enabled, String telephone,
         // String email, ParticipantDTO contact
         return new GroupDTO(group.getId(), group.getParticipantName(), group.getGroupName(), group.getLangKey(),
@@ -63,6 +70,8 @@ public class Mapper {
 
     private static ParticipantDTO participant(Participant participant) {
 
+        if (participant == null)
+            return null;
         String name = null;
         if (participant instanceof Person) {
             Person p = (Person) participant;
