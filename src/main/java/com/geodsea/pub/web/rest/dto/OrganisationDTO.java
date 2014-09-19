@@ -2,51 +2,65 @@ package com.geodsea.pub.web.rest.dto;
 
 import java.util.List;
 
-public class OrganisationDTO extends GroupDTO {
+public class OrganisationDTO extends CollectiveDTO {
 
+    private String websiteURL;
+
+    /**
+     * on the way out
+     */
     private String address;
 
+    /**
+     * Only set when incoming from the client
+     */
     private List<AddressPartDTO> addressParts;
 
+    /**
+     * Only set when incoming from the client
+     */
     private PointDTO point;
 
     public OrganisationDTO() {
     }
 
-    public OrganisationDTO(Long orgId, String groupLogin, String groupName, String langKey, boolean enabled, String login, String email, ParticipantDTO contactPerson, String telephone,
-                           String address, List<AddressPartDTO> addressParts, PointDTO point) {
+    /**
+     *  @param id ID of the organisation or the role that this organisation performs
+     * @param groupLogin
+     * @param groupName
+     * @param langKey
+     * @param enabled
+     * @param email
+     * @param websiteURL
+     * @param contactPerson
+     * @param telephone
+     * @param address
+     */
+    public OrganisationDTO(Long id, String groupLogin, String groupName, String langKey, boolean enabled,
+                           String email, String websiteURL, ParticipantDTO contactPerson, String telephone,
+                           String address) {
 
-        //Long groupId, String groupLogin, String groupName, String langKey, boolean enabled, String telephone,
-        //String email, ParticipantDTO contact)
-
-        super(orgId, groupLogin, groupName, langKey, enabled, telephone, email, contactPerson);
+        super(id, groupLogin, groupName, langKey, enabled, telephone, email, contactPerson);
         this.address = address;
-        this.addressParts = addressParts;
-        this.point = point;
+        this.websiteURL = websiteURL;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public List<AddressPartDTO> getAddressParts() {
         return addressParts;
     }
 
-    public void setAddressParts(List<AddressPartDTO> addressParts) {
-        this.addressParts = addressParts;
-    }
 
     public PointDTO getPoint() {
         return point;
     }
 
-    public void setPoint(PointDTO point) {
-        this.point = point;
+    public String getWebsiteURL() {
+        return websiteURL;
     }
 
     @Override

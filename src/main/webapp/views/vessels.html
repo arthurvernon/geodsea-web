@@ -1,6 +1,6 @@
 <div>
 
-    <h2 translate="title.vessel">Vessels</h2>
+    <h2 translate="title.vessels">Vessels</h2>
 
     <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveVesselModal" ng-click="clear()">
         <span class="glyphicon glyphicon-flash"></span><span translate="button.vessel.create">Add a Vessel</span>
@@ -35,10 +35,10 @@
 
                         <!-- Vessel Name -->
                         <div class="form-group">
-                            <label translate="field.vesselname.label">Vessel Name</label>
+                            <label translate="field.vessel.name.label">Vessel Name</label>
                             <input type="text" class="form-control" name="vesselname"
                                    ng-model="vessel.vesselName" ng-minlength=5 ng-maxlength=50 required
-                                   placeholder="{{'field.vesselname.placeholder' | translate}}">
+                                   placeholder="{{'field.vessel.name.placeholder' | translate}}">
 
                             <div class="error" ng-show="form.vesselname.$dirty && form.vesselname.$invalid">
                                 <small class="error"
@@ -62,7 +62,7 @@
 
                         <!-- Vessel Type -->
                         <div class="form-group">
-                            <label translate="field.vesseltype.label">Vessel Type</label>
+                            <label translate="field.vessel.type.label">Vessel Type</label>
                             <select class="form-control" name="vesselType"
                                     ng-model="vessel.vesselType" ng-selected="vessel.vesselType" required>
                                 <optgroup label="{{ 'vessel.type.motorised' | translate }}">
@@ -86,22 +86,22 @@
 
                         <!-- Hull Identification Number -->
                         <div class="form-group">
-                            <label translate="field.hin.label">Hull Identification Number</label>
+                            <label translate="field.vessel.hin.label">Hull Identification Number</label>
                             <input type="text" class="form-control" name="hin"
                                    placeholder="{{'field.hin.placeholder' | translate}}"
                                    ng-model="vessel.hullIdentificationNumber" ng-minlength=12 ng-maxlength=14 required>
 
                             <div class="error" ng-show="form.hin.$dirty && form.hin.$invalid">
                                 <small class="error"
-                                       ng-show="form.hin.$error.required" translate="vessel.form.hin.required">
+                                       ng-show="form.hin.$error.required" translate="field.vessel.hin.required">
                                     The hull identification number is required.
                                 </small>
                                 <small class="error"
-                                       ng-show="form.hin.$error.minlength" translate="vessel.form.hin.minlength">
+                                       ng-show="form.hin.$error.minlength" translate="field.vessel.hin.minlength">
                                     A hull identification number is at least 12 digits long
                                 </small>
                                 <small class="error"
-                                       ng-show="form.hin.$error.maxlength" translate="vessel.form.hin.maxlength">
+                                       ng-show="form.hin.$error.maxlength" translate="field.vessel.hin.maxlength">
                                     A hull identification number is no more than 14 digits long.
                                 </small>
                             </div>
@@ -109,19 +109,19 @@
 
                         <!-- length -->
                         <div class="form-group">
-                            <label translate="field.length.label">Length (m)</label>
+                            <label translate="field.vessel.length.label">Length (m)</label>
                             <input type="number" ng-model="vessel.length" name="length"
                                    min="1" max="80"/>
                             <div class="error" ng-show="form.length.$dirty && form.length.$invalid">
                                 <small class="error" ng-show="form.length.$error.required"
-                                       translate="vessel.form.length.required">
+                                       translate="field.vessel.length.required">
                                     Length of the vessel is required.
                                 </small>
                                 <small class="error" ng-show="form.length.$error.number"
-                                       translate="vessel.form.length.nan">This is not a valid number.
+                                       translate="field.vessel.length.nan">This is not a valid number.
                                 </small>
                                 <small class="error" ng-show="form.length.$error.min || form.length.$error.max"
-                                       translate="vessel.form.length.range">
+                                       translate="field.vessel.length.range">
                                     Length must be in the range 1-80 metres.
                                 </small>
                             </div>
@@ -129,15 +129,15 @@
 
                         <!-- fuel Capacity -->
                         <div class="form-group">
-                            <label translate="field.fuelcapacity.label">Fuel Capacity (l)</label>
+                            <label translate="field.vessel.fuelcapacity.label">Fuel Capacity (l)</label>
                             <input type="number" ng-model="vessel.fuelCapacity" name="fuelcapacity"
                                    min="0" max="3000"/>
                             <div class="error" ng-show="form.fuelcapacity.$dirty && form.fuelcapacity.$invalid">
                                 <small class="error" ng-show="form.fuelcapacity.$error.number"
-                                       translate="field.fuelcapacity.nan">This is not a valid number.
+                                       translate="field.vessel.fuelcapacity.nan">This is not a valid number.
                                 </small>
                                 <small class="error" ng-show="form.fuelcapacity.$error.min || form.fuelcapacity.$error.max"
-                                       translate="field.fuelcapacity.range">
+                                       translate="field.vessel.fuelcapacity.range">
                                     Fuel capacity must be between 0 and 1000.
                                 </small>
                             </div>
@@ -145,20 +145,20 @@
 
                         <!-- Hull color -->
                         <div class="form-group">
-                            <label translate="field.hullcolor.label">Hull Color</label>
+                            <label translate="field.vessel.hullcolor.label">Hull Color</label>
                             <input type="color" name="hullcolor" ng-model="vessel.hullColor">
                         </div>
 
 
                         <!-- superstructure color -->
                         <div class="form-group">
-                            <label translate="field.superstructurecolor.label">Superstructure Color</label>
+                            <label translate="field.vessel.superstructurecolor.label">Superstructure Color</label>
                             <input type="color" name="superstructurecolor" ng-model="vessel.superstructureColor">
                         </div>
 
                         <!-- Storage location -->
                         <div class="form-group">
-                            <label translate="field.storagetype.label">Storage Type</label>
+                            <label translate="field.vessel.storagetype.label">Storage Type</label>
                             <select class="form-control" name="storageType"
                                     ng-model="vessel.storageType" ng-selected="vessel.storageType" required>
                                 <option translate="vessel.storage.HOME.name">HOME</option>
@@ -206,7 +206,7 @@
                 <td>{{'vessel.type.' + vessel.vesselType + '.name' | translate}}</td>
                 <td>{{vessel.length}}</td>
                 <td>{{vessel.fuelCapacity}}</td>
-                <td>{{'vessel.storagetype.' + vessel.storageType + '.name' | translate}}</td>
+                <td>{{'vessel.storage.' + vessel.storageType + '.name' | translate}}</td>
                 <td>
                     <button type="submit"
                             ng-click="update(vessel.id)"

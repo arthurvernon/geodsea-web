@@ -68,24 +68,55 @@ COMMENT ON COLUMN BOAT.T_PERSON.ADDRESS_POINT IS 'the location of the address as
 -- Group creation
 ----------------------------------------------------------
 
-CREATE TABLE BOAT.T_GROUP (
-  GROUP_ID          BIGINT       NOT NULL PRIMARY KEY REFERENCES BOAT.T_PARTICIPANT (ID) ON DELETE CASCADE,
-  GROUP_NAME        VARCHAR(100) NOT NULL,
+CREATE TABLE BOAT.T_COLLECTIVE (
+  COLLECTIVE_ID          BIGINT       NOT NULL PRIMARY KEY REFERENCES BOAT.T_PARTICIPANT (ID) ON DELETE CASCADE,
+  COLLECTIVE_NAME        VARCHAR(100) NOT NULL,
   CONTACT_PERSON_FK BIGINT       NULL
 );
 
-ALTER TABLE BOAT.T_GROUP OWNER TO geodsea;
+ALTER TABLE BOAT.T_COLLECTIVE OWNER TO geodsea;
 
-ALTER TABLE BOAT.T_GROUP ADD CONSTRAINT FK_GROUP_CONTACT_PERSON
+ALTER TABLE BOAT.T_COLLECTIVE ADD CONSTRAINT FK_COLLECTIVE_CONTACT_PERSON
 FOREIGN KEY (CONTACT_PERSON_FK) REFERENCES BOAT.T_PERSON (ID) ON DELETE CASCADE;
 
-CREATE INDEX GROUP_NAME_IDX ON BOAT.T_GROUP (GROUP_NAME);
+CREATE INDEX COLLECTIVE_NAME_IDX ON BOAT.T_COLLECTIVE (COLLECTIVE_NAME);
 
 
-COMMENT ON COLUMN BOAT.T_GROUP.CONTACT_PERSON_FK IS 'The member who is the contact person (the one who registered the organisation). Should be not null but Hibernate doesn''t handle bidirectional FKs';
+COMMENT ON COLUMN BOAT.T_COLLECTIVE.CONTACT_PERSON_FK IS 'The member who is the contact person (the one who registered the organisation). Should be not null but Hibernate doesn''t handle bidirectional FKs';
+
 
 ----------------------------------------------------------
--- Group creation
+-- members of a collective
+----------------------------------------------------------
+
+
+CREATE SEQUENCE BOAT.MEMBER_ID_SEQ INCREMENT 1 MINVALUE 1 START 100 CACHE 1;
+ALTER TABLE BOAT.MEMBER_ID_SEQ OWNER TO geodsea;
+
+CREATE TABLE BOAT.T_MEMBER (
+  ID             BIGINT  NOT NULL PRIMARY KEY DEFAULT nextval('BOAT.MEMBER_ID_SEQ'),
+  COLLECTIVE_FK       BIGINT  NOT NULL REFERENCES BOAT.T_COLLECTIVE ON UPDATE RESTRICT ON DELETE CASCADE,
+  PARTICIPANT_FK BIGINT  NOT NULL REFERENCES BOAT.T_PARTICIPANT ON UPDATE RESTRICT ON DELETE CASCADE,
+  MEMBER_SINCE   DATE    NULL,
+  MEMBER_UNTIL   DATE    NULL,
+  ACTIVE         BOOLEAN NOT NULL DEFAULT FALSE,
+  MANAGER        BOOLEAN NOT NULL DEFAULT FALSE
+);
+ALTER TABLE BOAT.T_MEMBER OWNER TO geodsea;
+ALTER SEQUENCE BOAT.MEMBER_ID_SEQ OWNED BY BOAT.T_MEMBER.ID;
+
+ALTER TABLE BOAT.T_MEMBER ADD CONSTRAINT UC_MEMBER_ONCE_ONLY UNIQUE (COLLECTIVE_FK, PARTICIPANT_FK);
+
+CREATE INDEX ORG_MEMBER_PARTICIPANT_IDX ON BOAT.T_MEMBER (PARTICIPANT_FK);
+
+COMMENT ON TABLE BOAT.T_MEMBER IS 'The participants within an collective which may be anyone except the group itself';
+
+COMMENT ON COLUMN BOAT.T_MEMBER.PARTICIPANT_FK IS 'The immutable person or collective that belongs to this organisation';
+COMMENT ON COLUMN BOAT.T_MEMBER.COLLECTIVE_FK IS 'The immutable collective that has this member';
+
+
+----------------------------------------------------------
+-- A specialisation of a collective for an organisation
 ----------------------------------------------------------
 
 CREATE TABLE BOAT.T_ORGANISATION (
@@ -105,34 +136,17 @@ COMMENT ON COLUMN BOAT.T_ORGANISATION.ADDRESS_FORMATTED IS 'The google-defined a
 COMMENT ON COLUMN BOAT.T_ORGANISATION.ADDRESS_POINT IS 'the location of the address as specified by google';
 
 
-----------------------------------------------------------
--- Group member
-----------------------------------------------------------
+-----------------------------------------------------------------------------
+-- A specialisation of a collective for a group setup by private individuals
+-----------------------------------------------------------------------------
 
-
-CREATE SEQUENCE BOAT.MEMBER_ID_SEQ INCREMENT 1 MINVALUE 1 START 100 CACHE 1;
-ALTER TABLE BOAT.MEMBER_ID_SEQ OWNER TO geodsea;
-
-CREATE TABLE BOAT.T_MEMBER (
-  ID             BIGINT  NOT NULL PRIMARY KEY DEFAULT nextval('BOAT.MEMBER_ID_SEQ'),
-  GROUP_FK       BIGINT  NOT NULL REFERENCES BOAT.T_GROUP ON UPDATE RESTRICT ON DELETE CASCADE,
-  PARTICIPANT_FK BIGINT  NOT NULL REFERENCES BOAT.T_PARTICIPANT ON UPDATE RESTRICT ON DELETE CASCADE,
-  MEMBER_SINCE   DATE    NULL,
-  MEMBER_UNTIL   DATE    NULL,
-  ACTIVE         BOOLEAN NOT NULL DEFAULT FALSE,
-  MANAGER        BOOLEAN NOT NULL DEFAULT FALSE
+CREATE TABLE BOAT.T_GROUP (
+  GROUP_ID   BIGINT       NOT NULL PRIMARY KEY REFERENCES BOAT.T_COLLECTIVE (COLLECTIVE_ID) ON DELETE CASCADE
 );
-ALTER TABLE BOAT.T_MEMBER OWNER TO geodsea;
-ALTER SEQUENCE BOAT.MEMBER_ID_SEQ OWNED BY BOAT.T_MEMBER.ID;
 
-ALTER TABLE BOAT.T_MEMBER ADD CONSTRAINT UC_MEMBER_ONCE_ONLY UNIQUE (GROUP_FK, PARTICIPANT_FK);
+ALTER TABLE BOAT.T_GROUP OWNER TO geodsea;
 
-CREATE INDEX ORG_MEMBER_PARTICIPANT_IDX ON BOAT.T_MEMBER (PARTICIPANT_FK);
-
-COMMENT ON TABLE BOAT.T_MEMBER IS 'The participants within an group which may be anyone except the group itself';
-
-COMMENT ON COLUMN BOAT.T_MEMBER.PARTICIPANT_FK IS 'The immutable person or or group that belongs to this organisation';
-COMMENT ON COLUMN BOAT.T_MEMBER.GROUP_FK IS 'The immutable group that has this member';
+COMMENT ON TABLE BOAT.T_GROUP IS 'Identifier for a private group';
 
 
 --------------------------------

@@ -4,13 +4,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.inject.Inject;
 
 import com.geodsea.pub.service.GroupService;
+import com.geodsea.pub.web.rest.dto.CollectiveDTO;
 import com.geodsea.pub.web.rest.dto.GroupDTO;
-import com.geodsea.pub.web.rest.dto.ParticipantDTO;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,8 +28,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.geodsea.pub.Application;
-import com.geodsea.pub.domain.Group;
-import com.geodsea.pub.repository.GroupRepository;
 
 
 /**
@@ -60,9 +57,9 @@ public class GroupResourceTest {
     @Inject
     private GroupService groupService;
 
-    private MockMvc restGroupMockMvc;
+    private MockMvc restFriendsMockMvc;
     
-    private GroupDTO group;
+    private CollectiveDTO group;
 
     @Before
     public void setup() {
@@ -70,22 +67,22 @@ public class GroupResourceTest {
         GroupResource groupResource = new GroupResource();
         ReflectionTestUtils.setField(groupResource, "groupService", groupService);
 
-        this.restGroupMockMvc = MockMvcBuilders.standaloneSetup(groupResource).build();
+        this.restFriendsMockMvc = MockMvcBuilders.standaloneSetup(groupResource).build();
 
-        group = new GroupDTO(DEFAULT_ID, null, null, null, false, null,null, null);
+        group = new GroupDTO(DEFAULT_ID, null, null, null, false, null, null, null);
     }
 
     @Test
-    public void testCRUDGroup() throws Exception {
+    public void testCRUDFriends() throws Exception {
 
     	// Create Group
-//    	restGroupMockMvc.perform(post("/app/rest/groups")
+//    	restFriendsMockMvc.perform(post("/app/rest/friends")
 //    			.contentType(TestUtil.APPLICATION_JSON_UTF8)
 //                .content(TestUtil.convertObjectToJsonBytes(group)))
 //                .andExpect(status().isOk());
 
 //    	// Read Group
-//    	restGroupMockMvc.perform(get("/app/rest/groups/{id}", DEFAULT_ID))
+//    	restFriendsMockMvc.perform(get("/app/rest/friends/{id}", DEFAULT_ID))
 //                .andExpect(status().isOk())
 //                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(jsonPath("$.id").value(DEFAULT_ID.intValue()))
@@ -94,13 +91,13 @@ public class GroupResourceTest {
 //
 //    	// Update Group
 //
-//    	restGroupMockMvc.perform(post("/app/rest/groups")
+//    	restFriendsMockMvc.perform(post("/app/rest/friends")
 //    			.contentType(TestUtil.APPLICATION_JSON_UTF8)
 //                .content(TestUtil.convertObjectToJsonBytes(group)))
 //                .andExpect(status().isOk());
 //
 //    	// Read updated Group
-//    	restGroupMockMvc.perform(get("/app/rest/groups/{id}", DEFAULT_ID))
+//    	restGroupMockMvc.perform(get("/app/rest/friends/{id}", DEFAULT_ID))
 //                .andExpect(status().isOk())
 //                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(jsonPath("$.id").value(DEFAULT_ID.intValue()))
@@ -108,12 +105,12 @@ public class GroupResourceTest {
 //    			.andExpect(jsonPath("$.sampleTextAttribute").value(UPD_SAMPLE_TEXT_ATTR));
 //
 //    	// Delete Group
-//    	restGroupMockMvc.perform(delete("/app/rest/groups/{id}", DEFAULT_ID)
+//    	restGroupMockMvc.perform(delete("/app/rest/friends/{id}", DEFAULT_ID)
 //                .accept(TestUtil.APPLICATION_JSON_UTF8))
 //                .andExpect(status().isOk());
 //
 //    	// Read nonexisting Group
-//    	restGroupMockMvc.perform(get("/app/rest/groups/{id}", DEFAULT_ID)
+//    	restGroupMockMvc.perform(get("/app/rest/friends/{id}", DEFAULT_ID)
 //                .accept(TestUtil.APPLICATION_JSON_UTF8))
 //                .andExpect(status().isNotFound());
 //

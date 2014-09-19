@@ -151,7 +151,7 @@ public class Trip {
      * </p>
      */
     @ManyToOne(optional = false)
-    private Skipper skipper;
+    private Person person;
 
     /**
      * The frequency in seconds at which the vessel should report its location.
@@ -191,7 +191,7 @@ public class Trip {
     /**
      * Create a plan for the trip
      * @param vessel the vessel being taken on the trip.
-     * @param skipper the skipper in charge of the vessel
+     * @param person the skipper in charge of the vessel
      * @param headline a summary of the purpose of the trip, shared with SRO
      * @param startTime planned start time for the trip
      * @param endTime planned end time for the trip
@@ -200,9 +200,9 @@ public class Trip {
      * @param fuel number of litres of fuel
      * @param people number of people on board
      */
-    public Trip(Vessel vessel, Skipper skipper, String headline, Date startTime, Date endTime, String summary, MultiPoint wayPoints, int fuel, int people) {
+    public Trip(Vessel vessel, Person person, String headline, Date startTime, Date endTime, String summary, MultiPoint wayPoints, int fuel, int people) {
         this.vessel = vessel;
-        this.skipper = skipper;
+        this.person = person;
         this.headline = headline;
         this.scheduledStartTime = startTime;
         this.scheduledEndTime = endTime;
@@ -323,12 +323,12 @@ public class Trip {
         this.actualEndTime = actualEndTime;
     }
 
-    public Skipper getSkipper() {
-        return skipper;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setSkipper(Skipper skipper) {
-        this.skipper = skipper;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public Vessel getVessel() {

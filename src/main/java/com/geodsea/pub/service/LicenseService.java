@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ws.WebServiceException;
-import org.springframework.ws.client.WebServiceIOException;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
@@ -81,7 +80,7 @@ public class LicenseService {
     public LicenseResponse lookupLicense(Licensor licensor, String licenseNumber) {
 
         log.info("Looking up license: {} from licensor {} via WS: {}", licenseNumber,
-                licensor.getOrgansation().getGroupName(), licensor.getLicenceWsURL());
+                licensor.getOrgansation().getCollectiveName(), licensor.getLicenceWsURL());
 
         ObjectFactory of = new ObjectFactory();
         LicenseRequest request = of.createLicenseRequest();

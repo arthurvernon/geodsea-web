@@ -29,7 +29,7 @@ public class SkipperService extends BaseService {
     private TripRepository tripRepository;
 
     @Inject
-    private SkipperRepository skipperRepository;
+    private PersonRepository personRepository;
 
     @Inject
     private VesselRepository vesselRepository;
@@ -48,7 +48,7 @@ public class SkipperService extends BaseService {
 
     /**
      * @param vesselId  the ID of the vessel being taken on the trip.
-     * @param skipperId the Id of the skipper in charge of the vessel
+     * @param personId the Id of the person (skipper) in charge of the vessel
      * @param headline  a summary of the purpose of the trip, shared with SRO
      * @param startTime planned start time for the trip
      * @param endTime   planned end time for the trip
@@ -58,14 +58,14 @@ public class SkipperService extends BaseService {
      * @param people    number of people on board
      * @return a newly created trip
      */
-    public Trip createTripPlan(long vesselId, long skipperId, String headline, Date startTime, Date endTime,
+    public Trip createTripPlan(long vesselId, long personId, String headline, Date startTime, Date endTime,
                                String summary, MultiPoint wayPoints, int fuel, int people) {
-        Skipper skipper = skipperRepository.getOne(skipperId);
+        Person skipper = personRepository.getOne(personId);
         if (skipper == null)
-            throw new IllegalArgumentException("No skipper with ID: " + skipperId);
+            throw new IllegalArgumentException("No person (skipper) with ID: " + personId);
 
-        if (!skipper.getPerson().isEnabled()) {
-            String msg = "Skipper's user account: " + skipper.getPerson().getParticipantName() + " is disabled";
+        if (!skipper.isEnabled()) {
+            String msg = "Skipper's user account: " + skipper.getParticipantName() + " is disabled";
             log.warn(msg);
             throw new IllegalStateException(msg);
         }
@@ -87,7 +87,7 @@ public class SkipperService extends BaseService {
 
         trip = tripRepository.save(trip);
 
-        monitorRepository.save(new Monitor(trip, trip.getSkipper().getPerson()));
+        monitorRepository.save(new Monitor(trip, trip.getPerson()));
 
         // if way points are defined then we can include the Monitor
         if (wayPoints != null && !wayPoints.isEmpty()) {
@@ -176,7 +176,7 @@ public class SkipperService extends BaseService {
 
         // if no SRO has been established then do it now
         if (trip.getRescue() == null)
-            establishSRO(trip,locationTimes.get(0).getLocation());
+            establishSRO(trip, locationTimes.get(0).getLocation());
 
         trip.addAll(locationTimes);
         tripRepository.save(trip);
@@ -192,35 +192,6 @@ public class SkipperService extends BaseService {
         tripRepository.delete(trip);
     }
 
-    public Skipper getOrCreateSkipper(String username) {
-
-        Person person = personRepository.getUserByParticipantName(username);
-        if (person == null) {
-            throw new IllegalArgumentException("No such user: " + username);
-        }
-        if (!person.isEnabled())
-            throw new IllegalArgumentException("Disabled user: " + username);
-
-        Skipper skipper = skipperRepository.findByPersonParticipantName(username);
-        if (skipper != null)
-            log.debug("User: " + username + " is already a skipper");
-        else {
-            log.debug("creating a skipper for User: " + username);
-            skipper = new Skipper(person);
-            skipperRepository.save(skipper);
-        }
-        return skipper;
-    }
-
-    public void removeSkipper(long skipperId) {
-        Skipper skipper = skipperRepository.getOne(skipperId);
-
-        if (skipper != null) {
-            log.debug("Deleting skipper record for User: " + skipper.getPerson().getParticipantName());
-            skipperRepository.delete(skipper);
-        } else
-            log.debug("No such skipper: " + skipperId);
-    }
 
     /**
      * Get the track history for this trip.

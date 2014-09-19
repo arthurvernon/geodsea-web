@@ -1,19 +1,13 @@
 package com.geodsea.pub.domain;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.joda.deser.LocalDateDeserializer;
 import com.geodsea.pub.domain.type.StorageType;
 import com.geodsea.pub.domain.type.VesselType;
-import com.geodsea.pub.domain.util.CustomLocalDateSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
-import org.joda.time.LocalDate;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;

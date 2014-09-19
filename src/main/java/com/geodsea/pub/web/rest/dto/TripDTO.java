@@ -1,15 +1,8 @@
 package com.geodsea.pub.web.rest.dto;
 
-import com.geodsea.pub.domain.LocationTime;
-import com.geodsea.pub.domain.Rescue;
-import com.geodsea.pub.domain.Skipper;
 import com.geodsea.pub.domain.Vessel;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiPoint;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A plan submitted by a boat (skipper) at the outset of a trip/journey.
@@ -56,7 +49,6 @@ public class TripDTO {
     private Integer fuelOnBoard;
 
 
-
     /**
      * The time in the plan when the journey is intended to be completed.
      */
@@ -89,15 +81,15 @@ public class TripDTO {
     /**
      * Who is the skipper for this trip.
      * <p>
-     *     The skipper must be identified so that the trip record is associated with at least one person.
+     * The skipper must be identified so that the trip record is associated with at least one person.
      * </p>
      */
-    private SkipperDTO skipper;
+    private ParticipantDTO person;
 
     /**
      * The particular vessel that is intended to be used for this trip.
      * <p>
-     *     The vessel may change but rarely would.
+     * The vessel may change but rarely would.
      * </p>
      */
     private Vessel vessel;
@@ -109,12 +101,13 @@ public class TripDTO {
 
     /**
      * Create a trip with the minimum required information.
+     *
      * @param vessel
-     * @param skipper
+     * @param person
      */
-    public TripDTO(Vessel vessel, SkipperDTO skipper, String headline) {
+    public TripDTO(Vessel vessel, ParticipantDTO person, String headline) {
         this.vessel = vessel;
-        this.skipper = skipper;
+        this.person = person;
         this.headline = headline;
     }
 
@@ -122,88 +115,50 @@ public class TripDTO {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getSummary() {
         return summary;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
 
     public Integer getPeopleOnBoard() {
         return peopleOnBoard;
     }
 
-    public void setPeopleOnBoard(Integer peopleOnBoard) {
-        this.peopleOnBoard = peopleOnBoard;
-    }
 
     public Date getScheduledStartTime() {
         return scheduledStartTime;
     }
 
-    public void setScheduledStartTime(Date scheduledStartTime) {
-        this.scheduledStartTime = scheduledStartTime;
-    }
 
     public Date getActualStartTime() {
         return actualStartTime;
     }
 
-    public void setActualStartTime(Date actualStartTime) {
-        this.actualStartTime = actualStartTime;
-    }
 
     public Integer getFuelOnBoard() {
         return fuelOnBoard;
     }
 
-    public void setFuelOnBoard(Integer fuelOnBoard) {
-        this.fuelOnBoard = fuelOnBoard;
-    }
 
     public String getHeadline() {
         return headline;
-    }
-
-    public void setHeadline(String headline) {
-        this.headline = headline;
     }
 
     public Date getScheduledEndTime() {
         return scheduledEndTime;
     }
 
-    public void setScheduledEndTime(Date scheduledEndTime) {
-        this.scheduledEndTime = scheduledEndTime;
-    }
-
     public Date getPlanFirstAdvised() {
         return planFirstAdvised;
-    }
-
-    public void setPlanFirstAdvised(Date planFirstAdvised) {
-        this.planFirstAdvised = planFirstAdvised;
     }
 
     public Date getPlanLastAdvised() {
         return planLastAdvised;
     }
 
-    public void setPlanLastAdvised(Date planLastAdvised) {
-        this.planLastAdvised = planLastAdvised;
-    }
-
     public Date getActualEndTime() {
         return actualEndTime;
-    }
-
-    public void setActualEndTime(Date actualEndTime) {
-        this.actualEndTime = actualEndTime;
     }
 
     public void setId(Long id) {
@@ -214,25 +169,12 @@ public class TripDTO {
         return rescueOrganisation;
     }
 
-    public void setRescueOrganisation(RescueOrganisationDTO rescueOrganisation) {
-        this.rescueOrganisation = rescueOrganisation;
-    }
-
-    public SkipperDTO getSkipper() {
-        return skipper;
-    }
-
-    public void setSkipper(SkipperDTO skipper) {
-        this.skipper = skipper;
-    }
 
     public Vessel getVessel() {
         return vessel;
     }
 
-    public void setVessel(Vessel vessel) {
-        this.vessel = vessel;
+    public ParticipantDTO getPerson() {
+        return person;
     }
-
-
 }

@@ -3,11 +3,13 @@ package com.geodsea.pub.domain;
 
 import com.geodsea.pub.domain.util.ValidationUtil;
 import org.hibernate.annotations.*;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * A public group that is allowed to perform select activities once approved.
@@ -15,11 +17,16 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = "T_ORGANISATION", schema = "BOAT")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@PrimaryKeyJoinColumn(name="ORGANISATION_ID", referencedColumnName = "GROUP_ID")
-public class Organisation extends Group {
+@PrimaryKeyJoinColumn(name="ORGANISATION_ID", referencedColumnName = "COLLECTIVE_ID")
+public class Organisation extends Collective {
 
 
+    /**
+     *
+     */
     @Column(name = "WEBSITE_URL", nullable = true, length = 100)
+    @URL
+    @Size(min=2, max=100)
     private String websiteURL;
 
     /**

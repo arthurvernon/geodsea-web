@@ -36,7 +36,7 @@
         },
         "contact": {
             "label": "Contact Person's Login",
-            "placeholder": "Login name of the contact person",
+            "placeholder": "Login name of the contact person. Default is you",
             "minlength": "A login name must be at least 2 characters",
             "maxlength": "A login name may not be more than 100 characters"
         },
@@ -60,13 +60,6 @@
             "maxlength": "Your first name cannot be longer than 50 characters"
         },
 
-        "fuelcapacity": {
-            "label": "Fuel Capacity (l)",
-            "placeholder": "Enter fuel capacity in litres",
-            "required": "Fuel capacity is required for motorised vessels.",
-            "nan": "This is not a valid number.",
-            "range": "Length must be in the range 0-1000 litres."
-        },
         "groupemail": {
             "label": "Group E-mail",
             "placeholder": "An e-mail address to send a confirmation link to",
@@ -92,19 +85,6 @@
             "maxlength": "A group name must be no more than 100 characters."
         },
 
-
-        "hin": {
-            "label": "Hull Identification Number",
-            "placeholder": "Enter HIN",
-            "required": "Your hull identification number is required",
-            "minlength": " A hull identification number is no less than 12 digits long",
-            "maxlength": "A hull identification number is no more than 14 digits long"
-        },
-        "hullcolor": {
-            "label": "Hull Color",
-            "required": "The hull color is required"
-        },
-
         "id": {
             "label": "ID"
         },
@@ -116,13 +96,6 @@
             "maxlength": "Your last name cannot be longer than 50 characters"
         },
 
-        "length": {
-            "label": "Length (m)",
-            "placeholder": "Enter length  in metres",
-            "required": "Length of the vessel is required.",
-            "nan": "This is not a valid number.",
-            "range": "Length must be in the range 1-80 metres."
-        },
         "membersince":{
             "label": "Member Since"
         },
@@ -158,15 +131,6 @@
             "minlength": "A question must contain at least two characters",
             "maxlength": "A question can be no longer than 100 characters"
         },
-        "storagetype": {
-            "label": "Storage Type",
-            "placeholder": "Choose a storage type",
-            "required": "The storage type is required"
-        },
-        "superstructurecolor": {
-            "label": "Superstructure Color",
-            "required": "The superstructure color is required"
-        },
         "telephone": {
             "label": "Telephone",
             "placeholder": "Telephone number incl. area code",
@@ -182,17 +146,63 @@
             "minlength": "Your login is required to be at least 1 character",
             "maxlength": "Your login cannot be longer than 50 characters"
         },
-        "vesselname": {
-            "label": "Vessel Name",
-            "placeholder": "Enter name of vessel",
-            "required": "A vessel name is required",
-            "minlength": "A name must be at least 5 characters long",
-            "maxlength": "A name may not be more than 40 characters long"
-        },
-        "vesseltype": {
-            "label": "Vessel Type",
-            "placeholder": "Select from the list",
-            "required": "The vessel type is required"
+        "vessel": {
+            "fuelcapacity": {
+                "label": "Fuel Capacity (l)",
+                "placeholder": "Enter fuel capacity in litres",
+                "required": "Fuel capacity is required for motorised vessels.",
+                "nan": "This is not a valid number.",
+                "range": "Length must be in the range 0-1000 litres."
+            },
+            "hin": {
+                "label": "Hull Identification Number",
+                "placeholder": "Enter HIN",
+                "required": "Your hull identification number is required",
+                "minlength": " A hull identification number is no less than 12 digits long",
+                "maxlength": "A hull identification number is no more than 14 digits long"
+            },
+            "hullcolor": {
+                "label": "Hull Color",
+                "required": "The hull color is required"
+            },
+            "length": {
+                "label": "Length (m)",
+                "placeholder": "Enter length  in metres",
+                "required": "Length of the vessel is required.",
+                "nan": "This is not a valid number.",
+                "range": "Length must be in the range 1-80 metres."
+            },
+            "license": {
+                "label": "Licensing/Registration Number",
+                "required" : "Registration or license number is required",
+                "minlength" : "Registration number must be at least 5 characters long",
+                "maxlength" : "Registration number cannot be more than 30 characters"
+            },
+            "licensor": {
+                "label": "Licensing Agency",
+                "incorrect.label": "Wrong agency?"
+            },
+            "name": {
+                "label": "Vessel Name",
+                "placeholder": "Enter the name as it appears on the vessel",
+                "required": "A vessel name is required",
+                "minlength": "A name must be at least 5 characters long",
+                "maxlength": "A name may not be more than 40 characters long"
+            },
+            "storagetype": {
+                "label": "Storage Type",
+                "placeholder": "Choose a storage type",
+                "required": "The storage type is required"
+            },
+            "superstructurecolor": {
+                "label": "Superstructure Color",
+                "required": "The superstructure color is required"
+            },
+            "type": {
+                "label": "Vessel Type",
+                "placeholder": "Select from the list",
+                "required": "The vessel type is required"
+            }
         }
     },
     "language": {
@@ -258,6 +268,7 @@
         "register.user": "User Registration",
         "register.organisation": "Organisation Registration",
         "register.vessel": "Vessel Registration",
+        "licensepopup": "Enter License Details",
         "login": "Authentication",
         "members": "Members",
         "password": "Password Reset",
@@ -268,6 +279,7 @@
         "vessels": "Vessels"
     },
     "message": {
+
         "register": {
             "noaccount": "You don't have an account yet? <a href=\"#/register/user\">Register a new account</a>",
             "participant": {
@@ -279,11 +291,15 @@
                 "success": "The group has been registered. Please check your email for confirmation and click on the link to activate this group.",
                 "fail": "<strong>Registration failed!</strong> Please check your input and try again.",
                 "nameInUse": "<strong>This name is already registered!</strong> Please choose another one."
-            },
-            "vessel": {
-                "license.lookup.failed": "Failed to obtain details from the licensor. Press cancel and complete the form."
             }
         },
+        "vessel" : {
+            "license.lookup.failed": "Failed to obtain details from the licensor. Press cancel and complete the form.",
+            "save.error": "<strong>An error has occurred!</strong> Vessel could not be saved.",
+            "save.success": "<strong>Vessel saved!</strong>",
+            "nolicensorws": "<strong>This agency does not provide this service!</strong> You must enter the details manually."
+        },
+
         "authenticate": {
             "failed": "<strong>Authentication failed!</strong> Please check your credentials and try again."
         },
@@ -321,7 +337,6 @@
             "success": "<strong>Session invalidated!</strong>",
             "error": "<strong>An error has occured!</strong> The session could not be invalidated."
         }
-
     },
     "table": {
         "heading": {
@@ -587,26 +602,6 @@
             }
 
 
-        },
-        "messages": {
-            "error": "<strong>An error has occurred!</strong> Vessel could not be saved.",
-            "success": "<strong>Vessel saved!</strong>",
-            "nolicensorws": "<strong>This agency does not provide this service!</strong> You must enter the details manually."
-        },
-        "registration": {
-            "form": {
-                "title": "Register a Vessel",
-                "number": {
-                    "label": "Registration Number"
-                },
-                "licensor": {
-                    "label": "Licensing Agency",
-                    "incorrect": "Wrong agency?"
-                }
-            },
-            "licensepopup": {
-                "title": "Enter License Details"
-            }
         }
     },
     "remove": {

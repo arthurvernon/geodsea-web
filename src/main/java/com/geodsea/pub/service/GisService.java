@@ -41,10 +41,10 @@ public class GisService {
 
     public static final int SRID = 4326;
 
-    private GeometryFactory factory = new GeometryFactory(new PrecisionModel(), GisService.SRID);
+    private static GeometryFactory factory = new GeometryFactory(new PrecisionModel(), GisService.SRID);
 
 
-    public MultiPoint createFromSeries(Geometry... items) {
+    public static MultiPoint createFromSeries(Geometry... items) {
         Coordinate[] coords = new Coordinate[items.length];
         for (int i = 0; i < items.length; i++)
             coords[i] = items[i].getCentroid().getCoordinate();
@@ -103,7 +103,7 @@ public class GisService {
      * @param lon
      * @return
      */
-    public Point createPointFromLatLong(double lat, double lon) {
+    public static Point createPointFromLatLong(double lat, double lon) {
         // y => latitude (North South)
         // x => longitude (East/West)
         return factory.createPoint(new Coordinate(lon, lat));
@@ -114,7 +114,7 @@ public class GisService {
      * @return null if wkt is null or blank, a non-null Geometry otherwise
      * @throws ParseException if an invalid non-blank value is specified
      */
-    public Geometry createFromWKT(String wkt) throws ParseException {
+    public static Geometry createFromWKT(String wkt) throws ParseException {
 
         if (wkt == null | wkt.trim().length() == 0)
             return null;
@@ -123,7 +123,7 @@ public class GisService {
         return new WKTReader(factory).read(wkt);
     }
 
-    public String toWKT(Geometry geometry) {
+    public static String toWKT(Geometry geometry) {
         return new WKTWriter(2).write(geometry);
     }
 }

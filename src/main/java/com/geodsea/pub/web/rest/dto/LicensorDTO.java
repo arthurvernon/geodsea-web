@@ -1,18 +1,8 @@
 package com.geodsea.pub.web.rest.dto;
 
-public class LicensorDTO {
+import java.util.List;
 
-    private Long id;
-
-    /**
-     * this value needs to be set on the client to define the group that is a licensing agency.
-     */
-    private Long organisationId;
-
-    /**
-     * Immatable property defined by way of the participant.
-     */
-    private String groupName;
+public class LicensorDTO extends OrganisationDTO {
 
     /**
      * URL for license checks
@@ -30,33 +20,20 @@ public class LicensorDTO {
     private String zoneWKT;
 
 
+    private Long licensorId;
+
     public LicensorDTO() {
         super();
     }
 
-    public LicensorDTO(Long id, Long organisationId, String groupName, String webServiceURL, String zoneTitle, String zoneWKT) {
-        this.id = id;
-        this.organisationId = organisationId;
-        this.groupName = groupName;
+    public LicensorDTO(Long organisationId, Long licensorId, String groupLogin, String groupName, String langKey,  boolean enabled,
+                       String email, String websiteURL, ParticipantDTO contactPerson, String telephone, String address,
+                       List<AddressPartDTO> addressParts, PointDTO point, String zoneTitle, String zoneWKT, String webServiceURL) {
+        super(organisationId, groupLogin, groupName, langKey, enabled, email, websiteURL, contactPerson, telephone, address);
         this.webServiceURL = webServiceURL;
         this.zoneTitle = zoneTitle;
         this.zoneWKT = zoneWKT;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getOrganisationId() {
-        return organisationId;
-    }
-
-    public void setOrganisationId(Long organisationId) {
-        this.organisationId = organisationId;
+        this.licensorId = licensorId;
     }
 
     public String getWebServiceURL() {
@@ -78,18 +55,5 @@ public class LicensorDTO {
     public String getZoneWKT() {
         return zoneWKT;
     }
-
-    public void setZoneWKT(String zoneWKT) {
-        this.zoneWKT = zoneWKT;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
 
 }

@@ -16,12 +16,12 @@ public class MemberDTO {
 
     private ParticipantDTO participant;
 
-    private GroupDTO group;
+    private CollectiveDTO group;
 
     public MemberDTO() {
     }
 
-    public MemberDTO(Long memberId, ParticipantDTO participant, GroupDTO group, boolean manager, boolean active, Date memberSince, Date memberUntil) {
+    public MemberDTO(Long memberId, ParticipantDTO participant, CollectiveDTO group, boolean manager, boolean active, Date memberSince, Date memberUntil) {
         this.id = memberId;
         this.manager = manager;
         this.active = active;
@@ -55,7 +55,7 @@ public class MemberDTO {
         return participant;
     }
 
-    public GroupDTO getGroup() {
+    public CollectiveDTO getGroup() {
         return group;
     }
 

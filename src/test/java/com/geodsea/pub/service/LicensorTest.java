@@ -1,7 +1,6 @@
 package com.geodsea.pub.service;
 
 import com.geodsea.pub.Application;
-import com.geodsea.pub.domain.Group;
 import com.geodsea.pub.domain.Licensor;
 import com.geodsea.pub.repository.LicensorRepository;
 import com.vividsolutions.jts.geom.Point;
@@ -9,8 +8,6 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -38,19 +35,18 @@ public class LicensorTest {
     @Inject
     LicensorRepository licensorRepository;
 
-    @Inject
-    GisService gisService;
+    ;
 
     @Test
     public void testLicensorLocationQuery() throws ActionRefusedException {
 
-        Point point = gisService.createPointFromLatLong(-32, 115);
+        Point point = GisService.createPointFromLatLong(-32, 115);
         List<Licensor> licensor = licensorRepository.getLicensorForLocation(point);
 
         assertThat(licensor.size()).isEqualTo(1);
 
         // Perth in the nothern hemishpere where there is no licensor
-        point = gisService.createPointFromLatLong(32, 115);
+        point = GisService.createPointFromLatLong(32, 115);
         licensor = licensorRepository.getLicensorForLocation(point);
         assertThat(licensor.size()).isEqualTo(0);
 

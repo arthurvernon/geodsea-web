@@ -14,12 +14,19 @@ public class LicenseSkipper extends License {
      * The skipper
      */
     @ManyToOne
-    @JoinColumn(name="SKIPPER_ID")
-	private Skipper skipper;
+    @JoinColumn(name="PERSON_ID")
+	private Person person;
 
 
 	public LicenseSkipper(){
         super();
 	}
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 }

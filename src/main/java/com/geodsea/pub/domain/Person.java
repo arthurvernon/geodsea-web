@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -87,6 +88,15 @@ public class Person extends Participant implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "person")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PersistentToken> persistentTokens;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "person")
+    private List<Trip> trips;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
+    private List<LicenseSkipper> licenses;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
+    private List<VesselPermit> permits;
 
     public String getPassword() {
         return password;

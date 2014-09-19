@@ -1,6 +1,7 @@
 package com.geodsea.pub.web.rest.mapper;
 
 import com.geodsea.pub.domain.*;
+import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.web.rest.dto.*;
 
 import java.util.List;
@@ -42,29 +43,73 @@ public class Mapper {
         //Long orgId, String groupLogin, String groupName, String langKey, boolean enabled, String login, String email, ParticipantDTO contactPerson, String telephone,
         //String address, List<AddressPartDTO> addressParts, PointDTO point
 
-        return new OrganisationDTO(org.getId(), org.getParticipantName(), org.getGroupName(), org.getLangKey(),
+        return new OrganisationDTO(org.getId(), org.getParticipantName(), org.getCollectiveName(), org.getLangKey(),
                 org.isEnabled(),
-                org.getParticipantName(),
                 org.getEmail(),
+                org.getWebsiteURL(),
+                participant(org.getContactPerson()),
+                org.getTelephone(),
+                org.getAddress() != null ? org.getAddress().getFormatted() : null
+        );
+    }
+
+    public static LicensorDTO licensor(Licensor licensor) {
+        Organisation org = licensor.getOrgansation();
+        String zoneWKT = GisService.toWKT(licensor.getZone().getZone());
+
+        return new LicensorDTO(licensor.getId(),
+                org.getId(),
+                org.getParticipantName(),
+                org.getCollectiveName(),
+                org.getLangKey(),
+                org.isEnabled(),
+                org.getEmail(),
+                org.getWebsiteURL(),
                 participant(org.getContactPerson()),
                 org.getTelephone(),
                 org.getAddress() != null ? org.getAddress().getFormatted() : null,
-                null,
-                null);
+                null, null,  // no address details.
+                licensor.getZone().getZoneTitle(),
+                zoneWKT,
+                licensor.getLicenceWsURL());
     }
 
-    public static GroupDTO group(Group group) {
+    public static RescueOrganisationDTO rescueOrganisation(Rescue rescue) {
+        if (rescue == null)
+            return null;
+
+        Organisation org = rescue.getOrgansation();
+
+        String zoneWKT = GisService.toWKT(rescue.getZone().getZone());
+
+        return new RescueOrganisationDTO(rescue.getId(), org.getParticipantName(), org.getCollectiveName(), org.getLangKey(),
+                org.isEnabled(),
+                org.getEmail(),
+                org.getWebsiteURL(),
+                participant(org.getContactPerson()),
+                org.getTelephone(),
+                org.getAddress() != null ? org.getAddress().getFormatted() : null,
+                null, null,  // no address details.
+                rescue.getCallsign(),
+                rescue.getZone().getZoneTitle(),
+                zoneWKT);
+    }
+
+    public static GroupDTO friends(Group group) {
 
         if (group == null)
             return null;
-        // Long groupId, String groupLogin, String groupName, String langKey, boolean enabled, String telephone,
-        // String email, ParticipantDTO contact
-        return new GroupDTO(group.getId(), group.getParticipantName(), group.getGroupName(), group.getLangKey(),
-                group.isEnabled(), group.getParticipantName(), group.getEmail(),participant(group.getContactPerson()));
+        return new GroupDTO(group.getId(), group.getParticipantName(), group.getCollectiveName(), group.getLangKey(),
+                group.isEnabled(), null, group.getEmail(), participant(group.getContactPerson()));
     }
 
     public static MemberDTO member(Member member) {
-        return new MemberDTO(member.getId(), participant(member.getParticipant()), group(member.getGroup()),
+        if (member == null)
+            return null;
+
+        Collective collective = member.getCollective();
+        CollectiveDTO groupDTO = (collective instanceof Group) ? friends((Group) collective) : organisation((Organisation) collective);
+        return new MemberDTO(member.getId(), participant(member.getParticipant()), groupDTO,
                 member.isManager(), member.isActive(), member.getMemberSince(), member.getMemberUntil());
     }
 
@@ -76,10 +121,8 @@ public class Mapper {
         if (participant instanceof Person) {
             Person p = (Person) participant;
             name = p.getFirstName() + " " + p.getLastName();
-        }
-        else
-        {
-            name = ((Group) participant).getGroupName();
+        } else {
+            name = ((Collective) participant).getCollectiveName();
         }
 
         return new ParticipantDTO(participant.getId(), participant.getParticipantName(), participant.isEnabled(), name,

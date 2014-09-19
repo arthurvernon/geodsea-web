@@ -18,7 +18,7 @@ geodseaApp.factory('Licensor', ['$resource',
  */
 geodseaApp.factory('LicensorUserMatch', ['$resource',
     function ($resource) {
-        return $resource('app/rest/userlicensor/:username', {}, {
+        return $resource('app/rest/users/:username/licensor', {}, {
             'get': { method: 'GET'}
         });
     }]);

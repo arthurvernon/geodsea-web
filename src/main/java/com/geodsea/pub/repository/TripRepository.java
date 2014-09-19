@@ -1,6 +1,5 @@
 package com.geodsea.pub.repository;
 
-import com.geodsea.pub.domain.Skipper;
 import com.geodsea.pub.domain.Trip;
 import org.springframework.data.jpa.repository.JpaRepository;
 

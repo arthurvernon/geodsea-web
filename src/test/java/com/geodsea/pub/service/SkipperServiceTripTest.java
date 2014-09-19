@@ -39,40 +39,29 @@ public class SkipperServiceTripTest {
     private static final Logger logger = Logger.getLogger(SkipperServiceTripTest.class);
 
     @Inject
-    private GisService gisService;
-
-    @Inject
     private SkipperService skipperService;
 
     @Inject
     private VesselRepository vesselRepository;
 
     @Inject
-    private SkipperRepository skipperRepository;
-
-    @Inject
     private PersonRepository personRepository;
 
     private Vessel vessel;
 
-    private Skipper skipper;
+    private Person person;
 
     @Before
     public void setup() {
         vessel = new Vessel("Monty", VesselType.CABIN);
         vessel = vesselRepository.save(vessel);
-        skipper = skipperService.getOrCreateSkipper("user");
+        person = personRepository.getUserByParticipantName("user");
     }
 
     @After
     public void cleanup() {
-        logger.debug("Before deleting vessel");
         if (vessel.getId() != null)
             vesselRepository.delete(vessel);
-        logger.debug("After deleting vessel");
-        logger.debug("Before removing skipper");
-        skipperService.removeSkipper(skipper.getId());
-        logger.debug("After removing skipper");
     }
 
     @Test
@@ -90,7 +79,7 @@ public class SkipperServiceTripTest {
 
         // when a plan is made, the trip is defined.
         // vesselId, skipperId, headline, startTime, endTime, summary, MultiPoint wayPoints, int fuel, int people
-        Trip trip = skipperService.createTripPlan(vessel.getId(), skipper.getId(), "Test", new Date(currentTime),
+        Trip trip = skipperService.createTripPlan(vessel.getId(), person.getId(), "Test", new Date(currentTime),
                 new Date(finish), "Summary", null, 100, 3);
 
         // the person then makes a start
@@ -104,7 +93,7 @@ public class SkipperServiceTripTest {
         // test data for starting location - Hillary's boat ramp 10 minutes ago
         double latitude = GisService.googleLat(" 31°49'17.72\"S");
         double longitude = GisService.googleLong("115°44'20.36\"E");
-        Point point = gisService.createPointFromLatLong(latitude, longitude);
+        Point point = GisService.createPointFromLatLong(latitude, longitude);
 
         // first report one minute later, once GPS has settled.
         currentTime = currentTime + 1 * DateConstants.MINUTES;
@@ -132,9 +121,8 @@ public class SkipperServiceTripTest {
 
         skipperService.deleteTrip(trip.getId());
 
-        // person and skipper are not deleted in the process
+        // person is not deleted in the process
         assertThat(personRepository.getUserByParticipantName("user")).isNotNull();
-        assertThat(skipperRepository.getOne(skipper.getId())).isNotNull();
     }
 
     private List<LocationTime> exitHillarys(long start) {
@@ -154,7 +142,7 @@ public class SkipperServiceTripTest {
     private LocationTime create(String lat, String lon, long at, long received) {
         double latitude = GisService.googleLat(lat);
         double longitude = GisService.googleLong(lon);
-        Point point = gisService.createPointFromLatLong(latitude, longitude);
+        Point point = GisService.createPointFromLatLong(latitude, longitude);
         LocationTime location = new LocationTime(point, new Date(at), new Date(received));
         return location;
     }

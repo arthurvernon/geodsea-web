@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * A member is a {@link Participant participant} who has a role (details TBD) within an
- * {@link Group organsation}.
+ * {@link Collective organsation}.
  * <p>
  * A member's ability to do stuff is predicated on the person being {@link #active} and if the {@link #memberSince}
  * amd {@link #memberUntil} date ranges are set, then the current date is within those lower and upper bounds (respectively).
@@ -31,8 +31,8 @@ public class Member {
      * The group to which this person is a member.
      */
     @ManyToOne()
-    @JoinColumn(nullable = false, name = "GROUP_FK")
-    private Group group;
+    @JoinColumn(nullable = false, name = "COLLECTIVE_FK")
+    private Collective collective;
 
     /**
      * Optional date from which this participant became a member of the organisation.
@@ -59,10 +59,10 @@ public class Member {
         super();
     }
 
-    public Member(Participant participant, Group group, boolean active, boolean manager, Date memberSince, Date memberUntil) {
+    public Member(Participant participant, Collective collective, boolean active, boolean manager, Date memberSince, Date memberUntil) {
         super();
         this.participant = participant;
-        this.group = group;
+        this.collective = collective;
         this.active = active;
         this.memberSince = memberSince;
         this.manager = manager;
@@ -72,18 +72,18 @@ public class Member {
     /**
      * Create an active manager
      * @param participant
-     * @param group
+     * @param collective
      */
-    public static Member createActiveManager(Participant participant, Group group) {
-        return new Member(participant, group, true, true, new Date(), null);
+    public static Member createActiveManager(Participant participant, Collective collective) {
+        return new Member(participant, collective, true, true, new Date(), null);
     }
 
-    public Group getGroup() {
-        return group;
+    public Collective getCollective() {
+        return collective;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setCollective(Collective collective) {
+        this.collective = collective;
     }
 
     public Date getMemberSince() {

@@ -3,7 +3,7 @@ package com.geodsea.pub.web.rest.dto;
 import java.util.List;
 
 /**
- * Created by Arthur Vernon on 10/09/2014.
+ * Rescue organisation details.
  */
 public class RescueOrganisationDTO extends OrganisationDTO {
 
@@ -12,51 +12,58 @@ public class RescueOrganisationDTO extends OrganisationDTO {
      */
     private String rescueCallsign;
 
-    /**
-     * Editable by a manager in the group
-     */
-    private String rescueZoneTitle;
 
     /**
      * Editable by a manager in the group
      */
-    private String rescueZone;
+    private String zoneWKT;
+
+    /**
+     * Editable by a manager in the group
+     */
+    private String zoneTitle;
 
     public RescueOrganisationDTO() {
     }
 
-    public RescueOrganisationDTO(Long orgId, String groupLogin, String groupName, String langKey,  boolean enabled,
-                                 String login, String email, UserDTO contactPerson, String telephone, String address,
+    /**
+     *
+     * @param rescueId
+     * @param groupLogin
+     * @param groupName
+     * @param langKey
+     * @param enabled
+     * @param email
+     * @param websiteURL
+     * @param contactPerson
+     * @param telephone
+     * @param address
+     * @param addressParts
+     * @param point
+     * @param rescueCallsign
+     * @param zoneWKT
+     * @param zoneTitle
+     */
+    public RescueOrganisationDTO(Long rescueId, String groupLogin, String groupName, String langKey,  boolean enabled,
+                                 String email, String websiteURL, ParticipantDTO contactPerson, String telephone, String address,
                                  List<AddressPartDTO> addressParts, PointDTO point, String rescueCallsign,
-                                 String rescueZoneTitle, String rescueZone) {
+                                 String zoneTitle, String zoneWKT) {
 
-        super(orgId, groupLogin, groupName, langKey, enabled, login, email, contactPerson, telephone, address, addressParts, point);
+        super(rescueId, groupLogin, groupName, langKey, enabled, email, websiteURL, contactPerson, telephone, address);
         this.rescueCallsign = rescueCallsign;
-        this.rescueZoneTitle = rescueZoneTitle;
-        this.rescueZone = rescueZone;
+        this.zoneWKT = zoneWKT;
+        this.zoneTitle = zoneTitle;
     }
 
     public String getRescueCallsign() {
         return rescueCallsign;
     }
 
-    public void setRescueCallsign(String rescueCallsign) {
-        this.rescueCallsign = rescueCallsign;
+    public String getZoneWKT() {
+        return zoneWKT;
     }
 
-    public String getRescueZoneTitle() {
-        return rescueZoneTitle;
-    }
-
-    public void setRescueZoneTitle(String rescueZoneTitle) {
-        this.rescueZoneTitle = rescueZoneTitle;
-    }
-
-    public String getRescueZone() {
-        return rescueZone;
-    }
-
-    public void setRescueZone(String rescueZone) {
-        this.rescueZone = rescueZone;
+    public String getZoneTitle() {
+        return zoneTitle;
     }
 }

@@ -48,7 +48,7 @@ public class GroupResource extends ParticipantResource {
 
         // group must be specified
         if (groupDTO == null) {
-            log.info("Attempt to register a null group");
+            log.info("Attempt to register a null group of friends");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -61,13 +61,13 @@ public class GroupResource extends ParticipantResource {
 
         String groupName = groupDTO.getLogin();
 
-        if (StringUtils.isBlank(groupDTO.getLogin())) {
+        if (StringUtils.isBlank(groupName)) {
             log.info("No group name specified");
             return new ResponseEntity<String>(ErrorCode.MISSING_GROUP_NAME, HttpStatus.FORBIDDEN);
         }
         if (groupDTO.getId() != null) {
             try {
-                groupService.updateGroup(groupDTO.getId(), groupDTO.getEmail(), groupDTO.getContact().getLogin(),
+                groupService.updateFriends(groupDTO.getId(), groupDTO.getEmail(), groupDTO.getContact().getLogin(),
                         groupDTO.getName(), groupDTO.getLangKey(), groupDTO.isEnabled());
                 return new ResponseEntity<>(HttpStatus.OK);
             } catch (ActionRefusedException ex) {
@@ -79,12 +79,12 @@ public class GroupResource extends ParticipantResource {
                 String userName = null;
                 if (contactDTO != null)
                     userName = contactDTO.getLogin();
-                Group group = groupService.createGroup(groupDTO.getLogin(), groupDTO.getLangKey(), groupDTO.getName(),
+                Collective collective = groupService.createFriends(groupDTO.getLogin(), groupDTO.getLangKey(), groupDTO.getName(),
                         groupDTO.getEmail(), userName, groupDTO.isEnabled());
 
                 // send the email if not automatically enabled by an administrator.
-                if (!group.isEnabled())
-                    groupService.sendRegistrationEmail(group, createBaseUrl(request));
+                if (!collective.isEnabled())
+                    groupService.sendRegistrationEmail(collective, createBaseUrl(request));
 
                 return new ResponseEntity<>(HttpStatus.CREATED);
             } catch (ActionRefusedException ex) {
@@ -135,10 +135,10 @@ public class GroupResource extends ParticipantResource {
     public List<GroupDTO> getAll() {
         log.debug("REST request to get all Groups");
 
-        List<Group> groups = groupService.getAllGroups();
+        List<Group> friends = groupService.getAllFriends();
         List<GroupDTO> dtos = new ArrayList<GroupDTO>();
-        for (Group g : groups)
-            dtos.add(Mapper.group(g));
+        for (Group g : friends)
+            dtos.add(Mapper.friends(g));
 
         return dtos;
     }
@@ -153,11 +153,11 @@ public class GroupResource extends ParticipantResource {
     @Timed
     public ResponseEntity<GroupDTO> get(@PathVariable Long id, HttpServletResponse response) {
         log.debug("REST request to get Group : {}", id);
-        Group group = groupService.lookupGroup(id);
+        Group group = groupService.lookupFriends(id);
         if (group == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(Mapper.group(group), HttpStatus.OK);
+        return new ResponseEntity<>(Mapper.friends(group), HttpStatus.OK);
     }
 
     /**
@@ -169,6 +169,6 @@ public class GroupResource extends ParticipantResource {
     @Timed
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete Group : {}", id);
-        groupService.deleteGroup(id);
+        groupService.deleteFriends(id);
     }
 }

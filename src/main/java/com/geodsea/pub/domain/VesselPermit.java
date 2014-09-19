@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "T_VESSEL_PERMIT", schema = "BOAT", uniqueConstraints =
-@UniqueConstraint(columnNames = {"SKIPPER_ID", "BOAT_ID", "VESSEL_OWNER_ID"}))
+@UniqueConstraint(columnNames = {"PERSON_ID", "BOAT_ID", "VESSEL_OWNER_ID"}))
 public class VesselPermit {
 
     @Id
@@ -25,7 +25,8 @@ public class VesselPermit {
      * Access to the person and any license that this person may have that entitles him to be in charge of a boat.
      */
     @ManyToOne()
-    private Skipper skipper;
+    @JoinColumn(nullable = false, name="PERSON_ID")
+    private Person person;
 
     /**
      * The boat that this person has a right to skipper.

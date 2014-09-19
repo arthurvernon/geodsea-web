@@ -7,9 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import javax.inject.Inject;
 
-import com.geodsea.pub.domain.Group;
+import com.geodsea.pub.domain.Licensor;
 import com.geodsea.pub.domain.Organisation;
 import com.geodsea.pub.repository.GroupRepository;
+import com.geodsea.pub.repository.OrganisationRepository;
 import com.geodsea.pub.service.LicenseService;
 import com.geodsea.pub.web.rest.dto.LicensorDTO;
 import org.junit.Before;
@@ -59,7 +60,7 @@ public class LicensorResourceTest {
     private LicensorRepository licensorRepository;
 
     @Inject
-    private GroupRepository groupRepository;
+    private OrganisationRepository organisationRepository;
 
     @Inject
     LicenseService licenseService;
@@ -83,23 +84,26 @@ public class LicensorResourceTest {
         organisation = new Organisation();
         organisation.setEnabled(true);
         organisation.setParticipantName("transport.nsw.gov.au");
-        organisation.setGroupName("Marine and Harbours, NSW");
+        organisation.setCollectiveName("Marine and Harbours, NSW");
 
 //        when(licenseService.addOrUpdateLicensor();getUserWithAuthorities()).thenReturn(person);
 
-        dto = new LicensorDTO();
-        dto.setId(DEFAULT_ID);
-        // relies on the test data. Does this work?
-    	dto.setWebServiceURL(URL_BEFORE);
-    	dto.setZoneTitle(REGION_BEFORE);
+//        Licensor licensor = new Licensor();
+//        licensor.setId(DEFAULT_ID);
+//        // relies on the test data. Does this work?
+//        licensor.setLicenceWsURL(URL_BEFORE);
+//        licensor.setZoneTitle(REGION_BEFORE);
+//
+//        dto = new LicensorDTO();
+//        dto.setId(DEFAULT_ID);
     }
 
     @Test
     @Transactional
     public void testCRUDLicensor() throws Exception {
 
-        organisation = groupRepository.save(organisation);
-        dto.setOrganisationId(organisation.getId());
+//        organisation = organisationRepository.save(organisation);
+//        dto.setOrganisationId(organisation.getId());
 
 //  These just don't work because an ID cannot be assumed.
 

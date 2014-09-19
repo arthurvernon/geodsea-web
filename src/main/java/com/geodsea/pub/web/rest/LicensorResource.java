@@ -1,16 +1,14 @@
 package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.geodsea.pub.domain.Address;
 import com.geodsea.pub.domain.Licensor;
-import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.domain.Zone;
 import com.geodsea.pub.repository.LicensorRepository;
 import com.geodsea.pub.repository.PersonRepository;
-import com.geodsea.pub.service.ActionRefusedException;
 import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.service.LicenseService;
 import com.geodsea.pub.web.rest.dto.LicensorDTO;
+import com.geodsea.pub.web.rest.mapper.Mapper;
 import com.geodsea.ws.LicenseResponse;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -45,9 +43,6 @@ public class LicensorResource {
     @Inject
     private PersonRepository personRepository;
 
-    @Inject
-    private GisService gisService;
-
 
     /**
      * POST  /rest/licensors -> Create a new licensor.
@@ -61,7 +56,7 @@ public class LicensorResource {
 
         MultiPolygon polygon = null;
         try {
-            Geometry geometry = gisService.createFromWKT(dto.getZoneWKT());
+            Geometry geometry = GisService.createFromWKT(dto.getZoneWKT());
             if (geometry instanceof MultiPolygon)
                 polygon = (MultiPolygon) geometry;
             else {
@@ -74,7 +69,7 @@ public class LicensorResource {
         }
 
         Zone zone = new Zone(dto.getZoneTitle(), polygon);
-        licenseService.addOrUpdateLicensor(dto.getId(), dto.getOrganisationId(), dto.getWebServiceURL(), zone);
+        licenseService.addOrUpdateLicensor(dto.getId(), dto.getId(), dto.getWebServiceURL(), zone);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -91,7 +86,7 @@ public class LicensorResource {
 
         List<LicensorDTO> dtoList = new ArrayList<LicensorDTO>();
         for (Licensor l : licensors)
-            dtoList.add(createLicensorDTO(l));
+            dtoList.add(Mapper.licensor(l));
         log.debug("Located " + dtoList.size() + " licensors");
         return dtoList;
     }
@@ -110,16 +105,10 @@ public class LicensorResource {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        LicensorDTO dto = createLicensorDTO(licensor);
+        LicensorDTO dto = Mapper.licensor(licensor);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    private LicensorDTO createLicensorDTO(Licensor licensor) {
-        return new LicensorDTO(licensor.getId(), licensor.getOrgansation().getId(),
-                licensor.getOrgansation().getGroupName(),
-                licensor.getLicenceWsURL(), licensor.getZone().getZoneTitle(),
-                gisService.toWKT(licensor.getZone().getZone()));
-    }
 
 
     /**
@@ -134,35 +123,6 @@ public class LicensorResource {
         licensorRepository.delete(id);
     }
 
-    /**
-     * Get the licencing agency that covers the user's home address.
-     * GET  /rest/userlicensor/:username  -> get the "id" licensor.
-     */
-    @RequestMapping(value = "/rest/userlicensor/{username}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<LicensorDTO> getLicensorLocalToUser(@PathVariable String username, HttpServletResponse response) {
-        log.debug("REST request to get Licensor closest to user: {}", username);
-
-
-        Person person = personRepository.getUserByParticipantName(username);
-        Address address = person.getAddress();
-        if (address == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        List<Licensor> licensors = licenseService.getLocalLicensor(person.getAddress());
-
-        if (licensors == null || licensors.size() == 0) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-
-        Licensor l = licensors.get(0);
-        LicensorDTO licensorDTO = createLicensorDTO(l);
-
-        return new ResponseEntity<>(licensorDTO, HttpStatus.OK);
-    }
 
     /**
      * Get the licence details as supplied by the licensing agency.

@@ -49,8 +49,6 @@ public class AccountResource extends ParticipantResource {
     @Inject
     private UserService userService;
 
-    @Inject
-    private GisService gisService;
 
     @Inject
     private PersistentTokenRepository persistentTokenRepository;
@@ -70,7 +68,7 @@ public class AccountResource extends ParticipantResource {
             // ensure that there is no other participant (person or group) with the same name
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         else {
-            Point point = gisService.createPointFromLatLong(userDTO.getPoint().getLat(), userDTO.getPoint().getLon());
+            Point point = GisService.createPointFromLatLong(userDTO.getPoint().getLat(), userDTO.getPoint().getLon());
             Address address = new Address(userDTO.getAddress(), point);
             Person person = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
                     userDTO.getFirstName(), userDTO.getLastName(),
@@ -143,7 +141,7 @@ public class AccountResource extends ParticipantResource {
     public void saveAccount(@RequestBody UserDTO userDTO) {
         Address address = null;
         if (userDTO.getPoint() != null) {
-            Point point = gisService.createPointFromLatLong(userDTO.getPoint().getLat(), userDTO.getPoint().getLon());
+            Point point = GisService.createPointFromLatLong(userDTO.getPoint().getLat(), userDTO.getPoint().getLon());
             address = new Address(userDTO.getAddress(), point);
         }
         userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),

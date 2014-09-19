@@ -4,6 +4,9 @@ package com.geodsea.pub.web.rest.dto;
  * Created by Arthur Vernon on 13/09/2014.
  */
 public class ParticipantDTO {
+    /**
+     * ID of the participant or the role that the organisation performs
+     */
     private Long id;
 
     private String login;
@@ -24,6 +27,16 @@ public class ParticipantDTO {
     public ParticipantDTO() {
     }
 
+    /**
+     *
+     * @param id ID of the participant or the role that the organisation performs
+     * @param login
+     * @param enabled
+     * @param name
+     * @param email
+     * @param langKey
+     * @param telephone
+     */
     public ParticipantDTO(Long id, String login, boolean enabled, String name, String email, String langKey, String telephone) {
         this.login = login;
         this.id = id;
