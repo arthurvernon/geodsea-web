@@ -23,7 +23,7 @@ public class Mapper {
             return null;
 
         return new UserDTO(person.getId(),
-                person.getParticipantName(),
+                person.getLogin(),
                 person.isEnabled(),
                 person.getFirstName(),
                 person.getLastName(),
@@ -43,7 +43,7 @@ public class Mapper {
         //Long orgId, String groupLogin, String groupName, String langKey, boolean enabled, String login, String email, ParticipantDTO contactPerson, String telephone,
         //String address, List<AddressPartDTO> addressParts, PointDTO point
 
-        return new OrganisationDTO(org.getId(), org.getParticipantName(), org.getCollectiveName(), org.getLangKey(),
+        return new OrganisationDTO(org.getId(), org.getLogin(), org.getCollectiveName(), org.getLangKey(),
                 org.isEnabled(),
                 org.getEmail(),
                 org.getWebsiteURL(),
@@ -53,13 +53,25 @@ public class Mapper {
         );
     }
 
+    public static VesselDTO vessel(Vessel vessel) {
+        return new VesselDTO(vessel.getId(), vessel.getHullIdentificationNumber(), vessel.getVesselName(),
+                vessel.getVesselType(), vessel.getHullColor(), vessel.getSuperstructureColor(), vessel.getLength(),
+                vessel.getTotalHP(), vessel.getFuelCapacity(), vessel.getStorageType(), vessel.getEmergencyEquipment());
+    }
+
+    public static Vessel vessel(VesselDTO vessel) {
+        return new Vessel(vessel.getHullIdentificationNumber(), vessel.getVesselName(),
+                vessel.getVesselType(), vessel.getHullColor(), vessel.getSuperstructureColor(), vessel.getLength(),
+                vessel.getTotalHP(), vessel.getFuelCapacity(), vessel.getStorageType(), vessel.getEmergencyEquipment());
+    }
+
     public static LicensorDTO licensor(Licensor licensor) {
         Organisation org = licensor.getOrgansation();
         String zoneWKT = GisService.toWKT(licensor.getZone().getZone());
 
         return new LicensorDTO(licensor.getId(),
                 org.getId(),
-                org.getParticipantName(),
+                org.getLogin(),
                 org.getCollectiveName(),
                 org.getLangKey(),
                 org.isEnabled(),
@@ -82,7 +94,7 @@ public class Mapper {
 
         String zoneWKT = GisService.toWKT(rescue.getZone().getZone());
 
-        return new RescueOrganisationDTO(rescue.getId(), org.getParticipantName(), org.getCollectiveName(), org.getLangKey(),
+        return new RescueOrganisationDTO(rescue.getId(), org.getLogin(), org.getCollectiveName(), org.getLangKey(),
                 org.isEnabled(),
                 org.getEmail(),
                 org.getWebsiteURL(),
@@ -99,7 +111,7 @@ public class Mapper {
 
         if (group == null)
             return null;
-        return new GroupDTO(group.getId(), group.getParticipantName(), group.getCollectiveName(), group.getLangKey(),
+        return new GroupDTO(group.getId(), group.getLogin(), group.getCollectiveName(), group.getLangKey(),
                 group.isEnabled(), null, group.getEmail(), participant(group.getContactPerson()));
     }
 
@@ -125,7 +137,8 @@ public class Mapper {
             name = ((Collective) participant).getCollectiveName();
         }
 
-        return new ParticipantDTO(participant.getId(), participant.getParticipantName(), participant.isEnabled(), name,
+        return new ParticipantDTO(participant.getId(), participant.getLogin(), participant.isEnabled(), name,
                 participant.getEmail(), participant.getLangKey(), ((Person) participant).getTelephone());
     }
+
 }

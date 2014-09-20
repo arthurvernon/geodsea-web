@@ -94,7 +94,7 @@ public class AccountResource extends ParticipantResource {
         if (participant == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<String>(participant.getParticipantName(), HttpStatus.OK);
+        return new ResponseEntity<String>(participant.getLogin(), HttpStatus.OK);
     }
 
 
@@ -177,7 +177,7 @@ public class AccountResource extends ParticipantResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<List<PersistentToken>> getCurrentSessions() {
-        Person person = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
+        Person person = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
         if (person == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -204,7 +204,7 @@ public class AccountResource extends ParticipantResource {
     @Timed
     public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
         String decodedSeries = URLDecoder.decode(series, "UTF-8");
-        Person person = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
+        Person person = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
         List<PersistentToken> persistentTokens = persistentTokenRepository.findByPerson(person);
         for (PersistentToken persistentToken : persistentTokens) {
             if (StringUtils.equals(persistentToken.getSeries(), decodedSeries)) {
@@ -221,7 +221,7 @@ public class AccountResource extends ParticipantResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<QuestionDTO> getSecretQuestion(@PathVariable String user) {
-        Person person = personRepository.getUserByParticipantName(user);
+        Person person = personRepository.getByLogin(user);
         if (person == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -239,7 +239,7 @@ public class AccountResource extends ParticipantResource {
         if (answer == null || answer.incomplete())
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
-        Person person = personRepository.getUserByParticipantName(answer.getUsername());
+        Person person = personRepository.getByLogin(answer.getUsername());
         if (person == null) {
             log.debug("no such person");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

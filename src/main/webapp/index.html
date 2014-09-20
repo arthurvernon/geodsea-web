@@ -35,8 +35,9 @@
                   <a class="navbar-brand" href="#"><span translate="title.main">geodsea</span></a>
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="authenticated">
-                    <!-- Home button -->
                     <ul class="nav navbar-nav nav-pills navbar-right">
+
+                        <!-- Home button -->
                         <li>
                             <a href="#">
                                 <span class="glyphicon glyphicon-home"></span>
@@ -67,6 +68,13 @@
                                     &#xA0;<span translate="menu.user.logout">Log out</span></a></li>
                                 <li ng-switch-when="false"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>
                                     &#xA0;<span translate="menu.user.login">Authenticate</span></a></li>
+                                <li ng-switch-when="true" role="presentation" class="divider"></li>
+                                <li ng-switch-when="true"><a href="#/vessel"><span class="glyphicon glyphicon-list"></span>
+                                    &#xA0;<span translate="menu.user.vessels">Vessels</span></a></li>
+                                <li ng-switch-when="true"><a href="#/skipper"><span class="glyphicon glyphicon-list"></span>
+                                    &#xA0;<span translate="menu.user.skippers">Skippers</span></a></li>
+                                <li ng-switch-when="true"><a href="#/trips"><span class="glyphicon glyphicon-list"></span>
+                                    &#xA0;<span translate="menu.user.trips">Trips</span></a></li>
                             </ul>
                         </li>
 
@@ -179,7 +187,7 @@
                                     &#xA0;<span translate="menu.help.overview">Overview</span></a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation" class="dropdown-header"><span translate="menu.help.role">Role</span></li>
-                                <li><a href="#/owner"><span class="glyphicon glyphicon-info-sign"></span>
+                                <li><a href="#/info/owner/{{language}}"><span class="glyphicon glyphicon-info-sign"></span>
                                     &#xA0;<span translate="menu.help.owner">Boat Owner</span></a></li>
 
                                 <li><a href="#/info/skipper/{{language}}"><span class="glyphicon glyphicon-info-sign"></span>

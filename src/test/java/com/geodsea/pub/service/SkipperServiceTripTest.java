@@ -55,7 +55,7 @@ public class SkipperServiceTripTest {
     public void setup() {
         vessel = new Vessel("Monty", VesselType.CABIN);
         vessel = vesselRepository.save(vessel);
-        person = personRepository.getUserByParticipantName("user");
+        person = personRepository.getByLogin("user");
     }
 
     @After
@@ -122,7 +122,7 @@ public class SkipperServiceTripTest {
         skipperService.deleteTrip(trip.getId());
 
         // person is not deleted in the process
-        assertThat(personRepository.getUserByParticipantName("user")).isNotNull();
+        assertThat(personRepository.getByLogin("user")).isNotNull();
     }
 
     private List<LocationTime> exitHillarys(long start) {

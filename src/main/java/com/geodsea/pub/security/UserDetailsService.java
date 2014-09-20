@@ -33,7 +33,7 @@ public class UserDetailsService implements org.springframework.security.core.use
         log.debug("Authenticating {}", login);
         String lowercaseLogin = login.toLowerCase();
 
-        Person personFromDatabase = personRepository.getUserByParticipantName(lowercaseLogin);
+        Person personFromDatabase = personRepository.getByLogin(lowercaseLogin);
         if (personFromDatabase == null) {
             throw new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database");
         } else if (!personFromDatabase.isEnabled()) {

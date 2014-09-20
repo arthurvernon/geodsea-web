@@ -1,0 +1,3 @@
+id;hin;vessel_name;hull_colour;superstructure_colour;storage_type;vessel_type;length_m;total_hp;fuel_capacity_l
+1;AUSTA36117H899;Blythe I;#f7f7f7;#cde3fe;MOORING;WALK_AROUND;30;0;300
+2;AUSTA36118H899;Blythe II;#f7f7f7;#cde3fe;MOORING;WALK_AROUND;30;0;300

@@ -1,7 +1,9 @@
 package com.geodsea.pub.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.geodsea.pub.domain.type.StorageType;
 import com.geodsea.pub.domain.type.VesselType;
+import com.geodsea.pub.domain.util.QueryName;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -26,6 +28,8 @@ public class Vessel implements Serializable {
     private Long id;
 
     /**
+     * A standard form string consisting of country code, manufacturer ID, serial number, agent code,
+     * and year of issue.
      * See <a href="http://www.iso.org/iso/home/store/catalogue_ics/catalogue_detail_ics.htm?csnumber=37497">
      * http://www.iso.org/iso/home/store/catalogue_ics/catalogue_detail_ics.htm?csnumber=37497</a>
      * <p>The Hull Identification Number (HIN) is a 12 or 14 character serial number that uniquely identifies a boat.</p>
@@ -36,7 +40,6 @@ public class Vessel implements Serializable {
      * <p/>
      * <p>This International Standard establishes a coding system to achieve identification of any small craft in terms of</p>
      * <ul>
-     * <li>
      * <li>identification code of the country of the manufacturer;</li>
      * <li>identification code of the manufacturer;</li>
      * <li>serial number;</li>
@@ -107,7 +110,7 @@ public class Vessel implements Serializable {
      * Total horse power of a motorised boat.
      */
     @Column(name="TOTAL_HP", nullable = true)
-    private int totalHP;
+    private Integer totalHP;
 
     /**
      * Maximum number of litres of fuel that the boat can carry.
@@ -150,6 +153,34 @@ public class Vessel implements Serializable {
         this.vesselName = name;
         this.vesselType = type;
     }
+
+    /**
+     * Create a vessel with all but it's ID
+     * @param hullIdentificationNumber
+     * @param vesselName
+     * @param vesselType
+     * @param hullColor
+     * @param superstructureColor
+     * @param length
+     * @param totalHP
+     * @param fuelCapacity
+     * @param storageType
+     * @param emergencyEquipment
+     */
+    public Vessel(String hullIdentificationNumber, String vesselName, VesselType vesselType, String hullColor,
+                  String superstructureColor, int length, Integer totalHP, int fuelCapacity, StorageType storageType,
+                  List<EmergencyEquipment> emergencyEquipment) {
+        this.hullIdentificationNumber = hullIdentificationNumber;
+        this.vesselName = vesselName;
+        this.vesselType = vesselType;
+        this.hullColor = hullColor;
+        this.superstructureColor = superstructureColor;
+        this.length = length;
+        this.totalHP = totalHP;
+        this.fuelCapacity = fuelCapacity;
+        this.storageType = storageType;
+        this.emergencyEquipment = emergencyEquipment;
+    };
 
     public Long getId() {
         return id;
@@ -247,11 +278,11 @@ public class Vessel implements Serializable {
         this.length = length;
     }
 
-    public int getTotalHP() {
+    public Integer getTotalHP() {
         return totalHP;
     }
 
-    public void setTotalHP(int totalHP) {
+    public void setTotalHP(Integer totalHP) {
         this.totalHP = totalHP;
     }
 
@@ -270,4 +301,13 @@ public class Vessel implements Serializable {
     public void setVesselType(VesselType vesselType) {
         this.vesselType = vesselType;
     }
+
+    public List<EmergencyEquipment> getEmergencyEquipment() {
+        return emergencyEquipment;
+    }
+
+    public void setEmergencyEquipment(List<EmergencyEquipment> emergencyEquipment) {
+        this.emergencyEquipment = emergencyEquipment;
+    }
+
 }

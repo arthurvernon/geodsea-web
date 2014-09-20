@@ -20,12 +20,12 @@ public class BaseService {
      */
     public Person getPersonForPrincipal() {
         String username = SecurityUtils.getCurrentLogin();
-        return getPersonForParticipantName(username);
+        return getPersonForLogin(username);
     }
 
-    public Person getPersonForParticipantName(String username)
+    public Person getPersonForLogin(String login)
     {
-        return personRepository.getUserByParticipantName(username);
+        return personRepository.getByLogin(login);
     }
 
 }

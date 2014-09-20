@@ -90,13 +90,19 @@ public class Person extends Participant implements Serializable {
     private Set<PersistentToken> persistentTokens;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "person")
+    @JsonIgnore
     private List<Trip> trips;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
+    @JsonIgnore
     private List<LicenseSkipper> licenses;
 
+    /**
+     * The vessels this person is authorised (by its owner) to skipper.
+     */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
-    private List<VesselPermit> permits;
+    @JsonIgnore
+    private List<Skipper> skippers;
 
     public String getPassword() {
         return password;
@@ -178,6 +184,30 @@ public class Person extends Participant implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
+    }
+
+    public List<LicenseSkipper> getLicenses() {
+        return licenses;
+    }
+
+    public void setLicenses(List<LicenseSkipper> licenses) {
+        this.licenses = licenses;
+    }
+
+    public List<Skipper> getSkippers() {
+        return skippers;
+    }
+
+    public void setSkippers(List<Skipper> skippers) {
+        this.skippers = skippers;
     }
 
     public void addAuthority(Authority a)

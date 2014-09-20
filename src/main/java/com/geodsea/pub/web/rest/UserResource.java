@@ -49,7 +49,7 @@ public class UserResource {
     @RolesAllowed(AuthoritiesConstants.ADMIN)
     public Person getUser(@PathVariable String login, HttpServletResponse response) {
         log.debug("REST request to get User : {}", login);
-        Person person = personRepository.getUserByParticipantName(login);
+        Person person = personRepository.getByLogin(login);
         if (person == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
@@ -68,7 +68,7 @@ public class UserResource {
         log.debug("REST request to get Licensor closest to user: {}", username);
 
 
-        Person person = personRepository.getUserByParticipantName(username);
+        Person person = personRepository.getByLogin(username);
         Address address = person.getAddress();
         if (address == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

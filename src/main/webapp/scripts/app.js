@@ -123,9 +123,10 @@ geodseaApp
                         authorizedRoles: [USER_ROLES.all]
                     }
                 })
-                .when('/owner', {
-                    templateUrl: 'views/owner.html',
-                    controller: 'HelpController',
+                .when('/info/owner/:lang_param', {
+                    templateUrl: function(params){
+                            return 'views/info/owner_' + params.lang_param + '.html';},
+                            controller: 'HelpController',
                     access: {
                         authorizedRoles: [USER_ROLES.all]
                     }

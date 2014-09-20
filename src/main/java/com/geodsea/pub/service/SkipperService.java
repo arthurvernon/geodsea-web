@@ -18,6 +18,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * TODO rename this TripService
+ */
 @Service
 @Transactional
 public class SkipperService extends BaseService {
@@ -65,7 +68,7 @@ public class SkipperService extends BaseService {
             throw new IllegalArgumentException("No person (skipper) with ID: " + personId);
 
         if (!skipper.isEnabled()) {
-            String msg = "Skipper's user account: " + skipper.getParticipantName() + " is disabled";
+            String msg = "Skipper's user account: " + skipper.getLogin() + " is disabled";
             log.warn(msg);
             throw new IllegalStateException(msg);
         }
@@ -228,7 +231,7 @@ public class SkipperService extends BaseService {
         if (trip == null)
             throw new IllegalArgumentException("No such trip: " + tripId);
 
-        Monitor monitor = monitorRepository.findByParticipantParticipantName(participant);
+        Monitor monitor = monitorRepository.findByParticipantLogin(participant);
         if (monitor == null) {
             log.warn("User: {} not permitted to access trip: {}", participant, tripId);
             throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "Participant" + participant + " is not permitted to access Trip: " + tripId);

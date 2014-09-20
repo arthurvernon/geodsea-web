@@ -176,11 +176,8 @@ public class Trip {
     /**
      * Actual tracking information, ie time at location.
      */
-//    @OneToMany(fetch = FetchType.LAZY)
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name="T_LOCATION_TIME", schema = "BOAT", joinColumns = @JoinColumn(name="TRIP_FK"))
-//    @JoinColumn(name = "TRIP_FK", referencedColumnName = "ID")
-//    @OrderColumn(name = "GPS_SIGNAL_TIME")
     private List<LocationTime> locationTimes;
 
 

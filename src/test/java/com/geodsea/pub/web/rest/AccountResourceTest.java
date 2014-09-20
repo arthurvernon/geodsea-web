@@ -94,7 +94,7 @@ public class AccountResourceTest {
         authorities.add(authority);
 
         Person person = new Person();
-        person.setParticipantName("test");
+        person.setLogin("test");
         person.setFirstName("john");
         person.setLastName("doe");
         person.setEmail("john.doe@jhipter.com");

@@ -25,4 +25,9 @@ public class ErrorCode {
     public static final String INCORRECT_ANSWER = "IncorrectAnswer";
     public static final String PERMISSION_DENIED = "PermissionDenied";
     public static final String NO_SUCH_MEMBER = "NoSuchMember";
+    public static final String OWNER_NOT_DEFINED = "VesselOwnerNotDefined";
+    public static final String NO_SUCH_PARTICIPANT = "NoSuchParticipant";
+    public static final String GROUP_CANNOT_OWN_VESSEL = "GroupCannotOwnVessel";
+    public static final String NOT_A_MANAGER = "NotAManager";
+    public static final String MEMBERSHIP_DISABLED = "MembershipDisabled";
 }

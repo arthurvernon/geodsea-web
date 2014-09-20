@@ -7,9 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import javax.inject.Inject;
 
-import com.geodsea.pub.domain.Licensor;
 import com.geodsea.pub.domain.Organisation;
-import com.geodsea.pub.repository.GroupRepository;
 import com.geodsea.pub.repository.OrganisationRepository;
 import com.geodsea.pub.service.LicenseService;
 import com.geodsea.pub.web.rest.dto.LicensorDTO;
@@ -83,7 +81,7 @@ public class LicensorResourceTest {
 
         organisation = new Organisation();
         organisation.setEnabled(true);
-        organisation.setParticipantName("transport.nsw.gov.au");
+        organisation.setLogin("transport.nsw.gov.au");
         organisation.setCollectiveName("Marine and Harbours, NSW");
 
 //        when(licenseService.addOrUpdateLicensor();getUserWithAuthorities()).thenReturn(person);

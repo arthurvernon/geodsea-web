@@ -1,0 +1,99 @@
+<h1>Boat Owner</h1>
+<p>
+    Geo d'Sea allows owners to register a vessel and to then manage those who may skipper it.
+    The vessel details are provided to the SRO in the event of the vessel not logging off so that the SRO can then
+    take the necessary steps to confirm the status of the vessel and if necessary to launch a search and rescue mission.
+</p>
+
+
+<h2>Background</h2>
+
+
+<p>When you register a vessel, you are describing the vessel, who owns it and who has the authority to use it. Without
+    this information, the mobile application will not allow the skipper to commence a trip on this vessel.</p>
+<p>A boat may be owned by:</p>
+<dl>
+    <dt>You alone</dt><dd>As you register, choose the "owned by me" option.</dd>
+    <dt>You and other people known to you</dt>
+    <dd>Register yourself (choose the "owned by me" option). Later on you can add others.</dd>
+    <dt>An organisation</dt>
+    <dd>Choose the "owned by an organisation" option and select the appropriate organisation from the list.
+        Note: You must be an active manager within the organisation to be able to register a vessel.</dd>
+    </dl>
+<p>A vessel may be skippered by people the owner allows. When the owner is:
+<ul>
+    <li>An organisation, then any manager within that organisation may allow any person within the organisation to
+        skipper
+        the vessel.
+    </li>
+    <li>You, then you may allow any other person known to you to skipper the vessel.
+    </li>
+</ul></p>
+<p>If there are multiple owners, then only one owner needs to grant a skipper access.</p>
+
+<p>A skipper may be granted a right to use the vessel indefinitely or for a limited period of time. Additionally,
+    the right to use the vessel may be temporarily suspended by marking the skipper as suspended.</p>
+
+
+<h2>Registration</h2>
+
+<p>When you first register the vessel, you need to enter the details of the vessel and at least one owner.
+    Other owners and skippers can be added later.</p>
+
+<p>A boat can be registered online using by clicking on this <a href="#/register/vessel">link</a> or going via the Add
+    Vessel menu (above).</p>
+<p>The <span translate="title.register.vessel">Vessel Registration</span> form provides the option to enter all details
+    manually, or auto-populate vessel details from the licensing authority.</p>
+<p>When all the required information has been entered, press the "<span translate="button.register">register</span>"
+    button and you are done.</p>
+
+
+<h3>Auto-Populate</h3>
+
+
+<p>A licensing authority can provide a service that will allow the vessel details to be downloaded from their site.</p>
+<p>To do this, click on the "<span translate="button.vessel.from.license">get from license</span>" button at the
+    top of the form</p>
+<p>The system will make a best guess who the relevant licensing authority is, based upon your home address.
+    If this is wrong, then just select the "<span translate="field.vessel.licensor.incorrect.label">Wrong agency?</span>"
+    checkbox and choose the right agency from the list.</p>
+<p>If the suggested licensing authority or one you select does not provide this service then you will receive
+    a message:
+    <br><span translate="message.vessel.nolicensorws">No support</span>
+    <br>If this is the case then just press the "<span translate="button.cancel">cancel</span>" button.
+</p>
+<p>Otherwise, enter your license or registration number as it appears on your license and press the
+    "<span translate="button.lookup">lookup</span>" button. If the request can be completed successfully, then
+    all that is left to do is complete the storage location and press the<span
+            translate="button.register">register</span> button.</p>
+
+
+<h3>Updating Vessel Information</h3>
+<p>If the auto-populate option is not chosen then all fields with the exception of the skippers will need to be
+    completed.
+    If the auto-populate is chosen then you need to still define the storage location and at least one owner.</p>
+<p>The only exception to the above is that a non-motorised vessel does not require a fuel capacity.</p>
+<p>Any skipper defined whilst registering the vessel will automatically have a right to use the vessel. If this is
+    inappropriate, then the skipper can later be suspended or a time period for imposed.</p>
+<h2>Updating Information</h2>
+<p>Details of the vessel, its owners and the rights of skippers can be maintained once the vessel
+    has been registered.</p>
+
+<h3>Limitations</h3>
+<p>The following restrictions apply to updates:</p>
+<dl>
+    <dt>HIN</dt>
+    <dd>This must be unique and a change will be rejected if a vessel with this number is already
+        registered
+    </dd>
+    <dt>Owner</dt>
+    <dd>At least one owner must be defined. An owner may be a person, a number of people or an organisation.</dd>
+    <dt>Skipper</dt>
+    <dd>A time period may either or both a lower and an upper time limit. If both
+        are specified then the upper limit must be after the lower limit. If a lower limit is defined then
+        the skipper can only commence a trip on the vessel after that time. If an upper limit is specified
+        then the skipper may only commence a trip prior to that time.
+    </dd>
+</dl>
+
+

@@ -14,6 +14,6 @@ import java.util.List;
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
 
-//    @Query("select p from Person p where p.participantName = ?1")
-    Person getUserByParticipantName(String participantName);
+//    @Query("select p from Person p where p.login = ?1")
+    Person getByLogin(String login);
 }

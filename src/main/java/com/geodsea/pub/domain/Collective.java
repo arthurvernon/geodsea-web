@@ -59,12 +59,12 @@ public class Collective extends Participant {
      * is approved.
      * </p>
      *
-     * @param participantName
+     * @param login
      * @param email
      * @param person
      */
-    public Collective(String participantName, String email, Person person) {
-        super(participantName, email);
+    public Collective(String login, String email, Person person) {
+        super(login, email);
         this.contactPerson = person;
     }
 

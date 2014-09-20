@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
-    Participant getParticipantByParticipantName(String participantName);
+    Participant getParticipantByLogin(String login);
 
     @Query("select u from Participant u where u.enabled = false and u.registrationTokenExpires is not null and u.createdDate > ?1")
     List<Participant> findNotActivatedUsersByCreationDateBefore(DateTime before);

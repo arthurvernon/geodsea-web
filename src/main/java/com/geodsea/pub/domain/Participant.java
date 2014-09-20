@@ -1,7 +1,6 @@
 package com.geodsea.pub.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -11,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -19,7 +17,8 @@ import java.util.Set;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "T_PARTICIPANT", schema = "BOAT", uniqueConstraints = { @UniqueConstraint(name = "uq_participant_name", columnNames = {"PARTICIPANT_NAME"})})
+@Table(name = "T_PARTICIPANT", schema = "BOAT", uniqueConstraints = {
+        @UniqueConstraint(name = "uq_participant_login", columnNames = {"LOGIN"})})
 public abstract class Participant extends AbstractAuditingEntity implements Serializable {
 
     @Id
@@ -44,10 +43,10 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
      * the username can only be changed via a transaction where the value here and in the
      * User table are both updated.</p>
      */
-    @Column(name = "PARTICIPANT_NAME", length = 50, nullable = false)
+    @Column(name = "LOGIN", length = 50, nullable = false)
     @NotNull
     @Size(min=2, max = 100)
-    private String participantName;
+    private String login;
 
 
     /**
@@ -81,11 +80,11 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
 
     /**
      * Create a disabled participant with no authorities
-     * @param participantName
+     * @param login
      * @param email
      */
-    protected Participant(String participantName, String email) {
-        this.participantName = participantName;
+    protected Participant(String login, String email) {
+        this.login = login;
         this.email = email;
     }
 
@@ -113,12 +112,12 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
      * </p>
      * @return a non-null participant name.
      */
-    public String getParticipantName() {
-        return participantName;
+    public String getLogin() {
+        return login;
     }
 
-    public void setParticipantName(String participantName) {
-        this.participantName = participantName;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public Date getRegistrationTokenExpires() {

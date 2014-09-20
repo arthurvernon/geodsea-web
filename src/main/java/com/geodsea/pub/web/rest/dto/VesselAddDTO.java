@@ -1,0 +1,38 @@
+package com.geodsea.pub.web.rest.dto;
+
+import com.geodsea.pub.domain.EmergencyEquipment;
+import com.geodsea.pub.domain.type.StorageType;
+import com.geodsea.pub.domain.type.VesselType;
+
+import java.util.List;
+
+/**
+ * Additional data used when registering a vessel, that includes the logins of the owners and the skippers.
+ */
+public class VesselAddDTO extends VesselDTO {
+
+    /**
+     * Array of participant logins for owners
+     */
+    private String owner;
+
+    /**
+     * Login IDs for the people who will be a skipper of the vessel
+     */
+    private String[] skippers;
+
+    public VesselAddDTO() {
+    }
+
+    public VesselAddDTO(Long id, String hullIdentificationNumber, String vesselName, VesselType vesselType, String hullColor, String superstructureColor, int length, Integer totalHP, int fuelCapacity, StorageType storageType, List<EmergencyEquipment> emergencyEquipment) {
+        super(id, hullIdentificationNumber, vesselName, vesselType, hullColor, superstructureColor, length, totalHP, fuelCapacity, storageType, emergencyEquipment);
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public String[] getSkippers() {
+        return skippers;
+    }
+}

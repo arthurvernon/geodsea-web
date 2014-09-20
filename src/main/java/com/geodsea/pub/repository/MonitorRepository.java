@@ -1,13 +1,19 @@
 package com.geodsea.pub.repository;
 
 import com.geodsea.pub.domain.Monitor;
+import com.geodsea.pub.domain.Participant;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * Spring Data JPA repository for the Skipper entity.
  */
 public interface MonitorRepository extends JpaRepository<Monitor, Long> {
 
-    Monitor findByParticipantParticipantName(String participantName);
+    Monitor findByParticipantLogin(String login);
 
+    @Query("select m from Monitor m where m.participant in ?1")
+    List<Monitor> findForParticipant(List<Participant> participants);
 }

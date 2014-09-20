@@ -92,7 +92,7 @@ public class TripDTO {
      * The vessel may change but rarely would.
      * </p>
      */
-    private Vessel vessel;
+    private VesselDTO vessel;
 
 
     public TripDTO() {
@@ -105,7 +105,7 @@ public class TripDTO {
      * @param vessel
      * @param person
      */
-    public TripDTO(Vessel vessel, ParticipantDTO person, String headline) {
+    public TripDTO(VesselDTO vessel, ParticipantDTO person, String headline) {
         this.vessel = vessel;
         this.person = person;
         this.headline = headline;
@@ -170,7 +170,7 @@ public class TripDTO {
     }
 
 
-    public Vessel getVessel() {
+    public VesselDTO getVessel() {
         return vessel;
     }
 

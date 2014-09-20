@@ -1,27 +1,17 @@
 package com.geodsea.pub.service;
 
 import com.geodsea.pub.domain.*;
-import com.geodsea.pub.domain.util.DateConstants;
 import com.geodsea.pub.repository.AuthorityRepository;
-import com.geodsea.pub.repository.PersistentTokenRepository;
 import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.security.AuthoritiesConstants;
 import com.geodsea.pub.security.SecurityUtils;
-import com.geodsea.pub.service.util.RandomUtil;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Service class for managing users.
@@ -47,7 +37,7 @@ public class UserService  {
                                         Address address, String langKey, String question, String answer) {
         Person newPerson = new Person();
         String encryptedPassword = passwordEncoder.encode(password);
-        newPerson.setParticipantName(login);
+        newPerson.setLogin(login);
         // new user gets initially a generated password
         newPerson.setPassword(encryptedPassword);
         newPerson.setFirstName(firstName);
@@ -75,7 +65,7 @@ public class UserService  {
 
     public void updateUserInformation(String firstName, String lastName, String email, String telephone, String question,
                                       String answer, Address address) {
-        Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
+        Person currentPerson = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
         currentPerson.setFirstName(firstName);
         currentPerson.setLastName(lastName);
         currentPerson.setEmail(email);
@@ -98,7 +88,7 @@ public class UserService  {
      * @throws ActionRefusedException if the oldPassword supplied is not the current user's password.
      */
     public void changePassword(String oldPassword, String newPassword) throws ActionRefusedException {
-        Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
+        Person currentPerson = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
 
         String dbValue = currentPerson.getPassword();
 
@@ -121,7 +111,7 @@ public class UserService  {
      * @throws ActionRefusedException if the answer is incorrect.
      */
     public void resetPassword(String user, String question, String answer, String password) throws ActionRefusedException {
-        Person person = personRepository.getUserByParticipantName(user);
+        Person person = personRepository.getByLogin(user);
         if (person == null) {
             log.info("Reset Password: No such user: {}", user);
             throw new ActionRefusedException(ErrorCode.NO_SUCH_USER, "No such user: " + user);
@@ -138,7 +128,7 @@ public class UserService  {
 
     @Transactional(readOnly = true)
     public Person getUserWithAuthorities() {
-        Person currentPerson = personRepository.getUserByParticipantName(SecurityUtils.getCurrentLogin());
+        Person currentPerson = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
         currentPerson.getAuthorities().size(); // eagerly load the association
         return currentPerson;
     }

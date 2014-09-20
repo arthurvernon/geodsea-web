@@ -94,17 +94,17 @@ public class ParticipantService {
         DateTime now = new DateTime();
         List<Participant> paticipants = participantRepository.findNotActivatedUsersByCreationDateBefore(now.minusDays(3));
         for (Participant participant : paticipants) {
-            log.debug("Deleting not activated participant {}", participant.getParticipantName());
+            log.debug("Deleting not activated participant {}", participant.getLogin());
             participantRepository.delete(participant);
         }
     }
 
     /**
      * Check to see if a particular name is already in use.
-     * @param participantName
-     * @return
+     * @param login
+     * @return true if a participant with this name exists, false otherwise.
      */
-    public boolean nameInUse(String participantName) {
-        return participantRepository.getParticipantByParticipantName(participantName) != null;
+    public boolean nameInUse(String login) {
+        return participantRepository.getParticipantByLogin(login) != null;
     }
 }

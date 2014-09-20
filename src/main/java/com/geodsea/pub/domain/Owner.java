@@ -9,31 +9,31 @@ import javax.persistence.*;
  * </p>
  */
 @Entity
-@Table(name="T_VESSEL_OWNER", schema = "BOAT", uniqueConstraints =
-@UniqueConstraint(columnNames = {"BOAT_ID", "PARTICIPANT_ID"}))
-public class VesselOwner {
+@Table(name="T_OWNER", schema = "BOAT", uniqueConstraints =
+@UniqueConstraint(columnNames = {"VESSEL_ID", "PARTICIPANT_ID"}))
+public class Owner {
 
     @Id
-    @GeneratedValue(generator = "VESSEL_OWNER_SEQ_GEN", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "VESSEL_OWNER_SEQ_GEN", sequenceName = "BOAT.VESSEL_OWNER_ID_SEQ")
+    @GeneratedValue(generator = "OWNER_SEQ_GEN", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "OWNER_SEQ_GEN", sequenceName = "BOAT.OWNER_ID_SEQ")
     private Long id;
 
     @ManyToOne()
-    @JoinColumn(nullable = false, name="BOAT_ID")
+    @JoinColumn(nullable = false, name="VESSEL_ID")
 	private Vessel vessel;
 
     @ManyToOne()
     @JoinColumn(nullable = false, name="PARTICIPANT_ID")
-    private Participant owner;
+    private Participant participant;
 
-	public VesselOwner(){
+	public Owner(){
         super();
 	}
 
-    public VesselOwner(Vessel vessel, Participant owner) {
+    public Owner(Vessel vessel, Participant participant) {
         super();
         this.vessel = vessel;
-        this.owner = owner;
+        this.participant = participant;
     }
 
     public Long getId() {
@@ -52,11 +52,11 @@ public class VesselOwner {
         this.vessel = vessel;
     }
 
-    public Participant getOwner() {
-        return owner;
+    public Participant getParticipant() {
+        return participant;
     }
 
-    public void setOwner(Participant owner) {
-        this.owner = owner;
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
     }
 }

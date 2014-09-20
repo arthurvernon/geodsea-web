@@ -56,8 +56,15 @@
 
     </changeSet>
 
+
     <changeSet id="1000" author="Arthur Vernon">
         <sqlFile path="data.sql" relativeToChangelogFile="true"/>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/vessels.csv"
+                  separator=";"
+                  tableName="T_VESSEL"
+                  schemaName="BOAT">
+        </loadData>
     </changeSet>
 
 </databaseChangeLog>

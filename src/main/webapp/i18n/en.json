@@ -229,7 +229,10 @@
             "password": "Password",
             "sessions": "Sessions",
             "login": "Authenticate",
-            "logout": "Log out"
+            "logout": "Log out",
+            "trips": "Trips",
+            "skippers": "Skippers",
+            "vessels": "Vessels"
         },
         "admin": {
             "main": "Admin",
@@ -294,7 +297,7 @@
             }
         },
         "vessel" : {
-            "license.lookup.failed": "Failed to obtain details from the licensor. Press cancel and complete the form.",
+            "license.lookup.failed": "Failed to obtain details from the licensor. Press cancel and complete the form manually.",
             "save.error": "<strong>An error has occurred!</strong> Vessel could not be saved.",
             "save.success": "<strong>Vessel saved!</strong>",
             "nolicensorws": "<strong>This agency does not provide this service!</strong> You must enter the details manually."
@@ -503,7 +506,12 @@
         "NotAPerson": "The logon entered is not that of a person",
         "PermissionDenied": "You do not have permission to perform this action",
         "UsernameAlreadyExists": "This name is already in use. try again",
-        "NoSuchMember" : "No such member exists"
+        "NoSuchMember" : "No such member exists",
+        "VesselOwnerNotDefined" : "Vessel owner was not specified",
+        "NoSuchParticipant" : "No such participant",
+        "GroupCannotOwnVessel": "A group cannot own a vessel",
+        "NotAManager": "You are not a manager of this group",
+        "MembershipDisabled": "Membership is disabled"
     },
     "vessel": {
         "storage": {
