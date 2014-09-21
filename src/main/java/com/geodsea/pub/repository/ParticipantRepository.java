@@ -20,4 +20,6 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
     @Query("select u from Participant u where u.registrationToken = ?1")
     Participant getByActivationKey(String registrationToken);
 
+    @Query("select p from Participant p where p.login in ?1")
+    List<Participant> getParticipantsForLogins(String[] owners);
 }

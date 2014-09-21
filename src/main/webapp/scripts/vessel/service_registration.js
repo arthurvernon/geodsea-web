@@ -15,7 +15,17 @@ geodseaApp.factory('VesselRegistration', ['$resource',
  */
 geodseaApp.factory('ManagedOrganisations', ['$resource',
     function ($resource) {
-        return $resource('app/rest/organsations/user/manages', {}, {
+        return $resource('app/rest/organisations/user/manages', {}, {
+            'query': { method: 'GET', isArray: true}
+        });
+    }]);
+
+/*
+ * Access the groups that this user is an active manager of
+ */
+geodseaApp.factory('Friends', ['$resource',
+    function ($resource) {
+        return $resource('app/rest/friends', {}, {
             'query': { method: 'GET', isArray: true}
         });
     }]);

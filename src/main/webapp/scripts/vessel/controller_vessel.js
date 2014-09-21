@@ -40,18 +40,15 @@ geodseaApp.controller('VesselController', ['$scope', 'vesselList', 'Vessel',
 
 
 geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'VesselRegistration', 'LicensorLicenseLookup',
-    'LicensorUserMatch', 'Licensor', 'licensorList', 'managedOrganisations',
-    function ($scope, Vessel, VesselRegistration, LicensorLicenseLookup, LicensorUserMatch, Licensor, licensorList, managedOrganisations) {
+    'LicensorUserMatch', 'Licensor', 'licensorList', 'managedOrganisations', 'friends',
+    function ($scope, Vessel, VesselRegistration, LicensorLicenseLookup, LicensorUserMatch, Licensor, licensorList, managedOrganisations, friends) {
 
         $scope.licensorList = licensorList;
         $scope.registration = null;
         $scope.managedOrganisations = managedOrganisations;
         $scope.ownedby = 'me';
+        $scope.friends = friends;
         $scope.register = function () {
-
-            // if the user elects himself as the owner then configure that now.
-            if ($scope.ownedby == 'me')
-                $scope.vessel.owner = $scope.account.login;
 
             Vessel.save($scope.vessel, function () {
                     window.alert("Vessel Registered")

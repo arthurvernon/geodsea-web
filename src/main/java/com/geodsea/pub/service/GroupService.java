@@ -137,13 +137,12 @@ public class GroupService extends BaseService {
     }
 
     /**
-     *
      * @param collectiveLogin (hopefully) unique name for the group.
-     * @param collectiveName name in the user's language that the group goes - this may not be unique.
-     * @param langKey ISO (lowercase) langauge in which the group name is defined and which.
-     * @param email     email address to which the registration confirmation can be sent.
-     * @param username  optional, if specified the person who is to be setup as the contact person, otherwise the current user.
-     * @param enabled honoured only if the person making the request is an administrator.
+     * @param collectiveName  name in the user's language that the group goes - this may not be unique.
+     * @param langKey         ISO (lowercase) langauge in which the group name is defined and which.
+     * @param email           email address to which the registration confirmation can be sent.
+     * @param username        optional, if specified the person who is to be setup as the contact person, otherwise the current user.
+     * @param enabled         honoured only if the person making the request is an administrator.
      * @param websiteURL
      * @param address
      * @param telephone
@@ -152,8 +151,8 @@ public class GroupService extends BaseService {
      */
     @PreAuthorize("isAuthenticated()")
     public Organisation createOrganisation(String collectiveLogin, String langKey, String collectiveName, String email,
-                                    String username, boolean enabled, String websiteURL,
-                                    Address address, String telephone) throws ActionRefusedException {
+                                           String username, boolean enabled, String websiteURL,
+                                           Address address, String telephone) throws ActionRefusedException {
         // if this is a new group then there should no be a participant with the same name
         Participant participant = participantRepository.getParticipantByLogin(collectiveName);
         if (participant != null) {
@@ -189,11 +188,11 @@ public class GroupService extends BaseService {
      * </p>
      *
      * @param collectiveLogin (hopefully) unique name for the group.
-     * @param collectiveName name in the user's language that the group goes - this may not be unique.
-     * @param langKey ISO (lowercase) langauge in which the group name is defined and which.
-     * @param email     email address to which the registration confirmation can be sent.
-     * @param username  optional, if specified the person who is to be setup as the contact person, otherwise the current user.
-     * @param enabled honoured only if the person making the request is an administrator.
+     * @param collectiveName  name in the user's language that the group goes - this may not be unique.
+     * @param langKey         ISO (lowercase) langauge in which the group name is defined and which.
+     * @param email           email address to which the registration confirmation can be sent.
+     * @param username        optional, if specified the person who is to be setup as the contact person, otherwise the current user.
+     * @param enabled         honoured only if the person making the request is an administrator.
      * @throws ActionRefusedException if the group name is already in use
      */
     @PreAuthorize("isAuthenticated()")
@@ -246,12 +245,10 @@ public class GroupService extends BaseService {
     }
 
     /**
-     *
      * @param collective the group that is to be emailed.
-     * @param baseUrl   the base URL for the website, if not specified no email will be sent
+     * @param baseUrl    the base URL for the website, if not specified no email will be sent
      */
-    public void sendRegistrationEmail(Collective collective, String baseUrl)
-    {
+    public void sendRegistrationEmail(Collective collective, String baseUrl) {
         if (StringUtils.isNotBlank(baseUrl)) {
             final Locale locale = Locale.forLanguageTag(collective.getLangKey());
             String content = createHtmlContentFromTemplate(collective, locale, baseUrl);
@@ -307,6 +304,7 @@ public class GroupService extends BaseService {
     public Group lookupFriends(Long groupId) {
         return groupRepository.findOne(groupId);
     }
+
     public Organisation lookupOrganisation(Long groupId) {
         return organisationRepository.findOne(groupId);
     }
@@ -358,7 +356,7 @@ public class GroupService extends BaseService {
      * Active managers and administrators may add a new member to the group.
      *
      * @param collectiveLogin
-     * @param login the userid of the person or collective that is being added as a member
+     * @param login           the userid of the person or collective that is being added as a member
      * @param active
      * @param manager
      * @param memberSince
@@ -411,7 +409,6 @@ public class GroupService extends BaseService {
     public void updateMember(Long memberId, boolean active, boolean manager, Date memberSince, Date memberUntil) throws ActionRefusedException {
 
 
-
         Member member = memberRepository.findOne(memberId);
         if (member == null)
             throw new ActionRefusedException(ErrorCode.NO_SUCH_MEMBER, "No such member: " + memberId);
@@ -454,7 +451,6 @@ public class GroupService extends BaseService {
 
 
     /**
-     *
      * @param collective the group to check the permissions of the current user
      * @throws ActionRefusedException
      */
@@ -500,5 +496,38 @@ public class GroupService extends BaseService {
     public List<Organisation> getManagedOrganisations() {
         Person p = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
         return organisationRepository.findActiveManagers(p.getId());
+    }
+
+    /**
+     * Get the "friends" of this user.
+     * <p>
+     * Any "friends" that are organisations are returned as is whereas groups will be resolved
+     * to the people or organisations within them.
+     * </p>
+     *
+     * @return
+     */
+    @PreAuthorize("isAuthenticated()")
+    public Set<Participant> getFriendsOfUser() {
+        Person person = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
+        List<Member> members = memberRepository.getMembersInSameGroupsAsUser(person.getId());
+        Set<Participant> friends = new HashSet<Participant>(members.size());
+        addFriends(friends, members);
+
+        return friends;
+    }
+
+    /**
+     * Recursively add the member participant to the set or friend.
+     * <p>The members of any Group will be added individually as friends.</p>
+     * @param friends
+     * @param members
+     */
+    private void addFriends(Set<Participant> friends, List<Member> members) {
+        for (Member m : members)
+            if (m.getParticipant() instanceof Group)
+                addFriends(friends, ((Collective) m.getParticipant()).getMembers());
+            else
+                friends.add(m.getParticipant());
     }
 }

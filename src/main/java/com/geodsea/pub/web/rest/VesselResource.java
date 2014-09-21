@@ -46,7 +46,7 @@ public class VesselResource {
         if (vesselAdd.getId() == null) {
             log.debug("REST request to add a Vessel : {}", vessel);
             try {
-                vessel = vesselService.registerVessel(vessel, vesselAdd.getOwner(), vesselAdd.getSkippers());
+                vessel = vesselService.registerVessel(vessel, vesselAdd.getOwners(), vesselAdd.getSkippers());
                 log.debug("Created a vessel with id: " + vessel.getId());
             } catch (ActionRefusedException e) {
                 return new ResponseEntity<String>(e.getCode(), HttpStatus.NOT_MODIFIED);

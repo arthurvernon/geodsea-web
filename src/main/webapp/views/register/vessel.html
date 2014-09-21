@@ -269,6 +269,12 @@
         <div class="radio">
             <input type="radio" name="ownedby" ng-model="ownedby" value="me">
             <span translate="field.ownedby.me">Me</span>
+            <span ng-show="ownedby == 'me'">
+                <select class="form-control" ng-model="vessel.owners" multiple
+                        ng-options="user.login as user.name for user in friends" ng-required="ownedby == 'me'">
+                    <option value="" translate="field.ownedby.choosefriends">Me</option>
+                </select>
+            </span>
         </div>
         <div class="radio">
             <input type="radio" name="ownedby" ng-model="ownedby" value="company"/>
@@ -276,7 +282,7 @@
             <span ng-show="ownedby == 'company'">
                 <select class="form-control" ng-model="vessel.owner"
                         ng-options="org.login as org.name for org in managedOrganisations" ng-required="ownedby == 'company'">
-                    <option value="" translate="field.ownedby.choose">Me</option>
+                    <option value="" translate="field.ownedby.chooseorganisation">Me</option>
                     </select>
             </span>
         </div>

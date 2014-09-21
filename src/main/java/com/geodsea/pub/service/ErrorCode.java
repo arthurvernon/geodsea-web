@@ -30,4 +30,6 @@ public class ErrorCode {
     public static final String GROUP_CANNOT_OWN_VESSEL = "GroupCannotOwnVessel";
     public static final String NOT_A_MANAGER = "NotAManager";
     public static final String MEMBERSHIP_DISABLED = "MembershipDisabled";
+    public static final String ONE_ORGANISATION_OWNS_VESSEL = "OneOrganisationOwnsVessel";
+    public static final String OWNERSHIP_BY_PEOPLE_OR_ORGANISATION = "OwnershipByPeopleOrOrganisation";
 }

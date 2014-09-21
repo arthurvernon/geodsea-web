@@ -125,7 +125,7 @@ public class Mapper {
                 member.isManager(), member.isActive(), member.getMemberSince(), member.getMemberUntil());
     }
 
-    private static ParticipantDTO participant(Participant participant) {
+    public static ParticipantDTO participant(Participant participant) {
 
         if (participant == null)
             return null;

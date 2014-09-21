@@ -20,6 +20,9 @@ geodseaApp
                     templateUrl: 'views/register/vessel.html',
                     controller: 'VesselRegistrationController',
                     resolve: {
+                        friends: ['Friends', function (Friends) {
+                            return Friends.query();
+                        }],
                         managedOrganisations: ['ManagedOrganisations', function (ManagedOrganisations) {
                             return ManagedOrganisations.query();
                         }],

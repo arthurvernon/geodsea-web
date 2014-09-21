@@ -116,10 +116,11 @@
             "placeholder": "Current password"
         },
         "ownedby": {
-            "choose": "Select an organisation",
+            "chooseorganisation": "Select an organisation",
+            "choosefriends": "Select owners",
             "label": "Owned By",
-            "me": "Me (and maybe others that I will add later)",
-            "organisation": "An organisation that I manage"
+            "me": "Me (and others?)",
+            "organisation": "An organisation (that I manage)"
         },
         "password": {
             "label": "Password",
@@ -521,7 +522,9 @@
         "NoSuchParticipant": "No such participant",
         "GroupCannotOwnVessel": "A group cannot own a vessel",
         "NotAManager": "You are not a manager of this group",
-        "MembershipDisabled": "Membership is disabled"
+        "MembershipDisabled": "Membership is disabled",
+        "OneOrganisationOwnsVessel": "Only one organisation may own a vessel",
+        "OwnershipByPeopleOrOrganisation" : "A vessel may be owned by people or an organisation, not both"
     },
 
     "vessel": {
