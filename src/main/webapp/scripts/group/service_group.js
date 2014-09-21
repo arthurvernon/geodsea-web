@@ -8,6 +8,7 @@ geodseaApp.factory('Group', ['$resource',
         });
     }]);
 
+// Get the members within the specified group
 geodseaApp.factory('GroupMember', ['$resource',
     function ($resource) {
         return $resource('app/rest/groups/:groupId/members', {}, {
