@@ -115,6 +115,11 @@
             "label": "Current password",
             "placeholder": "Current password"
         },
+        "ownedby": {
+            "label" : "Owned By",
+            "me": "Me (and maybe others that I will add later)",
+            "organisation": "An organisation that I manage"
+        },
         "password": {
             "label": "Password",
             "placeholder": "Your password"

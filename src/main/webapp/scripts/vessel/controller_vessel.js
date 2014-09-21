@@ -45,7 +45,7 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'Vess
 
         $scope.licensorList = licensorList;
         $scope.registration = null;
-
+        $scope.ownedby = 'me';
         $scope.register = function () {
             Vessel.save($scope.vessel, function () {
                     window.alert("Vessel Registered")

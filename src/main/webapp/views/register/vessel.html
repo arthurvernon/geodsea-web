@@ -30,9 +30,11 @@
 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                             ng-click="clear()">&times;</button>
-                    <h4 class="modal-title" id="myRegistrationLabel" translate="title.licensepopup">Enter License Details</h4>
+                    <h4 class="modal-title" id="myRegistrationLabel" translate="title.licensepopup">Enter License
+                        Details</h4>
                 </div>
-                <div class="alert alert-danger" ng-hide="licensor.webServiceURL" translate="message.vessel.nolicensorws">
+                <div class="alert alert-danger" ng-hide="licensor.webServiceURL"
+                     translate="message.vessel.nolicensorws">
                     This agency does not currently support this service.
                 </div>
                 <div class="alert alert-danger" ng-show="lookupfail" translate="message.vessel.license.lookup.failed">
@@ -47,7 +49,7 @@
                         <input type="text" class="form-control" name="licensor"
                                ng-model="licensor.name" ng-minlength=5 ng-maxlength=30 required readonly>
                     </div>
-                    <div class="form-group check-element animate-show"  ng-hide="checked">
+                    <div class="form-group check-element animate-show" ng-hide="checked">
                         <label translate="field.vessel.licensor.incorrect.label">Wrong agency?</label>
                         <input type="checkbox" ng-model="checked" ng-change="loadLicensors()">
                     </div>
@@ -245,14 +247,30 @@
             <option translate="vessel.storage.JETTY.name">JETTY</option>
         </select>
     </div>
-    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-        <span class="glyphicon glyphicon-ban-circle"></span>
-        <span ng-translate="button.cancel">Cancel</span>
-    </button>
+    <!--Owner type -->
+    <div class="form-group">
+        <label translate="field.ownedby.label">Owned By</label>
+        <div class="radio">
+            <input type="radio" name="ownedby" ng-model="ownedby" value="me">
+            <span translate="field.ownedby.me">Me</span>
+        </div>
+        <div class="radio">
+            <input type="radio" name="ownedby" ng-model="ownedby" value="company"/>
+            <span translate="field.ownedby.organisation">An organisation that I manage</span>
+        </div>
+    </div>
+    <div class="form-group" ng-show="ownedby == 'company'">
+        Yahoo
+    </div>
+
     <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
         <span class="glyphicon glyphicon-save"></span>
         <span ng-translate="button.register">Register</span>
 
+    </button>
+    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+        <span class="glyphicon glyphicon-ban-circle"></span>
+        <span ng-translate="button.cancel">Cancel</span>
     </button>
 
 </form>
