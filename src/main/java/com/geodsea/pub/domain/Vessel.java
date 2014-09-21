@@ -208,10 +208,6 @@ public class Vessel implements Serializable {
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
 
     @Override
     public String toString() {

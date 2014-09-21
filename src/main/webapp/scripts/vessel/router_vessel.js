@@ -20,6 +20,9 @@ geodseaApp
                     templateUrl: 'views/register/vessel.html',
                     controller: 'VesselRegistrationController',
                     resolve: {
+                        managedOrganisations: ['ManagedOrganisations', function (ManagedOrganisations) {
+                            return ManagedOrganisations.query();
+                        }],
                         licensorList: ['Licensor', function (Licensor) {
                             return Licensor.query();
                         }]

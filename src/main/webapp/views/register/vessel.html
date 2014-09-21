@@ -247,6 +247,7 @@
             <option translate="vessel.storage.JETTY.name">JETTY</option>
         </select>
     </div>
+
     <!--Owner type -->
     <div class="form-group">
         <label translate="field.ownedby.label">Owned By</label>
@@ -257,11 +258,14 @@
         <div class="radio">
             <input type="radio" name="ownedby" ng-model="ownedby" value="company"/>
             <span translate="field.ownedby.organisation">An organisation that I manage</span>
+            <span ng-show="ownedby == 'company'">
+                <select class="form-control" ng-model="vessel.owner" ng-options="org.login as org.name for org in managedOrganisations" ng-required="ownedby == 'company'">
+                    <option value="" translate="field.ownedby.choose">Me</option>
+                    </select>
+            </span>
         </div>
     </div>
-    <div class="form-group" ng-show="ownedby == 'company'">
-        Yahoo
-    </div>
+
 
     <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
         <span class="glyphicon glyphicon-save"></span>

@@ -496,4 +496,9 @@ public class GroupService extends BaseService {
         memberRepository.delete(memberId);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    public List<Organisation> getManagedOrganisations() {
+        Person p = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
+        return organisationRepository.findActiveManagers(p.getId());
+    }
 }

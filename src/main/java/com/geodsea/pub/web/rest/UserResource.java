@@ -56,6 +56,7 @@ public class UserResource {
         return person;
     }
 
+
     /**
      * Get the licencing agency that covers the user's home address.
      * GET  /rest/users/:username/licensor  -> get the "id" licensor.

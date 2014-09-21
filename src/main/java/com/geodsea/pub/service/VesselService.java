@@ -50,6 +50,7 @@ public class VesselService {
 
     @Inject
     private SkipperRepository skipperRepository;
+
     /**
      * Retrieve the vessels the user is permitted to access.
      * <p>
@@ -66,7 +67,7 @@ public class VesselService {
             return vesselRepository.findAll();
 
         String login = SecurityUtils.getCurrentLogin();
-        Person person =  personRepository.getByLogin(login);
+        Person person = personRepository.getByLogin(login);
         if (!person.isEnabled())
             throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User is disabled");
 
@@ -128,6 +129,7 @@ public class VesselService {
     /**
      * An administrator or any person that is not currently disabled may register a vessel.
      * <p>If the owner is an organisation</p>
+     *
      * @param vessel
      * @param owner
      * @param skipperLogins
@@ -167,8 +169,7 @@ public class VesselService {
                 throw new ActionRefusedException(ErrorCode.GROUP_CANNOT_OWN_VESSEL,
                         "Refused to register vessel to group: " + ownerParticipant.getLogin());
             registerSkippersInOrgansation(vessel, (Organisation) ownerParticipant, skipperLogins);
-        }
-        else
+        } else
             registerPrivateSkippers(vessel, ownerParticipant, skipperLogins);
 
         return vessel;
@@ -186,8 +187,7 @@ public class VesselService {
     }
 
     private void registerSkippersInOrgansation(Vessel vessel, Organisation organisation, String[] skipperLogins) throws ActionRefusedException {
-        for (String login : skipperLogins)
-        {
+        for (String login : skipperLogins) {
             Person person = personRepository.getByLogin(login);
             if (person == null)
                 throw new ActionRefusedException(ErrorCode.NO_SUCH_PARTICIPANT, "No such participant: " + login);
@@ -202,19 +202,19 @@ public class VesselService {
     }
 
     private void registerPrivateSkippers(Vessel vessel, Participant ownerParticipant, String[] skipperLogins) throws ActionRefusedException {
-        for (String login : skipperLogins)
-        {
-            Person person = personRepository.getByLogin(login);
-            if (person == null)
-                throw new ActionRefusedException(ErrorCode.NO_SUCH_PARTICIPANT, "No such participant: " + login);
-            Skipper skipper = new Skipper(vessel, person);
-            skipperRepository.save(skipper);
-        }
-
+        if (skipperLogins != null)
+            for (String login : skipperLogins) {
+                Person person = personRepository.getByLogin(login);
+                if (person == null)
+                    throw new ActionRefusedException(ErrorCode.NO_SUCH_PARTICIPANT, "No such participant: " + login);
+                Skipper skipper = new Skipper(vessel, person);
+                skipperRepository.save(skipper);
+            }
     }
 
     /**
      * A vessel may be updated by an administrator or the owner of the vessel.
+     *
      * @param vessel
      * @return
      */
@@ -227,6 +227,7 @@ public class VesselService {
 
     /**
      * Check if the person is an owner in his own right or a manager of an organisation that owns the vessel.
+     *
      * @param vessel
      */
     private void checkVesselUpdatePermission(Vessel vessel) throws ActionRefusedException {
@@ -234,19 +235,17 @@ public class VesselService {
             return;
 
         Person person = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
-        if (! person.isEnabled())
+        if (!person.isEnabled())
             throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User is disabled: " + person.getLogin());
 
         Participant participantOwner = null;
         String errorCode = ErrorCode.PERMISSION_DENIED;
         String message = "No authority for person " + person.getLogin() + " to maintain vessel: " + vessel.getId();
-        for (Owner owner : ownerRepository.findByVesselId(vessel.getId()))
-        {
+        for (Owner owner : ownerRepository.findByVesselId(vessel.getId())) {
             participantOwner = owner.getParticipant();
             if (participantOwner.equals(person))
                 return;
-            else if (participantOwner instanceof Collective)
-            {
+            else if (participantOwner instanceof Collective) {
                 Member member = memberRepository.getMemberByCollectiveIdAndParticipantLogin(participantOwner.getId(),
                         person.getLogin());
                 if (member != null) {

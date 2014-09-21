@@ -116,6 +116,7 @@
             "placeholder": "Current password"
         },
         "ownedby": {
+            "choose" : "Select an organisation",
             "label" : "Owned By",
             "me": "Me (and maybe others that I will add later)",
             "organisation": "An organisation that I manage"
