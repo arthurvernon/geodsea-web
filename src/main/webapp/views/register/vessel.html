@@ -234,6 +234,21 @@
         <input type="color" name="superstructurecolor" ng-model="vessel.superstructureColor">
     </div>
 
+    <!-- emergency equipment -->
+    <div class="form-group">
+        <label translate="field.vessel.equipment.label">Emergency Equipment</label>
+        <select class="form-control" ng-model="vessel.emergencyEquipment" name="emergencyEquipment" multiple size="8">
+            <option translate="vessel.equipment.EPIRB.name" value="EPIRB">EPIRB</option>
+            <option translate="vessel.equipment.LIFE_JACKET.name"  value="LIFE_JACKET">LIFE_JACKET</option>
+            <option translate="vessel.equipment.FLARE.name" value="FLARE">FLARE</option>
+            <option translate="vessel.equipment.FIRE_EXTINGUISHER.name" value="FIRE_EXTINGUISHER">FIRE_EXTINGUISHER</option>
+            <option translate="vessel.equipment.RADIO.name" value="RADIO">RADIO</option>
+            <option translate="vessel.equipment.SAND_ANCHOR_LINE.name" value="SAND_ANCHOR_LINE">SAND_ANCHOR_LINE</option>
+            <option translate="vessel.equipment.BILGE_PUMP_OR_BAILER.name" value="BILGE_PUMP_OR_BAILER">BILGE_PUMP_OR_BAILER</option>
+            <option translate="vessel.equipment.PARACHUTE_FLARE.name" value="PARACHUTE_FLARE">PARACHUTE_FLARE</option>
+        </select>
+    </div>
+
     <!-- Storage location -->
     <div class="form-group">
         <label translate="field.vessel.storagetype.label">Storage Type</label>
@@ -259,7 +274,8 @@
             <input type="radio" name="ownedby" ng-model="ownedby" value="company"/>
             <span translate="field.ownedby.organisation">An organisation that I manage</span>
             <span ng-show="ownedby == 'company'">
-                <select class="form-control" ng-model="vessel.owner" ng-options="org.login as org.name for org in managedOrganisations" ng-required="ownedby == 'company'">
+                <select class="form-control" ng-model="vessel.owner"
+                        ng-options="org.login as org.name for org in managedOrganisations" ng-required="ownedby == 'company'">
                     <option value="" translate="field.ownedby.choose">Me</option>
                     </select>
             </span>

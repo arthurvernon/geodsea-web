@@ -16,7 +16,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                 ng-click="clear()">&times;</button>
-                        <h4 class="modal-title" id="myVesselLabel" translate="vessel.form.title">Create or edit a
+                        <h4 class="modal-title" id="myVesselLabel" translate="title.vesseledit">Create or edit a
                             Vessel</h4>
                     </div>
                     <div class="alert alert-success" ng-show="success" translate="vessel.messages.success">
@@ -154,6 +154,21 @@
                         <div class="form-group">
                             <label translate="field.vessel.superstructurecolor.label">Superstructure Color</label>
                             <input type="color" name="superstructurecolor" ng-model="vessel.superstructureColor">
+                        </div>
+
+                        <!-- emergency equipment -->
+                        <div class="form-group">
+                            <label translate="field.vessel.equipment.label">Emergency Equipment</label>
+                            <select class="form-control" ng-model="vessel.emergencyEquipment" name="emergencyEquipment" multiple size="8">
+                                <option translate="vessel.equipment.EPIRB.name" value="EPIRB">EPIRB</option>
+                                <option translate="vessel.equipment.LIFE_JACKET.name"  value="LIFE_JACKET">LIFE_JACKET</option>
+                                <option translate="vessel.equipment.FLARE.name" value="FLARE">FLARE</option>
+                                <option translate="vessel.equipment.FIRE_EXTINGUISHER.name" value="FIRE_EXTINGUISHER">FIRE_EXTINGUISHER</option>
+                                <option translate="vessel.equipment.RADIO.name" value="RADIO">RADIO</option>
+                                <option translate="vessel.equipment.SAND_ANCHOR_LINE.name" value="SAND_ANCHOR_LINE">SAND_ANCHOR_LINE</option>
+                                <option translate="vessel.equipment.BILGE_PUMP_OR_BAILER.name" value="BILGE_PUMP_OR_BAILER">BILGE_PUMP_OR_BAILER</option>
+                                <option translate="vessel.equipment.PARACHUTE_FLARE.name" value="PARACHUTE_FLARE">PARACHUTE_FLARE</option>
+                                </select>
                         </div>
 
                         <!-- Storage location -->

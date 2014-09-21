@@ -105,4 +105,5 @@ public class VesselDTO {
     public List<EmergencyEquipment> getEmergencyEquipment() {
         return emergencyEquipment;
     }
+
 }

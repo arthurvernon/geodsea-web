@@ -60,7 +60,7 @@ public class Mapper {
     }
 
     public static Vessel vessel(VesselDTO vessel) {
-        return new Vessel(vessel.getHullIdentificationNumber(), vessel.getVesselName(),
+        return new Vessel(vessel.getId(), vessel.getHullIdentificationNumber(), vessel.getVesselName(),
                 vessel.getVesselType(), vessel.getHullColor(), vessel.getSuperstructureColor(), vessel.getLength(),
                 vessel.getTotalHP(), vessel.getFuelCapacity(), vessel.getStorageType(), vessel.getEmergencyEquipment());
     }

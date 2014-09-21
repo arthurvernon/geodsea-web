@@ -96,10 +96,10 @@
             "maxlength": "Your last name cannot be longer than 50 characters"
         },
 
-        "membersince":{
+        "membersince": {
             "label": "Member Since"
         },
-        "memberuntil":{
+        "memberuntil": {
             "label": "Member Until"
         },
         "newpassword": {
@@ -116,8 +116,8 @@
             "placeholder": "Current password"
         },
         "ownedby": {
-            "choose" : "Select an organisation",
-            "label" : "Owned By",
+            "choose": "Select an organisation",
+            "label": "Owned By",
             "me": "Me (and maybe others that I will add later)",
             "organisation": "An organisation that I manage"
         },
@@ -153,6 +153,9 @@
             "maxlength": "Your login cannot be longer than 50 characters"
         },
         "vessel": {
+            "equipment": {
+              "label": "Emergency Equipment"
+            },
             "fuelcapacity": {
                 "label": "Fuel Capacity (l)",
                 "placeholder": "Enter fuel capacity in litres",
@@ -180,9 +183,9 @@
             },
             "license": {
                 "label": "Licensing/Registration Number",
-                "required" : "Registration or license number is required",
-                "minlength" : "Registration number must be at least 5 characters long",
-                "maxlength" : "Registration number cannot be more than 30 characters"
+                "required": "Registration or license number is required",
+                "minlength": "Registration number must be at least 5 characters long",
+                "maxlength": "Registration number cannot be more than 30 characters"
             },
             "licensor": {
                 "label": "Licensing Agency",
@@ -285,6 +288,7 @@
         "settings": "Settings for [<b>{{username}}</b>]",
         "sessions": "Active sessions for [<b>{{username}}</b>]",
         "vessel": "Vessel",
+        "vesseledit": "Add/Modify Vessel",
         "vessels": "Vessels"
     },
     "message": {
@@ -302,7 +306,7 @@
                 "nameInUse": "<strong>This name is already registered!</strong> Please choose another one."
             }
         },
-        "vessel" : {
+        "vessel": {
             "license.lookup.failed": "Failed to obtain details from the licensor. Press cancel and complete the form manually.",
             "save.error": "<strong>An error has occurred!</strong> Vessel could not be saved.",
             "save.success": "<strong>Vessel saved!</strong>",
@@ -349,7 +353,7 @@
     },
     "table": {
         "heading": {
-            "active" : "Active",
+            "active": "Active",
             "contactPerson": "Contact Person",
             "contactLogin": "Contact Login",
             "contactEmail": "Contact Email",
@@ -512,14 +516,25 @@
         "NotAPerson": "The logon entered is not that of a person",
         "PermissionDenied": "You do not have permission to perform this action",
         "UsernameAlreadyExists": "This name is already in use. try again",
-        "NoSuchMember" : "No such member exists",
-        "VesselOwnerNotDefined" : "Vessel owner was not specified",
-        "NoSuchParticipant" : "No such participant",
+        "NoSuchMember": "No such member exists",
+        "VesselOwnerNotDefined": "Vessel owner was not specified",
+        "NoSuchParticipant": "No such participant",
         "GroupCannotOwnVessel": "A group cannot own a vessel",
         "NotAManager": "You are not a manager of this group",
         "MembershipDisabled": "Membership is disabled"
     },
+
     "vessel": {
+        "equipment": {
+            "EPIRB.name": "EPIRB",
+            "LIFE_JACKET.name": "Life Jacket",
+            "FLARE.name": "Flare",
+            "FIRE_EXTINGUISHER.name": "Fire Extinguisher",
+            "RADIO.name": "Radio",
+            "SAND_ANCHOR_LINE.name": "Sand Anchor Line",
+            "BILGE_PUMP_OR_BAILER.name": "Bilge Pump or Bailer",
+            "PARACHUTE_FLARE.name": "Parachute Flare"
+        },
         "storage": {
             "null": {
                 "description": "Needs to be defined.",

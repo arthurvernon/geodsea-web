@@ -167,9 +167,10 @@ public class Vessel implements Serializable {
      * @param storageType
      * @param emergencyEquipment
      */
-    public Vessel(String hullIdentificationNumber, String vesselName, VesselType vesselType, String hullColor,
+    public Vessel(Long id, String hullIdentificationNumber, String vesselName, VesselType vesselType, String hullColor,
                   String superstructureColor, int length, Integer totalHP, int fuelCapacity, StorageType storageType,
                   List<EmergencyEquipment> emergencyEquipment) {
+        this.id = id;
         this.hullIdentificationNumber = hullIdentificationNumber;
         this.vesselName = vesselName;
         this.vesselType = vesselType;
