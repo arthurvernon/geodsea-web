@@ -131,7 +131,7 @@ public class Vessel implements Serializable {
      *     This list ignores aspects of emergency equipment which may be important to record.
      * </p>
      */
-    @ElementCollection(targetClass = EmergencyEquipment.class)
+    @ElementCollection(targetClass = EmergencyEquipment.class, fetch = FetchType.EAGER)
     @JoinTable(name="T_VESSEL_EQUIPMENT", joinColumns = @JoinColumn(name="VESSEL_ID") ,schema = "BOAT")
     @Column(name="EQPT_TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
