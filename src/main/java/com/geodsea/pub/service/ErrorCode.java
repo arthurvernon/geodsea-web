@@ -32,4 +32,5 @@ public class ErrorCode {
     public static final String MEMBERSHIP_DISABLED = "MembershipDisabled";
     public static final String ONE_ORGANISATION_OWNS_VESSEL = "OneOrganisationOwnsVessel";
     public static final String OWNERSHIP_BY_PEOPLE_OR_ORGANISATION = "OwnershipByPeopleOrOrganisation";
+    public static final String DUPLICATE_HIN = "DuplicateHIN";
 }

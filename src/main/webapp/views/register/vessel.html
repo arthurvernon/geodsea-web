@@ -33,6 +33,7 @@
                     <h4 class="modal-title" id="myRegistrationLabel" translate="title.licensepopup">Enter License
                         Details</h4>
                 </div>
+
                 <div class="alert alert-danger" ng-hide="licensor.webServiceURL"
                      translate="message.vessel.nolicensorws">
                     This agency does not currently support this service.
@@ -107,6 +108,9 @@
         <label>ID</label>
         <input type="text" class="form-control" name="id"
                ng-model="vessel.id" readonly>
+    </div>
+
+    <div class="alert alert-danger" ng-show="errorcode" translate="{{errorcode}}">
     </div>
 
     <!-- Vessel Name -->

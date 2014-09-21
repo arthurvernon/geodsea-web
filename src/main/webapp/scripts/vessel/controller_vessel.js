@@ -39,26 +39,33 @@ geodseaApp.controller('VesselController', ['$scope', 'vesselList', 'Vessel',
     }]);
 
 
-geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'VesselRegistration', 'LicensorLicenseLookup',
+geodseaApp.controller('VesselRegistrationController', ['$scope', '$location', 'Vessel', 'VesselRegistration', 'LicensorLicenseLookup',
     'LicensorUserMatch', 'Licensor', 'licensorList', 'managedOrganisations', 'friends',
-    function ($scope, Vessel, VesselRegistration, LicensorLicenseLookup, LicensorUserMatch, Licensor, licensorList, managedOrganisations, friends) {
+    function ($scope, $location, Vessel, VesselRegistration, LicensorLicenseLookup, LicensorUserMatch, Licensor, licensorList, managedOrganisations, friends) {
 
         $scope.licensorList = licensorList;
         $scope.registration = null;
+        $scope.errorcode = null;
+        $scope.error = null;
         $scope.managedOrganisations = managedOrganisations;
         $scope.ownedby = 'me';
         $scope.friends = friends;
         $scope.register = function () {
 
+            $scope.errorcode = null;
+            $scope.error = null;
             Vessel.save($scope.vessel, function () {
                     window.alert("Vessel Registered")
-                    //       $scope.clear();
-                    // TODO go somewhere else. Do something.
+                    $location.path('/vessel');
                 },
-                function () {
-                    window.alert("Vessel Registration failed")
-                    //       $scope.clear();
-                    // TODO go somewhere else. Do something.
+                function (httpResponse) {
+                    $scope.success = null;
+                    if (httpResponse.data) {
+                        $scope.errorcode = "errors."+ httpResponse.data;
+                    }
+                    else {
+                        $scope.error = "ERROR";
+                    }
                 });
         };
 
@@ -85,16 +92,15 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', 'Vessel', 'Vess
          */
         $scope.loadVesselFromLicense = function (licensorid, regNo) {
 
-            LicensorLicenseLookup.get({ id: licensorid, registration: regNo }, function(resp)
-            {
-                $scope.license = resp;
-                $scope.vessel = resp.vessel;
-                $('#enterRegistrationModal').modal('hide');
+            LicensorLicenseLookup.get({ id: licensorid, registration: regNo }, function (resp) {
+                    $scope.license = resp;
+                    $scope.vessel = resp.vessel;
+                    $('#enterRegistrationModal').modal('hide');
 
-            },
-            function(err){
-                $scope.lookupfail = "ERROR";
-            })
+                },
+                function (err) {
+                    $scope.lookupfail = "ERROR";
+                })
         };
 
         /*

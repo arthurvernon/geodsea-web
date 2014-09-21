@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface VesselRepository extends JpaRepository<Vessel, Long> {
 
+    Vessel findByHullIdentificationNumber(String hin);
 }

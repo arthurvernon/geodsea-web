@@ -154,6 +154,9 @@ public class VesselService {
 
         validateVessel(vessel);
 
+        if (vesselRepository.findByHullIdentificationNumber(vessel.getHullIdentificationNumber()) != null)
+            throw new ActionRefusedException(ErrorCode.DUPLICATE_HIN, "HIN already defined " + vessel.getHullIdentificationNumber());
+
         vessel = vesselRepository.save(vessel);
 
         // establish the owner....

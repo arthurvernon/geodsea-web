@@ -49,7 +49,7 @@ public class VesselResource {
                 vessel = vesselService.registerVessel(vessel, vesselAdd.getOwners(), vesselAdd.getSkippers());
                 log.debug("Created a vessel with id: " + vessel.getId());
             } catch (ActionRefusedException e) {
-                return new ResponseEntity<String>(e.getCode(), HttpStatus.NOT_MODIFIED);
+                return new ResponseEntity<String>(e.getCode(), HttpStatus.CONFLICT);
             }
         } else {
             log.debug("REST request to update a Vessel : {}", vessel);
@@ -57,7 +57,7 @@ public class VesselResource {
                 vessel = vesselService.updateVessel(vessel);
                 log.debug("Saved a vessel with id: " + vessel.getId());
             } catch (ActionRefusedException e) {
-                return new ResponseEntity<String>(e.getCode(), HttpStatus.NOT_MODIFIED);
+                return new ResponseEntity<String>(e.getCode(), HttpStatus.CONFLICT);
             }
         }
         return new ResponseEntity<VesselDTO>(Mapper.vessel(vessel), HttpStatus.OK);
