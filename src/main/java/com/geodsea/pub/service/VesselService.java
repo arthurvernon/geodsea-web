@@ -187,18 +187,19 @@ public class VesselService {
     }
 
     private void registerSkippersInOrgansation(Vessel vessel, Organisation organisation, String[] skipperLogins) throws ActionRefusedException {
-        for (String login : skipperLogins) {
-            Person person = personRepository.getByLogin(login);
-            if (person == null)
-                throw new ActionRefusedException(ErrorCode.NO_SUCH_PARTICIPANT, "No such participant: " + login);
-            if (memberRepository.getMemberByCollectiveIdAndParticipantLogin(organisation.getId(), login) == null)
-                throw new ActionRefusedException(ErrorCode.NO_SUCH_MEMBER,
-                        "Participant: " + login + " is not a member of " + organisation.getLogin());
+        if (skipperLogins != null) {
+            for (String login : skipperLogins) {
+                Person person = personRepository.getByLogin(login);
+                if (person == null)
+                    throw new ActionRefusedException(ErrorCode.NO_SUCH_PARTICIPANT, "No such participant: " + login);
+                if (memberRepository.getMemberByCollectiveIdAndParticipantLogin(organisation.getId(), login) == null)
+                    throw new ActionRefusedException(ErrorCode.NO_SUCH_MEMBER,
+                            "Participant: " + login + " is not a member of " + organisation.getLogin());
 
-            Skipper skipper = new Skipper(vessel, person);
-            skipperRepository.save(skipper);
+                Skipper skipper = new Skipper(vessel, person);
+                skipperRepository.save(skipper);
+            }
         }
-
     }
 
     private void registerPrivateSkippers(Vessel vessel, Participant ownerParticipant, String[] skipperLogins) throws ActionRefusedException {
