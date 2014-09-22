@@ -97,13 +97,14 @@ public class GroupResource extends ParticipantResource {
     }
 
     /**
+     * This will return all members including people and collectives.
      * GET  /rest/groups/:id/members -> get the members of the specified group.
      */
     @RequestMapping(value = "/rest/groups/{id}/members",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<?> getMembers(@PathVariable Long id, HttpServletResponse response) {
+    public ResponseEntity<?> getGroupMembers(@PathVariable Long id, HttpServletResponse response) {
         log.debug("REST request to get members of Group : {}", id);
         try {
 
@@ -112,6 +113,36 @@ public class GroupResource extends ParticipantResource {
             List<MemberDTO> dtos = new ArrayList<MemberDTO>(members.size());
             for (Member member : members)
                 dtos.add(Mapper.member(member));
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+
+        }
+        catch (ActionRefusedException ex)
+        {
+            if (ErrorCode.PERMISSION_DENIED.equals(ex.getCode()))
+                return new ResponseEntity<String>(ex.getCode(), HttpStatus.FORBIDDEN);
+            else
+                return new ResponseEntity<String>(ex.getCode(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Get all the members who are people, ie exclude those that are collectives.
+     * GET  /rest/groups/:id/members -> get the members of the specified group.
+     */
+    @RequestMapping(value = "/rest/groups/{id}/people",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<?> getPeopleInGroup(@PathVariable Long id, HttpServletResponse response) {
+        log.debug("REST request to get members of Group : {}", id);
+        try {
+
+            // permission denied or no such group
+            List<Member> members = groupService.getMembers(id);
+            List<MemberDTO> dtos = new ArrayList<MemberDTO>(members.size());
+            for (Member member : members)
+                if (member.getParticipant() instanceof Person)
+                    dtos.add(Mapper.member(member));
             return new ResponseEntity<>(dtos, HttpStatus.OK);
 
         }

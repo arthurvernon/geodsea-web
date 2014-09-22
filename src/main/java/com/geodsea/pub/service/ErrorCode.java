@@ -33,4 +33,13 @@ public class ErrorCode {
     public static final String ONE_ORGANISATION_OWNS_VESSEL = "OneOrganisationOwnsVessel";
     public static final String OWNERSHIP_BY_PEOPLE_OR_ORGANISATION = "OwnershipByPeopleOrOrganisation";
     public static final String DUPLICATE_HIN = "DuplicateHIN";
+
+    /**
+     * When registering a vessel for private use (in the sense it is not owned by an organisation)
+     * then the user performing the registration must be listed as an owner.
+     * <p>
+     *     The may be an unnecessary restriction and may be dropped in the future.
+     * </p>
+     */
+    public static final String USER_MUST_OWN_VESSEL = "UserMustOwnVessel";
 }

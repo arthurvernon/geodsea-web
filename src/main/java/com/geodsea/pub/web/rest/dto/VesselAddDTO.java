@@ -14,12 +14,12 @@ public class VesselAddDTO extends VesselDTO {
     /**
      * Array of participant logins for owners
      */
-    private String[] owners;
+    private long[] owners;
 
     /**
      * Login IDs for the people who will be a skipper of the vessel
      */
-    private String[] skippers;
+    private long[] skippers;
 
     public VesselAddDTO() {
     }
@@ -28,11 +28,11 @@ public class VesselAddDTO extends VesselDTO {
         super(id, hullIdentificationNumber, vesselName, vesselType, hullColor, superstructureColor, length, totalHP, fuelCapacity, storageType, emergencyEquipment);
     }
 
-    public String[] getOwners() {
+    public long[] getOwners() {
         return owners;
     }
 
-    public String[] getSkippers() {
+    public long[] getSkippers() {
         return skippers;
     }
 }

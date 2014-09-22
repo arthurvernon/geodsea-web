@@ -323,32 +323,32 @@ public class GroupService extends BaseService {
      * Available to administrators and to active managers of the group only!
      * </p>
      *
-     * @param groupId
+     * @param collectiveId
      * @return
      */
     @PreAuthorize("isAuthenticated()")
-    public List<Member> getMembers(long groupId) throws ActionRefusedException {
+    public List<Member> getMembers(long collectiveId) throws ActionRefusedException {
 
         Person person = this.getPersonForPrincipal();
         if (person == null)
-            throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User must be logged on to access group: " + groupId);
+            throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User must be logged on to access collective: " + collectiveId);
 
-        Collective collective = groupRepository.findOne(groupId);
+        Collective collective = collectiveRepository.findOne(collectiveId);
         if (collective == null)
-            throw new ActionRefusedException(ErrorCode.NO_SUCH_GROUP, "No such group: " + groupId);
+            throw new ActionRefusedException(ErrorCode.NO_SUCH_GROUP, "No such collective: " + collectiveId);
 
         if (SecurityUtils.userHasRole(AuthoritiesConstants.ADMIN))
             return collective.getMembers();
 
-        Member member = memberRepository.getMemberByCollectiveIdAndParticipantLogin(groupId, person.getLogin());
+        Member member = memberRepository.getMemberByCollectiveIdAndParticipantLogin(collectiveId, person.getLogin());
         if (member == null)
             throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User: " + person.getLogin() +
-                    " is not a member of Group: " + groupId);
+                    " is not a member of collective: " + collectiveId);
         else if (member.isManager() && member.isActive())
             return collective.getMembers();
 
         throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User: " + person.getLogin() +
-                " is not an active manager of Group: " + groupId);
+                " is not an active manager of collective: " + collectiveId);
 
     }
 

@@ -8,3 +8,4 @@ geodseaApp.factory('Member', ['$resource',
             'get': { method: 'GET'}
         });
     }]);
+

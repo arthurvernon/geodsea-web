@@ -122,6 +122,12 @@
             "me": "Me (and others?)",
             "organisation": "An organisation (that I manage)"
         },
+        "owners": {
+            "label": "Owners"
+        },
+        "owner": {
+            "label": "Owner"
+        },
         "password": {
             "label": "Password",
             "placeholder": "Your password"
@@ -138,6 +144,7 @@
             "minlength": "A question must contain at least two characters",
             "maxlength": "A question can be no longer than 100 characters"
         },
+        "skippers.label": "Select skippers",
         "telephone": {
             "label": "Telephone",
             "placeholder": "Telephone number incl. area code",
@@ -525,7 +532,8 @@
         "MembershipDisabled": "Membership is disabled",
         "OneOrganisationOwnsVessel": "Only one organisation may own a vessel",
         "OwnershipByPeopleOrOrganisation" : "A vessel may be owned by people or an organisation, not both",
-        "DuplicateHIN": "A vessel is already registered with this Hull Identification Number (HIN)"
+        "DuplicateHIN": "A vessel is already registered with this Hull Identification Number (HIN)",
+        "UserMustOwnVessel": "You must include yourself in the list of owners"
     },
 
     "vessel": {

@@ -40,8 +40,9 @@ geodseaApp.controller('VesselController', ['$scope', 'vesselList', 'Vessel',
 
 
 geodseaApp.controller('VesselRegistrationController', ['$scope', '$location', 'Vessel', 'VesselRegistration', 'LicensorLicenseLookup',
-    'LicensorUserMatch', 'Licensor', 'licensorList', 'managedOrganisations', 'friends',
-    function ($scope, $location, Vessel, VesselRegistration, LicensorLicenseLookup, LicensorUserMatch, Licensor, licensorList, managedOrganisations, friends) {
+    'LicensorUserMatch', 'Licensor', 'licensorList', 'managedOrganisations', 'friends', 'CollectivePeople',
+    function ($scope, $location, Vessel, VesselRegistration, LicensorLicenseLookup, LicensorUserMatch,
+              Licensor, licensorList, managedOrganisations, friends, CollectivePeople) {
 
         $scope.licensorList = licensorList;
         $scope.registration = null;
@@ -54,8 +55,12 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', '$location', 'V
 
             $scope.errorcode = null;
             $scope.error = null;
+
+            // convert a single ID from organisation ownership into an array of one owner.
+            if (! isNaN($scope.vessel.owners)) {
+                $scope.vessel.owners = [$scope.vessel.owners]
+            }
             Vessel.save($scope.vessel, function () {
-                    window.alert("Vessel Registered")
                     $location.path('/vessel');
                 },
                 function (httpResponse) {
@@ -67,6 +72,14 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', '$location', 'V
                         $scope.error = "ERROR";
                     }
                 });
+        };
+
+        /*
+         * revise the list of members within an organisation when a selection change occurs
+         */
+        $scope.loadPeople = function() {
+            $scope.members = null;
+            $scope.members = CollectivePeople.query({login: $scope.vessel.owners});
         };
 
         $scope.populateVesselFromLicense = function () {
@@ -111,6 +124,7 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', '$location', 'V
                 $scope.licensorList = list;
             });
         };
+
 
         $scope.clear = function () {
             $scope.checked = null;

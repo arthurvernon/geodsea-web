@@ -137,18 +137,27 @@ public class VesselService {
      * @throws ActionRefusedException
      */
     @PreAuthorize("isAuthenticated()")
-    public Vessel registerVessel(Vessel vessel, String[] owners, String[] skipperLogins) throws ActionRefusedException {
+    public Vessel registerVessel(Vessel vessel, long[] owners, long[] skipperLogins) throws ActionRefusedException {
         if (SecurityUtils.userHasRole(AuthoritiesConstants.ADMIN))
-            return doVesselRegistration(vessel, owners, skipperLogins);
+            return doVesselRegistration(vessel, owners, skipperLogins, null);
 
         Person person = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
         if (person.isEnabled())
-            return doVesselRegistration(vessel, owners, skipperLogins);
+            return doVesselRegistration(vessel, owners, skipperLogins, null);
 
         throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "User is disabled: " + person.getLogin());
     }
 
-    private Vessel doVesselRegistration(Vessel vessel, String[] owners, String[] skipperLogins) throws ActionRefusedException {
+    /**
+     *
+     * @param vessel
+     * @param owners IDs for owners
+     * @param skipperLogins IDs for skippers
+     * @param user a non-administrator that must be a manager in the owning organisation or a specified owner
+     * @return
+     * @throws ActionRefusedException
+     */
+    private Vessel doVesselRegistration(Vessel vessel, long[] owners, long[] skipperLogins, Person user) throws ActionRefusedException {
         if (owners == null || owners.length == 0)
             throw new ActionRefusedException(ErrorCode.OWNER_NOT_DEFINED, "No owner defined");
 
@@ -160,11 +169,13 @@ public class VesselService {
         vessel = vesselRepository.save(vessel);
 
         // establish the owner....
-        List<Participant> ownerParticipants = participantRepository.getParticipantsForLogins(owners);
+        List<Participant> ownerParticipants = participantRepository.getParticipantsForIDs(owners);
         if (owners.length != ownerParticipants.size())
             throw new ActionRefusedException(ErrorCode.NO_SUCH_PARTICIPANT, "Expected " + owners.length +
                     " participants. Got only " + ownerParticipants.size());
 
+        // ensure we find this user in the list of friends who are skippers.
+        boolean lookingForUser = (user != null);
         int organisations = 0;
         int individuals = 0;
         Organisation organisation = null;
@@ -173,15 +184,25 @@ public class VesselService {
                 throw new ActionRefusedException(ErrorCode.GROUP_CANNOT_OWN_VESSEL,
                         "Refused to register vessel to group: " + p.getLogin());
             else if (p instanceof Organisation) {
+
+                // one we have organisation ownership we don't need to both with finding the user.
+                lookingForUser = false;
                 organisations++;
                 organisation = (Organisation) p;
+                if (user != null && memberRepository.getActiveManager(p.getId(), user.getId()) == null)
+                    throw new ActionRefusedException(ErrorCode.NOT_A_MANAGER,
+                            "Person: " + user.getLogin() + " is not an active manager of collective: " + p.getLogin());
             }
-            else
-                individuals++;
+            else {
 
+                if (lookingForUser && p.getId() == user.getId())
+                    lookingForUser = false;
+                individuals++;
+            }
             Owner theOwner = new Owner(vessel, p);
             ownerRepository.save(theOwner);
         }
+
         if (organisations > 1)
             throw new ActionRefusedException(ErrorCode.ONE_ORGANISATION_OWNS_VESSEL,
                     "Refused to register vessel to multiple groups");
@@ -189,6 +210,9 @@ public class VesselService {
             throw new ActionRefusedException(ErrorCode.OWNERSHIP_BY_PEOPLE_OR_ORGANISATION,
                     "Failed attempt to own a vessel by " + individuals + " people and " + organisations + " organisations");
 
+        if (lookingForUser)
+            throw new ActionRefusedException(ErrorCode.USER_MUST_OWN_VESSEL,
+                    "User: " + user.getLogin() + " did not specify himself in private vessel ownership list");
 
         // establish the skippers....
         if (organisations > 0)
@@ -210,13 +234,21 @@ public class VesselService {
         }
     }
 
-    private void registerSkippersInOrgansation(Vessel vessel, Organisation organisation, String[] skipperLogins) throws ActionRefusedException {
+    /**
+     * Register any number of people who are members of an organisation as skippers of a vessel that is registered
+     * to that organisation.
+     * @param vessel
+     * @param organisation
+     * @param skipperLogins
+     * @throws ActionRefusedException if a person specified does not exist or is not a member of the organisation.
+     */
+    private void registerSkippersInOrgansation(Vessel vessel, Organisation organisation, long[] skipperLogins) throws ActionRefusedException {
         if (skipperLogins != null) {
-            for (String login : skipperLogins) {
-                Person person = personRepository.getByLogin(login);
+            for (long login : skipperLogins) {
+                Person person = personRepository.findOne(login);
                 if (person == null)
                     throw new ActionRefusedException(ErrorCode.NO_SUCH_PARTICIPANT, "No such participant: " + login);
-                if (memberRepository.getMemberByCollectiveIdAndParticipantLogin(organisation.getId(), login) == null)
+                if (memberRepository.getMemberByCollectiveIdAndParticipantId(organisation.getId(), login) == null)
                     throw new ActionRefusedException(ErrorCode.NO_SUCH_MEMBER,
                             "Participant: " + login + " is not a member of " + organisation.getLogin());
 
@@ -226,10 +258,16 @@ public class VesselService {
         }
     }
 
-    private void registerPrivateSkippers(Vessel vessel, String[] skipperLogins) throws ActionRefusedException {
+    /**
+     * Register any number of friends as skippers of the vessel
+     * @param vessel
+     * @param skipperLogins
+     * @throws ActionRefusedException
+     */
+    private void registerPrivateSkippers(Vessel vessel, long[] skipperLogins) throws ActionRefusedException {
         if (skipperLogins != null)
-            for (String login : skipperLogins) {
-                Person person = personRepository.getByLogin(login);
+            for (long login : skipperLogins) {
+                Person person = personRepository.findOne(login);
                 if (person == null)
                     throw new ActionRefusedException(ErrorCode.NO_SUCH_PARTICIPANT, "No such participant: " + login);
                 Skipper skipper = new Skipper(vessel, person);
