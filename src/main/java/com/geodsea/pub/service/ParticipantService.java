@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Arthur Vernon on 6/09/2014.
+ * Looks after registration tokens
  */
 @Service
 @Transactional
