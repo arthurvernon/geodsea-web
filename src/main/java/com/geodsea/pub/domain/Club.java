@@ -47,8 +47,10 @@ public class Club extends OrganisationRole {
         super();
     }
 
-    public Club(Organisation organisation, String callsign, String zoneTitle, MultiPolygon zone) {
+    public Club(Organisation organisation, String callsign, int reportRate, String zoneTitle, MultiPolygon zone) {
         super(organisation, new Zone(zoneTitle, zone));
+        this.callsign = callsign;
+        this.reportRate = reportRate;
     }
 
     public int getReportRate() {
