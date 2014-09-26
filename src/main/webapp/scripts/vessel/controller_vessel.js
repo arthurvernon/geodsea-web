@@ -56,8 +56,7 @@ geodseaApp.controller('VesselRegistrationController', ['$scope', '$location', 'V
             $scope.errorcode = null;
             $scope.error = null;
 
-            // convert a single ID from organisation ownership into an array of one owner.
-            if (! isNaN($scope.vessel.owners)) {
+            if (typeof $scope.vessel.owners === 'number') {
                 $scope.vessel.owners = [$scope.vessel.owners]
             }
             Vessel.save($scope.vessel, function () {

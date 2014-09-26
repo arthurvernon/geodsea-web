@@ -42,4 +42,16 @@ public class ErrorCode {
      * </p>
      */
     public static final String USER_MUST_OWN_VESSEL = "UserMustOwnVessel";
+
+    /**
+     * User account is disabled. Requested action cannot be performed.
+     */
+    public static final String USER_DISABLED = "UserDisabled";
+    public static final String NO_SUCH_VESSEL = "NoSuchVessel";
+
+    /**
+     * The person is not a skipper of the specified vessel
+     */
+    public static final String NOT_SKIPPER_OF_VESSEL = "NotASkipperOFVessel";
+    public static final String NO_SUCH_TRIP = "NoSuchTrip";
 }

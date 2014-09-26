@@ -24,8 +24,12 @@ public class VesselAddDTO extends VesselDTO {
     public VesselAddDTO() {
     }
 
-    public VesselAddDTO(Long id, String hullIdentificationNumber, String vesselName, VesselType vesselType, String hullColor, String superstructureColor, int length, Integer totalHP, int fuelCapacity, StorageType storageType, List<EmergencyEquipment> emergencyEquipment) {
-        super(id, hullIdentificationNumber, vesselName, vesselType, hullColor, superstructureColor, length, totalHP, fuelCapacity, storageType, emergencyEquipment);
+    public VesselAddDTO(Long id, String hullIdentificationNumber, String vesselName, VesselType vesselType,
+                        String hullColor, String superstructureColor, int length, Integer totalHP, int fuelCapacity,
+                        StorageType storageType, String storageLocation, List<EmergencyEquipment> emergencyEquipment) {
+        super(id, hullIdentificationNumber, vesselName, vesselType, hullColor,
+                superstructureColor, length, totalHP, fuelCapacity, storageType,
+                storageLocation, emergencyEquipment);
     }
 
     public long[] getOwners() {

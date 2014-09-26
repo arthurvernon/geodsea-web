@@ -10,6 +10,19 @@ geodseaApp.controller('AdminController', ['$scope',
     function ($scope) {
     }]);
 
+geodseaApp.controller('SkipperController', ['$scope',
+    function ($scope) {
+    }]);
+
+geodseaApp.controller('OwnerController', ['$scope',
+    function ($scope) {
+    }]);
+
+geodseaApp.controller('RescueController', ['$scope',
+    function ($scope) {
+    }]);
+
+
 geodseaApp.controller('HelpController', ['$scope',
     function ($scope) {
     }]);

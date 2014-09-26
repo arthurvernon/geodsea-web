@@ -29,14 +29,6 @@ public class Person extends Participant implements Serializable {
     @Size(min = 0, max = 100)
     private String password;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "T_PARTICIPANT_AUTHORITY", schema = "BOAT",
-            joinColumns = {@JoinColumn(name = "participant_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "name", referencedColumnName = "name")})
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Authority> authorities;
 
     @Size(min = 2, max = 50)
     @Column(name = "first_name")
@@ -91,7 +83,7 @@ public class Person extends Participant implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "person")
     @JsonIgnore
-    private List<Trip> trips;
+    private List<TripSkipper> trips;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
     @JsonIgnore
@@ -178,19 +170,12 @@ public class Person extends Participant implements Serializable {
         this.answer = answer;
     }
 
-    public Set<Authority> getAuthorities() {
-        return authorities;
-    }
 
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public List<Trip> getTrips() {
+    public List<TripSkipper> getTrips() {
         return trips;
     }
 
-    public void setTrips(List<Trip> trips) {
+    public void setTrips(List<TripSkipper> trips) {
         this.trips = trips;
     }
 
@@ -210,12 +195,6 @@ public class Person extends Participant implements Serializable {
         this.skippers = skippers;
     }
 
-    public void addAuthority(Authority a)
-    {
-        if (authorities == null)
-            authorities = new HashSet<Authority>();
-        authorities.add(a);
-    }
 
     @Override
     public String toString() {

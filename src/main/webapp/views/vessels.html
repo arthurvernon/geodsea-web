@@ -171,7 +171,7 @@
                                 </select>
                         </div>
 
-                        <!-- Storage location -->
+                        <!-- Storage location  type -->
                         <div class="form-group">
                             <label translate="field.vessel.storagetype.label">Storage Type</label>
                             <select class="form-control" name="storageType"
@@ -183,6 +183,25 @@
                                 <option translate="vessel.storage.MOORING.name">MOORING</option>
                                 <option translate="vessel.storage.JETTY.name">JETTY</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <!-- Storage Location -->
+                    <div class="form-group">
+                        <label translate="field.vessel.storagelocation.label">Storage Location</label>
+                        <input type="text" class="form-control" name="storagelocation"
+                               placeholder="{{'field.vessel.storagelocation.placeholder' | translate}}"
+                               ng-model="vessel.storageLocation" ng-minlength=2 ng-maxlength=50>
+
+                        <div class="error" ng-show="form.hin.$dirty && form.storagelocation.$invalid">
+                            <small class="error"
+                                   ng-show="form.storagelocation.$error.minlength" translate="field.vessel.storagelocation.minlength">
+                                location description must be at least 2 characters
+                            </small>
+                            <small class="error"
+                                   ng-show="form.storagelocation.$error.maxlength" translate="field.vessel.storagelocation.maxlength">
+                                A storage location may not be more than 50 characters.
+                            </small>
                         </div>
                     </div>
 

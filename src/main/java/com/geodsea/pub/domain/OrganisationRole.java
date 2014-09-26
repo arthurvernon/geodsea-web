@@ -16,7 +16,7 @@ public class OrganisationRole {
 
     @ManyToOne()
     @JoinColumn(name = "ORGANISATION_FK", referencedColumnName = "ORGANISATION_ID")
-    private Organisation organsation;
+    private Organisation organisation;
 
     @Embedded
     @AttributeOverrides({
@@ -29,7 +29,7 @@ public class OrganisationRole {
     }
 
     public OrganisationRole(Organisation organisation, Zone zone) {
-        this.organsation = organisation;
+        this.organisation = organisation;
         this.zone = zone;
     }
 
@@ -41,12 +41,12 @@ public class OrganisationRole {
         this.id = id;
     }
 
-    public Organisation getOrgansation() {
-        return organsation;
+    public Organisation getOrganisation() {
+        return organisation;
     }
 
-    public void setOrgansation(Organisation organsation) {
-        this.organsation = organsation;
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
     }
 
     public Zone getZone() {

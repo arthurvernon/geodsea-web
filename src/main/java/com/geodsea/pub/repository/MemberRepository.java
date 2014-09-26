@@ -1,5 +1,6 @@
 package com.geodsea.pub.repository;
 
+import com.geodsea.pub.domain.Collective;
 import com.geodsea.pub.domain.Member;
 import com.geodsea.pub.domain.Participant;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,4 +32,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
      */
     @Query("select m from Member m where m.collective.id = ?1 and m.participant.id = ?2 and m.active = true and m.manager = true")
     Member getActiveManager(long collectiveId, long personId);
+
+
+    @Query("select m from Member m where m.participant.id = ?1 and m.active = true")
+    List<Member> findWherePersonIsActiveMember(long id);
 }

@@ -38,7 +38,7 @@ public class LicenseServiceTest {
         licensor.setLicenceWsURL("http://localhost:8080/ws");
         licensor.setLicenseWsUsername("username");
         licensor.setLicenseWsPassword("password");
-        licensor.setOrgansation(organisationRepository.findOne(5l));// Dept of Transport
+        licensor.setOrganisation(organisationRepository.findOne(5l));// Dept of Transport
         LicenseResponse response = licenseService.lookupLicense(licensor, "123456");
 
 

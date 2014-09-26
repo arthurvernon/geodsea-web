@@ -45,6 +45,63 @@
                             </a>
                         </li>
 
+                        <!-- TODO localisation of rescue, owner and skipper menus -->
+                        <!-- Rescue menu-->
+                        <li ng-switch-when="true" ng-show="isAuthorized(userRoles.rescue)" class="dropdown pointer" ng-controller="RescueController">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                                <span>
+                                    <span class="glyphicon glyphicon-tower"></span>
+                                    <span class="hidden-tablet" translate="menu.rescue.main">Resuce</span>
+                                    <b class="caret"></b>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#/rescue/trips"><span class="glyphicon glyphicon-list"></span>
+                                    &#xA0;<span translate="menu.rescue.trips">Trips</span></a></li>
+                                <li><a href="#/rescue/map"><span class="glyphicon glyphicon-map-marker"></span>
+                                    &#xA0;<span translate="menu.rescue.map">Map</span></a></li>
+                                <li ng-switch-when="true" role="presentation" class="divider"></li>
+                                <li><a href="#/rescue/settings"><span class="glyphicon glyphicon-wrench"></span>
+                                    &#xA0;<span translate="menu.rescue.settings">Settings</span></a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Owner menu -->
+                        <li ng-switch-when="true" ng-show="isAuthorized(userRoles.owner)" class="dropdown pointer" ng-controller="OwnerController">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                                <span>
+                                    <span class="glyphicon glyphicon-tower"></span>
+                                    <span class="hidden-tablet" translate="menu.owner.main">Owner</span>
+                                    <b class="caret"></b>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#/owner/vessels"><span class="glyphicon glyphicon-list"></span>
+                                    &#xA0;<span translate="menu.owner.vessels">Vessels</span></a></li>
+                                <li><a href="#/owner/trips"><span class="glyphicon glyphicon-list"></span>
+                                    &#xA0;<span translate="menu.owner.trips">Trips</span></a></li>
+                                <li><a href="#/owner/skippers"><span class="glyphicon glyphicon-list"></span>
+                                    &#xA0;<span translate="menu.onwer.skippers">Skippers</span></a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Skipper menu -->
+                        <li ng-switch-when="true" ng-show="isAuthorized(userRoles.skipper)" class="dropdown pointer" ng-controller="SkipperController">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                                <span>
+                                    <span class="glyphicon glyphicon-tower"></span>
+                                    <span class="hidden-tablet" translate="menu.skipper.main">Skipper</span>
+                                    <b class="caret"></b>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#/skipper/vessels"><span class="glyphicon glyphicon-list"></span>
+                                    &#xA0;<span translate="menu.skipper.vessels">Vessels</span></a></li>
+                                <li><a href="#/skipper/trips"><span class="glyphicon glyphicon-list"></span>
+                                    &#xA0;<span translate="menu.skipper.trips">Trips</span></a></li>
+                            </ul>
+                        </li>
+
                         <!-- User menu -->
                         <li class="dropdown pointer">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
@@ -115,6 +172,8 @@
 
                             </ul>
                         </li>
+
+
                         <!-- Admin menu -->
                         <li ng-switch-when="true" ng-show="isAuthorized(userRoles.admin)" class="dropdown pointer" ng-controller="AdminController">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
@@ -290,6 +349,9 @@
         <script src="scripts/member/router_member.js"></script>
         <script src="scripts/member/controller_member.js"></script>
         <script src="scripts/member/service_member.js"></script>
+        <script src="scripts/trip/router_trip.js"></script>
+        <script src="scripts/trip/controller_trip.js"></script>
+        <script src="scripts/trip/service_trip.js"></script>
         <!-- endbuild -->
 </body>
 </html>

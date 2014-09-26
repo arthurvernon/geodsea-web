@@ -56,17 +56,24 @@ public class Mapper {
     public static VesselDTO vessel(Vessel vessel) {
         return new VesselDTO(vessel.getId(), vessel.getHullIdentificationNumber(), vessel.getVesselName(),
                 vessel.getVesselType(), vessel.getHullColor(), vessel.getSuperstructureColor(), vessel.getLength(),
-                vessel.getTotalHP(), vessel.getFuelCapacity(), vessel.getStorageType(), vessel.getEmergencyEquipment());
+                vessel.getTotalHP(), vessel.getFuelCapacity(), vessel.getStorageType(), vessel.getStorageLocation(),
+                vessel.getEmergencyEquipment());
     }
 
     public static Vessel vessel(VesselDTO vessel) {
         return new Vessel(vessel.getId(), vessel.getHullIdentificationNumber(), vessel.getVesselName(),
                 vessel.getVesselType(), vessel.getHullColor(), vessel.getSuperstructureColor(), vessel.getLength(),
-                vessel.getTotalHP(), vessel.getFuelCapacity(), vessel.getStorageType(), vessel.getEmergencyEquipment());
+                vessel.getTotalHP(), vessel.getFuelCapacity(), vessel.getStorageType(), vessel.getStorageLocation(), vessel.getEmergencyEquipment());
+    }
+
+    public static TripSkipperDTO vessel(TripSkipper trip) {
+        return new TripSkipperDTO(trip.getId(), participant(trip.getPerson()), vessel(trip.getVessel()), rescueOrganisation(trip.getRescue()),
+                trip.getHeadline(), trip.getSummary(), trip.getPeopleOnBoard(), trip.getFuelOnBoard(), trip.getScheduledStartTime(),
+                trip.getActualStartTime(), trip.getScheduledEndTime(), trip.getActualEndTime());
     }
 
     public static LicensorDTO licensor(Licensor licensor) {
-        Organisation org = licensor.getOrgansation();
+        Organisation org = licensor.getOrganisation();
         String zoneWKT = GisService.toWKT(licensor.getZone().getZone());
 
         return new LicensorDTO(licensor.getId(),
@@ -90,7 +97,7 @@ public class Mapper {
         if (rescue == null)
             return null;
 
-        Organisation org = rescue.getOrgansation();
+        Organisation org = rescue.getOrganisation();
 
         String zoneWKT = GisService.toWKT(rescue.getZone().getZone());
 
@@ -141,4 +148,9 @@ public class Mapper {
                 participant.getEmail(), participant.getLangKey(), ((Person) participant).getTelephone());
     }
 
+    public static TripSkipperDTO tripSkipper(TripSkipper trip) {
+        return new TripSkipperDTO(trip.getId(), participant(trip.getPerson()), vessel(trip.getVessel()), rescueOrganisation(trip.getRescue()),
+                trip.getHeadline(), trip.getSummary(), trip.getPeopleOnBoard(), trip.getFuelOnBoard(), trip.getScheduledStartTime(),
+                trip.getActualStartTime(), trip.getScheduledEndTime(), trip.getActualEndTime());
+    }
 }

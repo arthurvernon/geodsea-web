@@ -25,4 +25,14 @@ public interface CollectiveRepository extends JpaRepository<Collective, Long> {
      */
     @Query("select c from Collective c where exists (select m from Member m where m.participant.id = ?1 and m.collective = c)")
     List<Collective> findHavingMember(long participantId);
+
+    /**
+     * Determine if the person specified is indeed an active manager within the group.
+     * @param personId
+     * @return
+     */
+    @Query("select c from Collective c where exists (select m.id from Member m where m.collective.id = c.id "+
+            " and m.participant.id = ?1 and m.active = true)")
+    List<Collective> findWherePersonIsActiveMember(long personId);
+
 }

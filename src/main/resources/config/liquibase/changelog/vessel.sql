@@ -16,6 +16,7 @@ CREATE TABLE BOAT.T_VESSEL (
   HULL_COLOUR           VARCHAR(30),
   SUPERSTRUCTURE_COLOUR VARCHAR(30),
   STORAGE_TYPE          VARCHAR(10),
+  STORAGE_LOCATION      VARCHAR(50),
   VESSEL_TYPE           VARCHAR(20) NOT NULL,
   LENGTH_M              INT         NULL,
   TOTAL_HP              INT         NULL,
@@ -30,6 +31,7 @@ COMMENT ON COLUMN BOAT.T_VESSEL.HIN IS 'Unique Hull Identification number per IS
 COMMENT ON COLUMN BOAT.T_VESSEL.LENGTH_M IS 'Length of the vessel in metres';
 COMMENT ON COLUMN BOAT.T_VESSEL.TOTAL_HP IS 'Total horse power of a motorised boat.';
 COMMENT ON COLUMN BOAT.T_VESSEL.FUEL_CAPACITY_L IS 'Maximum number of litres of fuel that the boat can carry.';
+COMMENT ON COLUMN BOAT.T_VESSEL.STORAGE_LOCATION IS 'Meaningful description of where the vessel is stoerd.';
 
 
 ----------------------------------------------------------
@@ -79,46 +81,65 @@ ALTER TABLE BOAT.TRIP_ID_SEQ OWNER TO geodsea;
 CREATE TABLE BOAT.T_TRIP (
   ID              BIGINT PRIMARY KEY DEFAULT nextval('BOAT.TRIP_ID_SEQ'),
   WAY_POINTS      geometry (MULTIPOINT, 4326),
-  JOURNEY         geometry (LINESTRING, 4326),
-  SUMMARY         VARCHAR(255) NULL,
   PEOPLE_ON_BOARD INT          NULL CHECK (PEOPLE_ON_BOARD > 0),
-  SCHEDULED_START TIMESTAMP    NULL,
   ACTUAL_START    TIMESTAMP    NULL,
   FUEL_L          INT          NULL CHECK (FUEL_L > 0),
   HEADLINE        VARCHAR(100) NOT NULL,
   SCHEDULED_END   TIMESTAMP    NULL,
   ACTUAL_END      TIMESTAMP    NULL,
-  RESCUE_ID       BIGINT       NULL REFERENCES BOAT.T_RESCUE ON DELETE SET NULL ON UPDATE RESTRICT,
-  REPORT_RATE     INTEGER      NOT NULL DEFAULT 0,
-  ADVISED_FIRST   TIMESTAMP,
-  ADVISED_LAST    TIMESTAMP,
-  PERSON_ID       BIGINT       NOT NULL REFERENCES BOAT.T_PERSON ON DELETE CASCADE ON UPDATE RESTRICT,
-  VESSEL_ID       BIGINT       NOT NULL REFERENCES BOAT.T_VESSEL ON DELETE CASCADE ON UPDATE RESTRICT
+  RESCUE_ID       BIGINT       NULL REFERENCES BOAT.T_RESCUE ON DELETE SET NULL ON UPDATE RESTRICT
 );
 
 ALTER TABLE BOAT.T_TRIP OWNER TO geodsea;
 ALTER SEQUENCE BOAT.TRIP_ID_SEQ OWNED BY BOAT.T_TRIP.ID;
 
-COMMENT ON COLUMN BOAT.T_TRIP.JOURNEY IS 'A historical record of the journey that is maintained when the user enables tracking.';
 COMMENT ON COLUMN BOAT.T_TRIP.WAY_POINTS IS 'The start and end point of a trip with any number of points in-between.';
-COMMENT ON COLUMN BOAT.T_TRIP.SUMMARY IS 'A useful precis of the trip, entered probably after the fact.';
 COMMENT ON COLUMN BOAT.T_TRIP.PEOPLE_ON_BOARD IS 'The number of people including the skipper who are on the boat.';
-COMMENT ON COLUMN BOAT.T_TRIP.SCHEDULED_START IS 'When this trip is planned to start.';
 COMMENT ON COLUMN BOAT.T_TRIP.ACTUAL_START IS 'When this trip actually started (if the fact was recorded).';
 COMMENT ON COLUMN BOAT.T_TRIP.FUEL_L IS 'The estimated number of liters of fuel on board at the start of the journey';
 COMMENT ON COLUMN BOAT.T_TRIP.HEADLINE IS 'The reason for making the trip, e.g. weekend at Rottnest. Shared with rescue';
 COMMENT ON COLUMN BOAT.T_TRIP.SCHEDULED_END IS 'When this trip is planned to end.';
 COMMENT ON COLUMN BOAT.T_TRIP.ACTUAL_END IS 'The actual time, if ever, that the journey was logged as completed.';
 COMMENT ON COLUMN BOAT.T_TRIP.RESCUE_ID IS 'The organisation (role) that the system has ascertained is responsible for monitoring this trip.';
-COMMENT ON COLUMN BOAT.T_TRIP.ADVISED_FIRST IS 'The date when the plan was first advised to sea rescue.';
-COMMENT ON COLUMN BOAT.T_TRIP.ADVISED_LAST IS 'The date when the plan was last advised to sea rescue.';
-COMMENT ON COLUMN BOAT.T_TRIP.PERSON_ID IS 'Who is the skipper for this trip.';
-COMMENT ON COLUMN BOAT.T_TRIP.VESSEL_ID IS 'Mandatory particular vessel that is intended to be used for this trip.';
-COMMENT ON COLUMN BOAT.T_TRIP.REPORT_RATE IS 'Rate in seconds to report location. Zero implies no reporting requirement';
-
 
 CREATE INDEX IDX_TRIP_WP_GIST ON BOAT.T_TRIP USING GIST (WAY_POINTS);
-CREATE INDEX IDX_TRIP_JOURNEY_GIST ON BOAT.T_TRIP USING GIST (JOURNEY);
+
+
+CREATE TABLE BOAT.T_TRIP_SKIPPER (
+  ID              BIGINT    NOT NULL PRIMARY KEY REFERENCES BOAT.T_TRIP (ID) ON DELETE CASCADE,
+  SCHEDULED_START TIMESTAMP NULL,
+  SUMMARY         VARCHAR(255) NULL,
+  REPORT_RATE     INTEGER   NOT NULL DEFAULT 0,
+  PERSON_ID       BIGINT    NOT NULL REFERENCES BOAT.T_PERSON ON DELETE CASCADE ON UPDATE RESTRICT,
+  VESSEL_ID       BIGINT    NOT NULL REFERENCES BOAT.T_VESSEL ON DELETE CASCADE ON UPDATE RESTRICT
+);
+ALTER TABLE BOAT.T_TRIP_SKIPPER OWNER TO geodsea;
+
+COMMENT ON COLUMN BOAT.T_TRIP_SKIPPER.SUMMARY IS 'A useful precis of the trip, entered probably after the fact.';
+COMMENT ON COLUMN BOAT.T_TRIP_SKIPPER.VESSEL_ID IS 'Mandatory particular vessel that is intended to be used for this trip.';
+COMMENT ON COLUMN BOAT.T_TRIP_SKIPPER.PERSON_ID IS 'Who is the skipper for this trip.';
+COMMENT ON COLUMN BOAT.T_TRIP_SKIPPER.REPORT_RATE IS 'Rate in seconds to report location. Zero implies no reporting requirement';
+
+CREATE TABLE BOAT.T_TRIP_RESCUE (
+  ID                      BIGINT      NOT NULL PRIMARY KEY REFERENCES BOAT.T_TRIP (ID) ON DELETE CASCADE,
+  HIN                     VARCHAR(14) NOT NULL,
+  VESSEL_NAME             VARCHAR(40),
+  HULL_COLOUR             VARCHAR(30),
+  SUPERSTRUCTURE_COLOUR   VARCHAR(30),
+  STORAGE_TYPE            VARCHAR(10),
+  STORAGE_LOCATION        VARCHAR(50),
+  VESSEL_TYPE             VARCHAR(20) NOT NULL,
+  LENGTH_M                INT         NULL,
+  SKIPPER_NAME            VARCHAR(40) NOT NULL,
+  CALL_SIGN               VARCHAR(40),
+  CONTACT_PHONE           VARCHAR(20) NULL,
+  EMERGENCY_CONTACT_NAME  VARCHAR(40) NULL,
+  EMERGENCY_CONTACT_PHONE VARCHAR(40) NULL
+);
+ALTER TABLE BOAT.T_TRIP_RESCUE OWNER TO geodsea;
+
+COMMENT ON COLUMN BOAT.T_TRIP_RESCUE.HIN IS 'Unique Hull Identification number per ISO 10087:2006';
+COMMENT ON COLUMN BOAT.T_TRIP_RESCUE.LENGTH_M IS 'Length of the vessel in metres';
 
 ----------------------------------------------------------
 -- Location/Time of the boat during a trip

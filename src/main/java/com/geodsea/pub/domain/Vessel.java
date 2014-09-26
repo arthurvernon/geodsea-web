@@ -69,7 +69,6 @@ public class Vessel implements Serializable {
      * The colour (or colours) of the hull.
      * <p>
      *     A reasonable size field if allowed for at this stage so that a person could enter multiple colours.
-     *     TODO Need to ascertain if the requirement is for only a dominant colour to be registered.
      * </p>
      */
     @Column(name="HULL_COLOUR", nullable = true)
@@ -80,7 +79,6 @@ public class Vessel implements Serializable {
      * The colour (or colours) of the superstructure.
      * <p>
      *     A reasonable size field if allowed for at this stage so that a person could enter multiple colours.
-     *     TODO Need to ascertain if the requirement is for only a dominant colour to be registered.
      * </p>
      */
     @Column(name="SUPERSTRUCTURE_COLOUR", nullable = true)
@@ -98,6 +96,17 @@ public class Vessel implements Serializable {
     @Column(name="STORAGE_TYPE", nullable = true)
     @Enumerated(EnumType.STRING)
     private StorageType storageType;
+
+    /**
+     * A description of the location where the boat is stored, e.g. Pen 23.
+     * <p>
+     *     The purpose of recording this is to provide a clue where the boat may be in the event that the skipper
+     *     does not report back and is not contactable.
+     * </p>
+     */
+    @Column(name="STORAGE_LOCATION", nullable = true, length = 50)
+    @Size(min=2, max = 50)
+    private String storageLocation;
 
     /**
      * The length of the craft in metres.
@@ -167,7 +176,7 @@ public class Vessel implements Serializable {
      * @param emergencyEquipment
      */
     public Vessel(Long id, String hullIdentificationNumber, String vesselName, VesselType vesselType, String hullColor,
-                  String superstructureColor, int length, Integer totalHP, int fuelCapacity, StorageType storageType,
+                  String superstructureColor, int length, Integer totalHP, int fuelCapacity, StorageType storageType, String storageLocation,
                   List<EmergencyEquipment> emergencyEquipment) {
         this.id = id;
         this.hullIdentificationNumber = hullIdentificationNumber;
@@ -179,6 +188,7 @@ public class Vessel implements Serializable {
         this.totalHP = totalHP;
         this.fuelCapacity = fuelCapacity;
         this.storageType = storageType;
+        this.storageLocation = storageLocation;
         this.emergencyEquipment = emergencyEquipment;
     };
 
@@ -304,6 +314,14 @@ public class Vessel implements Serializable {
 
     public void setEmergencyEquipment(List<EmergencyEquipment> emergencyEquipment) {
         this.emergencyEquipment = emergencyEquipment;
+    }
+
+    public String getStorageLocation() {
+        return storageLocation;
+    }
+
+    public void setStorageLocation(String storageLocation) {
+        this.storageLocation = storageLocation;
     }
 
 }

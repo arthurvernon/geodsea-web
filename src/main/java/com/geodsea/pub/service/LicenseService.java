@@ -65,7 +65,7 @@ public class LicenseService {
         licensor.setZone(zone);
 
         Organisation organisation = organisationRepository.findOne(organisationId);
-        licensor.setOrgansation(organisation);
+        licensor.setOrganisation(organisation);
 
         licensor = licensorRepository.save(licensor);
     }
@@ -80,7 +80,7 @@ public class LicenseService {
     public LicenseResponse lookupLicense(Licensor licensor, String licenseNumber) {
 
         log.info("Looking up license: {} from licensor {} via WS: {}", licenseNumber,
-                licensor.getOrgansation().getCollectiveName(), licensor.getLicenceWsURL());
+                licensor.getOrganisation().getCollectiveName(), licensor.getLicenceWsURL());
 
         ObjectFactory of = new ObjectFactory();
         LicenseRequest request = of.createLicenseRequest();

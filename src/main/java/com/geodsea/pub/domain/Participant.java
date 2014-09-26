@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "T_PARTICIPANT", schema = "BOAT", uniqueConstraints = {
         @UniqueConstraint(name = "uq_participant_login", columnNames = {"LOGIN"})})
-public abstract class Participant extends AbstractAuditingEntity implements Serializable {
+public abstract class Participant extends AuditedAuthorities implements Serializable {
 
     @Id
     @GeneratedValue(generator = "PARTICIPANT_SEQ_GEN", strategy = GenerationType.SEQUENCE)
@@ -161,4 +162,5 @@ public abstract class Participant extends AbstractAuditingEntity implements Seri
                 ", language=" + langKey +
                 ", email='" + email + '\'';
     }
+
 }

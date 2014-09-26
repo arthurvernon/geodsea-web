@@ -13,7 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "T_MEMBER", schema = "BOAT")
-public class Member {
+public class Member extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(generator = "MEMBER_SEQ_GEN", strategy = GenerationType.SEQUENCE)

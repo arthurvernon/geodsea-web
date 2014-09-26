@@ -206,6 +206,12 @@
                 "minlength": "A name must be at least 5 characters long",
                 "maxlength": "A name may not be more than 40 characters long"
             },
+            "storagelocation": {
+                "label": "Storage Location",
+                "placeholder": "Description of the location, eg Pen 95, Jetty A, Hillarys",
+                "minlength": "A name must be at least 5 characters long",
+                "maxlength": "A name may not be more than 40 characters long"
+            },
             "storagetype": {
                 "label": "Storage Type",
                 "placeholder": "Choose a storage type",
@@ -520,6 +526,7 @@
         "MissingGroupName": "A unique (non-blank) name for the group is required.",
         "NoSuchUser": "There is no such user login name registered",
         "NoSuchGroup": "There is no such group name registered",
+        "NoSuchVessel": "No such vessel",
         "NotAGroupMember": "You are not a member of this group",
         "NotAPerson": "The logon entered is not that of a person",
         "PermissionDenied": "You do not have permission to perform this action",
@@ -527,13 +534,16 @@
         "NoSuchMember": "No such member exists",
         "VesselOwnerNotDefined": "Vessel owner was not specified",
         "NoSuchParticipant": "No such participant",
+        "NotASkipperOFVessel" : "You are not authorised to skipper this vessel",
+        "NoSuchTrip": "No such trip",
         "GroupCannotOwnVessel": "A group cannot own a vessel",
         "NotAManager": "You are not a manager of this group",
         "MembershipDisabled": "Membership is disabled",
         "OneOrganisationOwnsVessel": "Only one organisation may own a vessel",
         "OwnershipByPeopleOrOrganisation" : "A vessel may be owned by people or an organisation, not both",
         "DuplicateHIN": "A vessel is already registered with this Hull Identification Number (HIN)",
-        "UserMustOwnVessel": "You must include yourself in the list of owners"
+        "UserMustOwnVessel": "You must include yourself in the list of owners",
+        "UserDisabled": "User account is disabled."
     },
 
     "vessel": {

@@ -39,6 +39,8 @@ public class VesselDTO {
 
     private StorageType storageType;
 
+    private String storageLocation;
+
     private List<EmergencyEquipment> emergencyEquipment;
 
     public VesselDTO()
@@ -48,7 +50,7 @@ public class VesselDTO {
 
     public VesselDTO(Long id, String hullIdentificationNumber, String vesselName, VesselType vesselType, String hullColor,
                      String superstructureColor, int length, Integer totalHP, int fuelCapacity, StorageType storageType,
-                     List<EmergencyEquipment> emergencyEquipment) {
+                     String storageLocation, List<EmergencyEquipment> emergencyEquipment) {
         this.id = id;
         this.hullIdentificationNumber = hullIdentificationNumber;
         this.vesselName = vesselName;
@@ -59,6 +61,7 @@ public class VesselDTO {
         this.totalHP = totalHP;
         this.fuelCapacity = fuelCapacity;
         this.storageType = storageType;
+        this.storageLocation = storageLocation;
         this.emergencyEquipment = emergencyEquipment;
     }
 
@@ -104,6 +107,10 @@ public class VesselDTO {
 
     public List<EmergencyEquipment> getEmergencyEquipment() {
         return emergencyEquipment;
+    }
+
+    public String getStorageLocation() {
+        return storageLocation;
     }
 
 }
