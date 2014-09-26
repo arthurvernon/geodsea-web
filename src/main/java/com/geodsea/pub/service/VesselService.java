@@ -191,10 +191,6 @@ public class VesselService {
         else
             registerPrivateSkippers(vessel, skipperLogins);
 
-        if(true)
-            throw new ActionRefusedException(ErrorCode.USER_MUST_OWN_VESSEL,
-                "User: " + user.getLogin() + " did not specify himself in private vessel ownership list");
-
         return vessel;
 
     }
