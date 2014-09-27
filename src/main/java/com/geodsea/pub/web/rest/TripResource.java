@@ -4,7 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.geodsea.pub.domain.Trip;
 import com.geodsea.pub.domain.TripSkipper;
 import com.geodsea.pub.service.ActionRefusedException;
-import com.geodsea.pub.service.SkipperService;
+import com.geodsea.pub.service.TripService;
 import com.geodsea.pub.web.rest.dto.TripSkipperDTO;
 import com.geodsea.pub.web.rest.mapper.Mapper;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class TripResource {
     private final Logger log = LoggerFactory.getLogger(TripResource.class);
 
     @Inject
-    private SkipperService skipperService;
+    private TripService tripService;
 
     /**
      * POST  /rest/trips -> Create a new trip.
@@ -46,7 +46,7 @@ public class TripResource {
 
         if (trip.getId() == null) {
             try {
-                Trip created = skipperService.createTripPlan(trip.getVessel().getId(), trip.getSkipper().getId(),
+                Trip created = tripService.createTripPlan(trip.getVessel().getId(), trip.getSkipper().getId(),
                         trip.getHeadline(), trip.getScheduledStartTime(), trip.getScheduledEndTime(), trip.getSummary(), null,
                         trip.getFuelOnBoard(), trip.getPeopleOnBoard());
                 return new ResponseEntity<Long>(created.getId(), HttpStatus.OK);
@@ -55,7 +55,7 @@ public class TripResource {
             }
         } else {
             try {
-                skipperService.updatePlan(trip.getId(), trip.getSkipper().getId(), trip.getHeadline(),
+                tripService.updatePlan(trip.getId(), trip.getSkipper().getId(), trip.getHeadline(),
                         trip.getScheduledStartTime(), trip.getScheduledEndTime(), trip.getSummary(), null,
                         trip.getFuelOnBoard(), trip.getPeopleOnBoard());
                 return new ResponseEntity<Long>(trip.getId(), HttpStatus.OK);
@@ -75,7 +75,7 @@ public class TripResource {
     @Timed
     public List<TripSkipperDTO> getAll() {
         log.debug("REST request to get all Trips");
-        List<TripSkipper> list = skipperService.getTripsForSkipper();
+        List<TripSkipper> list = tripService.getTripsForSkipper();
 
         List<TripSkipperDTO> dtoList = new ArrayList<TripSkipperDTO>();
         for (TripSkipper item : list)
@@ -92,7 +92,7 @@ public class TripResource {
     @Timed
     public ResponseEntity<TripSkipperDTO> get(@PathVariable Long id, HttpServletResponse response) {
         log.debug("REST request to get Trip : {}", id);
-        Trip trip = skipperService.getTrip(id);
+        Trip trip = tripService.getTrip(id);
         if (trip == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
@@ -112,6 +112,6 @@ public class TripResource {
     @Timed
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete Trip : {}", id);
-        skipperService.deleteTrip(id);
+        tripService.deleteTrip(id);
     }
 }

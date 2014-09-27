@@ -2,6 +2,7 @@ package com.geodsea.pub.service;
 
 import com.geodsea.pub.Application;
 import com.geodsea.pub.domain.*;
+import com.geodsea.pub.domain.type.StorageType;
 import com.geodsea.pub.domain.type.VesselType;
 import com.geodsea.pub.domain.util.DateConstants;
 import com.geodsea.pub.repository.*;
@@ -36,12 +37,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @WebAppConfiguration
 @ActiveProfiles("dev")
 //@Transactional()
-public class SkipperServiceTripTest {
+public class TripServiceTripTest {
 
-    private static final Logger logger = Logger.getLogger(SkipperServiceTripTest.class);
+    private static final Logger logger = Logger.getLogger(TripServiceTripTest.class);
 
     @Inject
-    private SkipperService skipperService;
+    private TripService tripService;
 
     @Inject
     private VesselRepository vesselRepository;
@@ -49,15 +50,20 @@ public class SkipperServiceTripTest {
     @Inject
     private PersonRepository personRepository;
 
+    @Inject
+    private VesselService vesselService;
+
     private Vessel vessel;
 
     private Person person;
 
     @Before
-    public void setup() {
-        vessel = new Vessel("Monty", VesselType.CABIN);
-        vessel = vesselRepository.save(vessel);
+    public void setup() throws ActionRefusedException {
+
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("user", "user"));
+        vessel = new Vessel(null, "AUSTA99999H899", "Monty", VesselType.CABIN, "#f7f7f7", "#f7f7f7", 5, null, null, StorageType.HOME, "my home", null);
         person = personRepository.getByLogin("user");
+        vesselService.registerVessel(vessel, new long[]{person.getId()}, new long[]{person.getId()});
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("user", "user"));
     }
 
@@ -80,17 +86,15 @@ public class SkipperServiceTripTest {
         long currentTime = now + 1 * DateConstants.DAYS;
         long finish = now + 1 * DateConstants.DAYS + 1 * DateConstants.HOURS;
 
-        // when a plan is made, the trip is defined.
-        // vesselId, skipperId, headline, startTime, endTime, summary, MultiPoint wayPoints, int fuel, int people
-        Trip trip = skipperService.createTripPlan(vessel.getId(), person.getId(), "Test", new Date(currentTime),
+        Trip trip = tripService.createTripPlan(vessel.getId(), person.getId(), "Test", new Date(currentTime),
                 new Date(finish), "Summary", null, 100, 3);
 
         // the person then makes a start
-        trip = skipperService.getTrip(trip.getId());
+        trip = tripService.getTrip(trip.getId());
 
         // actual start 30 seconds later than planned start
         currentTime = currentTime +  + 30000;
-        skipperService.commenceTrip(trip.getId(), new Date(currentTime));
+        tripService.commenceTrip(trip.getId(), new Date(currentTime));
 
 
         // test data for starting location - Hillary's boat ramp 10 minutes ago
@@ -103,26 +107,26 @@ public class SkipperServiceTripTest {
         Date locationReportTime = new Date(currentTime);
         LocationTime location = new LocationTime(point, locationReportTime, locationReportTime);
 
-        skipperService.reportLocation(trip.getId(), location);
+        tripService.reportLocation(trip.getId(), location);
 
-        trip = skipperService.getTrip(trip.getId());
+        trip = tripService.getTrip(trip.getId());
         assertThat(trip.getRescue()).isNotNull();
 
         // some time later a location report is received.
         // and the location reports appended.
         List<LocationTime> updates = exitHillarys(currentTime);
         int updateSize = updates.size();
-        skipperService.reportLocations(trip.getId(), updates);
+        tripService.reportLocations(trip.getId(), updates);
 
-        Trip currentTrip = skipperService.getTrip(trip.getId());
+        Trip currentTrip = tripService.getTrip(trip.getId());
 
-        List<LocationTime> locationTimes = skipperService.getLocationTimes("user", trip.getId());
+        List<LocationTime> locationTimes = tripService.getLocationTimes("user", trip.getId());
 
         // check
         assertThat(locationTimes.size()).isEqualTo(1 + updateSize);
 
 
-        skipperService.deleteTrip(trip.getId());
+        tripService.deleteTrip(trip.getId());
 
         // person is not deleted in the process
         assertThat(personRepository.getByLogin("user")).isNotNull();

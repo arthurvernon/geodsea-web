@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import javax.inject.Inject;
 
+import com.geodsea.pub.service.TripService;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +58,7 @@ public class TripResourceTest {
     private static final String UPD_SAMPLE_TEXT_ATTR = "sampleTextAttributeUpt";
 
     @Inject
-    private TripRepository tripRepository;
+    private TripService tripService;
 
     private MockMvc restTripMockMvc;
     
@@ -67,7 +68,7 @@ public class TripResourceTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         TripResource tripResource = new TripResource();
-        ReflectionTestUtils.setField(tripResource, "tripRepository", tripRepository);
+        ReflectionTestUtils.setField(tripResource, "tripService", tripService);
 
         this.restTripMockMvc = MockMvcBuilders.standaloneSetup(tripResource).build();
 

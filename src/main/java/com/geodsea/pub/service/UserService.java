@@ -17,7 +17,7 @@ import javax.inject.Inject;
  * Service class for managing users.
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = {ActionRefusedException.class})
 public class UserService  {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);

@@ -124,7 +124,7 @@ public class Vessel implements Serializable {
      * Maximum number of litres of fuel that the boat can carry.
      */
     @Column(name="FUEL_CAPACITY_L", nullable = true)
-    private int fuelCapacity;
+    private Integer fuelCapacity;
 
     /**
      * A classification of the vessel that would provide the best clue from a distance to identify the vessel.
@@ -150,17 +150,6 @@ public class Vessel implements Serializable {
         super();
     }
 
-    /**
-     * Essential fields to create a vessel.
-     * @param name
-     * @param type
-     */
-    public Vessel(String name, VesselType type)
-    {
-        super();
-        this.vesselName = name;
-        this.vesselType = type;
-    }
 
     /**
      * Create a vessel with all but it's ID
@@ -176,7 +165,7 @@ public class Vessel implements Serializable {
      * @param emergencyEquipment
      */
     public Vessel(Long id, String hullIdentificationNumber, String vesselName, VesselType vesselType, String hullColor,
-                  String superstructureColor, int length, Integer totalHP, int fuelCapacity, StorageType storageType, String storageLocation,
+                  String superstructureColor, int length, Integer totalHP, Integer fuelCapacity, StorageType storageType, String storageLocation,
                   List<EmergencyEquipment> emergencyEquipment) {
         this.id = id;
         this.hullIdentificationNumber = hullIdentificationNumber;
@@ -292,11 +281,11 @@ public class Vessel implements Serializable {
         this.totalHP = totalHP;
     }
 
-    public int getFuelCapacity() {
+    public Integer getFuelCapacity() {
         return fuelCapacity;
     }
 
-    public void setFuelCapacity(int fuelCapacity) {
+    public void setFuelCapacity(Integer fuelCapacity) {
         this.fuelCapacity = fuelCapacity;
     }
 

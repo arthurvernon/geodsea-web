@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * TODO rename this TripService
+ * Service to manage trips.
  */
 @Service
-@Transactional
-public class SkipperService extends BaseService {
+@Transactional(rollbackFor = {ActionRefusedException.class})
+public class TripService extends BaseService {
 
     @Inject
     Validator validator;
@@ -51,7 +51,7 @@ public class SkipperService extends BaseService {
     @Inject
     private SkipperRepository skipperRepository;
 
-    private final Logger log = LoggerFactory.getLogger(SkipperService.class);
+    private final Logger log = LoggerFactory.getLogger(TripService.class);
 
     public Trip addTripPlan(Trip trip) {
         return tripRepository.save(trip);
@@ -123,12 +123,11 @@ public class SkipperService extends BaseService {
         TripSkipper trip = new TripSkipper(vessel, person, headline, scheduledStartTime, scheduledEndTime, summary,
                 wayPoints, fuel, people);
 
-        // allow the skipper to see what is going on.
-        monitorRepository.save(new Monitor(trip, trip.getPerson()));
-
         validateTrip(trip);
 
+        // allow the skipper to see what is going on.
         trip = tripRepository.save(trip);
+        monitorRepository.save(new Monitor(trip, trip.getPerson()));
 
         // if way points are defined then we can include the Monitor
         if (wayPoints != null && !wayPoints.isEmpty()) {

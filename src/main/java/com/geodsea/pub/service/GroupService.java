@@ -20,10 +20,10 @@ import javax.validation.Validator;
 import java.util.*;
 
 /**
- * Created by Arthur Vernon on 13/09/2014.
+ * Manage personal groups.
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = {ActionRefusedException.class})
 public class GroupService extends BaseService {
 
     private final Logger log = LoggerFactory.getLogger(GroupService.class);
