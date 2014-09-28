@@ -53,31 +53,32 @@
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Sample text</th>
-                    <th>Sample date</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Sample text</th>
+                <th>Sample date</th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="skipper in skippers">
-                    <td>{{skipper.id}}</td>
-                    <td>{{skipper.sampleTextAttribute}}</td>
-                    <td>{{skipper.sampleDateAttribute}}</td>
-                    <td>
-                        <button type="submit"
-                                ng-click="update(skipper.id)"
-                                class="btn">
-                            <span class="glyphicon glyphicon-pencil"></span> Edit
-                        </button>
-                        <button type="submit"
-                                ng-click="delete(skipper.id)"
-                                class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove-circle"></span> Delete
-                        </button>
-                    </td>
-                </tr>
+            <tr ng-repeat="skipper in skippers">
+                <td>{{skipper.id}}</td>
+                <td>{{skipper.sampleTextAttribute}}</td>
+                <td>{{skipper.sampleDateAttribute}}</td>
+                <td>
+                    <button type="submit"
+                            ng-click="update(skipper.id)"
+                            class="btn">
+                        <span class="glyphicon glyphicon-pencil"></span><span translate="button.edit">Edit</span>
+                    </button>
+                    <button type="submit"
+                            ng-click="delete(skipper.id)"
+                            class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove-circle"></span><span
+                            translate="button.delete"> Delete</span>
+                    </button>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
