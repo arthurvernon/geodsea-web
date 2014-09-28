@@ -3,10 +3,9 @@
     <h2>Trips</h2>
 
     <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveTripModal" ng-click="clear()">
-        <span class="glyphicon glyphicon-flash"></span> Create a new Trip
+        <span class="glyphicon glyphicon-flash"></span><span translate="button.trip.create">Add a Trip</span>
     </button>
-    <div class="modal fade" id="saveTripModal" tabindex="-1" role="dialog" aria-labelledby="myTripLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="saveTripModal" tabindex="-1" role="dialog" aria-labelledby="myTripLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form name="form" role="form" novalidate
@@ -16,68 +15,112 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                 ng-click="clear()">&times;</button>
-                        <h4 class="modal-title" id="myTripLabel">Create or edit a Trip</h4>
+                        <h4 class="modal-title" id="myTripLabel" translate="title.tripedit">Create or edit a Trip</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>ID</label>
+                            <label translate="field.id.label">ID</label>
                             <input type="text" class="form-control" name="id"
                                    ng-model="trip.id" readonly>
                         </div>
 
+                        <!-- headline -->
                         <div class="form-group">
-                            <label>Sample text attribute</label>
-                            <input type="text" class="form-control" name="test"
-                                   ng-model="trip.sampleTextAttribute" ng-minlength=1 ng-maxlength=50 required>
+                            <label translate="field.trip.headline.label">Headline</label>
+                            <input type="text" class="form-control" name="headline" ng-model="trip.headline"
+                                   ng-minlength=2 ng-maxlength=100 required>
+
+                            <div class="error" ng-show="form.headline.$dirty && form.headline.$invalid">
+                                <small class="error" ng-show="form.headline.$error.required"
+                                       translate="field.trip.headline.required">
+                                    A vessel name is required.
+                                </small>
+                                <small class="error" ng-show="form.headline.$error.minlength"
+                                       translate="field.trip.headline.minlength">
+                                    A name must be at least 2 characters long
+                                </small>
+                                <small class="error" ng-show="form.headline.$error.maxlength"
+                                       translate="field.trip.headline.maxlength">
+                                    A name may not be more than 100 characters long.
+                                </small>
+                            </div>
                         </div>
 
+                        <!-- fuel on board -->
                         <div class="form-group">
-                            <label>Sample date attribute</label>
-                            <input type="date" class="form-control" name="test"
-                                   ng-model="trip.sampleDateAttribute" required>
+                            <label translate="field.trip.fuel.label">Fuel on board</label>
+                            <input type="number" ng-model="vessel.fuelOnBoard" name="fuel" min="0" max="10000"/>
+
+                            <div class="error" ng-show="form.fuel.$dirty && form.fuel.$invalid">
+                                <small class="error" ng-show="form.length.$error.number"
+                                       translate="field.trip.fuel.nan">
+                                    This is not a valid number.
+                                </small>
+                                <small class="error" ng-show="form.fuel.$error.min || form.fuel.$error.max"
+                                       translate="field.trip.fuel.range">
+                                    Fuel must be in the range 1-10000 metres.
+                                </small>
+                            </div>
                         </div>
                     </div>
+
+                    <div id="map" class="map" style="width: 100%; height: 400px;"></div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                            <span class="glyphicon glyphicon-ban-circle"></span><span
+                                translate="button.cancel">Cancel</span>
                         </button>
                         <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-save"></span> Save
+                            <span class="glyphicon glyphicon-save"></span><span translate="button.save">Save</span>
                         </button>
                     </div>
                 </form>
+
             </div>
+
         </div>
     </div>
+    <!--
+        POINT: 'Point',
+        LINE_STRING: 'LineString',
+        LINEAR_RING: 'LinearRing',
+        POLYGON: 'Polygon',
+        MULTI_POINT: 'MultiPoint',
+        MULTI_LINE_STRING: 'MultiLineString',
+        MULTI_POLYGON: 'MultiPolygon',
+        GEOMETRY_COLLECTION: 'GeometryCollection',
+        CIRCLE: 'Circle'
+        -->
 
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Sample text</th>
-                    <th>Sample date</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th translate="table.heading.id">ID</th>
+                <th translate="table.heading.headline">Headline</th>
+                <th translate="table.heading.fuel">Fuel (l)</th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="trip in trips">
-                    <td>{{trip.id}}</td>
-                    <td>{{trip.sampleTextAttribute}}</td>
-                    <td>{{trip.sampleDateAttribute}}</td>
-                    <td>
-                        <button type="submit"
-                                ng-click="update(trip.id)"
-                                class="btn">
-                            <span class="glyphicon glyphicon-pencil"></span> Edit
-                        </button>
-                        <button type="submit"
-                                ng-click="delete(trip.id)"
-                                class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove-circle"></span> Delete
-                        </button>
-                    </td>
-                </tr>
+            <tr ng-repeat="trip in trips">
+                <td>{{trip.id}}</td>
+                <td>{{trip.headline}}</td>
+                <td>{{trip.fuelOnBoard}}</td>
+                <td>
+                    <button type="submit"
+                            ng-click="update(trip.id)"
+                            class="btn">
+                        <span class="glyphicon glyphicon-pencil"></span> Edit
+                    </button>
+                    <button type="submit"
+                            ng-click="delete(trip.id)"
+                            class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove-circle"></span> Delete
+                    </button>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

@@ -8,6 +8,7 @@
         "vessel.create": "Add a Vessel",
         "group.create": "Add a Group",
         "member.create": "Add a Member",
+        "trip.create": "Add a Trip",
         "save": "Save",
         "lookup": "Lookup",
         "register": "Register"
@@ -160,6 +161,20 @@
             "minlength": "Your login is required to be at least 1 character",
             "maxlength": "Your login cannot be longer than 50 characters"
         },
+        "trip": {
+            "headline": {
+                "label": "Headline",
+                "placeholder": "A brief summary of the trip, shared with the SRO",
+                "required": "Headline is required",
+                "minlength": "A headline must contain at least 2 characters",
+                "maxlength": "A headline can be no more than 100 characters"
+            },
+            "fuel": {
+                "label": "Fuel on board",
+                "nan": "This is not a valid number.",
+                "range": "Length must be in the range 0-1000 litres."
+            }
+        },
         "vessel": {
             "equipment": {
               "label": "Emergency Equipment"
@@ -279,6 +294,17 @@
             "contact": "Contact",
             "faq": "FAQ",
             "privacy": "Privacy"
+        },
+        "owner": {
+            "main": "Owner",
+            "vessels": "Vessels",
+            "trips": "Trips",
+            "skippers": "Skippers"
+        },
+        "skipper": {
+            "main": "Skipper",
+            "vessels": "Vessels",
+            "trips": "Trips"
         }
     },
     "title": {
@@ -301,6 +327,7 @@
         "passwordForUser": "Password for [<b>{{username}}</b>]",
         "settings": "Settings for [<b>{{username}}</b>]",
         "sessions": "Active sessions for [<b>{{username}}</b>]",
+        "tripedit": "Add/Modify Trip",
         "vessel": "Vessel",
         "vesseledit": "Add/Modify Vessel",
         "vessels": "Vessels"
@@ -375,9 +402,11 @@
             "date": "Date",
             "email": "Email",
             "enabled": "Enabled",
+            "fuel": "Fuel (l)",
             "fuelcapacity": "Fuel Capacity",
             "groupemail": "Group Email",
             "groupname": "Group Name",
+            "headline": "Headline",
             "hin": "HIN",
             "ipaddress": "IP Address",
             "id": "ID",

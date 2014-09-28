@@ -7,9 +7,7 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +74,7 @@ public class Trip {
      */
     @Column(name = "FUEL_L", nullable = true)
     @Min(0)
+    @Max(10000)
     private Integer fuelOnBoard;
 
     /**
@@ -85,6 +84,8 @@ public class Trip {
      * </p>
      */
     @Column(name = "HEADLINE", nullable = false, length = 100)
+    @Size(min = 2, max = 100)
+    @NotNull
     private String headline;
 
 
