@@ -8,6 +8,9 @@ geodseaApp
                     templateUrl: 'views/skippertrips.html',
                     controller: 'SkipperTripController',
                     resolve:{
+                        vessels: ['SkipperVessel', function(SkipperVessel){
+                            return SkipperVessel.query();
+                        }],
                         resolvedSkipperTrip: ['SkipperTrip', function (SkipperTrip) {
                             return SkipperTrip.query();
                         }]

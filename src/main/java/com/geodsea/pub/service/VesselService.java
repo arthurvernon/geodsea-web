@@ -231,8 +231,7 @@ public class VesselService {
         }
     }
 
-    private void addRole(Participant participant, String role)
-    {
+    private void addRole(Participant participant, String role) {
         if (!participant.hasAuthority(role)) {
             Authority authority = authorityRepository.findOne(role);
             participant.addAuthority(authority);
@@ -240,13 +239,11 @@ public class VesselService {
         }
     }
 
-    private void addOwnerRole(Participant participant)
-    {
+    private void addOwnerRole(Participant participant) {
         addRole(participant, AuthoritiesConstants.OWNER);
     }
 
-    private void addSkipperRole(Participant participant)
-    {
+    private void addSkipperRole(Participant participant) {
         addRole(participant, AuthoritiesConstants.SKIPPER);
     }
 
@@ -338,5 +335,28 @@ public class VesselService {
         checkVesselUpdatePermission(vessel);
         vesselRepository.delete(vessel);
 
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public List<Vessel> retrieveSkipperedVessels() throws ActionRefusedException {
+        Person person = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
+        if (!person.isEnabled())
+            throw new ActionRefusedException(ErrorCode.USER_DISABLED, "User is disabled: " + person.getLogin());
+
+        if (SecurityUtils.userHasRole(AuthoritiesConstants.SKIPPER)) {
+            List<Skipper> skippers = skipperRepository.getSkipperByPerson(person);
+            if (skippers.size() == 0)
+                throw new ActionRefusedException(ErrorCode.NOT_A_SKIPPER, "User is not a skipper: " + person.getLogin());
+
+            List<Vessel> vessels = new ArrayList<Vessel>();
+            for (Skipper skipper : skippers)
+                if (skipper.active())
+                    vessels.add(skipper.getVessel());
+            if (vessels.size() == 0)
+                throw new ActionRefusedException(ErrorCode.NOT_ACTIVE_SKIPPER, "User is not an active skipper: " + person.getLogin());
+            else
+                return vessels;
+        } else
+            throw new ActionRefusedException(ErrorCode.NOT_A_SKIPPER, "User is not a skipper: " + person.getLogin());
     }
 }

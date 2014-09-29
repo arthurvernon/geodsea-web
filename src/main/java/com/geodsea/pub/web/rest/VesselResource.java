@@ -91,6 +91,33 @@ public class VesselResource {
     }
 
     /**
+     * Retrieve all the vessels that this person (a skipper) is permitted to see.
+     * <p>
+     * Administrators can view all vessels, but are unlikely to call this method direct.
+     * Owners and skippers may retrieve vessel details at any time.
+     * Rescue organisations can view vessels they are monitoring.
+     * </p>
+     * GET  /rest/vessels -> get all the vessels.
+     */
+    @RequestMapping(value = "/rest/skipper/vessels",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<?> getSkipperedVessels() {
+        log.debug("REST request to get all skippered vessels");
+        try {
+            Collection<Vessel> vessels = vesselService.retrieveSkipperedVessels();
+            log.debug("REST request to get all Vessels returned " + vessels.size() + " vessels.");
+            List<VesselDTO> dtos = new ArrayList<VesselDTO>();
+            for (Vessel vessel : vessels)
+                dtos.add(Mapper.vessel(vessel));
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+        } catch (ActionRefusedException e) {
+            return new ResponseEntity<String>(e.getCode(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    /**
      * GET  /rest/vessels/:id -> get the "id" boat.
      */
     @RequestMapping(value = "/rest/vessels/{id}",

@@ -18,4 +18,8 @@ public interface SkipperRepository extends JpaRepository<Skipper, Long> {
     List<Skipper> getSkipperByPerson(Person person);
 
     Skipper getSkipperByPersonAndVessel(Person person, Vessel vessel);
+
+    @Query("select s from Skipper s where s.person.id = ?1 and s.suspended = false and " +
+            "(s.grantedTo is null or s.grantedTo > CURRENT_TIMESTAMP) and (s.grantedFrom is null or s.grantedFrom < CURRENT_TIMESTAMP)")
+    List<Skipper> getActiveSkippers(long id);
 }

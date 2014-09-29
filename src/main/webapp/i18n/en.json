@@ -557,6 +557,8 @@
         "NoSuchGroup": "There is no such group name registered",
         "NoSuchVessel": "No such vessel",
         "NotAGroupMember": "You are not a member of this group",
+        "NotActiveSkipper": "You are not an active skipper of any vessel",
+        "NotASkipper": "You are not a skipper",
         "NotAPerson": "The logon entered is not that of a person",
         "PermissionDenied": "You do not have permission to perform this action",
         "UsernameAlreadyExists": "This name is already in use. try again",

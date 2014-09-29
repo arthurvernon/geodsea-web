@@ -58,4 +58,6 @@ public class ErrorCode {
     public static final String VESSEL_NOT_SPECIFIED ="VesselNotSpecified";
 
     public static final String SKIPPER_NOT_SPECIFIED = "SkipperNotSpecified";
+    public static final String NOT_A_SKIPPER = "NotASkipper";
+    public static final String NOT_ACTIVE_SKIPPER = "NotActiveSkipper";
 }

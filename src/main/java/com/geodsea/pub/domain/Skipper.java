@@ -60,6 +60,7 @@ public class Skipper {
 
     /**
      * Create a new skipper that is not suspended and has not time constraints.
+     *
      * @param vessel non-null vessel that the person is being given the right to use.
      * @param person non-null person that is the skipper
      */
@@ -114,5 +115,12 @@ public class Skipper {
 
     public void setSuspended(boolean suspended) {
         this.suspended = suspended;
+    }
+
+    public boolean active() {
+        Date now = new Date();
+        return (!suspended)
+                && (grantedFrom == null || grantedFrom.after(now))
+                && (grantedTo == null || grantedTo.before(now));
     }
 }

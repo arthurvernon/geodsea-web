@@ -1,7 +1,6 @@
 <div>
 
     <h2>Trips</h2>
-
     <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveTripModal" ng-click="clear()">
         <span class="glyphicon glyphicon-flash"></span><span translate="button.trip.create">Add a Trip</span>
     </button>
@@ -25,6 +24,15 @@
                             <label translate="field.id.label">ID</label>
                             <input type="text" class="form-control" name="id"
                                    ng-model="trip.id" readonly>
+                        </div>
+
+                        <!-- vessel -->
+                        <div class="form-group">
+                            <div class="form-group check-element animate-show">
+                                <label translate="field.vessel.name.label">Vessel Name</label>
+                                <select ng-model="trip.vessel.id" ng-options="v.id as v.vesselName for v in vessels" required="required">
+                                </select>
+                            </div>
                         </div>
 
                         <!-- headline -->
@@ -101,6 +109,7 @@
             <thead>
             <tr>
                 <th translate="table.heading.id">ID</th>
+                <th translate="table.heading.vesselname">Vessel Name</th>
                 <th translate="table.heading.headline">Headline</th>
                 <th translate="table.heading.fuel">Fuel (l)</th>
                 <th></th>
@@ -109,6 +118,7 @@
             <tbody>
             <tr ng-repeat="trip in trips">
                 <td>{{trip.id}}</td>
+                <td>{{trip.vessel.vesselName}}</td>
                 <td>{{trip.headline}}</td>
                 <td>{{trip.fuelOnBoard}}</td>
                 <td>

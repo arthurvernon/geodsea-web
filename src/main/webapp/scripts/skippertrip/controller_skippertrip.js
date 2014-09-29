@@ -1,10 +1,13 @@
 'use strict';
 
-geodseaApp.controller('SkipperTripController', ['$scope', 'resolvedSkipperTrip', 'SkipperTrip', '$timeout',
-    function ($scope, resolvedSkipperTrip, SkipperTrip, $timeout) {
+geodseaApp.controller('SkipperTripController', ['$scope', 'resolvedSkipperTrip', 'vessels', 'SkipperTrip', '$timeout',
+    function ($scope, resolvedSkipperTrip, vessels, SkipperTrip, $timeout) {
 
         $scope.errorcode = null;
         $scope.error = null;
+        $scope.vessels = vessels;
+
+        alert('vessels: ' + vessels.length);
         $scope.trips = resolvedSkipperTrip;
         $scope.map = {};
         $scope.linestring = null;

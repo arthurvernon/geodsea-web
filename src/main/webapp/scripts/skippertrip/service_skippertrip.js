@@ -7,3 +7,11 @@ geodseaApp.factory('SkipperTrip', ['$resource',
             'get': { method: 'GET'}
         });
     }]);
+
+geodseaApp.factory('SkipperVessel', ['$resource',
+    function ($resource) {
+        return $resource('app/rest/skipper/vessels/:id', {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': { method: 'GET'}
+        });
+    }]);
