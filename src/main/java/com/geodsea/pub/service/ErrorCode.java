@@ -54,4 +54,8 @@ public class ErrorCode {
      */
     public static final String NOT_SKIPPER_OF_VESSEL = "NotASkipperOFVessel";
     public static final String NO_SUCH_TRIP = "NoSuchTrip";
+
+    public static final String VESSEL_NOT_SPECIFIED ="VesselNotSpecified";
+
+    public static final String SKIPPER_NOT_SPECIFIED = "SkipperNotSpecified";
 }

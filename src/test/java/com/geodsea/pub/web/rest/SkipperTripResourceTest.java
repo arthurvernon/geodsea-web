@@ -3,9 +3,7 @@ package com.geodsea.pub.web.rest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.inject.Inject;
 
@@ -16,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -30,13 +27,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.geodsea.pub.Application;
 import com.geodsea.pub.domain.Trip;
-import com.geodsea.pub.repository.TripRepository;
 
 
 /**
  * Test class for the TripResource REST controller.
  *
- * @see TripResource
+ * @see SkipperTripResource
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -45,7 +41,7 @@ import com.geodsea.pub.repository.TripRepository;
     DirtiesContextTestExecutionListener.class,
     TransactionalTestExecutionListener.class })
 @ActiveProfiles("dev")
-public class TripResourceTest {
+public class SkipperTripResourceTest {
     
     private static final Long DEFAULT_ID = new Long(1L);
 
@@ -67,10 +63,10 @@ public class TripResourceTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        TripResource tripResource = new TripResource();
-        ReflectionTestUtils.setField(tripResource, "tripService", tripService);
+        SkipperTripResource skipperTripResource = new SkipperTripResource();
+        ReflectionTestUtils.setField(skipperTripResource, "tripService", tripService);
 
-        this.restTripMockMvc = MockMvcBuilders.standaloneSetup(tripResource).build();
+        this.restTripMockMvc = MockMvcBuilders.standaloneSetup(skipperTripResource).build();
 
         trip = new Trip();
         trip.setId(DEFAULT_ID);

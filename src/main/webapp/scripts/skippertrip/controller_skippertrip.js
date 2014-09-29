@@ -1,9 +1,11 @@
 'use strict';
 
-geodseaApp.controller('TripController', ['$scope', 'resolvedTrip', 'Trip', '$timeout',
-    function ($scope, resolvedTrip, Trip, $timeout) {
+geodseaApp.controller('SkipperTripController', ['$scope', 'resolvedSkipperTrip', 'SkipperTrip', '$timeout',
+    function ($scope, resolvedSkipperTrip, SkipperTrip, $timeout) {
 
-        $scope.trips = resolvedTrip;
+        $scope.errorcode = null;
+        $scope.error = null;
+        $scope.trips = resolvedSkipperTrip;
         $scope.map = {};
         $scope.linestring = null;
         $scope.map.draw = null;
@@ -115,11 +117,20 @@ geodseaApp.controller('TripController', ['$scope', 'resolvedTrip', 'Trip', '$tim
         };
 
         $scope.create = function () {
-            Trip.save($scope.trip,
+            SkipperTrip.save($scope.trip,
                 function () {
                     $scope.trips = Trip.query();
                     $('#saveTripModal').modal('hide');
                     $scope.clear();
+                    $scope.errorcode = null;
+                    $scope.error = null;
+                },
+                function (httpResponse) {
+                    $scope.success = null;
+                        if (httpResponse.data)
+                            $scope.errorcode = "errors."+ httpResponse.data;
+                        else
+                            $scope.error = "ERROR";
                 });
         };
 
@@ -130,14 +141,17 @@ geodseaApp.controller('TripController', ['$scope', 'resolvedTrip', 'Trip', '$tim
         };
 
         $scope.delete = function (id) {
-            Trip.delete({id: id},
+            SkipperTrip.delete({id: id},
                 function () {
                     $scope.trips = Trip.query();
                 });
         };
 
         $scope.clear = function () {
-            $scope.trip = {id: null, sampleTextAttribute: null, sampleDateAttribute: null};
+            $scope.trip = {id: null, headline: null, summary: null, peopleOnBoard: null, fuelOnBoard: null,
+                scheduledStartTime: null, actualStartTime: null, scheduledEndTime: null, actualEndTime:null,
+                skipper: null, vessel: null };
+
             $scope.initmap();
         };
 

@@ -12,7 +12,7 @@ import java.util.Date;
  * or where there is a planned stopover and a new trip at some later time.
  * </p>
  */
-public class TripSkipperDTO extends TripDTO {
+public class SkipperTripDTO extends TripDTO {
 
 
     /**
@@ -43,11 +43,11 @@ public class TripSkipperDTO extends TripDTO {
     private Date scheduledStartTime;
 
 
-    public TripSkipperDTO() {
+    public SkipperTripDTO() {
         super();
     }
 
-    public TripSkipperDTO(Long id, ParticipantDTO skipper, VesselDTO vessel, RescueOrganisationDTO rescueOrganisation,
+    public SkipperTripDTO(Long id, ParticipantDTO skipper, VesselDTO vessel, RescueOrganisationDTO rescueOrganisation,
                           String headline, String summary, Integer peopleOnBoard, Integer fuelOnBoard, Date scheduledStartTime,
                           Date actualStartTime, Date scheduledEndTime, Date actualEndTime) {
         super(id,rescueOrganisation, headline, peopleOnBoard, fuelOnBoard, actualStartTime, scheduledEndTime, actualEndTime);

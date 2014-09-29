@@ -4,8 +4,9 @@ import com.codahale.metrics.annotation.Timed;
 import com.geodsea.pub.domain.Trip;
 import com.geodsea.pub.domain.TripSkipper;
 import com.geodsea.pub.service.ActionRefusedException;
+import com.geodsea.pub.service.ErrorCode;
 import com.geodsea.pub.service.TripService;
-import com.geodsea.pub.web.rest.dto.TripSkipperDTO;
+import com.geodsea.pub.web.rest.dto.SkipperTripDTO;
 import com.geodsea.pub.web.rest.mapper.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +25,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/app")
-public class TripResource {
+public class SkipperTripResource {
 
-    private final Logger log = LoggerFactory.getLogger(TripResource.class);
+    private final Logger log = LoggerFactory.getLogger(SkipperTripResource.class);
 
     @Inject
     private TripService tripService;
@@ -41,11 +42,16 @@ public class TripResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<?> create(@RequestBody TripSkipperDTO trip) {
+    public ResponseEntity<?> create(@RequestBody SkipperTripDTO trip) {
         log.debug("REST request to save Trip : {}", trip);
 
         if (trip.getId() == null) {
             try {
+                if (trip.getVessel() == null)
+                    return new ResponseEntity<>(ErrorCode.VESSEL_NOT_SPECIFIED, HttpStatus.BAD_REQUEST);
+                if (trip.getSkipper() == null)
+                    return new ResponseEntity<>(ErrorCode.SKIPPER_NOT_SPECIFIED, HttpStatus.BAD_REQUEST);
+
                 Trip created = tripService.createTripPlan(trip.getVessel().getId(), trip.getSkipper().getId(),
                         trip.getHeadline(), trip.getScheduledStartTime(), trip.getScheduledEndTime(), trip.getSummary(), null,
                         trip.getFuelOnBoard(), trip.getPeopleOnBoard());
@@ -73,11 +79,11 @@ public class TripResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<TripSkipperDTO> getAll() {
+    public List<SkipperTripDTO> getAll() {
         log.debug("REST request to get all Trips");
         List<TripSkipper> list = tripService.getTripsForSkipper();
 
-        List<TripSkipperDTO> dtoList = new ArrayList<TripSkipperDTO>();
+        List<SkipperTripDTO> dtoList = new ArrayList<SkipperTripDTO>();
         for (TripSkipper item : list)
             dtoList.add(Mapper.tripSkipper(item));
         return dtoList;
@@ -90,7 +96,7 @@ public class TripResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TripSkipperDTO> get(@PathVariable Long id, HttpServletResponse response) {
+    public ResponseEntity<SkipperTripDTO> get(@PathVariable Long id, HttpServletResponse response) {
         log.debug("REST request to get Trip : {}", id);
         Trip trip = tripService.getTrip(id);
         if (trip == null)
@@ -100,7 +106,7 @@ public class TripResource {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 
-        return new ResponseEntity<TripSkipperDTO>(Mapper.tripSkipper((TripSkipper) trip), HttpStatus.OK);
+        return new ResponseEntity<SkipperTripDTO>(Mapper.tripSkipper((TripSkipper) trip), HttpStatus.OK);
     }
 
     /**

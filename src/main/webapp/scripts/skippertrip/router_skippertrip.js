@@ -4,16 +4,16 @@ geodseaApp
     .config(['$routeProvider', '$httpProvider', '$translateProvider', 'USER_ROLES',
         function ($routeProvider, $httpProvider, $translateProvider, USER_ROLES) {
             $routeProvider
-                .when('/trip', {
-                    templateUrl: 'views/trips.html',
-                    controller: 'TripController',
+                .when('/skipper/trips', {
+                    templateUrl: 'views/skippertrips.html',
+                    controller: 'SkipperTripController',
                     resolve:{
-                        resolvedTrip: ['Trip', function (Trip) {
-                            return Trip.query();
+                        resolvedSkipperTrip: ['SkipperTrip', function (SkipperTrip) {
+                            return SkipperTrip.query();
                         }]
                     },
                     access: {
-                        authorizedRoles: [USER_ROLES.all]
+                        authorizedRoles: [USER_ROLES.ROLE_SKIPPER]
                     }
                 })
         }]);

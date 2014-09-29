@@ -18,6 +18,9 @@
                         <h4 class="modal-title" id="myTripLabel" translate="title.tripedit">Create or edit a Trip</h4>
                     </div>
                     <div class="modal-body">
+                        <div class="alert alert-danger" ng-show="errorcode" translate="{{errorcode}}">
+                        </div>
+
                         <div class="form-group">
                             <label translate="field.id.label">ID</label>
                             <input type="text" class="form-control" name="id"
@@ -33,7 +36,7 @@
                             <div class="error" ng-show="form.headline.$dirty && form.headline.$invalid">
                                 <small class="error" ng-show="form.headline.$error.required"
                                        translate="field.trip.headline.required">
-                                    A vessel name is required.
+                                    A headline is required.
                                 </small>
                                 <small class="error" ng-show="form.headline.$error.minlength"
                                        translate="field.trip.headline.minlength">
@@ -52,7 +55,7 @@
                             <input type="number" ng-model="vessel.fuelOnBoard" name="fuel" min="0" max="10000"/>
 
                             <div class="error" ng-show="form.fuel.$dirty && form.fuel.$invalid">
-                                <small class="error" ng-show="form.length.$error.number"
+                                <small class="error" ng-show="form.fuel.$error.number"
                                        translate="field.trip.fuel.nan">
                                     This is not a valid number.
                                 </small>

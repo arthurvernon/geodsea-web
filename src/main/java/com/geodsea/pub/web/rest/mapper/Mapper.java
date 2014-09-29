@@ -66,8 +66,8 @@ public class Mapper {
                 vessel.getTotalHP(), vessel.getFuelCapacity(), vessel.getStorageType(), vessel.getStorageLocation(), vessel.getEmergencyEquipment());
     }
 
-    public static TripSkipperDTO vessel(TripSkipper trip) {
-        return new TripSkipperDTO(trip.getId(), participant(trip.getPerson()), vessel(trip.getVessel()), rescueOrganisation(trip.getRescue()),
+    public static SkipperTripDTO vessel(TripSkipper trip) {
+        return new SkipperTripDTO(trip.getId(), participant(trip.getPerson()), vessel(trip.getVessel()), rescueOrganisation(trip.getRescue()),
                 trip.getHeadline(), trip.getSummary(), trip.getPeopleOnBoard(), trip.getFuelOnBoard(), trip.getScheduledStartTime(),
                 trip.getActualStartTime(), trip.getScheduledEndTime(), trip.getActualEndTime());
     }
@@ -148,8 +148,8 @@ public class Mapper {
                 participant.getEmail(), participant.getLangKey(), ((Person) participant).getTelephone());
     }
 
-    public static TripSkipperDTO tripSkipper(TripSkipper trip) {
-        return new TripSkipperDTO(trip.getId(), participant(trip.getPerson()), vessel(trip.getVessel()), rescueOrganisation(trip.getRescue()),
+    public static SkipperTripDTO tripSkipper(TripSkipper trip) {
+        return new SkipperTripDTO(trip.getId(), participant(trip.getPerson()), vessel(trip.getVessel()), rescueOrganisation(trip.getRescue()),
                 trip.getHeadline(), trip.getSummary(), trip.getPeopleOnBoard(), trip.getFuelOnBoard(), trip.getScheduledStartTime(),
                 trip.getActualStartTime(), trip.getScheduledEndTime(), trip.getActualEndTime());
     }

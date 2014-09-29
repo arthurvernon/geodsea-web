@@ -572,7 +572,9 @@
         "OwnershipByPeopleOrOrganisation" : "A vessel may be owned by people or an organisation, not both",
         "DuplicateHIN": "A vessel is already registered with this Hull Identification Number (HIN)",
         "UserMustOwnVessel": "You must include yourself in the list of owners",
-        "UserDisabled": "User account is disabled."
+        "UserDisabled": "User account is disabled.",
+        "VesselNotSpecified" : "Vessel was not specified",
+        "SkipperNotSpecified" : "Skipper was not specified"
     },
 
     "vessel": {
