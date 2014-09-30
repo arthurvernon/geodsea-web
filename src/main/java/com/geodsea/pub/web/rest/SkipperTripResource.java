@@ -43,7 +43,7 @@ public class SkipperTripResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<?> create(@RequestBody SkipperTripDTO trip) {
-        log.debug("REST request to save Trip : {}", trip);
+        log.debug("REST request to create or update a Trip : {}", trip);
 
         if (trip.getId() == null) {
             try {
