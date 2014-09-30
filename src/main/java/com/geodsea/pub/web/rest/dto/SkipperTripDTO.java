@@ -1,6 +1,5 @@
 package com.geodsea.pub.web.rest.dto;
 
-import com.geodsea.pub.domain.Vessel;
 
 import java.util.Date;
 
