@@ -1,13 +1,13 @@
 'use strict';
 
-geodseaApp.controller('SkipperTripController', ['$scope', 'resolvedSkipperTrip', 'vessels', 'SkipperTrip', '$timeout',
-    function ($scope, resolvedSkipperTrip, vessels, SkipperTrip, $timeout) {
+geodseaApp.controller('SkipperTripController', ['$scope', 'resolvedSkipperTrip', 'vessels', 'SkipperTrip',
+    'VesselSkipper', '$timeout',
+    function ($scope, resolvedSkipperTrip, vessels, SkipperTrip, VesselSkipper, $timeout) {
 
         $scope.errorcode = null;
         $scope.error = null;
         $scope.vessels = vessels;
-
-        alert('vessels: ' + vessels.length);
+        $scope.skippers = {};
         $scope.trips = resolvedSkipperTrip;
         $scope.map = {};
         $scope.linestring = null;
@@ -119,10 +119,29 @@ geodseaApp.controller('SkipperTripController', ['$scope', 'resolvedSkipperTrip',
             }
         };
 
+        /*
+         * revise the list of members within an organisation when a selection change occurs
+         */
+        $scope.loadSkippers = function() {
+            // clear any previous list immediately
+            $scope.skippers = null;
+            VesselSkipper.query({ vesselId: $scope.trip.vessel.id}, function (resp) {
+                    $scope.skippers = resp;
+                    $scope.trip.skipper = {id : $scope.skippers[0].id };
+                },
+                function (httpResponse) {
+                    $scope.success = null;
+                    if (httpResponse.data)
+                        $scope.errorcode = "errors."+ httpResponse.data;
+                    else
+                        $scope.error = "ERROR";
+                })};
+
+
         $scope.create = function () {
             SkipperTrip.save($scope.trip,
                 function () {
-                    $scope.trips = Trip.query();
+                    $scope.trips = SkipperTrip.query();
                     $('#saveTripModal').modal('hide');
                     $scope.clear();
                     $scope.errorcode = null;
@@ -138,7 +157,12 @@ geodseaApp.controller('SkipperTripController', ['$scope', 'resolvedSkipperTrip',
         };
 
         $scope.update = function (id) {
-            $scope.trip = Trip.get({id: id});
+            $scope.trip = SkipperTrip.get({id: id});
+            SkipperTrip.get({id: id},
+            function(resp){
+                $scope.trip =  resp;
+                $scope.loadSkippers();
+            });
             $('#saveTripModal').modal('show');
             $scope.initmap();
         };
@@ -146,7 +170,7 @@ geodseaApp.controller('SkipperTripController', ['$scope', 'resolvedSkipperTrip',
         $scope.delete = function (id) {
             SkipperTrip.delete({id: id},
                 function () {
-                    $scope.trips = Trip.query();
+                    $scope.trips = SkipperTrip.query();
                 });
         };
 

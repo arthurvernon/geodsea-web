@@ -66,10 +66,10 @@ public class TripService extends BaseService {
         if (trip == null)
             throw new ActionRefusedException(ErrorCode.NO_SUCH_TRIP, "No trip: " + tripId);
 
-        Person person = personRepository.getOne(skipperId);
-        checkPersonIsSkipper(skipperId, person, trip.getVessel().getId(), trip.getVessel());
+        Skipper skipper = skipperRepository.getOne(skipperId);
+        checkPersonIsSkipper(skipperId, skipper, trip.getVessel().getId(), trip.getVessel());
 
-        trip.setPerson(person);
+        trip.setPerson(skipper.getPerson());
         trip.setHeadline(headline);
         trip.setScheduledStartTime(scheduledStartTime);
         trip.setScheduledEndTime(scheduledEndTime);
@@ -104,7 +104,7 @@ public class TripService extends BaseService {
      * commence a journey.
      *
      * @param vesselId  the ID of the vessel being taken on the trip.
-     * @param personId  the Id of the person (skipper) in charge of the vessel
+     * @param skipperId  the Id of the person (skipper) in charge of the vessel
      * @param headline  a summary of the purpose of the trip, shared with SRO
      * @param scheduledEndTime   planned end time for the trip
      * @param summary   a personal summary of the trip, not shared with SRO
@@ -114,13 +114,13 @@ public class TripService extends BaseService {
      * @return a newly created trip
      */
     @PreAuthorize("isAuthenticated()")
-    public Trip createTripPlan(long vesselId, long personId, String headline, Date scheduledStartTime, Date scheduledEndTime,
+    public Trip createTripPlan(long vesselId, long skipperId, String headline, Date scheduledStartTime, Date scheduledEndTime,
                                String summary, MultiPoint wayPoints, int fuel, int people) throws ActionRefusedException {
-        Person person = personRepository.getOne(personId);
+        Skipper skipper = skipperRepository.getOne(skipperId);
         Vessel vessel = vesselRepository.findOne(vesselId);
-        checkPersonIsSkipper(personId, person, vesselId, vessel);
+        checkPersonIsSkipper(skipperId, skipper, vesselId, vessel);
 
-        TripSkipper trip = new TripSkipper(vessel, person, headline, scheduledStartTime, scheduledEndTime, summary,
+        TripSkipper trip = new TripSkipper(vessel, skipper.getPerson(), headline, scheduledStartTime, scheduledEndTime, summary,
                 wayPoints, fuel, people);
 
         validateTrip(trip);
@@ -142,19 +142,19 @@ public class TripService extends BaseService {
     /**
      * The vessel and person must exist, the person must be enabled and must also be an authorised skipper of the vessel.
      *
-     * @param personId Id of the person requested.
-     * @param person   optional person retrieved from the database
+     * @param skipperId Id of the person requested.
+     * @param skipper optional person retrieved from the database
      * @param vesselId supplied vessel ID
      * @param vessel   optional vessel retrieved from the database
      * @throws ActionRefusedException
      */
-    private void checkPersonIsSkipper(long personId, Person person, long vesselId, Vessel vessel) throws ActionRefusedException {
-        if (person == null)
-            throw new ActionRefusedException(ErrorCode.NO_SUCH_USER,
-                    "No person (skipper) with ID: " + personId);
+    private void checkPersonIsSkipper(long skipperId, Skipper skipper, long vesselId, Vessel vessel) throws ActionRefusedException {
+        if (skipper == null)
+            throw new ActionRefusedException(ErrorCode.NO_SUCH_SKIPPER, "No skipper with ID: " + skipperId);
         if (vessel == null)
             throw new ActionRefusedException(ErrorCode.NO_SUCH_VESSEL, "No vessel: " + vesselId);
 
+        Person person = skipper.getPerson();
         if (!person.isEnabled())
             throw new ActionRefusedException(ErrorCode.USER_DISABLED,
                     "Skipper's user account: " + person.getLogin() + " is disabled");

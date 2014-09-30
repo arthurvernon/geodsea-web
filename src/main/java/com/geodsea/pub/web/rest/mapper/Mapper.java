@@ -72,6 +72,12 @@ public class Mapper {
                 trip.getActualStartTime(), trip.getScheduledEndTime(), trip.getActualEndTime());
     }
 
+    public static SkipperDTO skipper(Skipper skipper)
+    {
+        return new SkipperDTO(skipper.getId(), participant(skipper.getPerson()), vessel(skipper.getVessel()),
+                skipper.getGrantedFrom(), skipper.getGrantedTo(), skipper.isSuspended());
+    }
+
     public static LicensorDTO licensor(Licensor licensor) {
         Organisation org = licensor.getOrganisation();
         String zoneWKT = GisService.toWKT(licensor.getZone().getZone());

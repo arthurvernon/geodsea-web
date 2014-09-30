@@ -1,9 +1,11 @@
 package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.geodsea.pub.domain.Skipper;
 import com.geodsea.pub.domain.Vessel;
 import com.geodsea.pub.service.ActionRefusedException;
 import com.geodsea.pub.service.VesselService;
+import com.geodsea.pub.web.rest.dto.SkipperDTO;
 import com.geodsea.pub.web.rest.dto.VesselAddDTO;
 import com.geodsea.pub.web.rest.dto.VesselDTO;
 import com.geodsea.pub.web.rest.mapper.Mapper;
@@ -116,6 +118,35 @@ public class VesselResource {
             return new ResponseEntity<String>(e.getCode(), HttpStatus.FORBIDDEN);
         }
     }
+
+    /**
+     * Get all the active skippers of the specified vessel
+     * GET  /rest/vessel/:id/skippers -> get the "id" boat.
+     */
+    @RequestMapping(value = "/rest/vessel/{id}/skippers",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<?> getSkippersOfVessel(@PathVariable Long id, HttpServletResponse response) {
+        log.debug("REST request to get skippers of vessel : {}", id);
+        try {
+            List<Skipper> skippers = vesselService.retrieveSkippersForVessel(id);
+            if (skippers == null || skippers.size() == 0) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+
+                log.debug("REST vessel : {} has {} skipper(s)", id, skippers.size());
+
+                List<SkipperDTO> dtos = new ArrayList<SkipperDTO>(skippers.size());
+                for (Skipper skipper : skippers)
+                    dtos.add(Mapper.skipper(skipper));
+                return new ResponseEntity<List<SkipperDTO>>(dtos, HttpStatus.OK);
+            }
+        } catch (ActionRefusedException e) {
+            return new ResponseEntity<String>(e.getCode(), HttpStatus.FORBIDDEN);
+        }
+    }
+
 
     /**
      * GET  /rest/vessels/:id -> get the "id" boat.

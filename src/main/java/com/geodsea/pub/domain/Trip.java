@@ -57,6 +57,7 @@ public class Trip {
      */
     @Column(name = "PEOPLE_ON_BOARD", nullable = true)
     @Min(1)
+    @Max(999)
     private Integer peopleOnBoard;
 
 

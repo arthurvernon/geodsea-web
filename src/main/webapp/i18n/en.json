@@ -145,6 +145,10 @@
             "minlength": "A question must contain at least two characters",
             "maxlength": "A question can be no longer than 100 characters"
         },
+        "skipper":
+        {
+            "label" : "Skipper"
+        },
         "skippers.label": "Select skippers",
         "telephone": {
             "label": "Telephone",
@@ -173,6 +177,11 @@
                 "label": "Fuel on board",
                 "nan": "This is not a valid number.",
                 "range": "Length must be in the range 0-1000 litres."
+            },
+            "people": {
+                "label": "People on board (incl the skipper)",
+                "nan": "This is not a valid number.",
+                "range": "Number of people on board must be in the range 1-999."
             }
         },
         "vessel": {
@@ -558,9 +567,11 @@
         "NoSuchVessel": "No such vessel",
         "NotAGroupMember": "You are not a member of this group",
         "NotActiveSkipper": "You are not an active skipper of any vessel",
+        "NoSuchSkipper": "There is no such skipper",
         "NotASkipper": "You are not a skipper",
         "NotAPerson": "The logon entered is not that of a person",
         "PermissionDenied": "You do not have permission to perform this action",
+        "PeopleOnBoardNotSpecified" : "Number of people on board is not specified",
         "UsernameAlreadyExists": "This name is already in use. try again",
         "NoSuchMember": "No such member exists",
         "VesselOwnerNotDefined": "Vessel owner was not specified",

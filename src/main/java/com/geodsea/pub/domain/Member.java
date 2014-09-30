@@ -135,4 +135,16 @@ public class Member extends AbstractAuditingEntity {
     }
 
 
+    public boolean active()
+    {
+        if (! active)
+            return false;
+        Date now = new Date();
+        if (memberUntil != null && memberUntil.before(now))
+            return false;
+        if (memberSince != null && memberSince.after(now))
+            return false;
+
+        return true;
+    }
 }

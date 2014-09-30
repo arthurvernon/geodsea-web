@@ -28,11 +28,18 @@
 
                         <!-- vessel -->
                         <div class="form-group">
-                            <div class="form-group check-element animate-show">
-                                <label translate="field.vessel.name.label">Vessel Name</label>
-                                <select ng-model="trip.vessel.id" ng-options="v.id as v.vesselName for v in vessels" required="required">
-                                </select>
-                            </div>
+                            <label translate="field.vessel.name.label">Vessel Name</label>
+                            <select ng-model="trip.vessel.id" ng-options="v.id as v.vesselName for v in vessels"
+                                    required="required" ng-change="loadSkippers()">
+                            </select>
+                        </div>
+
+                        <!-- choose skipper - but only once the vessel has been selected -->
+                        <div class="form-group check-element animate-show" >
+                            <label translate="field.skipper.label">Skipper</label>
+                            <select ng-model="trip.skipper.id" ng-options="s.id as s.person.name for s in skippers"
+                                    required="required" ng-disabled="!trip.vessel.id">
+                            </select>
                         </div>
 
                         <!-- headline -->
@@ -60,7 +67,7 @@
                         <!-- fuel on board -->
                         <div class="form-group">
                             <label translate="field.trip.fuel.label">Fuel on board</label>
-                            <input type="number" ng-model="vessel.fuelOnBoard" name="fuel" min="0" max="10000"/>
+                            <input type="number" ng-model="trip.fuelOnBoard" name="fuel" min="0" max="10000"/>
 
                             <div class="error" ng-show="form.fuel.$dirty && form.fuel.$invalid">
                                 <small class="error" ng-show="form.fuel.$error.number"
@@ -70,6 +77,23 @@
                                 <small class="error" ng-show="form.fuel.$error.min || form.fuel.$error.max"
                                        translate="field.trip.fuel.range">
                                     Fuel must be in the range 1-10000 metres.
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- people on board -->
+                        <div class="form-group">
+                            <label translate="field.trip.people.label">People on board</label>
+                            <input type="number" ng-model="trip.peopleOnBoard" name="people" min="1" max="999"/>
+
+                            <div class="error" ng-show="form.people.$dirty && form.people.$invalid">
+                                <small class="error" ng-show="form.people.$error.number"
+                                       translate="field.trip.people.nan">
+                                    This is not a valid number.
+                                </small>
+                                <small class="error" ng-show="form.people.$error.min || form.people.$error.max"
+                                       translate="field.trip.people.range">
+                                    People on board must be in the range 1-999.
                                 </small>
                             </div>
                         </div>

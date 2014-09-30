@@ -359,4 +359,78 @@ public class VesselService {
         } else
             throw new ActionRefusedException(ErrorCode.NOT_A_SKIPPER, "User is not a skipper: " + person.getLogin());
     }
+
+    /**
+     * Get all the currently active skippers for the vessel.
+     * <p>
+     * User must be an administrator, or an active user who is either a skipper or an owner of the vessel.
+     * As ownership may be by a collective, the person must be an active manager of that collective to be
+     * recognized as an owner.
+     * </p>
+     *
+     * @param vesselId
+     * @return
+     * @throws ActionRefusedException
+     */
+    @PreAuthorize("isAuthenticated()")
+    public List<Skipper> retrieveSkippersForVessel(long vesselId) throws ActionRefusedException {
+        Person person = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
+        if (!person.isEnabled())
+            throw new ActionRefusedException(ErrorCode.USER_DISABLED, "User is disabled: " + person.getLogin());
+
+        if (SecurityUtils.userHasRole(AuthoritiesConstants.ADMIN) ||
+                personIsActiveSkipper(person.getId(), vesselId) ||
+                personIsOwner(person.getId(), vesselId) ||
+                personIsMemberOfOwnerCollective(person.getId(), vesselId, true, true))
+
+            // Only active skippers
+            return skipperRepository.getActiveSkippersOfVessel(vesselId);
+        throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "Person: " + person.getLogin() +
+                " is not and owner, nor a skipper of vessel:" + vesselId);
+
+    }
+
+    private boolean personIsOwner(long personId, long vesselId) {
+        return ownerRepository.getOwnerByParticipantIdAndVesselId(personId, vesselId) != null;
+    }
+
+    /**
+     * Check if the person is an active skipper
+     *
+     * @param personId
+     * @param vesselId
+     * @return
+     */
+    private boolean personIsActiveSkipper(long personId, long vesselId) {
+        Skipper skipper = skipperRepository.getSkipperByPersonIdAndVesselId(personId, vesselId);
+        if (skipper == null)
+            return false;
+        return skipper.active();
+    }
+
+    /**
+     * Does a simple check to see whether the person is a member of the organisation.
+     * <p>
+     * No check is performed as to whether the person is a manager or an active member.
+     * </p>
+     *
+     * @param personId
+     * @param vesselId
+     * @return
+     */
+    private boolean personIsMemberOfOwnerCollective(long personId, long vesselId, boolean mustBeActive, boolean mustBeManager) {
+        List<Owner> owners = ownerRepository.findByVesselId(vesselId);
+        for (Owner o : owners)
+            if (o.getParticipant() instanceof Collective) {
+                for (Member m : ((Collective) o.getParticipant()).getMembers())
+                    if (m.getParticipant().getId().equals(personId)) {
+                        if (mustBeActive && !m.active())
+                            continue;
+                        if (mustBeManager & !m.isManager())
+                            continue;
+                        return true;
+                    }
+            }
+        return false;
+    }
 }

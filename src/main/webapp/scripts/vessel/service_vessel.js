@@ -8,4 +8,10 @@ geodseaApp.factory('Vessel', ['$resource',
         });
     }]);
 
+geodseaApp.factory('VesselSkipper', ['$resource',
+    function ($resource) {
+        return $resource('app/rest/vessel/:vesselId/skippers', {}, {
+            'query': { method: 'GET', isArray: true}
+        });
+    }]);
 

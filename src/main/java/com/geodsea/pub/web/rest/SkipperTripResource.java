@@ -51,6 +51,8 @@ public class SkipperTripResource {
                     return new ResponseEntity<>(ErrorCode.VESSEL_NOT_SPECIFIED, HttpStatus.BAD_REQUEST);
                 if (trip.getSkipper() == null)
                     return new ResponseEntity<>(ErrorCode.SKIPPER_NOT_SPECIFIED, HttpStatus.BAD_REQUEST);
+                if (trip.getPeopleOnBoard() == null)
+                    return new ResponseEntity<>(ErrorCode.PEOPLE_ON_BOARD_NOT_SPECIFIED, HttpStatus.BAD_REQUEST);
 
                 Trip created = tripService.createTripPlan(trip.getVessel().getId(), trip.getSkipper().getId(),
                         trip.getHeadline(), trip.getScheduledStartTime(), trip.getScheduledEndTime(), trip.getSummary(), null,

@@ -60,4 +60,6 @@ public class ErrorCode {
     public static final String SKIPPER_NOT_SPECIFIED = "SkipperNotSpecified";
     public static final String NOT_A_SKIPPER = "NotASkipper";
     public static final String NOT_ACTIVE_SKIPPER = "NotActiveSkipper";
+    public static final String PEOPLE_ON_BOARD_NOT_SPECIFIED = "PeopleOnBoardNotSpecified";
+    public static final String NO_SUCH_SKIPPER = "NoSuchSkipper";
 }

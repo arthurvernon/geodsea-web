@@ -20,4 +20,6 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
 
     @Query("select o from Owner o where o.participant in ?1")
     List<Owner> findForParticipant(List<Participant> participantId);
+
+    Owner getOwnerByParticipantIdAndVesselId(Long participantId, long vesselId);
 }
