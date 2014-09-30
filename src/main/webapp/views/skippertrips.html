@@ -46,7 +46,8 @@
                         <div class="form-group">
                             <label translate="field.trip.headline.label">Headline</label>
                             <input type="text" class="form-control" name="headline" ng-model="trip.headline"
-                                   ng-minlength=2 ng-maxlength=100 required>
+                                   ng-minlength=2 ng-maxlength=100 required
+                                   placeholder="{{'field.trip.headline.placeholder' | translate}}">
 
                             <div class="error" ng-show="form.headline.$dirty && form.headline.$invalid">
                                 <small class="error" ng-show="form.headline.$error.required"
@@ -81,6 +82,7 @@
                             </div>
                         </div>
 
+
                         <!-- people on board -->
                         <div class="form-group">
                             <label translate="field.trip.people.label">People on board</label>
@@ -97,9 +99,41 @@
                                 </small>
                             </div>
                         </div>
+
+                        <!-- summary -->
+                        <div class="form-group">
+                            <label translate="field.trip.summary.label">Summary</label>
+                            <textarea class="form-control" ng-model="trip.summary" name="summary"
+                                      ng-maxlength=255 rows="4"
+                                      placeholder="{{'field.trip.summary.placeholder' | translate}}"/>
+
+                            <div class="error" ng-show="form.summary.$dirty && form.summary.$invalid">
+                                <small class="error" ng-show="form.summary.$error.maxlength"
+                                       translate="field.trip.summary.maxlength">
+                                    A name may not exceed 255 characters.
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- scheduled start -->
+                        <div class="form-group">
+                            <label translate="field.trip.scheduledstart.label">Summary</label>
+                            <input type="datetime-local" class="form-control" ng-model="trip.scheduledStartTime" name="scheduledstart"
+                                      placeholder="{{'field.trip.scheduledstart.placeholder' | translate}}"/>
+
+                            <div class="error" ng-show="form.scheduledstart.$dirty && form.scheduledstart.$invalid">
+                                <small class="error" ng-show="form.scheduledstart.$error.datetimelocal"
+                                       translate="field.trip.scheduledstart.date">
+                                    Not a valid date
+                                </small>
+                            </div>
+                        </div>
+{{trip.scheduledStartTime | date:'dd-M-yyyy H:mm:ss Z'}}}
+                        <div id="map" class="map" style="width: 100%; height: 100%;"></div>
+
+
                     </div>
 
-                    <div id="map" class="map" style="width: 100%; height: 100%;"></div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
