@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +63,8 @@ public class TripSkipper extends Trip {
     /**
      * A useful precis of the trip, entered probably after the fact.
      */
-    @Column(name = "SUMMARY", nullable = true)
+    @Column(name = "SUMMARY", nullable = true, length = 255)
+    @Size(max = 255)
     private String summary;
 
 
