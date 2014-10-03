@@ -71,7 +71,7 @@ public class MailService {
     @Async
     public void sendActivationEmail(final String email, String content, Locale locale) {
         log.debug("Sending activation e-mail to '{}'", email);
-        final String subject = messageSource.getMessage(EMAIL_ACTIVATION_PREFIX + ".title", null, locale);
+        final String subject = messageSource.getMessage("email." + EMAIL_ACTIVATION_PREFIX + ".title", null, locale);
         sendEmail(email, subject, content, false, true);
     }
 }

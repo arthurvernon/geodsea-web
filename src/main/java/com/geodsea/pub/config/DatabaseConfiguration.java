@@ -1,10 +1,12 @@
 package com.geodsea.pub.config;
 
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import liquibase.integration.spring.SpringLiquibase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.EnvironmentAware;
@@ -38,7 +40,8 @@ public class DatabaseConfiguration implements EnvironmentAware {
         this.propertyResolver = new RelaxedPropertyResolver(environment, "spring.datasource.");
     }
 
-    @Bean
+    @Bean(destroyMethod = "shutdown")
+    @ConditionalOnMissingClass(name = "com.geodsea.pub.config.HerokuDatabaseConfiguration.class")
     public DataSource dataSource() {
         log.debug("Configuring Datasource");
         if (propertyResolver.getProperty("url") == null && propertyResolver.getProperty("databaseName") == null) {
@@ -58,6 +61,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
         }
         config.addDataSourceProperty("user", propertyResolver.getProperty("username"));
         config.addDataSourceProperty("password", propertyResolver.getProperty("password"));
+
         return new HikariDataSource(config);
     }
 
@@ -69,13 +73,18 @@ public class DatabaseConfiguration implements EnvironmentAware {
     }
 
     @Bean
-    public SpringLiquibase liquibase() {
+    public SpringLiquibase liquibase(DataSource dataSource) {
         log.debug("Configuring Liquibase");
         SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setDataSource(dataSource());
+        liquibase.setDataSource(dataSource);
         liquibase.setChangeLog("classpath:config/liquibase/master.xml");
         liquibase.setContexts("development, production");
         return liquibase;
+    }
+
+    @Bean
+    public Hibernate4Module hibernate4Module() {
+        return new Hibernate4Module();
     }
 }
 

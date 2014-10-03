@@ -2,13 +2,11 @@
 
 /* Controllers */
 
-geodseaApp.controller('MainController', ['$scope',
-    function ($scope) {
-    }]);
+geodseaApp.controller('MainController', function ($scope) {
+    });
 
-geodseaApp.controller('AdminController', ['$scope',
-    function ($scope) {
-    }]);
+geodseaApp.controller('AdminController', function ($scope) {
+    });
 
 geodseaApp.controller('SkipperController', ['$scope',
     function ($scope) {
@@ -27,17 +25,22 @@ geodseaApp.controller('HelpController', ['$scope',
     function ($scope) {
     }]);
 
-geodseaApp.controller('LanguageController', ['$scope', '$translate', '$rootScope',
-    function ($scope, $translate, $rootScope) {
+geodseaApp.controller('LanguageController', function ($scope, $translate, LanguageService) {
         $scope.changeLanguage = function (languageKey) {
             $translate.use(languageKey);
-            $rootScope.language = languageKey;
-        };
-    }]);
 
-geodseaApp.controller('MenuController', ['$scope',
-    function ($scope) {
-    }]);
+            LanguageService.getBy(languageKey).then(function(languages) {
+                $scope.languages = languages;
+            });
+        };
+
+        LanguageService.getBy().then(function (languages) {
+            $scope.languages = languages;
+        });
+    });
+
+geodseaApp.controller('MenuController', function ($scope) {
+    });
 
 geodseaApp.controller('MapController', ['$scope',
     function ($scope) {
@@ -56,25 +59,22 @@ geodseaApp.controller('MapController', ['$scope',
         });
     }]);
 
-geodseaApp.controller('LoginController', ['$scope', '$location', 'AuthenticationSharedService',
-    function ($scope, $location, AuthenticationSharedService) {
+geodseaApp.controller('LoginController', function ($scope, $location, AuthenticationSharedService) {
         $scope.rememberMe = true;
         $scope.login = function () {
             AuthenticationSharedService.login({
                 username: $scope.username,
                 password: $scope.password,
                 rememberMe: $scope.rememberMe
-            })
+            });
         }
-    }]);
+    });
 
-geodseaApp.controller('LogoutController', ['$location', 'AuthenticationSharedService',
-    function ($location, AuthenticationSharedService) {
+geodseaApp.controller('LogoutController', function ($location, AuthenticationSharedService) {
         AuthenticationSharedService.logout();
-    }]);
+    });
 
-geodseaApp.controller('SettingsController', ['$scope', 'Account',
-    function ($scope, Account) {
+geodseaApp.controller('SettingsController', function ($scope, Account) {
         $scope.success = null;
         $scope.error = null;
 
@@ -100,10 +100,9 @@ geodseaApp.controller('SettingsController', ['$scope', 'Account',
                     $scope.error = "ERROR";
                 });
         };
-    }]);
+    });
 
-geodseaApp.controller('RegisterController', ['$scope', '$translate', 'Register',
-    function ($scope, $translate, Register) {
+geodseaApp.controller('RegisterController', function ($scope, $translate, Register) {
         $scope.success = null;
         $scope.error = null;
         $scope.doNotMatch = null;
@@ -128,7 +127,7 @@ geodseaApp.controller('RegisterController', ['$scope', '$translate', 'Register',
                     function (httpResponse) {
                         $scope.success = null;
                         if (httpResponse.status === 304 &&
-                            httpResponse.data.error && httpResponse.data.error === "Not Modified") {
+                                httpResponse.data.error && httpResponse.data.error === "Not Modified") {
                             $scope.error = null;
                             $scope.errorUserExists = "ERROR";
                         } else {
@@ -138,10 +137,9 @@ geodseaApp.controller('RegisterController', ['$scope', '$translate', 'Register',
                     });
             }
         }
-    }]);
+    });
 
-geodseaApp.controller('ActivationController', ['$scope', '$routeParams', 'Activate',
-    function ($scope, $routeParams, Activate) {
+geodseaApp.controller('ActivationController', function ($scope, $routeParams, Activate) {
         Activate.get({key: $routeParams.key},
             function (value, responseHeaders) {
                 $scope.error = null;
@@ -151,20 +149,20 @@ geodseaApp.controller('ActivationController', ['$scope', '$routeParams', 'Activa
                 $scope.success = null;
                 $scope.error = "ERROR";
             });
-    }]);
+    });
 
-geodseaApp.controller('PasswordController', ['$scope', 'PasswordChange',
-    function ($scope, PasswordChange) {
+// TODO Password was PasswordChange
+geodseaApp.controller('PasswordController', function ($scope, Password) {
         $scope.success = null;
         $scope.error = null;
         $scope.doNotMatch = null;
-        $scope.errorcode = null;
         $scope.changePassword = function () {
-            if ($scope.password.newPassword != $scope.confirmPassword) {
+            // TODO .password was .newPassword
+            if ($scope.password != $scope.confirmPassword) {
                 $scope.doNotMatch = "ERROR";
             } else {
                 $scope.doNotMatch = null;
-                PasswordChange.save($scope.password,
+                Password.save($scope.password,
                     function (value, responseHeaders) {
                         $scope.error = null;
                         $scope.success = 'OK';
@@ -179,10 +177,9 @@ geodseaApp.controller('PasswordController', ['$scope', 'PasswordChange',
                     });
             }
         };
-    }]);
+    });
 
-geodseaApp.controller('SessionsController', ['$scope', 'resolvedSessions', 'Sessions',
-    function ($scope, resolvedSessions, Sessions) {
+geodseaApp.controller('SessionsController', function ($scope, resolvedSessions, Sessions) {
         $scope.success = null;
         $scope.error = null;
         $scope.sessions = resolvedSessions;
@@ -198,10 +195,9 @@ geodseaApp.controller('SessionsController', ['$scope', 'resolvedSessions', 'Sess
                     $scope.error = "ERROR";
                 });
         };
-    }]);
+    });
 
-geodseaApp.controller('TrackerController', ['$scope',
-    function ($scope) {
+ geodseaApp.controller('TrackerController', function ($scope) {
         // This controller uses the Atmosphere framework to keep a Websocket connection opened, and receive
         // user activities in real-time.
 
@@ -211,14 +207,14 @@ geodseaApp.controller('TrackerController', ['$scope',
         $scope.trackerTransport = 'websocket';
 
         $scope.trackerRequest = { url: 'websocket/tracker',
-            contentType: "application/json",
-            transport: $scope.trackerTransport,
-            trackMessageLength: true,
-            reconnectInterval: 5000,
+            contentType : "application/json",
+            transport : $scope.trackerTransport ,
+            trackMessageLength : true,
+            reconnectInterval : 5000,
             enableXDR: true,
-            timeout: 60000 };
+            timeout : 60000 };
 
-        $scope.trackerRequest.onOpen = function (response) {
+        $scope.trackerRequest.onOpen = function(response) {
             $scope.trackerTransport = response.transport;
             $scope.trackerRequest.uuid = response.request.uuid;
         };
@@ -228,7 +224,7 @@ geodseaApp.controller('TrackerController', ['$scope',
             var activity = atmosphere.util.parseJSON(message);
             var existingActivity = false;
             for (var index = 0; index < $scope.activities.length; index++) {
-                if ($scope.activities[index].sessionId == activity.sessionId) {
+                if($scope.activities[index].sessionId == activity.sessionId) {
                     existingActivity = true;
                     if (activity.page == "logout") {
                         $scope.activities.splice(index, 1);
@@ -244,47 +240,64 @@ geodseaApp.controller('TrackerController', ['$scope',
         };
 
         $scope.trackerSubSocket = $scope.trackerSocket.subscribe($scope.trackerRequest);
-    }]);
+    });
 
-geodseaApp.controller('MetricsController', ['$scope', 'MetricsService', 'HealthCheckService', 'ThreadDumpService',
-    function ($scope, MetricsService, HealthCheckService, ThreadDumpService) {
+// TODO metricscontroller has had huge changes
+geodseaApp.controller('MetricsController', function ($scope, MetricsService, HealthCheckService, ThreadDumpService) {
 
-        $scope.refresh = function () {
-            HealthCheckService.check().then(function (data) {
-                $scope.healthCheck = data;
-            });
+        $scope.metrics = {};
+		$scope.updatingHealth = true;
+		$scope.updatingMetrics = true;
+ 
+        $scope.refresh = function() {
+			$scope.updatingHealth = true;
+			$scope.updatingMetrics = true;
+        	HealthCheckService.check().then(function(promise) {
+        		$scope.healthCheck = promise;
+				$scope.updatingHealth = false;
+        	},function(promise) {
+        		$scope.healthCheck = promise.data;
+				$scope.updatingHealth = false;
+        	});
+			
+			MetricsService.get().then(function(promise) {
+        		$scope.metrics = promise;
+				$scope.updatingMetrics = false;
+        	},function(promise) {
+        		$scope.metrics = promise.data;
+				$scope.updatingMetrics = false;
+        	});
 
-            $scope.metrics = MetricsService.get();
-
-            $scope.metrics.$get({}, function (items) {
-
-                $scope.servicesStats = {};
-                $scope.cachesStats = {};
-                angular.forEach(items.timers, function (value, key) {
-                    if (key.indexOf("web.rest") != -1 || key.indexOf("service") != -1) {
-                        $scope.servicesStats[key] = value;
-                    }
-
-                    if (key.indexOf("net.sf.ehcache.Cache") != -1) {
-                        // remove gets or puts
-                        var index = key.lastIndexOf(".");
-                        var newKey = key.substr(0, index);
-
-                        // Keep the name of the domain
-                        index = newKey.lastIndexOf(".");
-                        $scope.cachesStats[newKey] = {
-                            'name': newKey.substr(index + 1),
-                            'value': value
-                        };
-                    }
-                });
-            });
+            
         };
+		
+		$scope.$watch('metrics', function(newValue, oldValue) {
+			$scope.servicesStats = {};
+            $scope.cachesStats = {};
+            angular.forEach(newValue.timers, function(value, key) {
+                if (key.indexOf("web.rest") != -1 || key.indexOf("service") != -1) {
+                    $scope.servicesStats[key] = value;
+                }
+
+                if (key.indexOf("net.sf.ehcache.Cache") != -1) {
+                    // remove gets or puts
+                    var index = key.lastIndexOf(".");
+                    var newKey = key.substr(0, index);
+
+                    // Keep the name of the domain
+                    index = newKey.lastIndexOf(".");
+                    $scope.cachesStats[newKey] = {
+                        'name': newKey.substr(index + 1),
+                        'value': value
+                    };
+                };
+            });
+		});
 
         $scope.refresh();
 
-        $scope.threadDump = function () {
-            ThreadDumpService.dump().then(function (data) {
+        $scope.threadDump = function() {
+            ThreadDumpService.dump().then(function(data) {
                 $scope.threadDump = data;
 
                 $scope.threadDumpRunnable = 0;
@@ -292,7 +305,7 @@ geodseaApp.controller('MetricsController', ['$scope', 'MetricsService', 'HealthC
                 $scope.threadDumpTimedWaiting = 0;
                 $scope.threadDumpBlocked = 0;
 
-                angular.forEach(data, function (value, key) {
+                angular.forEach(data, function(value, key) {
                     if (value.threadState == 'RUNNABLE') {
                         $scope.threadDumpRunnable += 1;
                     } else if (value.threadState == 'WAITING') {
@@ -310,7 +323,7 @@ geodseaApp.controller('MetricsController', ['$scope', 'MetricsService', 'HealthC
             });
         };
 
-        $scope.getLabelClass = function (threadState) {
+        $scope.getLabelClass = function(threadState) {
             if (threadState == 'RUNNABLE') {
                 return "label-success";
             } else if (threadState == 'WAITING') {
@@ -321,10 +334,9 @@ geodseaApp.controller('MetricsController', ['$scope', 'MetricsService', 'HealthC
                 return "label-danger";
             }
         };
-    }]);
+    });
 
-geodseaApp.controller('LogsController', ['$scope', 'resolvedLogs', 'LogsService',
-    function ($scope, resolvedLogs, LogsService) {
+geodseaApp.controller('LogsController', function ($scope, resolvedLogs, LogsService) {
         $scope.loggers = resolvedLogs;
 
         $scope.changeLevel = function (name, level) {
@@ -332,26 +344,25 @@ geodseaApp.controller('LogsController', ['$scope', 'resolvedLogs', 'LogsService'
                 $scope.loggers = LogsService.findAll();
             });
         }
-    }]);
+    });
 
-geodseaApp.controller('AuditsController', ['$scope', '$translate', '$filter', 'AuditsService',
-    function ($scope, $translate, $filter, AuditsService) {
-        $scope.onChangeDate = function () {
-            AuditsService.findByDates($scope.fromDate, $scope.toDate).then(function (data) {
+geodseaApp.controller('AuditsController', function ($scope, $translate, $filter, AuditsService) {
+        $scope.onChangeDate = function() {
+            AuditsService.findByDates($scope.fromDate, $scope.toDate).then(function(data){
                 $scope.audits = data;
             });
         };
 
         // Date picker configuration
-        $scope.today = function () {
+        $scope.today = function() {
             // Today + 1 day - needed if the current day must be included
             var today = new Date();
-            var tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1); // create new increased date
+            var tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1); // create new increased date
 
             $scope.toDate = $filter('date')(tomorrow, "yyyy-MM-dd");
         };
 
-        $scope.previousMonth = function () {
+        $scope.previousMonth = function() {
             var fromDate = new Date();
             if (fromDate.getMonth() == 0) {
                 fromDate = new Date(fromDate.getFullYear() - 1, 0, fromDate.getDate());
@@ -365,8 +376,8 @@ geodseaApp.controller('AuditsController', ['$scope', '$translate', '$filter', 'A
         $scope.today();
         $scope.previousMonth();
 
-        AuditsService.findByDates($scope.fromDate, $scope.toDate).then(function (data) {
+        AuditsService.findByDates($scope.fromDate, $scope.toDate).then(function(data){
             $scope.audits = data;
         });
-    }]);
+    });
 

@@ -27,9 +27,7 @@ spring:
     messageSource:
         cacheSeconds: 1
 
-
 swagger:
-    apiDocsLocation: http://localhost:8080
     title: geodsea API
     description: geodsea applications and beyond!
     termsOfServiceUrl: http://jhipster.github.io/

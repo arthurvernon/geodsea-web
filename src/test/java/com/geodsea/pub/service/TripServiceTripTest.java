@@ -57,13 +57,17 @@ public class TripServiceTripTest {
 
     private Person person;
 
+    private Skipper skipper;
+
     @Before
     public void setup() throws ActionRefusedException {
 
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("user", "user"));
         vessel = new Vessel(null, "AUSTA99999H899", "Monty", VesselType.CABIN, "#f7f7f7", "#f7f7f7", 5, null, null, StorageType.HOME, "my home", null);
         person = personRepository.getByLogin("user");
-        vesselService.registerVessel(vessel, new long[]{person.getId()}, new long[]{person.getId()});
+        vessel = vesselService.registerVessel(vessel, new long[]{person.getId()}, new long[]{person.getId()});
+        List<Skipper> skippers = vesselService.retrieveSkippersForVessel(vessel.getId());
+        skipper = skippers.get(0);
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("user", "user"));
     }
 
@@ -86,7 +90,7 @@ public class TripServiceTripTest {
         long currentTime = now + 1 * DateConstants.DAYS;
         long finish = now + 1 * DateConstants.DAYS + 1 * DateConstants.HOURS;
 
-        Trip trip = tripService.createTripPlan(vessel.getId(), person.getId(), "Test", new Date(currentTime),
+        Trip trip = tripService.createTripPlan(vessel.getId(), skipper.getId(), "Test", new Date(currentTime),
                 new Date(finish), "Summary", null, 100, 3);
 
         // the person then makes a start

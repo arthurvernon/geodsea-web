@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('geodseaApp')
-    .directive('activeMenu', ['$translate', '$locale', 'tmhDynamicLocale', function($translate, $locale, tmhDynamicLocale) {
+    .directive('activeMenu', function($translate, $locale, tmhDynamicLocale) {
         return {
             restrict: 'A',
             link: function(scope, element, attrs, controller) {
@@ -19,8 +19,8 @@ angular.module('geodseaApp')
                 });
             }
         };
-    }])
-    .directive('activeLink', ['$location', function(location) {
+    })
+    .directive('activeLink', function(location) {
         return {
             restrict: 'A',
             link: function(scope, element, attrs, controller) {
@@ -37,8 +37,7 @@ angular.module('geodseaApp')
                 });
             }
         };
-    }])
-    .directive('passwordStrengthBar', function() {
+    }).directive('passwordStrengthBar', function() {
         return {
             replace: true,
             restrict: 'E',
@@ -55,26 +54,26 @@ angular.module('geodseaApp')
 
                         var _force = 0;
                         var _regex = /[$-/:-?{-~!"^_`\[\]]/g; // "
-                                              
-                        var _lowerLetters = /[a-z]+/.test(p);                    
+
+                        var _lowerLetters = /[a-z]+/.test(p);
                         var _upperLetters = /[A-Z]+/.test(p);
                         var _numbers = /[0-9]+/.test(p);
                         var _symbols = _regex.test(p);
-                                              
-                        var _flags = [_lowerLetters, _upperLetters, _numbers, _symbols];                    
-                        var _passedMatches = $.grep(_flags, function (el) { return el === true; }).length;                                          
-                        
+
+                        var _flags = [_lowerLetters, _upperLetters, _numbers, _symbols];
+                        var _passedMatches = $.grep(_flags, function (el) { return el === true; }).length;
+
                         _force += 2 * p.length + ((p.length >= 10) ? 1 : 0);
                         _force += _passedMatches * 10;
-                            
+
                         // penality (short password)
-                        _force = (p.length <= 6) ? Math.min(_force, 10) : _force;                                      
-                        
+                        _force = (p.length <= 6) ? Math.min(_force, 10) : _force;
+
                         // penality (poor variety of characters)
                         _force = (_passedMatches == 1) ? Math.min(_force, 10) : _force;
                         _force = (_passedMatches == 2) ? Math.min(_force, 20) : _force;
                         _force = (_passedMatches == 3) ? Math.min(_force, 40) : _force;
-                        
+
                         return _force;
 
                     },
@@ -89,7 +88,7 @@ angular.module('geodseaApp')
 
                         return { idx: idx + 1, col: this.colors[idx] };
                     }
-                };  
+                };
                 scope.$watch(attr.passwordToCheck, function(password) {
                     if (password) {
                         var c = strength.getColor(strength.mesureStrength(password));
@@ -102,7 +101,27 @@ angular.module('geodseaApp')
                 });
             }
         }
+    })
+    .directive('showValidation', function() {
+        return {
+            restrict: "A",
+            require:'form',
+            link: function(scope, element, attrs, formCtrl) {
+                element.find('.form-group').each(function() {
+                    var $formGroup=$(this);
+                    var $inputs = $formGroup.find('input[ng-model],textarea[ng-model],select[ng-model]');
+
+                    if ($inputs.length > 0) {
+                        $inputs.each(function() {
+                            var $input=$(this);
+                            scope.$watch(function() {
+                                return $input.hasClass('ng-invalid') && $input.hasClass('ng-dirty');
+                            }, function(isInvalid) {
+                                $formGroup.toggleClass('has-error', isInvalid);
+                            });
+                        });
+                    }
+                });
+            }
+        };
     });
-
-
-

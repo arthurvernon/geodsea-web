@@ -8,6 +8,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "T_LICENSE_VESSEL", schema="BOAT")
+@PrimaryKeyJoinColumn(name="LICENSE_ID")
 public class LicenseVessel extends License {
 
     /**

@@ -12,8 +12,7 @@ var geodseaApp = angular.module('geodseaApp', ['http-auth-interceptor', 'tmh.dyn
 
 
 geodseaApp
-    .config(['$routeProvider', '$httpProvider', '$translateProvider',  'tmhDynamicLocaleProvider', 'USER_ROLES',
-        function ($routeProvider, $httpProvider, $translateProvider, tmhDynamicLocaleProvider, USER_ROLES) {
+    .config(function ($routeProvider, $httpProvider, $translateProvider, tmhDynamicLocaleProvider, USER_ROLES) {
             $routeProvider
                 .when('/register/user', {
                     templateUrl: 'views/register/user.html',
@@ -47,14 +46,14 @@ geodseaApp
                     templateUrl: 'views/settings.html',
                     controller: 'SettingsController',
                     access: {
-                        authorizedRoles: [USER_ROLES.all]
+                        authorizedRoles: [USER_ROLES.user]
                     }
                 })
                 .when('/password', {
                     templateUrl: 'views/password.html',
                     controller: 'PasswordController',
                     access: {
-                        authorizedRoles: [USER_ROLES.all]
+                        authorizedRoles: [USER_ROLES.user]
                     }
                 })
                 .when('/sessions', {
@@ -66,7 +65,7 @@ geodseaApp
                         }]
                     },
                     access: {
-                        authorizedRoles: [USER_ROLES.all]
+                        authorizedRoles: [USER_ROLES.user]
                     }
                 })
                 .when('/tracker', {
@@ -199,9 +198,8 @@ geodseaApp
             tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js')
             tmhDynamicLocaleProvider.useCookieStorage('NG_TRANSLATE_LANG_KEY');
             
-        }])
-        .run(['$rootScope', '$location', '$http', 'AuthenticationSharedService', 'Session', 'USER_ROLES',
-            function($rootScope, $location, $http, AuthenticationSharedService, Session, USER_ROLES) {
+        })
+        .run(function($rootScope, $location, $http, AuthenticationSharedService, Session, USER_ROLES) {
                 $rootScope.language = 'en';
                 $rootScope.back = function() {
                     window.history.back();
@@ -209,24 +207,32 @@ geodseaApp
                 $rootScope.$on('$routeChangeStart', function (event, next) {
                     $rootScope.isAuthorized = AuthenticationSharedService.isAuthorized;
                     $rootScope.userRoles = USER_ROLES;
-                    AuthenticationSharedService.revalidate(next.access.authorizedRoles);
+                    // TODO this was revalidate now valid
+                    AuthenticationSharedService.valid(next.access.authorizedRoles);
                 });
 
                 // Call when the the client is confirmed
                 $rootScope.$on('event:auth-loginConfirmed', function(data) {
                     $rootScope.authenticated = true;
                     if ($location.path() === "/login") {
-                        $location.path('/').replace();
+                        var search = $location.search();
+                        if (search.redirect !== undefined) {
+                            $location.path(search.redirect).search('redirect', null).replace();
+                        } else {
+                            $location.path('/').replace();
+                        }
                     }
                 });
 
                 // Call when the 401 response is returned by the server
                 $rootScope.$on('event:auth-loginRequired', function(rejection) {
-                    Session.invalidateSession();
+                    // TODO was invalidateSession, now invalidate
+                    Session.invalidate();
                     $rootScope.authenticated = false;
                     if ($location.path() !== "/" && $location.path() !== "" && $location.path() !== "/register/user" &&
-                            $location.path() !== "/activate") {
-                        $location.path('/login').replace();
+                            $location.path() !== "/activate" && $location.path() !== "/login") {
+                        var redirect = $location.path();
+                        $location.path('/login').search('redirect', redirect).replace();
                     }
                 });
 
@@ -240,9 +246,8 @@ geodseaApp
                 $rootScope.$on('event:auth-loginCancelled', function() {
                     $location.path('');
                 });
-        }])
-        .run(['$rootScope', '$route',
-            function($rootScope, $route) {
+        })
+        .run(function($rootScope, $route) {
                 // This uses the Atmoshpere framework to do a Websocket connection with the server, in order to send
                 // user activities each time a route changes.
                 // The user activities can then be monitored by an administrator, see the views/tracker.html Angular view.
@@ -277,14 +282,16 @@ geodseaApp
                     }
                 };
 
-                $rootScope.websocketRequest.sendMessage = function() {
+                $rootScope.websocketRequest.sendMessage = function () {
                     if ($rootScope.websocketSubSocket.request.isOpen) {
-                        $rootScope.websocketSubSocket.push(atmosphere.util.stringifyJSON({
-                                userLogin: $rootScope.login,
-                                page: $route.current.templateUrl}
-                        ));
+                        if ($rootScope.account != null) {
+                            $rootScope.websocketSubSocket.push(atmosphere.util.stringifyJSON({
+                                userLogin: $rootScope.account.login,
+                                page: $route.current.templateUrl})
+                            );
+                        }
                     }
-                };
+                }
 
                 $rootScope.websocketSubSocket = $rootScope.websocketSocket.subscribe($rootScope.websocketRequest);
 
@@ -292,4 +299,4 @@ geodseaApp
                     $rootScope.websocketRequest.sendMessage();
                 });
             }
-        ]);
+        );

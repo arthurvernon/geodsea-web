@@ -53,6 +53,9 @@
         "enabled": {
             "label": "Enabled"
         },
+        "filter":{
+            "label": "Filter"
+        },
         "firstname": {
             "label": "First Name",
             "placeholder": "Enter your first name",
@@ -352,7 +355,10 @@
         "vessels": "Vessels"
     },
     "message": {
-
+        "clicktoorder": "Click to Order",
+        "logs": {
+            "nbloggers": "There are {{ total }} loggers."
+        },
         "register": {
             "noaccount": "You don't have an account yet? <a href=\"#/register/user\">Register a new account</a>",
             "participant": {
@@ -430,9 +436,11 @@
             "ipaddress": "IP Address",
             "id": "ID",
             "length": "Length (m)",
+            "level": "Level",
             "login": "Username",
             "membername": "Member Name",
             "manager": "Manager",
+            "name": "Name",
             "page": "Current page",
             "since": "Since",
             "storagetype": "Storage Type",
@@ -529,14 +537,6 @@
             "misses": "Misses",
             "evictioncount": "Eviction count",
             "mean": "Mean get time (ms)"
-        }
-    },
-    "logs": {
-        "nbloggers": "There are {{ total }} loggers.",
-        "filter": "Filter",
-        "table": {
-            "name": "Name",
-            "level": "Level"
         }
     },
     "audits": {

@@ -2,53 +2,63 @@
 
 /* Services */
 
-geodseaApp.factory('Register', ['$resource',
-    function ($resource) {
+geodseaApp.factory('LanguageService', function ($http, $translate, LANGUAGES) {
+        return {
+            getBy: function(language) {
+                if (language == undefined) {
+                    language = $translate.storage().get('NG_TRANSLATE_LANG_KEY');
+                }
+                if (language == undefined) {
+                    language = 'en';
+                }
+
+                var promise =  $http.get('i18n/' + language + '.json').then(function(response) {
+                    return LANGUAGES;
+                });
+                return promise;
+            }
+        };
+    });
+
+geodseaApp.factory('Register', function ($resource) {
         return $resource('app/rest/register', {}, {
         });
-    }]);
+    });
 
-geodseaApp.factory('Activate', ['$resource',
-    function ($resource) {
+geodseaApp.factory('Activate', function ($resource) {
         return $resource('app/rest/activate', {}, {
             'get': { method: 'GET', params: {}, isArray: false}
         });
-    }]);
+    });
 
-geodseaApp.factory('Account', ['$resource',
-    function ($resource) {
+geodseaApp.factory('Account', function ($resource) {
         return $resource('app/rest/account', {}, {
         });
-    }]);
+    });
 
-geodseaApp.factory('PasswordChange', ['$resource',
-    function ($resource) {
+geodseaApp.factory('Password', function ($resource) {
         return $resource('app/rest/account/change_password', {}, {
         });
-    }]);
+    });
 
-geodseaApp.factory('PasswordReset', ['$resource',
-    function ($resource) {
-        return $resource('app/rest/question/reset', {}, {
-        });
-    }]);
-
-geodseaApp.factory('Sessions', ['$resource',
-    function ($resource) {
+geodseaApp.factory('Sessions', function ($resource) {
         return $resource('app/rest/account/sessions/:series', {}, {
             'get': { method: 'GET', isArray: true}
         });
-    }]);
+    });
 
-geodseaApp.factory('MetricsService', ['$resource',
-    function ($resource) {
-        return $resource('metrics/metrics', {}, {
-            'get': { method: 'GET'}
-        });
-    }]);
+geodseaApp.factory('MetricsService',function ($http) {
+    		return {
+            get: function() {
+                var promise = $http.get('metrics/metrics').then(function(response){
+                    return response.data;
+                });
+                return promise;
+            }
+        };
+    });
 
-geodseaApp.factory('ThreadDumpService', ['$http',
-    function ($http) {
+geodseaApp.factory('ThreadDumpService', function ($http) {
         return {
             dump: function() {
                 var promise = $http.get('dump').then(function(response){
@@ -57,10 +67,9 @@ geodseaApp.factory('ThreadDumpService', ['$http',
                 return promise;
             }
         };
-    }]);
+    });
 
-geodseaApp.factory('HealthCheckService', ['$rootScope', '$http',
-    function ($rootScope, $http) {
+geodseaApp.factory('HealthCheckService', function ($rootScope, $http) {
         return {
             check: function() {
                 var promise = $http.get('health').then(function(response){
@@ -69,18 +78,16 @@ geodseaApp.factory('HealthCheckService', ['$rootScope', '$http',
                 return promise;
             }
         };
-    }]);
+    });
 
-geodseaApp.factory('LogsService', ['$resource',
-    function ($resource) {
+geodseaApp.factory('LogsService', function ($resource) {
         return $resource('app/rest/logs', {}, {
             'findAll': { method: 'GET', isArray: true},
             'changeLevel':  { method: 'PUT'}
         });
-    }]);
+    });
 
-geodseaApp.factory('AuditsService', ['$http',
-    function ($http) {
+geodseaApp.factory('AuditsService', function ($http) {
         return {
             findAll: function() {
                 var promise = $http.get('app/rest/audits/all').then(function (response) {
@@ -95,11 +102,10 @@ geodseaApp.factory('AuditsService', ['$http',
                 return promise;
             }
         }
-    }]);
+    });
 
-geodseaApp.factory('Session', [
-    function () {
-        this.createSession = function (id, login, firstName, lastName, email, telephone, question, answer, address, userRoles) {
+geodseaApp.factory('Session', function () {
+        this.create = function (id, login, firstName, lastName, email, telephone, question, answer, address, userRoles) {
             this.id= id;
             this.login = login;
             this.firstName = firstName;
@@ -111,7 +117,7 @@ geodseaApp.factory('Session', [
             this.address = address;
             this.userRoles = userRoles;
         };
-        this.invalidateSession = function () {
+        this.invalidate = function () {
             this.id = null;
             this.login = null;
             this.firstName = null;
@@ -124,66 +130,49 @@ geodseaApp.factory('Session', [
             this.userRoles = null;
         };
         return this;
-    }]);
-
-geodseaApp.constant('USER_ROLES', {
-        all: '*',
-        admin: 'ROLE_ADMIN',
-        user: 'ROLE_USER',
-        skipper: 'ROLE_SKIPPER',
-        owner: 'ROLE_OWNER'
-
     });
 
-geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authService', 'Session', 'Account',
-    function ($rootScope, $http, authService, Session, Account) {
+geodseaApp.factory('AuthenticationSharedService', function ($rootScope, $http, authService, Session, Account) {
         return {
             login: function (param) {
-                var data ="j_username=" + param.username +"&j_password=" + param.password +"&_spring_security_remember_me="
-                    + param.rememberMe +"&submit=Login";
+                var data ="j_username=" + param.username +"&j_password=" + param.password +"&_spring_security_remember_me=" + param.rememberMe +"&submit=Login";
                 $http.post('app/authentication', data, {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     },
                     ignoreAuthModule: 'ignoreAuthModule'
                 }).success(function (data, status, headers, config) {
-
                     Account.get(function(data) {
-
-                        Session.createSession(data.id, data.login, data.firstName, data.lastName, data.email,
+                        Session.create(data.id, data.login, data.firstName, data.lastName, data.email,
                             data.telephone, data.question, data.answer, data.address, data.roles);
                         $rootScope.account = Session;
                         authService.loginConfirmed(data);
                     });
                 }).error(function (data, status, headers, config) {
                     $rootScope.authenticationError = true;
-                    Session.invalidateSession();
+                    Session.invalidate();
                 });
             },
-            revalidate: function (authorizedRoles) {
+            valid: function (authorizedRoles) {
 
-                $http.get('protected/transparent.gif', {
+                $http.get('protected/authentication_check.gif', {
                     ignoreAuthModule: 'ignoreAuthModule'
                 }).success(function (data, status, headers, config) {
                     if (!Session.login) {
                         Account.get(function(data) {
-
-                            Session.createSession(data.id, data.login, data.firstName, data.lastName, data.email,
+                            Session.create(data.id, data.login, data.firstName, data.lastName, data.email,
                                 data.telephone, data.question, data.answer, data.address, data.roles);
                             $rootScope.account = Session;
-
-                            if (!$rootScope.isAuthorized(authorizedRoles)) {
-                                event.preventDefault();
-                                // user is not allowed
-                                $rootScope.$broadcast("event:auth-notAuthorized");
-                            }
-
                             $rootScope.authenticated = true;
                         });
                     }
                     $rootScope.authenticated = !!Session.login;
                 }).error(function (data, status, headers, config) {
                     $rootScope.authenticated = false;
+
+                    if (!$rootScope.isAuthorized(authorizedRoles)) {
+                        $rootScope.$broadcast('event:auth-loginRequired', data);
+                    }
                 });
             },
             isAuthorized: function (authorizedRoles) {
@@ -213,8 +202,8 @@ geodseaApp.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authS
                 $rootScope.account = null;
 
                 $http.get('app/logout');
-                Session.invalidateSession();
+                Session.invalidate();
                 authService.loginCancelled();
             }
         };
-    }]);
+    });

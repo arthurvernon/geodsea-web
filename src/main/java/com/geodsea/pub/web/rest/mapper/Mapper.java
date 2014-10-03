@@ -1,8 +1,13 @@
 package com.geodsea.pub.web.rest.mapper;
 
 import com.geodsea.pub.domain.*;
+import com.geodsea.pub.domain.Person;
+import com.geodsea.pub.domain.Vessel;
+import com.geodsea.pub.domain.type.*;
+import com.geodsea.pub.domain.type.VesselType;
 import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.web.rest.dto.*;
+import com.geodsea.ws.*;
 
 import java.util.List;
 
@@ -158,5 +163,20 @@ public class Mapper {
         return new SkipperTripDTO(trip.getId(), participant(trip.getPerson()), vessel(trip.getVessel()), rescueOrganisation(trip.getRescue()),
                 trip.getHeadline(), trip.getSummary(), trip.getPeopleOnBoard(), trip.getFuelOnBoard(), trip.getScheduledStartTime(),
                 trip.getActualStartTime(), trip.getScheduledEndTime(), trip.getActualEndTime());
+    }
+
+    /**
+     * Create a vessel from the details within a license query.
+     * <p>
+     *     Details excludes emergency equipment and the storage location/type.
+     * </p>
+     * @param vessel data returned from web service call.
+     * @return a non-null vessel DTO.
+     */
+    public static VesselDTO vessel(com.geodsea.ws.Vessel vessel) {
+
+        return new VesselDTO(null, vessel.getHullIdentificationNumber(), vessel.getVesselName(),
+                VesselType.valueOf(vessel.getVesselType()), vessel.getHullColor(), vessel.getSuperstructureColor(),
+                vessel.getLength(), vessel.getTotalHP(), vessel.getFuelCapacity(), null, null, null);
     }
 }

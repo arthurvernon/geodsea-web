@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title th:text="#{activation.title}">Geod'Sea activation</title>
+        <title th:text="#{email.activation.title}">Geo d'Sea activation</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     </head>
     <body>
-        <p th:text="#{activation.greeting(${participant.login})}">
+        <p th:text="#{email.activation.greeting(${participant.login})}">
             Dear
         </p>
-        <p th:text="#{activation.text1}">
+        <p th:text="#{email.activation.text1}">
             Your Geo d'Sea account has been created, please click on the URL below to activate it:
         </p>
         <p>
@@ -16,7 +16,7 @@
                th:text="|${participant.login}|">Activation Link</a>
         </p>
         <p>
-            <span th:text="#{activation.text2}">Regards, </span>
+            <span th:text="#{email.activation.text2}">Regards, </span>
             <br/>
             <em th:text="#{email.signature}">Geo d'Sea.</em>
         </p>

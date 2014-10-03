@@ -43,6 +43,7 @@ geodseaApp.controller('GroupRegisterController', ['$scope', 'Group', '$translate
     function ($scope, Group, $translate) {
 
         $scope.registerGroup = function () {
+            $scope.errorcode = null;
             $scope.error = null;
             $scope.errorUserExists = null;
             $scope.success = null;

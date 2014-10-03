@@ -61,16 +61,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
             // stops ugly unauthorised messages appearing all the time... not ideal but...
-            .antMatchers("/websocket/activity")
-            .antMatchers("/app/rest/register")
-            .antMatchers("/app/rest/activate")
-            .antMatchers("/app/rest/question/**")
+//            .antMatchers("/websocket/activity")
+//            .antMatchers("/app/rest/register")
+//            .antMatchers("/app/rest/activate")
             .antMatchers("/bower_components/**")
             .antMatchers("/fonts/**")
             .antMatchers("/images/**")
             .antMatchers("/scripts/**")
             .antMatchers("/styles/**")
             .antMatchers("/views/**")
+            .antMatchers("/i18n/**")
             .antMatchers("/swagger-ui/**");
     }
 
@@ -108,7 +108,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/app/rest/register").permitAll()
                 .antMatchers("/app/rest/activate").permitAll()
                 .antMatchers("/app/rest/authenticate").permitAll()
-                .antMatchers("/app/rest/question/**").permitAll()
                 .antMatchers("/app/rest/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/app/**").authenticated()
                 .antMatchers("/websocket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)

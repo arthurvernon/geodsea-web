@@ -23,9 +23,10 @@ public class PersistentAuditEvent  {
     @GeneratedValue(generator = "AUDIT_EVENT_SEQ_GEN", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "AUDIT_EVENT_SEQ_GEN", sequenceName = "BOAT.AUDIT_EVENT_ID_SEQ")
     @Column(name = "event_id")
-    private long id;
+    private Long id;
 
     @NotNull
+    @Column(nullable = false)
     private String principal;
 
     @Column(name = "event_date")
@@ -41,11 +42,11 @@ public class PersistentAuditEvent  {
     @CollectionTable(name="T_AUDIT_EVENT_DATA", joinColumns=@JoinColumn(name="event_id"), schema = "BOAT")
     private Map<String, String> data = new HashMap<>();
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

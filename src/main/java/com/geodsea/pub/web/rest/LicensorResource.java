@@ -8,6 +8,7 @@ import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.service.LicenseService;
 import com.geodsea.pub.web.rest.dto.LicensorDTO;
+import com.geodsea.pub.web.rest.dto.VesselDTO;
 import com.geodsea.pub.web.rest.mapper.Mapper;
 import com.geodsea.ws.LicenseResponse;
 import com.vividsolutions.jts.geom.Geometry;
@@ -132,7 +133,7 @@ public class LicensorResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<LicenseResponse> getLicensorLocalToUser(@PathVariable Long licensorId, @PathVariable String registration, HttpServletResponse response) {
+    public ResponseEntity<VesselDTO> getLicensorLocalToUser(@PathVariable Long licensorId, @PathVariable String registration, HttpServletResponse response) {
 
         log.debug("REST request to get Vessel license details");
 
@@ -149,7 +150,7 @@ public class LicensorResource {
             // TODO verify that the person requesting is an owner of the vessel
             // TODO fill out the details before returning
 
-            return new ResponseEntity<LicenseResponse>(licenseResponse, HttpStatus.OK);
+            return new ResponseEntity<VesselDTO>(Mapper.vessel(licenseResponse.getVessel()), HttpStatus.OK);
         }
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

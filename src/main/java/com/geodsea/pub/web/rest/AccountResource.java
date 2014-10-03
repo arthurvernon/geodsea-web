@@ -13,6 +13,8 @@ import com.geodsea.pub.service.UserService;
 import com.geodsea.pub.web.rest.dto.*;
 import com.geodsea.pub.web.rest.mapper.Mapper;
 import com.vividsolutions.jts.geom.Point;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,7 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/app")
+@Api(value = "Account", description = "User Account API")
 public class AccountResource extends ParticipantResource {
 
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
@@ -61,6 +64,7 @@ public class AccountResource extends ParticipantResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @ApiOperation(value = "Register User", notes = "Create a user account that is yet to be enabled")
     public ResponseEntity<?> registerAccount(@RequestBody UserDTO userDTO, HttpServletRequest request,
                                              HttpServletResponse response) {
 
@@ -89,6 +93,7 @@ public class AccountResource extends ParticipantResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @ApiOperation(value = "Activate Account", notes = "Submit a registration key to activate a user account")
     public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
         Participant participant = participantService.activateRegistration(key);
         if (participant == null) {
@@ -105,6 +110,7 @@ public class AccountResource extends ParticipantResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @ApiOperation(value = "Authenticated User", notes = "Provide the name of the user who is currently logged on")
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
         return request.getRemoteUser();
@@ -117,6 +123,7 @@ public class AccountResource extends ParticipantResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @ApiOperation(value = "Get User", notes = "Get the details of the user who is currently logged on")
     public ResponseEntity<UserDTO> getAccount() {
         Person person = userService.getUserWithAuthorities();
         if (person == null) {
@@ -138,6 +145,7 @@ public class AccountResource extends ParticipantResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @ApiOperation(value = "Update User", notes = "Update the details of the user including his address")
     public void saveAccount(@RequestBody UserDTO userDTO) {
         Address address = null;
         if (userDTO.getPoint() != null) {
@@ -156,6 +164,7 @@ public class AccountResource extends ParticipantResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @ApiOperation(value = "Change Password", notes = "Update the user's password.")
     public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO change) {
         if (StringUtils.isEmpty(change.getNewPassword())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -176,6 +185,7 @@ public class AccountResource extends ParticipantResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @ApiOperation(value = "Session Info", notes = "Retrieve details of the active sessions for the user.")
     public ResponseEntity<List<PersistentToken>> getCurrentSessions() {
         Person person = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
         if (person == null) {
@@ -202,6 +212,7 @@ public class AccountResource extends ParticipantResource {
     @RequestMapping(value = "/rest/account/sessions/{series}",
             method = RequestMethod.DELETE)
     @Timed
+    @ApiOperation(value = "Invalidate Session", notes = "Remove any existing token for the current session.")
     public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
         String decodedSeries = URLDecoder.decode(series, "UTF-8");
         Person person = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
@@ -220,6 +231,7 @@ public class AccountResource extends ParticipantResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @ApiOperation(value = "Get Question", notes = "Obtain a question to answer in order to reset the user's password.")
     public ResponseEntity<QuestionDTO> getSecretQuestion(@PathVariable String user) {
         Person person = personRepository.getByLogin(user);
         if (person == null) {
@@ -235,6 +247,7 @@ public class AccountResource extends ParticipantResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @ApiOperation(value = "Check Answer", notes = "Check the answer to the question and if correct, the user can then reset the password.")
     public ResponseEntity<?> checkAnswer(@RequestBody AnswerDTO answer) {
         if (answer == null || answer.incomplete())
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -261,6 +274,7 @@ public class AccountResource extends ParticipantResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @ApiOperation(value = "Reset Password", notes = "Submit the correct answer and the new password for the user.")
     public ResponseEntity<?> resetPassword(@RequestBody ResetDTO reset) {
         if (reset.incomplete())
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

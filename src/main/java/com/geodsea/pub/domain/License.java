@@ -43,7 +43,7 @@ public abstract class License {
      *     Once verified then the license number may not be altered.
      * </p>
      */
-    @Column(name="LICENSE_NUM", nullable = false, length = 30)
+    @Column(name="LICENSE_NUMBER", nullable = false, length = 30)
     private String licenseNumber;
 
     /**

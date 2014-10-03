@@ -116,7 +116,7 @@ public class TripService extends BaseService {
     @PreAuthorize("isAuthenticated()")
     public Trip createTripPlan(long vesselId, long skipperId, String headline, Date scheduledStartTime, Date scheduledEndTime,
                                String summary, MultiPoint wayPoints, int fuel, int people) throws ActionRefusedException {
-        Skipper skipper = skipperRepository.getOne(skipperId);
+        Skipper skipper = skipperRepository.findOne(skipperId);
         Vessel vessel = vesselRepository.findOne(vesselId);
         checkPersonIsSkipper(skipperId, skipper, vesselId, vessel);
 

@@ -13,7 +13,6 @@
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/bootstrap.css">
         <link rel="stylesheet" href="styles/main.css">
-        <link rel="stylesheet" href="styles/famfamfam-flags.css">
         <link id="mapView" rel="stylesheet" href="bower_components/openlayers/css/ol.css" type="text/css">
         <style> .map { height: 400px; width: 100%;}</style>
         <!-- endbuild -->
@@ -206,29 +205,8 @@
                                 </span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li active-menu="da">
-                                    <a href="#" ng-click="changeLanguage(&#x27;da&#x27;)"><span class="famfamfam-flag-dk"></span>
-                                        &#xA0;<span translate="language.da">Danish</span></a>
-                                </li>
-                                <li active-menu="en">
-                                    <a href="#" ng-click="changeLanguage(&#x27;en&#x27;)"><span class="famfamfam-flag-gb"></span>
-                                        &#xA0;<span translate="language.en">English</span></a>
-                                </li>
-                                <li active-menu="fr">
-                                    <a href="#" ng-click="changeLanguage(&#x27;fr&#x27;)"><span class="famfamfam-flag-fr"></span>
-                                        &#xA0;<span translate="language.fr">French</span></a>
-                                </li>
-                                <li active-menu="de">
-                                    <a href="#" ng-click="changeLanguage(&#x27;de&#x27;)"><span class="famfamfam-flag-de"></span>
-                                        &#xA0;<span translate="language.de">German</span></a>
-                                </li>
-                                <li active-menu="pl">
-                                    <a href="#" ng-click="changeLanguage(&#x27;pl&#x27;)"><span class="famfamfam-flag-pl"></span>
-                                        &#xA0;<span translate="language.pl">Polish</span></a>
-                                </li>
-                                <li active-menu="ru">
-                                    <a href="#" ng-click="changeLanguage(&#x27;ru&#x27;)"><span class="famfamfam-flag-ru"></span>
-                                        &#xA0;<span translate="language.ru">Russian</span></a>
+                                <li active-menu="{{key}}" ng-repeat="(key, language) in languages">
+                                    <a href="javascript:;" ng-click="changeLanguage(key)">{{language}}</a>
                                 </li>
                             </ul>
                         </li>
@@ -304,7 +282,6 @@
         <script src="bower_components/angular-route/angular-route.js"></script>
         <script src="bower_components/angular-resource/angular-resource.js"></script>
         <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-<!--        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script> -->
         <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
         <script src="bower_components/angular-translate/angular-translate.js"></script>
         <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
@@ -314,6 +291,7 @@
         <script src="scripts/truncate.js"></script>
         <script src="scripts/utils.js"></script>
         <script src="scripts/app.js"></script>
+        <script src="scripts/constants.js"></script>
         <script src="scripts/controllers.js"></script>
         <script src="scripts/services.js"></script>
         <script src="scripts/directives.js"></script>
