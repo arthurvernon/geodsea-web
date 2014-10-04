@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface MonitorRepository extends JpaRepository<Monitor, Long> {
 
-    Monitor findByParticipantLogin(String login);
+    Monitor findByParticipantLoginAndTripId(String login, long tripId);
 
     @Query("select m from Monitor m where m.participant in ?1")
     List<Monitor> findForParticipant(List<Participant> participants);

@@ -332,7 +332,7 @@ public class TripService extends BaseService {
         if (trip == null)
             throw new IllegalArgumentException("No such trip: " + tripId);
 
-        Monitor monitor = monitorRepository.findByParticipantLogin(participant);
+        Monitor monitor = monitorRepository.findByParticipantLoginAndTripId(participant, tripId);
         if (monitor == null) {
             log.warn("User: {} not permitted to access trip: {}", participant, tripId);
             throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "Participant" + participant + " is not permitted to access Trip: " + tripId);
