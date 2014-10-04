@@ -1,6 +1,8 @@
 package com.geodsea.pub.web.rest.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -39,6 +41,7 @@ public class SkipperTripDTO extends TripDTO {
     /**
      * The time in the plan when the journey is intended to start.
      */
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date scheduledStartTime;
 
 
