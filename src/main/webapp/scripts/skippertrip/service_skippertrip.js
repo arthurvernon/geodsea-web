@@ -22,7 +22,12 @@ geodseaApp.factory('SkipperVessel', ['$resource',
         });
     }]);
 
-var regexIso8601 = /^(\d{4}|\+\d{6})(?:-(\d{2})(?:-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})\.(\d{1,})(Z|([\-+])(\d{2}):(\d{2}))?)?)?)?$/;
+//var regexIso8601 = /^(\d{4}|\+\d{6})(?:-(\d{2})(?:-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})\.(\d{1,})(Z|([\-+])(\d{2}):(\d{2}))?)?)?)?$/;
+
+function stringEndsWith(str, suffix) {
+    var l = str.length - suffix.length;
+    return l >= 0 && str.indexOf(suffix, l) == l;
+};
 
 function convertDateStringsToDates(input) {
     // Ignore things that aren't objects.
@@ -33,13 +38,10 @@ function convertDateStringsToDates(input) {
         if (!input.hasOwnProperty(key)) continue;
 
         var value = input[key];
-        var match;
+
         // Check for string properties which look like dates.
-        if (typeof value === "string" && (match = value.match(regexIso8601))) {
-            var milliseconds = Date.parse(match[0])
-            if (!isNaN(milliseconds)) {
-                input[key] = new Date(milliseconds);
-            }
+        if (stringEndsWith(key, "_dt") && typeof value === "number") {
+                input[key] = new Date(value);
         } else if (typeof value === "object") {
             // Recurse into object
             convertDateStringsToDates(value);

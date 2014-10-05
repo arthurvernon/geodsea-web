@@ -117,18 +117,46 @@
 
                         <!-- scheduled start -->
                         <div class="form-group">
-                            <label translate="field.trip.scheduledstart.label">Summary</label>
-                            <input type="datetime-local" class="form-control" ng-model="trip.scheduledStartTime" name="scheduledstart"
-                                      placeholder="{{'field.trip.scheduledstart.placeholder' | translate}}"/>
+                            <label translate="field.trip.start.scheduled.label">Scheduled Start</label>
+                            <input type="datetime-local" class="form-control" ng-model="trip.scheduledStart_dt" name="scheduledstart"
+                                      placeholder="{{'field.trip.start.scheduled.placeholder' | translate}}" ng-readonly="trip.actualStart_dt"/>
 
                             <div class="error" ng-show="form.scheduledstart.$dirty && form.scheduledstart.$invalid">
                                 <small class="error" ng-show="form.scheduledstart.$error.datetimelocal"
-                                       translate="field.trip.scheduledstart.date">
+                                       translate="field.trip.start.scheduled.date">
                                     Not a valid date
                                 </small>
                             </div>
                         </div>
-                        <div id="map" class="map" style="width: 100%; height: 100%;"></div>
+
+                        <!-- scheduled end -->
+                        <div class="form-group">
+                            <label translate="field.trip.end.scheduled.label">Scheduled end</label>
+                            <input type="datetime-local" class="form-control" ng-model="trip.scheduledEnd_dt" name="scheduledend"
+                                   placeholder="{{'field.trip.end.scheduled.placeholder' | translate}}" ng-readonly="trip.actualEnd_dt"/>
+
+                            <div class="error" ng-show="form.scheduledend.$dirty && form.scheduledend.$invalid">
+                                <small class="error" ng-show="form.scheduledend.$error.datetimelocal"
+                                       translate="field.trip.end.scheduled.date">
+                                    Not a valid date
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- actual start -->
+                        <div class="form-group">
+                            <label translate="field.trip.start.actual.label">Actual Start</label>
+                            <input type="string" class="form-control" ng-model="trip.actualStart_dt" name="actualstart"
+                                   placeholder="{{'field.trip.start.actual.placeholder' | translate}}" readonly/>
+                        </div>
+
+                        <!-- actual end -->
+                        <div class="form-group">
+                            <label translate="field.trip.end.actual.label">Actual End</label>
+                            <input type="string" class="form-control" ng-model="trip.actualEnd_dt" name="actualend"
+                                   placeholder="{{'field.trip.end.actual.placeholder' | translate}}" readonly/>
+                        </div>
+                        <div id="map" class="map" style="width: 100%; height: 400px;"></div>
 
 
                     </div>

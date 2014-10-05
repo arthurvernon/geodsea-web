@@ -55,7 +55,7 @@ public class SkipperTripResource {
                     return new ResponseEntity<>(ErrorCode.PEOPLE_ON_BOARD_NOT_SPECIFIED, HttpStatus.BAD_REQUEST);
 
                 Trip created = tripService.createTripPlan(trip.getVessel().getId(), trip.getSkipper().getId(),
-                        trip.getHeadline(), trip.getScheduledStartTime(), trip.getScheduledEndTime(), trip.getSummary(), null,
+                        trip.getHeadline(), trip.getScheduledStart_dt(), trip.getScheduledEnd_dt(), trip.getSummary(), null,
                         trip.getFuelOnBoard(), trip.getPeopleOnBoard());
                 return new ResponseEntity<Long>(created.getId(), HttpStatus.OK);
             } catch (ActionRefusedException e) {
@@ -64,7 +64,7 @@ public class SkipperTripResource {
         } else {
             try {
                 tripService.updatePlan(trip.getId(), trip.getSkipper().getId(), trip.getHeadline(),
-                        trip.getScheduledStartTime(), trip.getScheduledEndTime(), trip.getSummary(), null,
+                        trip.getScheduledStart_dt(), trip.getScheduledEnd_dt(), trip.getSummary(), null,
                         trip.getFuelOnBoard(), trip.getPeopleOnBoard());
                 return new ResponseEntity<Long>(trip.getId(), HttpStatus.OK);
             } catch (ActionRefusedException e) {

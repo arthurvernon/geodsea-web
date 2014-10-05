@@ -36,17 +36,17 @@ public class TripDTO {
     /**
      * When this trip actually started (if the fact was recorded).
      */
-    private Date actualStartTime;
+    private Date actualStart_dt;
 
     /**
      * The time in the plan when the journey is intended to be completed.
      */
-    private Date scheduledEndTime;
+    private Date scheduledEnd_dt;
 
     /**
      * The actual time, if ever, that the journey was logged as completed.
      */
-    private Date actualEndTime;
+    private Date actualEnd_dt;
 
 
     public TripDTO(Long id, RescueOrganisationDTO rescueOrganisation, String headline, Integer peopleOnBoard,
@@ -56,9 +56,9 @@ public class TripDTO {
         this.headline = headline;
         this.peopleOnBoard = peopleOnBoard;
         this.fuelOnBoard = fuelOnBoard;
-        this.actualStartTime = actualStartTime;
-        this.scheduledEndTime = scheduledEndTime;
-        this.actualEndTime = actualEndTime;
+        this.actualStart_dt = actualStartTime;
+        this.scheduledEnd_dt = scheduledEndTime;
+        this.actualEnd_dt = actualEndTime;
     }
 
     public TripDTO() {
@@ -84,15 +84,15 @@ public class TripDTO {
         return fuelOnBoard;
     }
 
-    public Date getActualStartTime() {
-        return actualStartTime;
+    public Date getActualStart_dt() {
+        return actualStart_dt;
     }
 
-    public Date getScheduledEndTime() {
-        return scheduledEndTime;
+    public Date getScheduledEnd_dt() {
+        return scheduledEnd_dt;
     }
 
-    public Date getActualEndTime() {
-        return actualEndTime;
+    public Date getActualEnd_dt() {
+        return actualEnd_dt;
     }
 }

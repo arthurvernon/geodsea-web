@@ -176,6 +176,15 @@
                 "minlength": "A headline must contain at least 2 characters",
                 "maxlength": "A headline can be no more than 100 characters"
             },
+            "end.actual": {
+                "label": "Actual End",
+                "placeholder": "Set by completing a journey"
+            },
+            "end.scheduled": {
+                "label": "Scheduled End",
+                "placeholder": "yyyy-MM-ddTHH:mm:ss",
+                "date": "Not a valid date"
+            },
             "fuel": {
                 "label": "Fuel on board",
                 "nan": "This is not a valid number.",
@@ -186,7 +195,11 @@
                 "nan": "This is not a valid number.",
                 "range": "Number of people on board must be in the range 1-999."
             },
-            "scheduledstart": {
+            "start.actual": {
+                "label": "Actual Start",
+                "placeholder": "Set by starting journey"
+            },
+            "start.scheduled": {
                 "label": "Scheduled Start",
                 "placeholder": "yyyy-MM-ddTHH:mm:ss",
                 "date": "Not a valid date"

@@ -20,14 +20,15 @@ geodseaApp.controller('SkipperTripController', ['$scope', 'resolvedSkipperTrip',
         $scope.initmap = function () {
 
             // timeout required so that the containing div is rendered and gains a height and width
+            // from the form once it is displayed.
             $timeout(function () {
                 if ($scope.map.map == undefined) {
                     $scope.map.map = new ol.Map({
                         layers: [$scope.map.raster],
-//                        layers: [$scope.map.raster, $scope.map.vector],
                         target: 'map',
                         controls: ol.control.defaults().extend([
-                            new ol.control.ScaleLine(), new ol.control.FullScreen()
+//                            new ol.control.ScaleLine(), new ol.control.FullScreen()
+                            new ol.control.ScaleLine()
                         ]),
                         view: new ol.View({
                             projection: 'EPSG:3857',
@@ -176,7 +177,7 @@ geodseaApp.controller('SkipperTripController', ['$scope', 'resolvedSkipperTrip',
 
         $scope.clear = function () {
             $scope.trip = {id: null, headline: null, summary: null, peopleOnBoard: null, fuelOnBoard: null,
-                scheduledStartTime: null, actualStartTime: null, scheduledEndTime: null, actualEndTime:null,
+                scheduledStart_dt: null, actualStart_dt: null, scheduledEnd_dt: null, actualEnd_dt:null,
                 skipper: null, vessel: null };
 
             $scope.initmap();

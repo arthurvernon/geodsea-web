@@ -1,8 +1,6 @@
 package com.geodsea.pub.web.rest.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 
 /**
@@ -41,8 +39,8 @@ public class SkipperTripDTO extends TripDTO {
     /**
      * The time in the plan when the journey is intended to start.
      */
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private Date scheduledStartTime;
+//    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private Date scheduledStart_dt;
 
 
     public SkipperTripDTO() {
@@ -56,12 +54,12 @@ public class SkipperTripDTO extends TripDTO {
         this.skipper = skipper;
         this.vessel = vessel;
         this.summary = summary;
-        this.scheduledStartTime = scheduledStartTime;
+        this.scheduledStart_dt = scheduledStartTime;
     }
 
 
-    public Date getScheduledStartTime() {
-        return scheduledStartTime;
+    public Date getScheduledStart_dt() {
+        return scheduledStart_dt;
     }
 
     public String getSummary() {
