@@ -74,7 +74,7 @@ geodseaApp.controller('LogoutController', function ($location, AuthenticationSha
         AuthenticationSharedService.logout();
     });
 
-geodseaApp.controller('SettingsController', function ($scope, Account) {
+geodseaApp.controller('SettingsController', function ($scope, Account, $rootScope, Session) {
         $scope.success = null;
         $scope.error = null;
 
@@ -93,7 +93,12 @@ geodseaApp.controller('SettingsController', function ($scope, Account) {
                 function (value, responseHeaders) {
                     $scope.error = null;
                     $scope.success = 'OK';
-                    $scope.settingsAccount = Account.get();
+                    Account.get(function(data) {
+                        $scope.settingsAccount = data;
+                        Session.create(data.id, data.login, data.firstName, data.lastName, data.email,
+                            data.telephone, data.question, data.answer, data.address, data.roles);
+                        $rootScope.account = Session;
+                    });
                 },
                 function (httpResponse) {
                     $scope.success = null;
