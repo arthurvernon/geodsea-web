@@ -26,7 +26,8 @@ public class LoggingAspect {
     private Environment env;
 
     @Pointcut("within(com.geodsea.pub.repository..*) || within(com.geodsea.pub.service..*) || within(com.geodsea.pub.web.rest..*)")
-    public void loggingPoincut() {}
+    public void loggingPoincut() {
+    }
 
     @AfterThrowing(pointcut = "loggingPoincut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
@@ -41,13 +42,15 @@ public class LoggingAspect {
 
     @Around("loggingPoincut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.debug("Enter: {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+        if (log.isDebugEnabled())
+            log.debug("Enter: {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
 
         try {
             Object result = joinPoint.proceed();
-            log.debug("Exit: {}.{}() with result = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                    joinPoint.getSignature().getName(), result);
+            if (log.isDebugEnabled())
+                log.debug("Exit: {}.{}() with result = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                        joinPoint.getSignature().getName(), result);
 
             return result;
         } catch (IllegalArgumentException e) {
