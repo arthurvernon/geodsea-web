@@ -1,6 +1,21 @@
 'use strict';
 
 angular.module('geodseaApp')
+
+.directive('serverError', function() {
+        return {
+            restrict: 'A',
+            require: '?ngModel',
+            link: function (scope, element, attrs, controller) {
+                element.on('change', function(){
+                'change', scope.$apply( function(){
+                    controller.$setValidity('server', true)
+                })})
+            }
+        }})
+
+
+
     .directive('activeMenu', function($translate, $locale, tmhDynamicLocale) {
         return {
             restrict: 'A',
