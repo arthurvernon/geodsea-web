@@ -278,6 +278,10 @@
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
 
         <script src="bower_components/jquery/dist/jquery.js"></script>
+
+        <!-- Must be defined before angular so that angular can resolve what open layers brings to the party. -->
+        <script src="bower_components/openlayers/ol4.min.js" type="text/javascript"></script>
+
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/angular-route/angular-route.js"></script>
         <script src="bower_components/angular-resource/angular-resource.js"></script>
@@ -310,7 +314,6 @@
         <script src="bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/scrollspy.js"></script>
         <script src="bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/collapse.js"></script>
         <script src="bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/tab.js"></script>
-        <script src="bower_components/openlayers/ol4.min.js" type="text/javascript"></script>
         <script src="scripts/vessel/router_vessel.js"></script>
         <script src="scripts/vessel/controller_vessel.js"></script>
         <script src="scripts/vessel/service_registration.js"></script>
