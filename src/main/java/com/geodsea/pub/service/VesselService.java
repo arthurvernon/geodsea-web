@@ -64,10 +64,14 @@ public class VesselService {
      *
      * @return
      */
-    @PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("isAuthenticated()")
     public Collection<Vessel> retrieveVesselsUserMaySee() throws ActionRefusedException {
-        return vesselRepository.findAll();
+        Set<Vessel> all = new HashSet<Vessel>();
+        all.addAll(retrieveOwnedVessels());
+        all.addAll(retrieveSkipperedVessels());
+        return all;
     }
+
 
     private List<Participant> compilePersonAndMemberships(Person person) {
         List<Participant> participants = new ArrayList<Participant>();
@@ -79,8 +83,24 @@ public class VesselService {
         return participants;
     }
 
-    private List<Vessel> getOwnedVessels(List<Participant> participants) {
-        List<Vessel> all = new ArrayList<Vessel>();
+    /**
+     * Get all vessels owned by the person or a collective that the person is an active member of.
+     * @return
+     * @throws ActionRefusedException
+     */
+    @PreAuthorize("isAuthenticated()")
+    public Collection<Vessel> retrieveOwnedVessels() throws ActionRefusedException {
+        Person user = personRepository.getByLogin(SecurityUtils.getCurrentLogin());
+        List<Participant> userAndCollectives = new ArrayList<Participant>();
+        userAndCollectives.add(user);
+        userAndCollectives.addAll(collectiveRepository.findWherePersonIsActiveMember(user.getId()));
+        Set<Vessel> all = new HashSet<Vessel>();
+        all.addAll(getOwnedVessels(userAndCollectives));
+        return all;
+    }
+
+    private Set<Vessel> getOwnedVessels(List<Participant> participants) {
+        Set<Vessel> all = new HashSet<Vessel>();
         List<Owner> ownerships = ownerRepository.findForParticipant(participants);
         for (Owner owner : ownerships)
             all.add(owner.getVessel());
@@ -169,7 +189,7 @@ public class VesselService {
                     lookingForUser = false;
                 individuals++;
             }
-            addOwnerRole(participant);
+            addOwnerRoleIfRequired(participant);
             Owner theOwner = new Owner(vessel, participant);
             ownerRepository.save(theOwner);
         }
@@ -231,20 +251,21 @@ public class VesselService {
         }
     }
 
-    private void addRole(Participant participant, String role) {
+    private void addRoleIfRequired(Participant participant, String role) {
         if (!participant.hasAuthority(role)) {
             Authority authority = authorityRepository.findOne(role);
             participant.addAuthority(authority);
+            SecurityUtils.addAuthority(role);
             participantRepository.save(participant);
         }
     }
 
-    private void addOwnerRole(Participant participant) {
-        addRole(participant, AuthoritiesConstants.OWNER);
+    private void addOwnerRoleIfRequired(Participant participant) {
+        addRoleIfRequired(participant, AuthoritiesConstants.OWNER);
     }
 
     private void addSkipperRole(Participant participant) {
-        addRole(participant, AuthoritiesConstants.SKIPPER);
+        addRoleIfRequired(participant, AuthoritiesConstants.SKIPPER);
     }
 
     /**
