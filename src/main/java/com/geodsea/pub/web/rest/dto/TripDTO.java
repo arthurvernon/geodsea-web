@@ -1,5 +1,7 @@
 package com.geodsea.pub.web.rest.dto;
 
+import org.geojson.Feature;
+
 import java.util.Date;
 
 /**
@@ -49,10 +51,13 @@ public class TripDTO {
     private Date actualEnd_dt;
 
 
+    private Feature wayPoints;
+
     public TripDTO(Long id, RescueOrganisationDTO rescueOrganisation, String headline, Integer peopleOnBoard,
-                   Integer fuelOnBoard, Date actualStartTime, Date scheduledEndTime, Date actualEndTime) {
+                   Integer fuelOnBoard, Date actualStartTime, Date scheduledEndTime, Date actualEndTime, Feature wayPoints) {
         this.id = id;
         this.rescueOrganisation = rescueOrganisation;
+        this.wayPoints = wayPoints;
         this.headline = headline;
         this.peopleOnBoard = peopleOnBoard;
         this.fuelOnBoard = fuelOnBoard;
@@ -95,4 +100,9 @@ public class TripDTO {
     public Date getActualEnd_dt() {
         return actualEnd_dt;
     }
+
+    public Feature getWayPoints() {
+        return wayPoints;
+    }
 }
+

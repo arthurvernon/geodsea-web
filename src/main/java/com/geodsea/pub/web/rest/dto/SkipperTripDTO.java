@@ -1,6 +1,8 @@
 package com.geodsea.pub.web.rest.dto;
 
 
+import org.geojson.Feature;
+
 import java.util.Date;
 
 /**
@@ -49,8 +51,8 @@ public class SkipperTripDTO extends TripDTO {
 
     public SkipperTripDTO(Long id, ParticipantDTO skipper, VesselDTO vessel, RescueOrganisationDTO rescueOrganisation,
                           String headline, String summary, Integer peopleOnBoard, Integer fuelOnBoard, Date scheduledStartTime,
-                          Date actualStartTime, Date scheduledEndTime, Date actualEndTime) {
-        super(id,rescueOrganisation, headline, peopleOnBoard, fuelOnBoard, actualStartTime, scheduledEndTime, actualEndTime);
+                          Date actualStartTime, Date scheduledEndTime, Date actualEndTime, Feature wayPoints) {
+        super(id,rescueOrganisation, headline, peopleOnBoard, fuelOnBoard, actualStartTime, scheduledEndTime, actualEndTime, wayPoints);
         this.skipper = skipper;
         this.vessel = vessel;
         this.summary = summary;

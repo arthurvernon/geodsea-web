@@ -1,16 +1,12 @@
 package com.geodsea.pub.domain;
 
 import com.geodsea.pub.service.util.TripSubmitChecks;
-import com.geodsea.pub.service.util.TripUpdateChecks;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiPoint;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A trip created by the skipper.
@@ -48,7 +44,7 @@ public class Trip {
      */
     @Column(name = "WAY_POINTS", nullable = true)
     @Type(type = "org.hibernate.spatial.GeometryType")
-    private MultiPoint wayPoints;
+    private LineString wayPoints;
 
 
     /**
@@ -126,7 +122,7 @@ public class Trip {
      * @param fuel (optional) number of litres of fuel. Required if vessel is motorised.
      * @param people number of people on board
      */
-    public Trip(String headline, Date actualStartTime, Date scheduledEndTime, MultiPoint wayPoints, Integer fuel, int people) {
+    public Trip(String headline, Date actualStartTime, Date scheduledEndTime, LineString wayPoints, Integer fuel, int people) {
         this.headline = headline;
         this.actualEndTime = actualStartTime;
         this.scheduledEndTime = scheduledEndTime;
@@ -143,11 +139,11 @@ public class Trip {
         this.id = id;
     }
 
-    public MultiPoint getWayPoints() {
+    public LineString getWayPoints() {
         return wayPoints;
     }
 
-    public void setWayPoints(MultiPoint wayPoints) {
+    public void setWayPoints(LineString wayPoints) {
         this.wayPoints = wayPoints;
     }
 
