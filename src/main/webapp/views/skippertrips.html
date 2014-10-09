@@ -17,9 +17,13 @@
                         <h4 class="modal-title" id="myTripLabel" translate="title.tripedit">Create or edit a Trip</h4>
                     </div>
                     <div class="modal-body">
+                        <div class="alert alert-danger" ng-show="errorList">
+                            <p ng-repeat="error in errorList.errors">{{'errors.' + error.messageKey | translate}}</p>
+                        </div>
                         <div class="alert alert-danger" ng-show="errorcode" translate="{{errorcode}}">
                         </div>
 
+                        x{{trip.wayPoints}}x
                         <div class="form-group">
                             <label translate="field.id.label">ID</label>
                             <input type="text" class="form-control" name="id"
@@ -68,7 +72,12 @@
                         <!-- fuel on board -->
                         <div class="form-group">
                             <label translate="field.trip.fuel.label">Fuel on board</label>
-                            <input type="number" ng-model="trip.fuelOnBoard" name="fuel" min="0" max="10000"/>
+                            <input type="number"
+                                   ng-model="trip.fuelOnBoard"
+                                   name="fuel"
+                                   min="0"
+                                   max="10000"
+                                   server-error/>
 
                             <div class="error" ng-show="form.fuel.$dirty && form.fuel.$invalid">
                                 <small class="error" ng-show="form.fuel.$error.number"
@@ -118,13 +127,22 @@
                         <!-- scheduled start -->
                         <div class="form-group">
                             <label translate="field.trip.start.scheduled.label">Scheduled Start</label>
-                            <input type="datetime-local" class="form-control" ng-model="trip.scheduledStart_dt" name="scheduledstart"
-                                      placeholder="{{'field.trip.start.scheduled.placeholder' | translate}}" ng-readonly="trip.actualStart_dt"/>
+                            <input type="datetime-local"
+                                   class="form-control"
+                                   ng-model="trip.scheduledStart_dt"
+                                   name="scheduledStartTime"
+                                   placeholder="{{'field.trip.start.scheduled.placeholder' | translate}}"
+                                   ng-readonly="trip.actualStart_dt"
+                                   server-error/>
 
-                            <div class="error" ng-show="form.scheduledstart.$dirty && form.scheduledstart.$invalid">
-                                <small class="error" ng-show="form.scheduledstart.$error.datetimelocal"
+                            <div class="error" ng-show="form.scheduledStartTime.$dirty && form.scheduledStartTime.$invalid">
+                                <small class="error" ng-show="form.scheduledStartTime.$error.datetimelocal"
                                        translate="field.trip.start.scheduled.date">
                                     Not a valid date
+                                </small>
+                                <small class="error" ng-show="form.scheduledStartTime.$error.server"
+                                       >
+                                    Problem with date validation on the server
                                 </small>
                             </div>
                         </div>
@@ -132,11 +150,16 @@
                         <!-- scheduled end -->
                         <div class="form-group">
                             <label translate="field.trip.end.scheduled.label">Scheduled end</label>
-                            <input type="datetime-local" class="form-control" ng-model="trip.scheduledEnd_dt" name="scheduledend"
-                                   placeholder="{{'field.trip.end.scheduled.placeholder' | translate}}" ng-readonly="trip.actualEnd_dt"/>
+                            <input type="datetime-local"
+                                   class="form-control"
+                                   ng-model="trip.scheduledEnd_dt"
+                                   name="scheduledEndTime"
+                                   placeholder="{{'field.trip.end.scheduled.placeholder' | translate}}"
+                                   ng-readonly="trip.actualEnd_dt"
+                                   server-error/>
 
-                            <div class="error" ng-show="form.scheduledend.$dirty && form.scheduledend.$invalid">
-                                <small class="error" ng-show="form.scheduledend.$error.datetimelocal"
+                            <div class="error" ng-show="form.scheduledEndTime.$dirty && form.scheduledEndTime.$invalid">
+                                <small class="error" ng-show="form.scheduledEndTime.$error.datetimelocal"
                                        translate="field.trip.end.scheduled.date">
                                     Not a valid date
                                 </small>
@@ -156,7 +179,10 @@
                             <input type="string" class="form-control" ng-model="trip.actualEnd_dt" name="actualend"
                                    placeholder="{{'field.trip.end.actual.placeholder' | translate}}" readonly/>
                         </div>
+
                         <div id="map" class="map" style="width: 100%; height: 400px;"></div>
+
+                        {{map.linestring}}
 
 
                     </div>
