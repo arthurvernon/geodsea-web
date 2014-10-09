@@ -313,4 +313,8 @@ public class Vessel implements Serializable {
         this.storageLocation = storageLocation;
     }
 
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }
