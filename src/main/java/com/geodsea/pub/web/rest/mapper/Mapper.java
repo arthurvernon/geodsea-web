@@ -7,14 +7,39 @@ import com.geodsea.pub.domain.type.*;
 import com.geodsea.pub.domain.type.VesselType;
 import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.web.rest.dto.*;
-import com.geodsea.ws.*;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.LineString;
+import org.geojson.Crs;
+import org.geojson.Feature;
+import org.geojson.LngLatAlt;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * One place where the mapping between DTO and bean is performed.
  */
 public class Mapper {
+
+    /**
+     * Convert a {@link ConstraintViolationException} into an ErrorsDTO object to ship to the client.
+     * @param ex a non-null constraint violation exception containing at least one
+     * @return
+     */
+    public static ErrorsDTO errors(ConstraintViolationException ex) {
+        List<ErrorDTO> list = new ArrayList<ErrorDTO>(ex.getConstraintViolations().size());
+        for (ConstraintViolation<?> cv : ex.getConstraintViolations()) {
+            list.add(new ErrorDTO(FieldCorrelator.translate(cv.getRootBeanClass(), cv.getPropertyPath().toString()),
+                    cv.getMessageTemplate()));
+        }
+
+        return new ErrorsDTO(list);
+    }
+
 
     /**
      * Map everything except the user's password and aspects of the address that are not retained.
@@ -71,10 +96,78 @@ public class Mapper {
                 vessel.getTotalHP(), vessel.getFuelCapacity(), vessel.getStorageType(), vessel.getStorageLocation(), vessel.getEmergencyEquipment());
     }
 
-    public static SkipperTripDTO vessel(TripSkipper trip) {
-        return new SkipperTripDTO(trip.getId(), participant(trip.getPerson()), vessel(trip.getVessel()), rescueOrganisation(trip.getRescue()),
-                trip.getHeadline(), trip.getSummary(), trip.getPeopleOnBoard(), trip.getFuelOnBoard(), trip.getScheduledStartTime(),
-                trip.getActualStartTime(), trip.getScheduledEndTime(), trip.getActualEndTime());
+    public static SkipperTripDTO tripSkipper(TripSkipper tripSkipper, Feature feature) {
+        return new SkipperTripDTO(tripSkipper.getId(),
+                participant(tripSkipper.getPerson()), vessel(tripSkipper.getVessel()),
+                rescueOrganisation(tripSkipper.getRescue()),
+                tripSkipper.getHeadline(),
+                tripSkipper.getSummary(),
+                tripSkipper.getPeopleOnBoard(),
+                tripSkipper.getFuelOnBoard(),
+                tripSkipper.getScheduledStartTime(),
+                tripSkipper.getActualStartTime(),
+                tripSkipper.getScheduledEndTime(),
+                tripSkipper.getActualEndTime(),
+                feature);
+    }
+
+    /**
+     *
+     * @param trip
+     * @return
+     */
+    public static SkipperTripDTO tripSkipper(TripSkipper trip) {
+        return tripSkipper(trip, feature(trip.getWayPoints(), FeatureType.WAY_POINTS, null));
+    }
+
+
+    public static Feature feature(LineString lineString, FeatureType featureType , Map<String, Object> properties) {
+        Coordinate[] coords = null;
+        // initial value is a hack to match a non-null line string
+        int crs = 3857;
+        if (lineString == null) {
+
+            //EPSG:3857
+            coords = new Coordinate[]{
+                    new Coordinate(12883155.37, -3740617.96),
+                    new Coordinate(12862402.72, -3762861.14),
+                    new Coordinate(12882964.28, -3770619.50)
+            };
+
+//            //EPSG:4326
+//            coords = new Coordinate[]{
+//                    new Coordinate(115.73182434082031, -31.829608737341523),
+//                    new Coordinate(115.56702941894531, -31.988153733208087),
+//                    new Coordinate(115.72907775878906, -32.0568492514696)
+//            };
+        } else {
+            crs = lineString.getSRID();
+            coords = lineString.getCoordinates();
+        }
+        LngLatAlt[] values = new LngLatAlt[coords.length];
+        for (int i = 0; i < coords.length; i++)
+            values[i] = new LngLatAlt(coords[i].x, coords[i].y, coords[i].z);
+
+        org.geojson.LineString ls = new org.geojson.LineString(values);
+        Feature feature = new Feature();
+        feature.setId(featureType.getIdString());
+        feature.setGeometry(ls);
+        feature.setCrs(crs(crs));
+        if (properties != null)
+            feature.setProperties(properties);
+        return feature;
+    }
+
+    public static Crs crs(int crsCode)
+    {
+//        String name = "urn:ogc:def:crs:EPSG::4326";
+//        String name = "EPSG:4326";
+//        String name = "EPSG:3857";
+        Crs crs = new Crs();
+        Map<String, Object> p = new HashMap<String, Object>();
+        p.put("name", "EPSG:"+crsCode);
+        crs.setProperties(p);
+        return crs;
     }
 
     public static SkipperDTO skipper(Skipper skipper)
@@ -159,12 +252,6 @@ public class Mapper {
                 participant.getEmail(), participant.getLangKey(), ((Person) participant).getTelephone());
     }
 
-    public static SkipperTripDTO tripSkipper(TripSkipper trip) {
-        return new SkipperTripDTO(trip.getId(), participant(trip.getPerson()), vessel(trip.getVessel()), rescueOrganisation(trip.getRescue()),
-                trip.getHeadline(), trip.getSummary(), trip.getPeopleOnBoard(), trip.getFuelOnBoard(), trip.getScheduledStartTime(),
-                trip.getActualStartTime(), trip.getScheduledEndTime(), trip.getActualEndTime());
-    }
-
     /**
      * Create a vessel from the details within a license query.
      * <p>
@@ -179,4 +266,5 @@ public class Mapper {
                 VesselType.valueOf(vessel.getVesselType()), vessel.getHullColor(), vessel.getSuperstructureColor(),
                 vessel.getLength(), vessel.getTotalHP(), vessel.getFuelCapacity(), null, null, null);
     }
+
 }
