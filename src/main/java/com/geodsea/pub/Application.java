@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Arrays;
 
-@ComponentScan
+@ComponentScan(value = {"com.geodsea.pub", "com.geodsea.epsg"})
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
 public class Application {
 

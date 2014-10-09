@@ -2,6 +2,7 @@ server:
     port: 10344
     address: localhost
 
+geodsea.epsg.schema: EPSG
 
 # security configuration (this key should be unique for your application, and kept secret)
 jhipster.security.rememberme.key: geodsea

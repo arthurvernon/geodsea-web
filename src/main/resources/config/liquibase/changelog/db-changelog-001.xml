@@ -7,10 +7,27 @@
     <property name="now" value="now()" dbms="mysql,h2"/>
     <property name="now" value="current_timestamp" dbms="postgresql"/>
 
+
+    <!-- create the tables, then add the data and finally set the foreign keys. -->
+    <changeSet id="101" author="Arthur Vernon">
+
+        <sqlFile path="EPSG_v8_5.mdb_Tables_PostgreSQL.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="102" author="Arthur Vernon">
+
+        <sqlFile path="EPSG_v8_5.mdb_Data_PostgreSQL.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="103" author="Arthur Vernon">
+
+        <sqlFile path="EPSG_v8_5.mdb_FKeys_PostgreSQL.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
     <!-- JHipster core -->
 
 
-    <changeSet id="1" author="Arthur Vernon">
+    <changeSet id="201" author="Arthur Vernon">
 
         <sqlFile path="participant.sql" relativeToChangelogFile="true"/>
 
@@ -46,7 +63,7 @@
 
 
 
-    <changeSet id="100" author="Arthur Vernon">
+    <changeSet id="202" author="Arthur Vernon">
 
         <sqlFile path="agencies.sql" relativeToChangelogFile="true"/>
         <sqlFile path="vessel.sql" relativeToChangelogFile="true"/>
@@ -56,7 +73,7 @@
     </changeSet>
 
 
-    <changeSet id="1000" author="Arthur Vernon">
+    <changeSet id="203" author="Arthur Vernon">
         <sqlFile path="data.sql" relativeToChangelogFile="true"/>
         <loadData encoding="UTF-8"
                   file="config/liquibase/vessels.csv"
