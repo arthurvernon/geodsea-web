@@ -4,6 +4,7 @@ import com.geodsea.pub.domain.*;
 import com.geodsea.pub.repository.*;
 import com.geodsea.pub.security.SecurityUtils;
 import com.geodsea.pub.service.util.TripSubmitChecks;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.Point;
 import org.slf4j.Logger;
@@ -115,7 +116,7 @@ public class TripService extends BaseService {
      */
     @PreAuthorize("isAuthenticated()")
     public Trip createTripPlan(long vesselId, long skipperId, String headline, Date scheduledStartTime, Date scheduledEndTime,
-                               String summary, MultiPoint wayPoints, int fuel, int people) throws ActionRefusedException {
+                               String summary, LineString wayPoints, int fuel, int people) throws ActionRefusedException {
         Skipper skipper = skipperRepository.findOne(skipperId);
         Vessel vessel = vesselRepository.findOne(vesselId);
         checkPersonIsSkipper(skipperId, skipper, vesselId, vessel);

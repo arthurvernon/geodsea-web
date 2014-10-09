@@ -2,7 +2,7 @@ package com.geodsea.pub.domain;
 
 import com.geodsea.pub.service.util.TripSubmitChecks;
 import com.geodsea.pub.service.util.TripUpdateChecks;
-import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.LineString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -92,7 +92,7 @@ public class TripSkipper extends Trip {
      * @param fuel (optional) number of litres of fuel. Required if vessel is motorised.
      * @param people number of people on board
      */
-    public TripSkipper(Vessel vessel, Person person, String headline, Date scheduledStartTime, Date scheduledEndTime, String summary, MultiPoint wayPoints, Integer fuel, int people) {
+    public TripSkipper(Vessel vessel, Person person, String headline, Date scheduledStartTime, Date scheduledEndTime, String summary, LineString wayPoints, Integer fuel, int people) {
         super(headline, null, scheduledEndTime, wayPoints, fuel, people);
         this.summary = summary;
         this.scheduledStartTime = scheduledStartTime;
