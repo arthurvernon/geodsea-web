@@ -220,18 +220,30 @@
             <thead>
             <tr>
                 <th translate="table.heading.id">ID</th>
-                <th translate="table.heading.vesselname">Vessel Name</th>
                 <th translate="table.heading.headline">Headline</th>
+                <th translate="table.heading.vesselname">Vessel Name</th>
+                <th translate="table.heading.skipper">Skipper</th>
+                <th translate="table.heading.people">People</th>
                 <th translate="table.heading.fuel">Fuel (l)</th>
+                <th translate="table.heading.scheduledstart">Sched. Start</th>
+                <th translate="table.heading.actualstart">Act. Start</th>
+                <th translate="table.heading.scheduledend">Sched. End</th>
+                <th translate="table.heading.actualend">Act. End</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="trip in trips">
                 <td>{{trip.id}}</td>
-                <td>{{trip.vessel.vesselName}}</td>
                 <td>{{trip.headline}}</td>
+                <td>{{trip.vessel.vesselName}}</td>
+                <td>{{trip.skipper.name}}</td>
+                <td>{{trip.peopleOnBoard}}</td>
                 <td>{{trip.fuelOnBoard}}</td>
+                <td>{{trip.scheduledStart_dt | date:'medium'}}</td>
+                <td>{{trip.actualStart_dt | date:'shortTime'}}</td>
+                <td>{{trip.scheduledEnd_dt | date:'medium'}}</td>
+                <td>{{trip.actualEnd_dt | date:'shortTime'}}</td>
                 <td>
                     <button type="submit"
                             ng-click="update(trip.id)"

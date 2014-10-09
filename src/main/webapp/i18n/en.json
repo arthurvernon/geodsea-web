@@ -433,6 +433,8 @@
     "table": {
         "heading": {
             "active": "Active",
+            "actualstart": "Act. Start",
+            "actualend": "Act. End",
             "contactPerson": "Contact Person",
             "contactLogin": "Contact Login",
             "contactEmail": "Contact Email",
@@ -455,14 +457,18 @@
             "manager": "Manager",
             "name": "Name",
             "page": "Current page",
+            "people": "People",
             "since": "Since",
+            "skipper": "Skipper",
             "storagetype": "Storage Type",
+            "scheduledstart": "Sched. Start",
+            "scheduledend": "Sched. End",
             "time": "Time",
             "type": "Type",
             "until": "Until",
             "user": "User",
             "useragent": "User Agent",
-            "vesselname": "Vessel Name",
+            "vesselname": "Vessel",
             "vesseltype": "Vessel Type"
 
         }
