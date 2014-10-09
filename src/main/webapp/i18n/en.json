@@ -610,7 +610,8 @@
         "UserMustOwnVessel": "You must include yourself in the list of owners",
         "UserDisabled": "User account is disabled.",
         "VesselNotSpecified" : "Vessel was not specified",
-        "SkipperNotSpecified" : "Skipper was not specified"
+        "SkipperNotSpecified" : "Skipper was not specified",
+        "{javax.validation.constraints.Future.message}" : "Date specified must be in the future"
     },
 
     "vessel": {
