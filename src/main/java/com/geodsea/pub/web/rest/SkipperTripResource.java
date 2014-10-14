@@ -7,6 +7,7 @@ import com.geodsea.pub.domain.TripSkipper;
 import com.geodsea.pub.domain.type.FeatureType;
 import com.geodsea.pub.service.ActionRefusedException;
 import com.geodsea.pub.service.ErrorCode;
+import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.service.TripService;
 import com.geodsea.pub.web.rest.dto.ErrorsDTO;
 import com.geodsea.pub.web.rest.dto.SkipperTripDTO;
@@ -42,6 +43,9 @@ public class SkipperTripResource {
     @Inject
     private CrsTransformService crsTransformService;
 
+    @Inject
+    private GisService gisService;
+
     /**
      * POST  /rest/trips -> Create a new trip.
      *
@@ -55,6 +59,14 @@ public class SkipperTripResource {
         log.debug("REST request to create or update a Trip : {}", trip);
 
         try {
+
+            // Convert to WGS 84 and then swap lat and long around to align with database storage using X and Y
+            // coordinates.
+            LineString lineString = gisService.toLineString(trip.getWayPoints());
+            if (lineString != null) {
+                lineString = (LineString) crsTransformService.transform(lineString, CrsTransformService.CRS_CODE_4326);
+            }
+
             if (trip.getId() == null) {
                 try {
                     if (trip.getVessel() == null)
@@ -64,9 +76,16 @@ public class SkipperTripResource {
                     if (trip.getPeopleOnBoard() == null)
                         return new ResponseEntity<>(ErrorCode.PEOPLE_ON_BOARD_NOT_SPECIFIED, HttpStatus.BAD_REQUEST);
 
-                    Trip created = tripService.createTripPlan(trip.getVessel().getId(), trip.getSkipper().getId(),
-                            trip.getHeadline(), trip.getScheduledStart_dt(), trip.getScheduledEnd_dt(), trip.getSummary(), null,
-                            trip.getFuelOnBoard(), trip.getPeopleOnBoard());
+                    Trip created = tripService.createTripPlan(
+                            trip.getVessel().getId(),
+                            trip.getSkipper().getId(),
+                            trip.getHeadline(),
+                            trip.getScheduledStart_dt(),
+                            trip.getScheduledEnd_dt(),
+                            trip.getSummary(),
+                            lineString,
+                            trip.getFuelOnBoard(),
+                            trip.getPeopleOnBoard());
                     return new ResponseEntity<Long>(created.getId(), HttpStatus.OK);
                 } catch (ActionRefusedException e) {
                     return new ResponseEntity<String>(e.getCode(), HttpStatus.CONFLICT);
@@ -74,7 +93,7 @@ public class SkipperTripResource {
             } else {
                 try {
                     tripService.updatePlan(trip.getId(), trip.getSkipper().getId(), trip.getHeadline(),
-                            trip.getScheduledStart_dt(), trip.getScheduledEnd_dt(), trip.getSummary(), null,
+                            trip.getScheduledStart_dt(), trip.getScheduledEnd_dt(), trip.getSummary(), lineString,
                             trip.getFuelOnBoard(), trip.getPeopleOnBoard());
                     return new ResponseEntity<Long>(trip.getId(), HttpStatus.OK);
                 } catch (ActionRefusedException e) {
@@ -86,6 +105,10 @@ public class SkipperTripResource {
         catch (ConstraintViolationException ex)
         {
             return new ResponseEntity<ErrorsDTO>(Mapper.errors(ex), HttpStatus.CONFLICT);
+        } catch (TransformException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (FactoryException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -133,7 +156,16 @@ public class SkipperTripResource {
             // if the SRID of the data in the database (currently 4326) is not the same as the client
             // then convert the way points
             try {
+                if (log.isDebugEnabled())
+                    log.debug("Attempting to transform " + trip.getWayPoints() + " SRID:" + trip.getWayPoints().getSRID() +
+                    " to SRID: "+ srid);
+
                 LineString ls = (LineString) crsTransformService.transform(trip.getWayPoints(), srid);
+
+                if (log.isDebugEnabled())
+                    log.debug("Successfully transformed " + trip.getWayPoints() + " SRID:" + trip.getWayPoints().getSRID() +
+                            " to " + ls + " SRID: "+ srid);
+
                 Feature feature = Mapper.feature(ls, FeatureType.WAY_POINTS, null);
                 return new ResponseEntity<SkipperTripDTO>(Mapper.tripSkipper(tripSkipper, feature), HttpStatus.OK);
             } catch (FactoryException e) {
@@ -158,4 +190,5 @@ public class SkipperTripResource {
         log.debug("REST request to delete Trip : {}", id);
         tripService.deleteTrip(id);
     }
+
 }
