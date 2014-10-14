@@ -2,8 +2,11 @@ package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.geodsea.pub.domain.Skipper;
+import com.geodsea.pub.domain.Trip;
+import com.geodsea.pub.domain.TripSkipper;
 import com.geodsea.pub.domain.Vessel;
 import com.geodsea.pub.service.ActionRefusedException;
+import com.geodsea.pub.service.TripService;
 import com.geodsea.pub.service.VesselService;
 import com.geodsea.pub.web.rest.dto.SkipperDTO;
 import com.geodsea.pub.web.rest.dto.VesselAddDTO;
@@ -34,6 +37,8 @@ public class VesselResource {
     @Inject
     private VesselService vesselService;
 
+    @Inject
+    private TripService tripService;
 
     /**
      * POST  /rest/vessels -> Create a new boat.
@@ -78,10 +83,10 @@ public class VesselResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getOwnedAndSkipperedVessels() {
         log.debug("REST request to get all Vessels");
         try {
-            Collection<Vessel> vessels = vesselService.retrieveVesselsUserMaySee();
+            Collection<Vessel> vessels = vesselService.retrieveOwnedAndSkipperedVessels();
             log.debug("REST request to get all Vessels returned " + vessels.size() + " vessels.");
             List<VesselDTO> dtos = new ArrayList<VesselDTO>();
             for (Vessel vessel : vessels)
@@ -93,7 +98,7 @@ public class VesselResource {
     }
 
     /**
-     * Retrieve all the vessels that this person (a skipper) is permitted to see.
+     * Retrieve all the vessels that this person (a skipper) is permitted to skipper.
      * <p>
      * Administrators can view all vessels, but are unlikely to call this method direct.
      * Owners and skippers may retrieve vessel details at any time.
@@ -101,7 +106,7 @@ public class VesselResource {
      * </p>
      * GET  /rest/vessels -> get all the vessels.
      */
-    @RequestMapping(value = "/rest/skipper/vessels",
+    @RequestMapping(value = "/rest/vessels/skipper",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -127,7 +132,7 @@ public class VesselResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<?> getSkippersOfVessel(@PathVariable Long id, HttpServletResponse response) {
+    public ResponseEntity<?> getSkippersOfVessel(@PathVariable Long id) {
         log.debug("REST request to get skippers of vessel : {}", id);
         try {
             List<Skipper> skippers = vesselService.retrieveSkippersForVessel(id);
@@ -147,10 +152,31 @@ public class VesselResource {
         }
     }
 
-
     /**
-     * GET  /rest/vessels/:id -> get the "id" boat.
+     * Get the skippers of the vessel that is used for the specified trip.
+     * GET  /rest/trips/:id -> get the "id" trip.
+     * @param id ID of the trip.
+     *           rest/trips/:tripId/vessel/skippers
      */
+    @RequestMapping(value = "/rest/trips/{id}/vessel/skippers",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public  ResponseEntity<?> getSkippersOfVesselForTrip(@PathVariable Long id) {
+        Trip trip = tripService.getTrip(id);
+        if (trip == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        if (!(trip instanceof TripSkipper))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        return getSkippersOfVessel(((TripSkipper)trip).getSkipper().getVessel().getId());
+    }
+
+
+        /**
+         * GET  /rest/vessels/:id -> get the "id" boat.
+         */
     @RequestMapping(value = "/rest/vessels/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
