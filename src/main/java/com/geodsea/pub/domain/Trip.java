@@ -1,6 +1,6 @@
 package com.geodsea.pub.domain;
 
-import com.geodsea.pub.service.util.TripSubmitChecks;
+import com.geodsea.pub.service.util.TripCreateChecks;
 import com.vividsolutions.jts.geom.LineString;
 import org.hibernate.annotations.Type;
 
@@ -62,7 +62,7 @@ public class Trip {
      */
     @Column(name = "ACTUAL_START", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
-    @Future(groups = TripSubmitChecks.class)
+    @Future(groups = TripCreateChecks.class)
     private Date actualStartTime;
 
 
@@ -91,7 +91,7 @@ public class Trip {
      */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "SCHEDULED_END", nullable = true)
-    @Future(groups = TripSubmitChecks.class)
+    @Future(groups = TripCreateChecks.class)
     private Date scheduledEndTime;
 
 

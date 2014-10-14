@@ -1,6 +1,6 @@
 package com.geodsea.pub.domain;
 
-import com.geodsea.pub.service.util.TripSubmitChecks;
+import com.geodsea.pub.service.util.TripCreateChecks;
 import com.geodsea.pub.service.util.TripUpdateChecks;
 import com.vividsolutions.jts.geom.LineString;
 
@@ -26,7 +26,7 @@ public class TripSkipper extends Trip {
      */
     @Column(name = "SCHEDULED_START", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
-    @Future(groups = TripSubmitChecks.class)
+    @Future(groups = TripCreateChecks.class)
     private Date scheduledStartTime;
 
     /**
@@ -37,7 +37,7 @@ public class TripSkipper extends Trip {
      */
     @ManyToOne(optional = false)
     @NotNull
-    private Person person;
+    private Skipper skipper;
 
     /**
      * The frequency in seconds at which the vessel should report its location.
@@ -83,7 +83,7 @@ public class TripSkipper extends Trip {
     /**
      * Create a plan for the trip
      * @param vessel the vessel being taken on the trip.
-     * @param person the skipper in charge of the vessel
+     * @param skipper the skipper in charge of the vessel
      * @param headline a summary of the purpose of the trip, shared with SRO
      * @param scheduledStartTime planned start time for the trip
      * @param scheduledEndTime planned end time for the trip
@@ -92,25 +92,21 @@ public class TripSkipper extends Trip {
      * @param fuel (optional) number of litres of fuel. Required if vessel is motorised.
      * @param people number of people on board
      */
-    public TripSkipper(Vessel vessel, Person person, String headline, Date scheduledStartTime, Date scheduledEndTime, String summary, LineString wayPoints, Integer fuel, int people) {
+    public TripSkipper(Vessel vessel, Skipper skipper, String headline, Date scheduledStartTime, Date scheduledEndTime, String summary, LineString wayPoints, Integer fuel, int people) {
         super(headline, null, scheduledEndTime, wayPoints, fuel, people);
         this.summary = summary;
         this.scheduledStartTime = scheduledStartTime;
         this.vessel = vessel;
-        this.person = person;
+        this.skipper = skipper;
     }
 
-
-
-
-    public Person getPerson() {
-        return person;
+    public Skipper getSkipper() {
+        return skipper;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setSkipper(Skipper skipper) {
+        this.skipper = skipper;
     }
-
     public Vessel getVessel() {
         return vessel;
     }
