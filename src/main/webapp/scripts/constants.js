@@ -35,6 +35,12 @@ var image = new ol.style.Circle({
     stroke: new ol.style.Stroke({color: 'red', width: 1})
 });
 
+geodseaApp.constant('MAPCONSTANTS', {
+    'SRID3857': 3857,
+    'EPSG3857': 'EPSG:3857',
+    'EPSG4326': 'EPSG:4326'
+});
+
 geodseaApp.constant('MAPSTYLES', {
     'Point': [new ol.style.Style({
         image: image

@@ -8,13 +8,20 @@ geodseaApp
                     templateUrl: 'views/skippertrips.html',
                     controller: 'SkipperTripController',
                     resolve:{
-                        vessels: ['SkipperVessel', function(SkipperVessel){
+                        vessels : ['SkipperVessel', function(SkipperVessel){
                             return SkipperVessel.query();
                         }],
                         resolvedSkipperTrip: ['SkipperTrip', function (SkipperTrip) {
                             return SkipperTrip.query();
                         }]
                     },
+                    access: {
+                        authorizedRoles: [USER_ROLES.ROLE_SKIPPER]
+                    }
+                })
+                .when('/skipper/trip', {
+                    templateUrl: 'views/skippertrip.html',
+                    controller: 'SkipperTripEditController',
                     access: {
                         authorizedRoles: [USER_ROLES.ROLE_SKIPPER]
                     }

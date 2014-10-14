@@ -87,6 +87,22 @@ geodseaApp.factory('LogsService', function ($resource) {
         });
     });
 
+geodseaApp.factory('TripService', function() {
+    var trip = null;
+
+    return {
+        getTrip: function() {
+            return trip;
+        },
+        setTrip: function(value) {
+            trip = value;
+        },
+        resetTrip: function() {
+          trip=null;
+        }
+    }
+});
+
 geodseaApp.factory('AuditsService', function ($http) {
         return {
             findAll: function() {
