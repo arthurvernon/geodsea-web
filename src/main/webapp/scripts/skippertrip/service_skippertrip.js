@@ -1,5 +1,8 @@
 'use strict';
 
+/*
+Retrieve all trips or that trip with a trip id as specified.
+ */
 geodseaApp.factory('SkipperTrip', ['$resource',
     function ($resource) {
         return $resource('app/rest/skipper/trips/:id', {}, {
@@ -14,11 +17,13 @@ geodseaApp.factory('SkipperTrip', ['$resource',
         });
     }]);
 
+/**
+ * Retrieve all the vessels that this person is presently permitted to skipper.
+ */
 geodseaApp.factory('SkipperVessel', ['$resource',
     function ($resource) {
-        return $resource('app/rest/skipper/vessels/:id', {}, {
-            'query': { method: 'GET', isArray: true},
-            'get': { method: 'GET'}
+        return $resource('app/rest/vessels/skipper', {}, {
+            'query': { method: 'GET', isArray: true}
         });
     }]);
 
