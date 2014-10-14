@@ -1,12 +1,12 @@
 package com.geodsea.pub.service;
 
+import com.geodsea.epsg.CrsTransformService;
 import com.geodsea.pub.domain.*;
 import com.geodsea.pub.repository.*;
 import com.geodsea.pub.security.SecurityUtils;
-import com.geodsea.pub.service.util.TripSubmitChecks;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.Point;
+import com.geodsea.pub.service.util.TripCreateChecks;
+import com.geodsea.pub.service.util.TripUpdateChecks;
+import com.vividsolutions.jts.geom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,12 +17,20 @@ import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Service to manage trips.
+ * <h3>Way Points</h3>
+ * <p>Way points in the database are stored as X/Y values. The ordering of coordinates is unfortunately
+ * inconsistent with the EPSG database settings han hence every time a Geography is persisted or retrieved
+ * the X/Y coordinated need to be switched.</p>
+ * <p>
+ * As this is done by this class within a transaction context, getters must be declared as a read-only transaction
+ * to ensure that the cached value is left unchanged. If this is not done then each time a trip is re-read from
+ * the cache, the X/Y coordindates will be switched again, leading to an incorrect way point being provided on
+ * every second read of the same trip.
+ * </p>
  */
 @Service
 @Transactional(rollbackFor = {ActionRefusedException.class})
@@ -52,15 +60,46 @@ public class TripService extends BaseService {
     @Inject
     private SkipperRepository skipperRepository;
 
+    @Inject
+    private CrsTransformService crsTransformService;
+
     private final Logger log = LoggerFactory.getLogger(TripService.class);
 
+    /**
+     * Add a trip plan to the database.
+     * <p>
+     * Note: The X/Y coordinates for the way points are swapped before the trip is saved.
+     * </p>
+     *
+     * @param trip
+     * @return
+     */
     public Trip addTripPlan(Trip trip) {
+        trip.setWayPoints(crsTransformService.swapXAndY(trip.getWayPoints()));
+
         return tripRepository.save(trip);
     }
 
+    /**
+     * Update an existing trip plan.
+     * <p>
+     * Note: The X/Y coordinates for the way points are swapped before the trip is saved.
+     * </p>
+     *
+     * @param tripId
+     * @param skipperId
+     * @param headline
+     * @param scheduledStartTime
+     * @param scheduledEndTime
+     * @param summary
+     * @param wayPoints
+     * @param fuelOnBoard
+     * @param peopleOnBoard
+     * @throws ActionRefusedException
+     */
     @PreAuthorize("isAuthenticated()")
     public void updatePlan(long tripId, long skipperId, String headline, Date scheduledStartTime, Date scheduledEndTime,
-                           String summary, MultiPoint wayPoints, Integer fuelOnBoard, Integer peopleOnBoard)
+                           String summary, LineString wayPoints, Integer fuelOnBoard, Integer peopleOnBoard)
             throws ActionRefusedException {
         TripSkipper trip = tripSkipperRepository.findOne(tripId);
 
@@ -70,28 +109,31 @@ public class TripService extends BaseService {
         Skipper skipper = skipperRepository.getOne(skipperId);
         checkPersonIsSkipper(skipperId, skipper, trip.getVessel().getId(), trip.getVessel());
 
-        trip.setPerson(skipper.getPerson());
+        wayPoints = crsTransformService.swapXAndY(wayPoints);
+
+        trip.setSkipper(skipper);
         trip.setHeadline(headline);
         trip.setScheduledStartTime(scheduledStartTime);
         trip.setScheduledEndTime(scheduledEndTime);
         trip.setSummary(summary);
+        trip.setWayPoints(wayPoints);
         trip.setFuelOnBoard(fuelOnBoard);
         trip.setPeopleOnBoard(peopleOnBoard);
 
-        validateTrip(trip);
+        validateTrip(trip,TripUpdateChecks.class);
 
         trip = tripRepository.save(trip);
 
         // if way points are defined then we can include the Monitor
         if (wayPoints != null && !wayPoints.isEmpty()) {
-            Point point = (Point) wayPoints.getGeometryN(0);
-            maintainSRO(trip, point);
+//            Point point = (Point) wayPoints.getGeometryN(0);
+            maintainSRO(trip, wayPoints);
         }
 
     }
 
-    private void validateTrip(Trip trip) throws ConstraintViolationException {
-        Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip, TripSubmitChecks.class);
+    private void validateTrip(Trip trip, Class<?>... groups) throws ConstraintViolationException {
+        Set<ConstraintViolation<Trip>> constraintViolations = validator.validate(trip, groups);
         if (constraintViolations.size() > 0) {
             if (log.isDebugEnabled())
                 for (ConstraintViolation<Trip> cv : constraintViolations)
@@ -103,15 +145,18 @@ public class TripService extends BaseService {
     /**
      * A plan may be created without necessarily specifying all the information that would be required to actually
      * commence a journey.
+     * <p>
+     * Note: The X/Y coordinates for the way points are swapped before the trip is saved.
+     * </p>
      *
      * @param vesselId  the ID of the vessel being taken on the trip.
-     * @param skipperId  the Id of the person (skipper) in charge of the vessel
-     * @param headline  a summary of the purpose of the trip, shared with SRO
-     * @param scheduledEndTime   planned end time for the trip
-     * @param summary   a personal summary of the trip, not shared with SRO
-     * @param wayPoints optional way points for journey, beginning with the starting location
-     * @param fuel      number of litres of fuel
-     * @param people    number of people on board
+     * @param skipperId        the Id of the person (skipper) in charge of the vessel
+     * @param headline         a summary of the purpose of the trip, shared with SRO
+     * @param scheduledEndTime planned end time for the trip
+     * @param summary          a personal summary of the trip, not shared with SRO
+     * @param wayPoints        optional way points for journey, beginning with the starting location
+     * @param fuel             number of litres of fuel
+     * @param people           number of people on board
      * @return a newly created trip
      */
     @PreAuthorize("isAuthenticated()")
@@ -121,14 +166,16 @@ public class TripService extends BaseService {
         Vessel vessel = vesselRepository.findOne(vesselId);
         checkPersonIsSkipper(skipperId, skipper, vesselId, vessel);
 
-        TripSkipper trip = new TripSkipper(vessel, skipper.getPerson(), headline, scheduledStartTime, scheduledEndTime, summary,
+        wayPoints = crsTransformService.swapXAndY(wayPoints);
+
+        TripSkipper trip = new TripSkipper(vessel, skipper, headline, scheduledStartTime, scheduledEndTime, summary,
                 wayPoints, fuel, people);
 
-        validateTrip(trip);
+        validateTrip(trip, TripCreateChecks.class);
 
         // allow the skipper to see what is going on.
         trip = tripRepository.save(trip);
-        monitorRepository.save(new Monitor(trip, trip.getPerson()));
+        monitorRepository.save(new Monitor(trip, trip.getSkipper().getPerson()));
 
         // if way points are defined then we can include the Monitor
         if (wayPoints != null && !wayPoints.isEmpty()) {
@@ -168,20 +215,22 @@ public class TripService extends BaseService {
     /**
      * Setup a sea rescue organisation based upon the location reported.
      *
-     * @param trip  the trip to monitor
-     * @param point the location to attempt
+     * @param trip     the trip to monitor
+     * @param geometry the location to attempt
      */
-    private void maintainSRO(Trip trip, Point point) {
+    private void maintainSRO(Trip trip, Geometry geometry) {
+
 
         // 1. if the trip has commenced then leave an existing monitor as is.
         Monitor monitor = monitorRepository.findRescueMonitoringTrip(trip);
         if (monitor != null && trip.getActualStartTime() != null)
             return;
 
+        log.debug("checking geometry: " + geometry + "- SRID " + geometry.getSRID());
         // if there are no candidates then there is no one to keep track of the vessel
-        List<Rescue> rescueList = rescueRepository.getRescueOrganisationsForLocation(point);
+        List<Rescue> rescueList = rescueRepository.getRescueOrganisationsForLocation(geometry);
         if (rescueList.size() == 0) {
-            log.info("No sea rescue organisation covers " + point);
+            log.info("No sea rescue organisation covers " + geometry);
             return;
         }
 
@@ -194,8 +243,8 @@ public class TripService extends BaseService {
                 return;
         }
 
-        // Select the first SRO if more than one
-        Rescue firstSRO = rescueList.get(0);
+        // Select the most appropriate
+        Rescue firstSRO = rescueList.size() > 1 ? narrowSelection(geometry, rescueList) : rescueList.get(0);
         trip.setRescue(firstSRO);
         tripRepository.save(trip);
 
@@ -205,6 +254,37 @@ public class TripService extends BaseService {
         monitorRepository.save(monitor);
     }
 
+    private Rescue narrowSelection(Geometry geometry, List<Rescue> options) {
+        options.get(0).getZone().getZone().getArea();
+
+        // Arrange rescue organisations by size, smallest first
+        Collections.sort(options, new Comparator<Rescue>() {
+            @Override
+            public int compare(Rescue o1, Rescue o2) {
+                return Double.compare(o1.getZone().getZone().getArea(), o2.getZone().getZone().getArea());
+            }
+        });
+
+        GeometryFactory factory = geometry.getFactory();
+        Point point = factory.createPoint(geometry.getCoordinate());
+
+        for (Rescue rescue : options) {
+            if (point.within(rescue.getZone().getZone()))
+                return rescue;
+        }
+
+        log.debug("No rescue organisation (out of " + options.size() +
+                " which overlap the trip) covers the starting point: " + point.toString() + ". Use the closest");
+
+        // Find the closest rescue organisation, up to 50 km away from the starting point.
+        List<Rescue> closest = rescueRepository.getClosestRescueOrganisation(point, options, 50000);
+
+        if (closest == null || closest.size() == 0)
+            log.info("No rescue organisation monitors a zone within 50km of the starting point: " + point.toString());
+
+        return closest.get(0);
+    }
+
     private boolean sroIsInList(Participant participant, List<Rescue> rescueList) {
         for (Rescue rescue : rescueList)
             if (rescue.getOrganisation().getId().equals(participant.getId()))
@@ -212,9 +292,27 @@ public class TripService extends BaseService {
         return false;
     }
 
+    /**
+     * <p>
+     * Note: The X/Y coordinates for the way points are swapped before the trip is returned.
+     * </p>
+     * <p>
+     * See note about the necessity of read-only transactions to preserve the integrity of the way point data.
+     * </p>
+     *
+     * @param id
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
+    @Transactional(readOnly = true)
     public Trip getTrip(long id) {
-        return tripRepository.findOne(id);
+        Trip trip = tripRepository.findOne(id);
+        if (trip != null && trip.getWayPoints() != null) {
+            log.debug("Way points in the database: " + trip.getWayPoints() + " SRID:" + trip.getWayPoints().getSRID());
+            trip.setWayPoints(crsTransformService.swapXAndY(trip.getWayPoints()));
+            log.debug("Reversed way points: " + trip.getWayPoints() + " SRID:" + trip.getWayPoints().getSRID());
+        }
+        return trip;
     }
 
     /**
@@ -247,8 +345,7 @@ public class TripService extends BaseService {
             throw new IllegalArgumentException("No such trip: " + tripId);
 
         // if no SRO has been established then do it now
-        if (trip.getRescue() == null)
-            maintainSRO(trip, locationTime.getLocation());
+        maintainSRO(trip, locationTime.getLocation());
 
         trip.add(locationTime);
         tripRepository.save(trip);
@@ -265,8 +362,7 @@ public class TripService extends BaseService {
             throw new IllegalArgumentException("No such trip: " + tripId);
 
         // if no SRO has been established then do it now
-        if (trip.getRescue() == null)
-            maintainSRO(trip, locationTimes.get(0).getLocation());
+        maintainSRO(trip, locationTimes.get(0).getLocation());
 
         trip.addAll(locationTimes);
         tripRepository.save(trip);
@@ -322,11 +418,19 @@ public class TripService extends BaseService {
     }
 
     /**
+     * <p>
+     * Note: The X/Y coordinates for the way points are swapped before the trip is returned.
+     * </p>
+     * <p>
+     * See note about the necessity of read-only transactions to preserve the integrity of the way point data.
+     * </p>
+     *
      * @param tripId
      * @param participant
      * @return a non-null trip
      * @throws ActionRefusedException
      */
+    @Transactional(readOnly = true)
     private Trip lookupTripAndCheckMonitor(long tripId, String participant) throws ActionRefusedException {
         Trip trip = tripRepository.findOne(tripId);
 
@@ -338,11 +442,29 @@ public class TripService extends BaseService {
             log.warn("User: {} not permitted to access trip: {}", participant, tripId);
             throw new ActionRefusedException(ErrorCode.PERMISSION_DENIED, "Participant" + participant + " is not permitted to access Trip: " + tripId);
         }
+
+        trip.setWayPoints(crsTransformService.swapXAndY(trip.getWayPoints()));
+
         return trip;
     }
 
+    /**
+     * <p>
+     * Note: The X/Y coordinates for the way points are swapped before the trip is returned.
+     * </p>
+     * <p>
+     * See note about the necessity of read-only transactions to preserve the integrity of the way point data.
+     * </p>
+     *
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
+    @Transactional(readOnly = true)
     public List<TripSkipper> getTripsForSkipper() {
-        return tripSkipperRepository.getByPersonLogin(SecurityUtils.getCurrentLogin());
+        List<TripSkipper> trips = tripSkipperRepository.getBySkipperPersonLogin(SecurityUtils.getCurrentLogin());
+        for (TripSkipper trip : trips)
+            trip.setWayPoints(crsTransformService.swapXAndY(trip.getWayPoints()));
+
+        return trips;
     }
 }
