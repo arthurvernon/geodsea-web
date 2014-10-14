@@ -57,7 +57,7 @@ public class VesselService {
     /**
      * Retrieve the vessels the user is permitted to access.
      * <p>
-     * Administrators can view all vessels, but are unlikely to call this method direct.
+     * There is no value in an administrator calling this method other than as an owner or a skipper.
      * Owners and skippers may retrieve vessel details at any time.
      * Rescue organisations can view vessels they are monitoring.
      * </p>
@@ -65,7 +65,7 @@ public class VesselService {
      * @return
      */
     @PreAuthorize("isAuthenticated()")
-    public Collection<Vessel> retrieveVesselsUserMaySee() throws ActionRefusedException {
+    public Collection<Vessel> retrieveOwnedAndSkipperedVessels() throws ActionRefusedException {
         Set<Vessel> all = new HashSet<Vessel>();
         all.addAll(retrieveOwnedVessels());
         all.addAll(retrieveSkipperedVessels());
