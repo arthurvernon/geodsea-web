@@ -2,6 +2,7 @@ package com.geodsea.pub.web.rest.mapper;
 
 import com.geodsea.pub.domain.TripSkipper;
 import com.geodsea.pub.web.rest.dto.SkipperTripDTO;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,8 @@ import java.util.Map;
  * Created by Arthur Vernon on 9/10/2014.
  */
 public class FieldCorrelator {
+
+    private static final Logger log = Logger.getLogger(FieldCorrelator.class);
 
     /**
      * For a particular form name
@@ -36,11 +39,15 @@ public class FieldCorrelator {
 
     public static String translate(Class<?> beanClass, String beanFieldName) {
         Map<String,String> vals = variants.get(beanClass);
-        if (vals == null)
-            return beanFieldName;
-        String value = vals.get(beanFieldName);
-        if (value != null)
-            return value;
-        return beanFieldName;
+        String result = beanFieldName;
+
+        if (vals != null)
+        {
+            String value = vals.get(beanFieldName);
+            if (value != null)
+                return result = value;
+        }
+        log.trace("Mapped " + beanFieldName + " to " + result);
+        return result;
     }
 }
