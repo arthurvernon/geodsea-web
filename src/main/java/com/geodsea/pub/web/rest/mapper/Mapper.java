@@ -97,8 +97,10 @@ public class Mapper {
     }
 
     public static SkipperTripDTO tripSkipper(TripSkipper tripSkipper, Feature feature) {
-        return new SkipperTripDTO(tripSkipper.getId(),
-                participant(tripSkipper.getPerson()), vessel(tripSkipper.getVessel()),
+        return new SkipperTripDTO(
+                tripSkipper.getId(),
+                skipper(tripSkipper.getSkipper()),
+                vessel(tripSkipper.getVessel()),
                 rescueOrganisation(tripSkipper.getRescue()),
                 tripSkipper.getHeadline(),
                 tripSkipper.getSummary(),
@@ -121,29 +123,19 @@ public class Mapper {
     }
 
 
+    /**
+     *
+     * @param lineString
+     * @param featureType
+     * @param properties
+     * @return
+     */
     public static Feature feature(LineString lineString, FeatureType featureType , Map<String, Object> properties) {
-        Coordinate[] coords = null;
-        // initial value is a hack to match a non-null line string
-        int crs = 3857;
-        if (lineString == null) {
+        if (lineString == null)
+            return null;
 
-            //EPSG:3857
-            coords = new Coordinate[]{
-                    new Coordinate(12883155.37, -3740617.96),
-                    new Coordinate(12862402.72, -3762861.14),
-                    new Coordinate(12882964.28, -3770619.50)
-            };
-
-//            //EPSG:4326
-//            coords = new Coordinate[]{
-//                    new Coordinate(115.73182434082031, -31.829608737341523),
-//                    new Coordinate(115.56702941894531, -31.988153733208087),
-//                    new Coordinate(115.72907775878906, -32.0568492514696)
-//            };
-        } else {
-            crs = lineString.getSRID();
-            coords = lineString.getCoordinates();
-        }
+        int crs = crs = lineString.getSRID();
+        Coordinate[] coords = lineString.getCoordinates();
         LngLatAlt[] values = new LngLatAlt[coords.length];
         for (int i = 0; i < coords.length; i++)
             values[i] = new LngLatAlt(coords[i].x, coords[i].y, coords[i].z);
@@ -158,6 +150,11 @@ public class Mapper {
         return feature;
     }
 
+    /**
+     * Create a CRS object containing the EPSG code as a property.
+     * @param crsCode
+     * @return
+     */
     public static Crs crs(int crsCode)
     {
 //        String name = "urn:ogc:def:crs:EPSG::4326";
@@ -165,7 +162,7 @@ public class Mapper {
 //        String name = "EPSG:3857";
         Crs crs = new Crs();
         Map<String, Object> p = new HashMap<String, Object>();
-        p.put("name", "EPSG:"+crsCode);
+        GisService.addEpsgCodeToMap(p, crsCode);
         crs.setProperties(p);
         return crs;
     }

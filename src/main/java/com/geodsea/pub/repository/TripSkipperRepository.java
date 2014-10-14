@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface TripSkipperRepository extends JpaRepository<TripSkipper, Long> {
 
-    List<TripSkipper> getByPersonLogin(String login);
+    List<TripSkipper> getBySkipperPersonLogin(String login);
 }

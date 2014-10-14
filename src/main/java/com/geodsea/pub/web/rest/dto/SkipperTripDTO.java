@@ -22,7 +22,7 @@ public class SkipperTripDTO extends TripDTO {
      * The skipper must be identified so that the trip record is associated with at least one person.
      * </p>
      */
-    private ParticipantDTO skipper;
+    private SkipperDTO skipper;
 
     /**
      * The particular vessel that is intended to be used for this trip.
@@ -49,7 +49,7 @@ public class SkipperTripDTO extends TripDTO {
         super();
     }
 
-    public SkipperTripDTO(Long id, ParticipantDTO skipper, VesselDTO vessel, RescueOrganisationDTO rescueOrganisation,
+    public SkipperTripDTO(Long id, SkipperDTO skipper, VesselDTO vessel, RescueOrganisationDTO rescueOrganisation,
                           String headline, String summary, Integer peopleOnBoard, Integer fuelOnBoard, Date scheduledStartTime,
                           Date actualStartTime, Date scheduledEndTime, Date actualEndTime, Feature wayPoints) {
         super(id,rescueOrganisation, headline, peopleOnBoard, fuelOnBoard, actualStartTime, scheduledEndTime, actualEndTime, wayPoints);
@@ -72,7 +72,7 @@ public class SkipperTripDTO extends TripDTO {
         return vessel;
     }
 
-    public ParticipantDTO getSkipper() {
+    public SkipperDTO getSkipper() {
         return skipper;
     }
 }
