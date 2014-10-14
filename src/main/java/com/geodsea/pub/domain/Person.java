@@ -81,20 +81,9 @@ public class Person extends Participant implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PersistentToken> persistentTokens;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "person")
-    @JsonIgnore
-    private List<TripSkipper> trips;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
     @JsonIgnore
     private List<LicenseSkipper> licenses;
-
-    /**
-     * The vessels this person is authorised (by its owner) to skipper.
-     */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
-    @JsonIgnore
-    private List<Skipper> skippers;
 
     public String getPassword() {
         return password;
@@ -171,28 +160,12 @@ public class Person extends Participant implements Serializable {
     }
 
 
-    public List<TripSkipper> getTrips() {
-        return trips;
-    }
-
-    public void setTrips(List<TripSkipper> trips) {
-        this.trips = trips;
-    }
-
     public List<LicenseSkipper> getLicenses() {
         return licenses;
     }
 
     public void setLicenses(List<LicenseSkipper> licenses) {
         this.licenses = licenses;
-    }
-
-    public List<Skipper> getSkippers() {
-        return skippers;
-    }
-
-    public void setSkippers(List<Skipper> skippers) {
-        this.skippers = skippers;
     }
 
 
