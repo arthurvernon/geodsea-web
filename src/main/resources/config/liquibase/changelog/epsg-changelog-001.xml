@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <!-- create the tables, then add the data and finally set the foreign keys. -->
+    <changeSet id="101" author="Arthur Vernon">
+
+        <sqlFile path="EPSG_v8_5.mdb_Tables_PostgreSQL.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="102" author="Arthur Vernon">
+
+        <sqlFile path="EPSG_v8_5.mdb_Data_PostgreSQL.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="103" author="Arthur Vernon">
+
+        <sqlFile path="EPSG_v8_5.mdb_FKeys_PostgreSQL.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+</databaseChangeLog>
