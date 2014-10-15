@@ -86,8 +86,6 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
         $scope.map.feature = null;
         $scope.map.draw = null;
 
-        $scope.map.vector = new ol.source.Vector();
-
         $scope.map.raster = new ol.layer.Tile({
             source: new ol.source.OSM()
         });
@@ -104,7 +102,7 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
                 object: $scope.trip.wayPoints
             }));
             $scope.map.vectorLayer = new ol.layer.Vector({
-                source: $scope.map.vectorSource2,
+                source: $scope.map.vectorSource,
                 style: $scope.map.styleFunction
             });
             $scope.map.layers = [$scope.map.raster, $scope.map.vectorLayer];
@@ -162,7 +160,7 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
 
         $scope.map.draw = new ol.interaction.Draw({
             features: $scope.map.featureOverlay.getFeatures(),
-            source: $scope.map.vector,
+            source: $scope.map.vectorSource,
             type: /** @type {ol.geom.GeometryType} */ 'LineString'
         });
         $scope.map.map.addInteraction($scope.map.draw);
