@@ -96,150 +96,6 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
             return MAPSTYLES[feature.getGeometry().getType()];
         };
 
-
-        $scope.map.vectorSource2 = new ol.source.GeoJSON(
-            /** @type {olx.source.GeoJSONOptions} */ ({
-                object: {
-                    'type': 'FeatureCollection',
-                    'crs': {
-                        'type': 'name',
-                        'properties': {
-                            'name': 'EPSG:3857'
-                        }
-                    },
-                    'features': [
-                        {
-                            'type': 'Feature',
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [0, 0]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'geometry': {
-                                'type': 'LineString',
-                                'coordinates': [
-                                    [4e6, -2e6],
-                                    [8e6, 2e6]
-                                ]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'geometry': {
-                                'type': 'LineString',
-                                'coordinates': [
-                                    [4e6, 2e6],
-                                    [8e6, -2e6]
-                                ]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'geometry': {
-                                'type': 'Polygon',
-                                'coordinates': [
-                                    [
-                                        [-5e6, -1e6],
-                                        [-4e6, 1e6],
-                                        [-3e6, -1e6]
-                                    ]
-                                ]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'geometry': {
-                                'type': 'MultiLineString',
-                                'coordinates': [
-                                    [
-                                        [-1e6, -7.5e5],
-                                        [-1e6, 7.5e5]
-                                    ],
-                                    [
-                                        [1e6, -7.5e5],
-                                        [1e6, 7.5e5]
-                                    ],
-                                    [
-                                        [-7.5e5, -1e6],
-                                        [7.5e5, -1e6]
-                                    ],
-                                    [
-                                        [-7.5e5, 1e6],
-                                        [7.5e5, 1e6]
-                                    ]
-                                ]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'geometry': {
-                                'type': 'MultiPolygon',
-                                'coordinates': [
-                                    [
-                                        [
-                                            [-5e6, 6e6],
-                                            [-5e6, 8e6],
-                                            [-3e6, 8e6],
-                                            [-3e6, 6e6]
-                                        ]
-                                    ],
-                                    [
-                                        [
-                                            [-2e6, 6e6],
-                                            [-2e6, 8e6],
-                                            [0, 8e6],
-                                            [0, 6e6]
-                                        ]
-                                    ],
-                                    [
-                                        [
-                                            [1e6, 6e6],
-                                            [1e6, 8e6],
-                                            [3e6, 8e6],
-                                            [3e6, 6e6]
-                                        ]
-                                    ]
-                                ]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'geometry': {
-                                'type': 'GeometryCollection',
-                                'geometries': [
-                                    {
-                                        'type': 'LineString',
-                                        'coordinates': [
-                                            [-5e6, -5e6],
-                                            [0, -5e6]
-                                        ]
-                                    },
-                                    {
-                                        'type': 'Point',
-                                        'coordinates': [4e6, -5e6]
-                                    },
-                                    {
-                                        'type': 'Polygon',
-                                        'coordinates': [
-                                            [
-                                                [1e6, -6e6],
-                                                [2e6, -4e6],
-                                                [3e6, -6e6]
-                                            ]
-                                        ]
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }));
-
-        $scope.map.vectorSource2.addFeature(new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)));
-
-
         if ($scope.trip.wayPoints == undefined)
             $scope.map.layers = [$scope.map.raster];
         else {
@@ -247,9 +103,8 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
             $scope.map.vectorSource = new ol.source.GeoJSON(({
                 object: $scope.trip.wayPoints
             }));
-
             $scope.map.vectorLayer = new ol.layer.Vector({
-                source: $scope.map.vectorSource,
+                source: $scope.map.vectorSource2,
                 style: $scope.map.styleFunction
             });
             $scope.map.layers = [$scope.map.raster, $scope.map.vectorLayer];
@@ -259,8 +114,8 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
             layers: $scope.map.layers,
             target: 'map',
             controls: ol.control.defaults().extend([
-//                            new ol.control.ScaleLine(), new ol.control.FullScreen()
-                new ol.control.ScaleLine()
+                new ol.control.ScaleLine(),
+                new ol.control.FullScreen()
             ]),
             view: new ol.View({
                 projection: MAPCONSTANTS.EPSG3857,
