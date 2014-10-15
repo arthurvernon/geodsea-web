@@ -192,7 +192,7 @@ public class GisService {
 
             Coordinate[] coords = new Coordinate[list.size()];
             for (int i = 0; i < coords.length; i++) {
-                final LngLatAlt lngLatAlt = list.get(0);
+                final LngLatAlt lngLatAlt = list.get(i);
                 coords[i] = new Coordinate(lngLatAlt.getLongitude(), lngLatAlt.getLatitude(), lngLatAlt.getAltitude());
             }
 
