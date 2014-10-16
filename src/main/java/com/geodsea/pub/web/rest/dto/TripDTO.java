@@ -1,6 +1,7 @@
 package com.geodsea.pub.web.rest.dto;
 
 import org.geojson.Feature;
+import org.geojson.GeoJsonObject;
 
 import java.util.Date;
 
@@ -51,7 +52,7 @@ public class TripDTO {
     private Date actualEnd_dt;
 
 
-    private Feature wayPoints;
+    private GeoJsonObject wayPoints;
 
     public TripDTO(Long id, RescueOrganisationDTO rescueOrganisation, String headline, Integer peopleOnBoard,
                    Integer fuelOnBoard, Date actualStartTime, Date scheduledEndTime, Date actualEndTime, Feature wayPoints) {
@@ -101,7 +102,7 @@ public class TripDTO {
         return actualEnd_dt;
     }
 
-    public Feature getWayPoints() {
+    public GeoJsonObject getWayPoints() {
         return wayPoints;
     }
 }

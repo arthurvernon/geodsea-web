@@ -14,6 +14,7 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
 
         $scope.newTrip = function () {
 
+            alert('creating a new trip');
             // starting time in 5 minutes from now. Finish time 2 hours later.
             var now = new Date();
             now.setMilliseconds(0);
@@ -49,7 +50,7 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
         }
 
         /*
-         * revise the list of members within an organisation when a selection change occurs
+         * revise the list of skippers when a selection change occurs
          */
         $scope.loadSkippers = function (overrideSelection) {
             // clear any previous list immediately
@@ -70,6 +71,7 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
             }
         };
 
+
         // if the trip is undefined
         if ($scope.trip === null) {
             // create a new trip and set. Set the scheduled start time and end time.
@@ -82,34 +84,21 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
         }
         $scope.errorcode = null;
         $scope.error = null;
-        $scope.map = {};
-        $scope.map.feature = null;
-        $scope.map.draw = null;
+        $scope.geo = {interactions: {}, feature: null, draw: null, layers: {}, source: null};
 
-        $scope.map.raster = new ol.layer.Tile({
-            source: new ol.source.OSM()
-        });
 
-        $scope.map.styleFunction = function (feature, resolution) {
+        $scope.geo.styleFunction = function (feature, resolution) {
             return MAPSTYLES[feature.getGeometry().getType()];
         };
 
-        if ($scope.trip.wayPoints == undefined)
-            $scope.map.layers = [$scope.map.raster];
-        else {
+        $scope.geo.layers.tile = new ol.layer.Tile({
+            source: new ol.source.OSM()
+        });
 
-            $scope.map.vectorSource = new ol.source.GeoJSON(({
-                object: $scope.trip.wayPoints
-            }));
-            $scope.map.vectorLayer = new ol.layer.Vector({
-                source: $scope.map.vectorSource,
-                style: $scope.map.styleFunction
-            });
-            $scope.map.layers = [$scope.map.raster, $scope.map.vectorLayer];
-        }
 
-        $scope.map.map = new ol.Map({
-            layers: $scope.map.layers,
+
+        $scope.geo.map = new ol.Map({
+            layers: [$scope.geo.layers.tile],
             target: 'map',
             controls: ol.control.defaults().extend([
                 new ol.control.ScaleLine(),
@@ -121,64 +110,29 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
 //                            center: [-11000000, 4600000],
                 zoom: 10
             })
+//            interactions: ol.interaction.defaults().extend([
+//                $scope.geo.interactions.draw,
+//                $scope.geo.interactions.select,
+//                $scope.geo.interactions.modify
+//            ])
         });
 
-        // The features are not added to a regular vector layer/source,
-        // but to a feature overlay which holds a collection of features.
-        // This collection is passed to the modify and also the draw
-        // interaction, so that both can add or modify features.
-        $scope.map.featureOverlay = new ol.FeatureOverlay({
-            style: new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 255, 255, 0.2)'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#ffcc33',
-                    width: 2
-                }),
-                image: new ol.style.Circle({
-                    radius: 7,
-                    fill: new ol.style.Fill({
-                        color: '#ffcc33'
-                    })
-                })
-            })
-        });
-        $scope.map.featureOverlay.setMap($scope.map.map);
+        $scope.geo.jsonformat = new ol.format.GeoJSON;
 
-        $scope.map.modify = new ol.interaction.Modify({
-            features: $scope.map.featureOverlay.getFeatures(),
-            // the SHIFT key must be pressed to delete vertices, so
-            // that new vertices can be drawn at the same position
-            // of existing vertices
-            deleteCondition: function (event) {
-                return ol.events.condition.shiftKeyOnly(event) &&
-                    ol.events.condition.singleClick(event);
-            }
-        });
-        $scope.map.map.addInteraction($scope.map.modify);
-
-        $scope.map.draw = new ol.interaction.Draw({
-            features: $scope.map.featureOverlay.getFeatures(),
-            source: $scope.map.vectorSource,
-            type: /** @type {ol.geom.GeometryType} */ 'LineString'
-        });
-        $scope.map.map.addInteraction($scope.map.draw);
-
-        $scope.map.jsonformat = new ol.format.GeoJSON;
-
-        $scope.map.draw.on('drawstart',
-            function (evt) {
-                $scope.map.featureOverlay.getFeatures().clear();
-                var feature = evt.feature;
-                feature.on('change', function (e) {
-                    $scope.maintainFeatureValue(e.currentTarget);
-                })
-            });
-        $scope.map.draw.on('drawend',
-            function (evt) {
-                $scope.maintainFeatureValue(evt.feature);
-            }, this);
+//        $scope.geo.interactions.draw.on('drawstart',
+//            function (evt) {
+//                // $scope.geo.featureOverlay.getFeatures().clear();
+//                console.log('drawstart');
+//                var feature = evt.feature;
+//                feature.on('change', function (e) {
+//                    $scope.maintainFeatureValue(e.currentTarget);
+//                })
+//            });
+//        $scope.geo.interactions.draw.on('drawend',
+//            function (evt) {
+//                console.log('drawend');
+//                $scope.maintainFeatureValue(evt.feature);
+//            }, this);
 
 
         /*
@@ -187,8 +141,8 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
         $scope.maintainFeatureValue = function (feature) {
             if (feature.getGeometry() instanceof ol.geom.LineString) {
 
-//                $scope.map.feature = JSON.stringify(
-//                    $scope.map.jsonformat.writeFeatureObject(feature,
+//                $scope.geo.feature = JSON.stringify(
+//                    $scope.geo.jsonformat.writeFeatureObject(feature,
 //                        {
 //                            // the format it is to be written to
 //                            dataProjection: 'EPSG:4326',
@@ -198,14 +152,14 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
 //                        })
 //                );
 
-                $scope.map.feature = $scope.map.jsonformat.writeFeatureObject(feature,
+                $scope.geo.feature = $scope.geo.jsonformat.writeFeatureObject(feature,
                     {
                         // the format it is to be written to
 //                        dataProjection: 'EPSG:4326',
                         // the format the information is in
                         featureProjection: MAPCONSTANTS.EPSG3857
                     });
-                $scope.map.feature.crs = {
+                $scope.geo.feature.crs = {
                     "type": "name",
                     "properties": {
                         "name": MAPCONSTANTS.EPSG3857
@@ -216,7 +170,13 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
 
 
         $scope.create = function () {
-            $scope.trip.wayPoints = $scope.map.feature;
+//            $scope.trip.wayPoints = $scope.geo.feature;
+            $scope.trip.wayPoints.crs = {
+                "type": "name",
+                "properties": {
+                    "name": MAPCONSTANTS.EPSG3857
+                }};
+
             SkipperTrip.save($scope.trip,
                 function () {
                     $scope.clear();
@@ -244,6 +204,199 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
                 });
         };
 
+
+        // build up modify interaction
+        // needs a select and a modify interaction working together
+        function addModifyInteraction() {
+            console.log('adding select/modify interaction');
+
+            // remove draw interaction
+            $scope.geo.map.removeInteraction($scope.geo.interactions.draw);
+
+            // create select interaction
+            $scope.geo.interactions.select = new ol.interaction.Select({
+                condition: ol.events.condition.click,
+                // make sure only the desired layer can be selected
+                // function that returns true if the layer is enabled.
+                layers: function (vector_layer) {
+                    return vector_layer.get('name') === 'wayPointLayer';
+                }
+            });
+            $scope.geo.map.addInteraction($scope.geo.interactions.select);
+
+            // grab the features from the select interaction to use in the modify interaction
+            var selected_features = $scope.geo.interactions.select.getFeatures();
+            // when a feature is selected...
+            selected_features.on('add', function(event) {
+                // grab the feature
+                var feature = event.element;
+                // ...listen for changes and save them
+                feature.on('change', saveData);
+                // listen to pressing of delete key, then delete selected features
+                $(document).on('keyup', function(event) {
+                    if (event.keyCode == 46) {
+                        // remove all selected features from select_interaction and my_vectorlayer
+                        selected_features.forEach(function(selected_feature) {
+                            var selected_feature_id = selected_feature.getId();
+                            // remove from select_interaction
+                            selected_features.remove(selected_feature);
+                            // features aus vectorlayer entfernen
+                            var vectorlayer_features = $scope.geo.layers.vector.getSource().getFeatures();
+                            console.log('Number of features: ' + vectorlayer_features.length);
+                            vectorlayer_features.forEach(function(source_feature) {
+                                var source_feature_id = source_feature.getId();
+                                if (source_feature_id === selected_feature_id) {
+                                    // remove from my_vectorlayer
+                                    $scope.geo.layers.vector.getSource().removeFeature(source_feature);
+                                    // save the changed data
+                                    saveData();
+                                }
+                            });
+                            // removed way points? then allow a new one to be created...
+                            if (vectorlayer_features.length == 1)
+                                addDrawInteraction();
+                        });
+                        // remove listener
+                        $(document).off('keyup');
+                    }
+                });
+            });
+            // create the modify interaction
+            $scope.geo.interactions.modify = new ol.interaction.Modify({
+//                features: $scope.geo.interactions.select.getFeatures(),
+                features: selected_features,
+                // delete vertices by pressing the SHIFT key
+                deleteCondition: function(event) {
+                    return ol.events.condition.shiftKeyOnly(event) &&
+                        ol.events.condition.singleClick(event);
+                }
+            });
+            // add it to the map
+            $scope.geo.map.addInteraction($scope.geo.interactions.modify);
+
+        }
+
+        // creates a draw interaction
+        function addDrawInteraction() {
+            console.log('adding draw interaction');
+            // remove other interactions
+            $scope.geo.map.removeInteraction($scope.geo.interactions.select);
+            $scope.geo.map.removeInteraction($scope.geo.interactions.modify);
+
+            // create the interaction
+            $scope.geo.interactions.draw = new ol.interaction.Draw({
+                source: $scope.geo.layers.vector.getSource(),
+//                source: $scope.geo.source,
+                type: /** @type {ol.geom.GeometryType} */ 'LineString'
+            });
+
+            // add it to the map
+            $scope.geo.map.addInteraction($scope.geo.interactions.draw);
+
+            // when a new feature has been drawn...
+            $scope.geo.interactions.draw.on('drawend', function(event) {
+
+                console.log('drawend');
+
+                // create a unique id
+                // it is later needed to delete features
+                var id = uid();
+                // give the feature this id
+                event.feature.setId(id);
+                // save the changed data
+                saveData();
+
+                addModifyInteraction();
+            });
+        }
+
+        function createVectorLayer() {
+            $scope.geo.source = new ol.source.GeoJSON(({
+                object: $scope.trip.wayPoints
+            }));
+
+            $scope.geo.layers.vector = new ol.layer.Vector({
+                name: 'wayPointLayer',
+                source: $scope.geo.source,
+                style: $scope.geo.styleFunction
+            });
+
+            $scope.geo.map.addLayer($scope.geo.layers.vector);
+        }
+
+
+        // creates unique id's
+        function uid(){
+            var id = 0;
+            return function() {
+                if (arguments[0] === 0) {
+                    id = 0;
+                }
+                return id++;
+            }
+        }
+
+        // shows data in textarea
+// replace this function by what you need
+        function saveData() {
+            // get the format the user has chosen
+            // define a format the data shall be converted to
+                var format = new ol.format['GeoJSON']();
+            try {
+                // convert the data of the vector_layer into the chosen format
+//                $scope.geo.feature = format.writeFeatures($scope.geo.layers.vector.getSource().getFeatures());
+                $scope.trip.wayPoints = format.writeFeatures($scope.geo.layers.vector.getSource().getFeatures());
+                $scope.$apply();
+//                $scope.geo.feature = 'new version' + uid();
+
+                console.log('successfully extracted feature');
+            } catch (e) {
+                // at time of creation there is an error in the GPX format (18.7.2014)
+                $scope.error = e.name + ": " + e.message;
+                console.log('Failed to extracted feature');
+                return;
+            }
+
+//            $scope.geo.feature = $scope.geo.jsonformat.writeFeatureObject(feature,
+//                {
+//                    // the format it is to be written to
+//                    // dataProjection: 'EPSG:4326',
+//                    // the format the information is in
+//                    featureProjection: MAPCONSTANTS.EPSG3857
+//                });
+//            $scope.geo.feature.crs = {
+//                "type": "name",
+//                "properties": {
+//                    "name": MAPCONSTANTS.EPSG3857
+//                }};
+
+            console.log('Updating context now');
+
+            $scope.$apply();
+        }
+
+
+        // set up an empty way points object if one is not defined.
+        if ($scope.trip.wayPoints == undefined || $scope.trip.wayPoints == null) {
+            $scope.trip.wayPoints =
+            {
+                'type': 'FeatureCollection',
+                "crs": {
+                    "type": "name",
+                    "properties": {
+                        "name": "EPSG:3857"
+                    }
+                },
+                'features': []
+            };
+            createVectorLayer();
+            addDrawInteraction();
+        }
+        else
+        {
+            createVectorLayer();
+            addModifyInteraction();
+        }
 
     }]);
 

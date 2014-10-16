@@ -11,6 +11,7 @@ import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
 import org.apache.log4j.Logger;
 import org.geojson.*;
+import org.geojson.MultiLineString;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -61,9 +62,10 @@ public class GisService {
     /**
      * Convert a series of geometry items into a multipoint object by taking the centroid of each item.
      * <p>
-     *     Coordinates are assumed to be in WGS84 CRS. (ie using a WGS84 Geometry factory to perform the collation),
-     *     not that it may matter.
+     * Coordinates are assumed to be in WGS84 CRS. (ie using a WGS84 Geometry factory to perform the collation),
+     * not that it may matter.
      * </p>
+     *
      * @param items zero or more items.
      * @return a non-null multipoint object.
      */
@@ -153,56 +155,79 @@ public class GisService {
         return new WKTWriter(2).write(geometry);
     }
 
+
     /**
-     * Convert the feature to a line string using the coordinate reference system as specified for the
+     * Convert the feature or feature set to a line string using the coordinate reference system as specified for the
      * feature.
      *
-     * @param feature
+     * @param geoJsonObject
      * @return
      */
-    public LineString toLineString(Feature feature) {
-        if (feature == null)
+    public LineString toLineString(GeoJsonObject geoJsonObject) {
+        if (geoJsonObject == null)
             return null;
 
-        Integer baseCRS = extractEpsgCodeFromCrs(feature.getCrs());
+        org.geojson.MultiPoint multipoint = null;
+        Integer crs = extractEpsgCodeFromCrs(geoJsonObject.getCrs(), null);
 
-        GeoJsonObject object = feature.getGeometry();
-        if (object == null) {
-            log.error("No geometry component within feature");
-            return null;
+        if (geoJsonObject instanceof FeatureCollection) {
+            FeatureCollection fc = (FeatureCollection) geoJsonObject;
+            List<Feature> features = fc.getFeatures();
+            if (features.size() == 0) {
+                log.error("Expecting one feature. Got none");
+                return null;
+            }
+            if (features.size() > 1) {
+                log.error("Expecting only one feature. Got " + features.size() + " of which all but one will be ignored.");
+                return null;
+            }
+
+            for (Feature feature : features) {
+                if (feature.getGeometry() != null && feature.getGeometry() instanceof org.geojson.MultiPoint) {
+                    multipoint = (org.geojson.MultiPoint) feature.getGeometry();
+                    crs = extractEpsgCodeFromCrs(feature.getCrs(), crs);
+                    break;
+                }
+            }
+
+            if (multipoint == null) {
+                log.error("Unable to convert any feature to a line string.");
+                return null;
+            }
+        } else if (geoJsonObject instanceof Feature) {
+            Feature feature = (Feature) geoJsonObject;
+            if (feature.getGeometry() == null) {
+                log.error("No geometry component within feature");
+                return null;
+            }
+
+            if (feature.getGeometry() instanceof org.geojson.MultiPoint) {
+                multipoint = (org.geojson.MultiPoint) feature.getGeometry();
+                crs = extractEpsgCodeFromCrs(multipoint.getCrs(), crs);
+            } else
+                log.error("Unable to convert a " + feature.getId() + " to a line string.");
+        } else if (geoJsonObject instanceof org.geojson.MultiPoint) {
+            // already extracted CRS
+            multipoint = (org.geojson.MultiPoint) geoJsonObject;
         }
 
-        Integer geometryCrs = extractEpsgCodeFromCrs(object.getCrs());
-        int crs = geometryCrs != null ? geometryCrs : (baseCRS != null ? baseCRS : 0);
-        if (crs == 0)
-        {
+        if (crs == null) {
             log.warn("CRS not specified for feature. Defaulting to " + CrsTransformService.CRS_CODE_4326);
             crs = CrsTransformService.CRS_CODE_4326;
         }
 
-        GeometryFactory factory = new GeometryFactory(new PrecisionModel(),crs);
+        GeometryFactory factory = new GeometryFactory(new PrecisionModel(), crs);
 
-        // This may be a way too broad approach to conversion.
-        // It should apply to a LineString instance, but may be invalid to apply to
-        // other types of MultiPoint objects. At present LineString is the only subclass
-        // of multipoint so there should be no problems at present.
-        if (object instanceof org.geojson.MultiPoint) {
-            org.geojson.MultiPoint mp = (org.geojson.MultiPoint) object;
-            List<LngLatAlt> list = mp.getCoordinates();
+        List<LngLatAlt> list = multipoint.getCoordinates();
 
-            Coordinate[] coords = new Coordinate[list.size()];
-            for (int i = 0; i < coords.length; i++) {
-                final LngLatAlt lngLatAlt = list.get(i);
-                coords[i] = new Coordinate(lngLatAlt.getLongitude(), lngLatAlt.getLatitude(), lngLatAlt.getAltitude());
-            }
-
-            // build LineString object
-            return factory.createLineString(coords);
-        } else {
-            log.error("Failed to convert feature into a linestring. " +
-                    "Geometry within feature is not a MultiPoint object, but a " + object.getClass().getSimpleName());
-            return null;
+        Coordinate[] coords = new Coordinate[list.size()];
+        for (int i = 0; i < coords.length; i++) {
+            final LngLatAlt lngLatAlt = list.get(i);
+            coords[i] = new Coordinate(lngLatAlt.getLongitude(), lngLatAlt.getLatitude(), lngLatAlt.getAltitude());
         }
+
+        // build LineString object
+        return factory.createLineString(coords);
     }
 
     public static void addEpsgCodeToMap(Map<String, Object> p, int epsgCode) {
@@ -213,17 +238,17 @@ public class GisService {
      * @param crs Crs object to extract from
      * @return the numeric value or {@link CrsTransformService#CRS_CODE_4326} if not defined.
      */
-    public static Integer extractEpsgCodeFromCrs(Crs crs) throws IllegalStateException {
+    public static Integer extractEpsgCodeFromCrs(Crs crs, Integer defaultCrs) throws IllegalStateException {
         if (crs == null)
-            return null;
-        return extractEpsgCodeFromMap(crs.getProperties());
+            return defaultCrs;
+        return extractEpsgCodeFromMap(crs.getProperties(), defaultCrs);
     }
 
     /**
      * @param map map containing a "name" parameter with an "EPSG:xxxx" value.
      * @return the numeric value or {@link CrsTransformService#CRS_CODE_4326} if not defined.
      */
-    public static Integer extractEpsgCodeFromMap(Map<String, Object> map) throws IllegalStateException {
+    public static Integer extractEpsgCodeFromMap(Map<String, Object> map, Integer defaultCrs) throws IllegalStateException {
         if (map == null) {
             log.debug("Map for EPSG extraction is null");
         } else {
