@@ -18,6 +18,10 @@ import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.util.Calendar;
 
+/**
+ * Pushes user activity messages (ip address, user id, page, time) from web clients, received via  "/websocket/activity"
+ * to an administrators console that is waiting for updates on "/websocket/tracker".
+ */
 @ManagedService(
         path = "/websocket/activity")
 public class ActivityService {
