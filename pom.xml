@@ -36,7 +36,7 @@
         <jts.version>1.13</jts.version>
         <liquibase-slf4j.version>1.2.1</liquibase-slf4j.version>
         <liquibase.hibernate.version>3.3</liquibase.hibernate.version>
-        <liquibase.version>3.2.2</liquibase.version>
+        <liquibase.version>3.1.1</liquibase.version>
         <maven-enforcer-plugin.version>1.3.1</maven-enforcer-plugin.version>
         <maven-sortpom-plugin.version>2.3.0</maven-sortpom-plugin.version>
         <metrics-spring.version>3.0.1</metrics-spring.version>
