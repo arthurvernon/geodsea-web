@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
         <version>1.1.8.RELEASE</version>
-        <relativePath />
+        <relativePath/>
     </parent>
     <groupId>com.geodsea.web</groupId>
     <artifactId>geodsea</artifactId>
@@ -20,6 +21,7 @@
     <properties>
         <HikariCP.version>1.4.0</HikariCP.version>
         <assertj-core.version>1.6.1</assertj-core.version>
+        <atmosphere.version>2.2.3</atmosphere.version>
         <atmosphere-spring.version>2.2.0</atmosphere-spring.version>
         <awaitility.version>1.4.0</awaitility.version>
         <commons-io.version>2.4</commons-io.version>
@@ -49,6 +51,7 @@
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>com.codahale.metrics</groupId>
             <artifactId>metrics-core</artifactId>
@@ -266,6 +269,13 @@
             <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.atmosphere</groupId>
+            <artifactId>atmosphere-runtime</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-spring</artifactId>
@@ -534,7 +544,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <execute />
+                                        <execute/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -547,7 +557,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <execute />
+                                        <execute/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -561,7 +571,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
@@ -605,7 +615,8 @@
                         </goals>
                         <configuration>
                             <target>
-                                <copy file="${project.build.directory}/geodsea-${project.version}.war.original" tofile="${project.build.directory}/geodsea.war" />
+                                <copy file="${project.build.directory}/geodsea-${project.version}.war.original"
+                                      tofile="${project.build.directory}/geodsea.war"/>
                             </target>
                         </configuration>
                     </execution>
@@ -659,11 +670,15 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <message>You are running an older version of Maven. JHipster requires at least Maven 3.0</message>
+                                    <message>You are running an older version of Maven. JHipster requires at least Maven
+                                        3.0
+                                    </message>
                                     <version>[3.0.0,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <message>You are running an older version of Java. JHipster requires at least JDK ${java.version}</message>
+                                    <message>You are running an older version of Java. JHipster requires at least JDK
+                                        ${java.version}
+                                    </message>
                                     <version>[1.${java.version}.0,)</version>
                                 </requireJavaVersion>
                             </rules>
