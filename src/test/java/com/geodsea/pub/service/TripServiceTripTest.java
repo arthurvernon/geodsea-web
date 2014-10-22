@@ -104,12 +104,16 @@ public class TripServiceTripTest {
         // test data for starting location - Hillary's boat ramp 10 minutes ago
         double latitude = GisService.googleLat(" 31°49'17.72\"S");
         double longitude = GisService.googleLong("115°44'20.36\"E");
+        Integer accuracy = null;
+        Float bearing = null;
+        Float speedMetresSec = null;
+
         Point point = GisService.createPointFromLatLong(latitude, longitude);
 
         // first report one minute later, once GPS has settled.
         currentTime = currentTime + 1 * DateConstants.MINUTES;
         Date locationReportTime = new Date(currentTime);
-        LocationTime location = new LocationTime(point, locationReportTime, locationReportTime);
+        LocationTime location = new LocationTime(point, locationReportTime, locationReportTime, accuracy, bearing, speedMetresSec);
 
         tripService.reportLocation(trip.getId(), location);
 
@@ -154,7 +158,7 @@ public class TripServiceTripTest {
         double latitude = GisService.googleLat(lat);
         double longitude = GisService.googleLong(lon);
         Point point = GisService.createPointFromLatLong(latitude, longitude);
-        LocationTime location = new LocationTime(point, new Date(at), new Date(received));
+        LocationTime location = new LocationTime(point, new Date(at), new Date(received), null, null, null);
         return location;
     }
 }
