@@ -27,6 +27,7 @@
     </appender>
 -->
 
+    <logger name="com.mangofactory.swagger.plugin.SwaggerPluginAdapter" level="OFF"/>
     <logger name="javax.activation" level="WARN"/>
     <logger name="com.geodsea.pub" level="DEBUG"/>
     <logger name="ch.qos.logback" level="WARN"/>
