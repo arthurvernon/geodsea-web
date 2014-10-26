@@ -136,7 +136,7 @@ public class SkipperTripResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<SkipperTripDTO> getSkipperCurrentTrip() {
+    public ResponseEntity<SkipperTripDTO> getActiveTripForSkipper() {
         log.debug("REST request to get the current trip for the skipper");
         TripSkipper tripSkipper = tripService.getActiveTripForSkipper();
         if (tripSkipper == null)
