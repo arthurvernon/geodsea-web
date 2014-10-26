@@ -1,12 +1,10 @@
 package com.geodsea.pub.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.geodsea.pub.domain.type.StorageType;
-import com.geodsea.pub.domain.type.VesselType;
-import com.geodsea.pub.domain.util.QueryName;
+import com.geodsea.common.type.EmergencyEquipment;
+import com.geodsea.common.type.StorageType;
+import com.geodsea.common.type.VesselType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
 
 
 import javax.persistence.*;

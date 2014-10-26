@@ -1,4 +1,4 @@
-package com.geodsea.pub.web.websocket.dto;
+package com.geodsea.pub.web.dto;
 
 /**
  * DTO for storing a user's activity.

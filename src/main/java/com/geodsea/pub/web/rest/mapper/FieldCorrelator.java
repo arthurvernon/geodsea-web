@@ -1,7 +1,6 @@
 package com.geodsea.pub.web.rest.mapper;
 
-import com.geodsea.pub.domain.TripSkipper;
-import com.geodsea.pub.web.rest.dto.SkipperTripDTO;
+import com.geodsea.common.dto.SkipperTripDTO;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;

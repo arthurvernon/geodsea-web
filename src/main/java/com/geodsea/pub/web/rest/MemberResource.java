@@ -2,11 +2,10 @@ package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.geodsea.pub.domain.Member;
-import com.geodsea.pub.repository.MemberRepository;
 import com.geodsea.pub.service.ActionRefusedException;
 import com.geodsea.pub.service.ErrorCode;
 import com.geodsea.pub.service.GroupService;
-import com.geodsea.pub.web.rest.dto.MemberDTO;
+import com.geodsea.common.dto.MemberDTO;
 import com.geodsea.pub.web.rest.mapper.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

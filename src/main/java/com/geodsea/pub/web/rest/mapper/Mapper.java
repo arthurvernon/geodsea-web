@@ -1,24 +1,22 @@
 package com.geodsea.pub.web.rest.mapper;
 
+import com.geodsea.common.dto.*;
 import com.geodsea.pub.domain.*;
 import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.domain.Vessel;
 import com.geodsea.pub.domain.type.*;
-import com.geodsea.pub.domain.type.VesselType;
+import com.geodsea.common.type.VesselType;
 import com.geodsea.pub.service.GisService;
-import com.geodsea.pub.web.rest.dto.*;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
 import org.geojson.Crs;
 import org.geojson.Feature;
 import org.geojson.LngLatAlt;
+import org.geojson.Point;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * One place where the mapping between DTO and bean is performed.
@@ -114,6 +112,24 @@ public class Mapper {
     }
 
     /**
+     * Creates a vessel location where the point is exactly as specified in the database.
+     * @param locationTime
+     * @param vessel
+     * @return
+     */
+    public static VesselLocationDTO vesselLocation(LocationTime locationTime, Vessel vessel)
+    {
+        // TODO figure out which CRS to display in.
+        return new VesselLocationDTO(
+                vessel(vessel),
+                new Point(locationTime.getLocation().getX(),locationTime.getLocation().getY()),
+                locationTime.getAccuracy(),
+                locationTime.getGpsSignalTime(),
+                locationTime.getBearing(),
+                locationTime.getSpeedMetresSec());
+    }
+
+    /**
      *
      * @param trip
      * @return
@@ -149,6 +165,7 @@ public class Mapper {
             feature.setProperties(properties);
         return feature;
     }
+
 
     /**
      * Create a CRS object containing the EPSG code as a property.

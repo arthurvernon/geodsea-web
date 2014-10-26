@@ -1,8 +1,8 @@
 package com.geodsea.pub.web.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.geodsea.pub.web.websocket.dto.ActivityDTO;
-import com.geodsea.pub.web.websocket.dto.ActivityDTOJacksonDecoder;
+import com.geodsea.pub.web.dto.ActivityDTO;
+import com.geodsea.pub.web.dto.ActivityDTOJacksonDecoder;
 import org.atmosphere.config.service.Disconnect;
 import org.atmosphere.config.service.ManagedService;
 import org.atmosphere.config.service.Message;

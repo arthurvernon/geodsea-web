@@ -1,7 +1,7 @@
 package com.geodsea.pub.domain;
 
-import com.geodsea.pub.domain.type.StorageType;
-import com.geodsea.pub.domain.type.VesselType;
+import com.geodsea.common.type.StorageType;
+import com.geodsea.common.type.VesselType;
 import com.geodsea.pub.domain.util.ValidationUtil;
 
 import javax.persistence.*;

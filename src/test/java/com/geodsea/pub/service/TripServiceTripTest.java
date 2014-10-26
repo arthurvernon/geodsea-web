@@ -2,8 +2,8 @@ package com.geodsea.pub.service;
 
 import com.geodsea.pub.Application;
 import com.geodsea.pub.domain.*;
-import com.geodsea.pub.domain.type.StorageType;
-import com.geodsea.pub.domain.type.VesselType;
+import com.geodsea.common.type.StorageType;
+import com.geodsea.common.type.VesselType;
 import com.geodsea.pub.domain.util.DateConstants;
 import com.geodsea.pub.repository.*;
 import com.vividsolutions.jts.geom.Point;

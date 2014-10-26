@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import javax.inject.Inject;
 
 import com.geodsea.pub.service.GroupService;
-import com.geodsea.pub.web.rest.dto.CollectiveDTO;
-import com.geodsea.pub.web.rest.dto.GroupDTO;
+import com.geodsea.common.dto.CollectiveDTO;
+import com.geodsea.common.dto.GroupDTO;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;

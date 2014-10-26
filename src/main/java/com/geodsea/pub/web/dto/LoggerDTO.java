@@ -1,7 +1,7 @@
-package com.geodsea.pub.web.rest.dto;
+package com.geodsea.pub.web.dto;
 
 import ch.qos.logback.classic.Logger;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonCreator;import java.lang.Override;import java.lang.String;
 
 public class LoggerDTO {
 

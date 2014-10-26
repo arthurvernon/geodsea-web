@@ -4,3 +4,4 @@ syntax: regexp
 ^node_modules
 ^target
 ^.tmp
+\.iml

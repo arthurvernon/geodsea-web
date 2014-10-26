@@ -7,7 +7,7 @@ import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.repository.PersonRepository;
 import com.geodsea.pub.security.AuthoritiesConstants;
 import com.geodsea.pub.service.LicenseService;
-import com.geodsea.pub.web.rest.dto.LicensorDTO;
+import com.geodsea.common.dto.LicensorDTO;
 import com.geodsea.pub.web.rest.mapper.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

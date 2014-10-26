@@ -1,6 +1,7 @@
 package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.geodsea.common.dto.*;
 import com.geodsea.pub.domain.*;
 import com.geodsea.pub.repository.ParticipantRepository;
 import com.geodsea.pub.repository.PersistentTokenRepository;
@@ -10,7 +11,6 @@ import com.geodsea.pub.service.ActionRefusedException;
 import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.service.ParticipantService;
 import com.geodsea.pub.service.UserService;
-import com.geodsea.pub.web.rest.dto.*;
 import com.geodsea.pub.web.rest.mapper.Mapper;
 import com.vividsolutions.jts.geom.Point;
 import com.wordnik.swagger.annotations.Api;

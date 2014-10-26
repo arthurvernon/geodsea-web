@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import com.geodsea.pub.domain.Organisation;
 import com.geodsea.pub.repository.OrganisationRepository;
 import com.geodsea.pub.service.LicenseService;
-import com.geodsea.pub.web.rest.dto.LicensorDTO;
+import com.geodsea.common.dto.LicensorDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.geodsea.pub.web.websocket.dto;
+package com.geodsea.pub.web.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.atmosphere.config.managed.Decoder;

@@ -7,13 +7,19 @@ import com.geodsea.pub.security.SecurityUtils;
 import com.geodsea.pub.service.util.TripCreateChecks;
 import com.geodsea.pub.service.util.TripUpdateChecks;
 import com.vividsolutions.jts.geom.*;
+import org.atmosphere.cpr.AtmosphereFramework;
+import org.atmosphere.cpr.Broadcaster;
+import org.atmosphere.cpr.BroadcasterFactory;
+import org.atmosphere.cpr.DefaultBroadcaster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
@@ -35,6 +41,8 @@ import java.util.*;
 @Service
 @Transactional(rollbackFor = {ActionRefusedException.class})
 public class TripService extends BaseService {
+
+    private final Logger log = LoggerFactory.getLogger(TripService.class);
 
     @Inject
     Validator validator;
@@ -63,7 +71,9 @@ public class TripService extends BaseService {
     @Inject
     private CrsTransformService crsTransformService;
 
-    private final Logger log = LoggerFactory.getLogger(TripService.class);
+    @Inject
+    BroadcastService broadcastService;
+
 
     /**
      * Add a trip plan to the database.
@@ -351,6 +361,8 @@ public class TripService extends BaseService {
         tripRepository.save(trip);
     }
 
+
+
     @PreAuthorize("isAuthenticated()")
     public void reportLocations(long tripId, List<LocationTime> locationTimes) {
         if (locationTimes == null || locationTimes.size() == 0)
@@ -366,7 +378,6 @@ public class TripService extends BaseService {
 
         trip.addAll(locationTimes);
         tripRepository.save(trip);
-
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -466,5 +477,23 @@ public class TripService extends BaseService {
             trip.setWayPoints(crsTransformService.swapXAndY(trip.getWayPoints()));
 
         return trips;
+    }
+
+    /**
+     * Get a trip for the current user (skipper) that has started but not yet completed.
+     * <p>
+     *     This provides an indication to the client that the mobile application should set itself up in
+     *     a mode for reporting locations.
+     * </p>
+     * <p>
+     *     If the user is not a skipper or the skipper has not reported commencement of the trip then this method
+     *     will return null.
+     * </p>
+     * @return a possibly null trip.
+     */
+    @PreAuthorize("isAuthenticated()")
+    @Transactional(readOnly = true)
+    public TripSkipper getActiveTripForSkipper() {
+        return tripSkipperRepository.findActiveTripForSkipper(SecurityUtils.getCurrentLogin());
     }
 }

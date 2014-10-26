@@ -4,15 +4,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.inject.Inject;
 
 import com.geodsea.pub.domain.Vessel;
-import com.geodsea.pub.domain.type.VesselType;
-import com.geodsea.pub.repository.VesselRepository;
+import com.geodsea.common.type.VesselType;
 import com.geodsea.pub.service.VesselService;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

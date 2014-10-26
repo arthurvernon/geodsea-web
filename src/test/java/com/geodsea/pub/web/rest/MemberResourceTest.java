@@ -3,7 +3,6 @@ package com.geodsea.pub.web.rest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -11,7 +10,7 @@ import javax.inject.Inject;
 
 import com.geodsea.pub.security.AuthoritiesConstants;
 import com.geodsea.pub.service.GroupService;
-import com.geodsea.pub.web.rest.dto.MemberDTO;
+import com.geodsea.common.dto.MemberDTO;
 import com.geodsea.pub.web.rest.mapper.Mapper;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -19,7 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +34,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.geodsea.pub.Application;
 import com.geodsea.pub.domain.Member;
-import com.geodsea.pub.repository.MemberRepository;
 
 import java.util.Arrays;
 import java.util.Collection;

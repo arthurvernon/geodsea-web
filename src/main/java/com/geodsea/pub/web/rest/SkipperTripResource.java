@@ -9,8 +9,8 @@ import com.geodsea.pub.service.ActionRefusedException;
 import com.geodsea.pub.service.ErrorCode;
 import com.geodsea.pub.service.GisService;
 import com.geodsea.pub.service.TripService;
-import com.geodsea.pub.web.rest.dto.ErrorsDTO;
-import com.geodsea.pub.web.rest.dto.SkipperTripDTO;
+import com.geodsea.common.dto.ErrorsDTO;
+import com.geodsea.common.dto.SkipperTripDTO;
 import com.geodsea.pub.web.rest.mapper.Mapper;
 import com.vividsolutions.jts.geom.LineString;
 import org.geojson.Feature;
@@ -130,8 +130,24 @@ public class SkipperTripResource {
     }
 
     /**
-     * GET  /rest/trips/:id -> get the "id" trip.
+     * GET  /rest/skipper/trips/active -> get the active trip for this user (skipper).
      */
+    @RequestMapping(value = "/rest/skipper/trips/active",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<SkipperTripDTO> getSkipperCurrentTrip() {
+        log.debug("REST request to get the current trip for the skipper");
+        TripSkipper tripSkipper = tripService.getActiveTripForSkipper();
+        if (tripSkipper == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<SkipperTripDTO>(Mapper.tripSkipper(tripSkipper), HttpStatus.OK);
+    }
+
+        /**
+         * GET  /rest/trips/:id -> get the "id" trip.
+         */
     @RequestMapping(value = "/rest/skipper/trips/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
