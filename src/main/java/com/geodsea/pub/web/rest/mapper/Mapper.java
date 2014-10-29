@@ -1,10 +1,10 @@
 package com.geodsea.pub.web.rest.mapper;
 
 import com.geodsea.common.dto.*;
+import com.geodsea.common.type.FeatureType;
 import com.geodsea.pub.domain.*;
 import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.domain.Vessel;
-import com.geodsea.pub.domain.type.*;
 import com.geodsea.common.type.VesselType;
 import com.geodsea.pub.service.GisService;
 import com.vividsolutions.jts.geom.Coordinate;

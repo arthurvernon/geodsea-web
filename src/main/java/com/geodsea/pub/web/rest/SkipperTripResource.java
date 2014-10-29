@@ -1,10 +1,10 @@
 package com.geodsea.pub.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.geodsea.common.type.FeatureType;
 import com.geodsea.epsg.CrsTransformService;
 import com.geodsea.pub.domain.Trip;
 import com.geodsea.pub.domain.TripSkipper;
-import com.geodsea.pub.domain.type.FeatureType;
 import com.geodsea.pub.service.ActionRefusedException;
 import com.geodsea.pub.service.ErrorCode;
 import com.geodsea.pub.service.GisService;
