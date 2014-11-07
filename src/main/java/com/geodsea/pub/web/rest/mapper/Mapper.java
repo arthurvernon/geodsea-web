@@ -7,11 +7,11 @@ import com.geodsea.pub.domain.Person;
 import com.geodsea.pub.domain.Vessel;
 import com.geodsea.common.type.VesselType;
 import com.geodsea.pub.service.GisService;
-import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.geom.LineString;
-import org.geojson.Crs;
-import org.geojson.Feature;
-import org.geojson.LngLatAlt;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
+import org.geojson.*;
 import org.geojson.Point;
 
 import javax.validation.ConstraintViolation;
@@ -97,6 +97,10 @@ public class Mapper {
     public static SkipperTripDTO tripSkipper(TripSkipper tripSkipper, Feature feature) {
         return new SkipperTripDTO(
                 tripSkipper.getId(),
+                tripSkipper.getCreatedBy(),
+                tripSkipper.getCreatedDate().toDate(),
+                tripSkipper.getLastModifiedBy(),
+                tripSkipper.getLastModifiedDate().toDate(),
                 skipper(tripSkipper.getSkipper()),
                 vessel(tripSkipper.getVessel()),
                 rescueOrganisation(tripSkipper.getRescue()),
@@ -138,6 +142,41 @@ public class Mapper {
         return tripSkipper(trip, feature(trip.getWayPoints(), FeatureType.WAY_POINTS, null));
     }
 
+
+    public static Feature feature(MultiPolygon multiPolygon, String name, FeatureType featureType)
+    {
+        if (multiPolygon == null)
+            return null;
+        int crs = crs = multiPolygon.getSRID();
+        int nGeometries = multiPolygon.getNumGeometries();
+        if (nGeometries == 0)
+            return null;
+
+
+        Feature feature = new Feature();
+        if (name != null & name.trim().length() > 0)
+            feature.setId(name);
+        else
+            feature.setId(featureType.getIdString());
+
+        feature.setCrs(crs(crs));
+
+        org.geojson.MultiPolygon mpg = new org.geojson.MultiPolygon();
+        feature.setGeometry(mpg);
+        for (int i = 0 ; i< nGeometries; i++)
+        {
+            Polygon polygon = (Polygon) multiPolygon.getGeometryN(i);
+            Coordinate[] coords = polygon.getCoordinates();
+            LngLatAlt[] values = new LngLatAlt[coords.length];
+            for (int p = 0; p < coords.length; p++)
+                values[p] = new LngLatAlt(coords[p].x, coords[p].y, coords[p].z);
+
+            org.geojson.Polygon pg = new org.geojson.Polygon(values);
+            mpg.add(pg);
+        }
+
+        return feature;
+    }
 
     /**
      *
@@ -217,7 +256,9 @@ public class Mapper {
 
         Organisation org = rescue.getOrganisation();
 
-        String zoneWKT = GisService.toWKT(rescue.getZone().getZone());
+        Feature feature = null;
+        if (rescue.getZone() != null)
+            feature = feature(rescue.getZone().getZone(), rescue.getZone().getZoneTitle(), FeatureType.RESCUE_ZONE);
 
         return new RescueOrganisationDTO(rescue.getId(), org.getLogin(), org.getCollectiveName(), org.getLangKey(),
                 org.isEnabled(),
@@ -228,8 +269,8 @@ public class Mapper {
                 org.getAddress() != null ? org.getAddress().getFormatted() : null,
                 null, null,  // no address details.
                 rescue.getCallsign(),
-                rescue.getZone().getZoneTitle(),
-                zoneWKT);
+                feature,
+                rescue.getReportRate());
     }
 
     public static GroupDTO friends(Group group) {
