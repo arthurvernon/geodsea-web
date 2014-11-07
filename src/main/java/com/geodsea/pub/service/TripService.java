@@ -189,7 +189,7 @@ public class TripService extends BaseService {
 
         // if way points are defined then we can include the Monitor
         if (wayPoints != null && !wayPoints.isEmpty()) {
-            Point point = (Point) wayPoints.getGeometryN(0);
+            Point point = (Point) wayPoints.getStartPoint();
             maintainSRO(trip, point);
         }
 
