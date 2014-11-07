@@ -34,9 +34,12 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
             $scope.vessels = null;
             $scope.skippers = null;
             Vessel.query({}, function (resp) {
+                    console.log('got vessels back');
                     $scope.vessels = resp;
-                    if ($scope.vessels.length > 0 && overrideSelection) {
-                        $scope.trip.vessel = $scope.vessels[0];
+                    if ($scope.vessels.length > 0)
+                    {
+                        if (overrideSelection)
+                            $scope.trip.vessel = $scope.vessels[0];
                         $scope.loadSkippers(overrideSelection);
                     }
                 },
@@ -110,29 +113,9 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
 //                            center: [-11000000, 4600000],
                 zoom: 10
             })
-//            interactions: ol.interaction.defaults().extend([
-//                $scope.geo.interactions.draw,
-//                $scope.geo.interactions.select,
-//                $scope.geo.interactions.modify
-//            ])
         });
 
         $scope.geo.jsonformat = new ol.format.GeoJSON;
-
-//        $scope.geo.interactions.draw.on('drawstart',
-//            function (evt) {
-//                // $scope.geo.featureOverlay.getFeatures().clear();
-//                console.log('drawstart');
-//                var feature = evt.feature;
-//                feature.on('change', function (e) {
-//                    $scope.maintainFeatureValue(e.currentTarget);
-//                })
-//            });
-//        $scope.geo.interactions.draw.on('drawend',
-//            function (evt) {
-//                console.log('drawend');
-//                $scope.maintainFeatureValue(evt.feature);
-//            }, this);
 
 
         /*
@@ -140,17 +123,6 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
          */
         $scope.maintainFeatureValue = function (feature) {
             if (feature.getGeometry() instanceof ol.geom.LineString) {
-
-//                $scope.geo.feature = JSON.stringify(
-//                    $scope.geo.jsonformat.writeFeatureObject(feature,
-//                        {
-//                            // the format it is to be written to
-//                            dataProjection: 'EPSG:4326',
-//
-//                            // the format the information is in
-//                            featureProjection: 'EPSG:3857'
-//                        })
-//                );
 
                 $scope.geo.feature = $scope.geo.jsonformat.writeFeatureObject(feature,
                     {
@@ -356,20 +328,6 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
                 console.log('Failed to extracted feature');
                 return;
             }
-
-//            $scope.geo.feature = $scope.geo.jsonformat.writeFeatureObject(feature,
-//                {
-//                    // the format it is to be written to
-//                    // dataProjection: 'EPSG:4326',
-//                    // the format the information is in
-//                    featureProjection: MAPCONSTANTS.EPSG3857
-//                });
-//            $scope.geo.feature.crs = {
-//                "type": "name",
-//                "properties": {
-//                    "name": MAPCONSTANTS.EPSG3857
-//                }};
-
             console.log('Updating context now');
 
             $scope.$apply();
