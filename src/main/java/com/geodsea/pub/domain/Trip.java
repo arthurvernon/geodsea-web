@@ -19,7 +19,7 @@ import java.util.Date;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "T_TRIP", schema = "BOAT")
-public class Trip {
+public class Trip extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(generator = "TRIP_GEN", strategy = GenerationType.SEQUENCE)
@@ -30,7 +30,7 @@ public class Trip {
 
 
     /**
-     * The start and end point of a trip with any number of points inbetween.
+     * The start and end point of a trip with any number of points in-between.
      * <p>
      * Journey which may be represented in a minimal form as a departure point but could
      * be as comprehensive as a linestring where the journey commences at the <code>ST_StartPoint(journey)</code>
