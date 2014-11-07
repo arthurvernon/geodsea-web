@@ -34,7 +34,6 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
             $scope.vessels = null;
             $scope.skippers = null;
             Vessel.query({}, function (resp) {
-                    console.log('got vessels back');
                     $scope.vessels = resp;
                     if ($scope.vessels.length > 0)
                     {
