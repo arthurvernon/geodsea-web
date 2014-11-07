@@ -18,7 +18,7 @@ public class Zone {
      */
     @Column(name = "ZONE", nullable = false)
     @Type(type = "org.hibernate.spatial.GeometryType")
-    private MultiPolygon  zone;
+    private MultiPolygon zone;
 
     /**
      * The zoneDescription in described in the language of the provider
