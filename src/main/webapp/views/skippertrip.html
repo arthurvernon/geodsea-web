@@ -1,191 +1,185 @@
 <div class="row">
     <div class="col-md-2"></div>
-<div class="col-md-8">
-    <h2 translate="title.tripedit">Create/Edit a Trip</h2>
+    <div class="col-md-8">
+        <h2 translate="title.tripedit">Create/Edit a Trip</h2>
 
-    <div class="alert alert-danger" ng-show="errorList">
-        <p ng-repeat="error in errorList.errors">{{'errors.' + error.messageKey | translate}}</p>
+        <div class="alert alert-danger" ng-show="errorList">
+            <p ng-repeat="error in errorList.errors">{{'errors.' + error.messageKey | translate}}</p>
+        </div>
+        <div class="alert alert-danger" ng-show="errorcode" translate="{{errorcode}}">
+        </div>
+        <form name="form" role="form" novalidate
+              class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
+              ng-submit="create()">
+
+
+            <div class="form-group">
+                <label translate="field.id.label">ID</label>
+                <input type="text" class="form-control" name="id"
+                       ng-model="trip.id" readonly>
+            </div>
+            <!-- vessel -->
+            <div class="form-group">
+                <label translate="field.vessel.name.label">Vessel Name</label>
+                <select ng-model="trip.vessel.id" ng-options="v.id as v.vesselName for v in vessels"
+                        required="required" ng-change="loadSkippers(trip.vessel.id)">
+                </select>
+            </div>
+
+            <!-- choose skipper - but only once the vessel has been selected -->
+            <div class="form-group check-element animate-show">
+                <label translate="field.skipper.label">Skipper</label>
+                <select ng-model="trip.skipper.id" ng-options="s.id as s.person.name for s in skippers"
+                        required="required" ng-disabled="!trip.vessel.id">
+                </select>
+            </div>
+
+            <!-- headline -->
+            <div class="form-group">
+                <label translate="field.trip.headline.label">Headline</label>
+                <input type="text" class="form-control" name="headline" ng-model="trip.headline"
+                       ng-minlength=2 ng-maxlength=100 required
+                       placeholder="{{'field.trip.headline.placeholder' | translate}}">
+
+                <div class="error" ng-show="form.headline.$dirty && form.headline.$invalid">
+                    <small class="error" ng-show="form.headline.$error.required"
+                           translate="field.trip.headline.required">
+                        A headline is required.
+                    </small>
+                    <small class="error" ng-show="form.headline.$error.minlength"
+                           translate="field.trip.headline.minlength">
+                        A name must be at least 2 characters long
+                    </small>
+                    <small class="error" ng-show="form.headline.$error.maxlength"
+                           translate="field.trip.headline.maxlength">
+                        A name may not be more than 100 characters long.
+                    </small>
+                </div>
+            </div>
+
+            <!-- fuel on board -->
+            <div class="form-group">
+                <label translate="field.trip.fuel.label">Fuel on board</label>
+                <input type="number"
+                       ng-model="trip.fuelOnBoard"
+                       name="fuel"
+                       min="0"
+                       max="10000"
+                       server-error/>
+
+                <div class="error" ng-show="form.fuel.$dirty && form.fuel.$invalid">
+                    <small class="error" ng-show="form.fuel.$error.number"
+                           translate="field.trip.fuel.nan">
+                        This is not a valid number.
+                    </small>
+                    <small class="error" ng-show="form.fuel.$error.min || form.fuel.$error.max"
+                           translate="field.trip.fuel.range">
+                        Fuel must be in the range 1-10000 metres.
+                    </small>
+                </div>
+            </div>
+
+
+            <!-- people on board -->
+            <div class="form-group">
+                <label translate="field.trip.people.label">People on board</label>
+                <input type="number" ng-model="trip.peopleOnBoard" name="people" min="1" max="999"/>
+
+                <div class="error" ng-show="form.people.$dirty && form.people.$invalid">
+                    <small class="error" ng-show="form.people.$error.number"
+                           translate="field.trip.people.nan">
+                        This is not a valid number.
+                    </small>
+                    <small class="error" ng-show="form.people.$error.min || form.people.$error.max"
+                           translate="field.trip.people.range">
+                        People on board must be in the range 1-999.
+                    </small>
+                </div>
+            </div>
+
+            <!-- summary -->
+            <div class="form-group">
+                <label translate="field.trip.summary.label">Summary</label>
+                <textarea class="form-control" ng-model="trip.summary" name="summary"
+                          ng-maxlength=255 rows="4"
+                          placeholder="{{'field.trip.summary.placeholder' | translate}}"/>
+
+                <div class="error" ng-show="form.summary.$dirty && form.summary.$invalid">
+                    <small class="error" ng-show="form.summary.$error.maxlength"
+                           translate="field.trip.summary.maxlength">
+                        A name may not exceed 255 characters.
+                    </small>
+                </div>
+            </div>
+
+            <!-- scheduled start -->
+            <div class="form-group">
+                <label translate="field.trip.start.scheduled.label">Scheduled Start</label>
+                <input type="datetime-local"
+                       class="form-control"
+                       ng-model="trip.scheduledStart_dt"
+                       name="scheduledStartTime"
+                       placeholder="{{'field.trip.start.scheduled.placeholder' | translate}}"
+                       ng-readonly="trip.actualStart_dt"
+                       server-error/>
+
+                <div class="error" ng-show="form.scheduledStartTime.$dirty && form.scheduledStartTime.$invalid">
+                    <small class="error" ng-show="form.scheduledStartTime.$error.datetimelocal"
+                           translate="field.trip.start.scheduled.date">
+                        Not a valid date
+                    </small>
+                    <small class="error" ng-show="form.scheduledStartTime.$error.server">
+                        Problem with date validation on the server
+                    </small>
+                </div>
+            </div>
+
+            <!-- scheduled end -->
+            <div class="form-group">
+                <label translate="field.trip.end.scheduled.label">Scheduled end</label>
+                <input type="datetime-local"
+                       class="form-control"
+                       ng-model="trip.scheduledEnd_dt"
+                       name="scheduledEndTime"
+                       placeholder="{{'field.trip.end.scheduled.placeholder' | translate}}"
+                       ng-readonly="trip.actualEnd_dt"
+                       server-error/>
+
+                <div class="error" ng-show="form.scheduledEndTime.$dirty && form.scheduledEndTime.$invalid">
+                    <small class="error" ng-show="form.scheduledEndTime.$error.datetimelocal"
+                           translate="field.trip.end.scheduled.date">
+                        Not a valid date
+                    </small>
+                    <small class="error" ng-show="form.scheduledEndTime.$error.server">
+                        Problem with date validation on the server
+                    </small>
+                </div>
+            </div>
+
+            <!-- actual start -->
+            <div class="form-group">
+                <label translate="field.trip.start.actual.label">Actual Start</label>
+                <input type="string" class="form-control" ng-model="trip.actualStart_dt" name="actualstart"
+                       placeholder="{{'field.trip.start.actual.placeholder' | translate}}" readonly/>
+            </div>
+
+            <!-- actual end -->
+            <div class="form-group">
+                <label translate="field.trip.end.actual.label">Actual End</label>
+                <input type="string" class="form-control" ng-model="trip.actualEnd_dt" name="actualend"
+                       placeholder="{{'field.trip.end.actual.placeholder' | translate}}" readonly/>
+            </div>
+
+            <div id="map" class="map" style="width: 100%; height: 400px;"></div>
+
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                <span class="glyphicon glyphicon-ban-circle"></span><span
+                    translate="button.cancel">Cancel</span>
+            </button>
+            <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
+                <span class="glyphicon glyphicon-save"></span><span translate="button.save">Save</span>
+            </button>
+        </form>
     </div>
-    <div class="alert alert-danger" ng-show="errorcode" translate="{{errorcode}}">
-    </div>
-    <form name="form" role="form" novalidate
-          class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
-          ng-submit="create()">
-
-
-        <div class="form-group">
-            <label translate="field.id.label">ID</label>
-            <input type="text" class="form-control" name="id"
-                   ng-model="trip.id" readonly>
-        </div>
-        <!-- vessel -->
-        <div class="form-group">
-            <label translate="field.vessel.name.label">Vessel Name</label>
-            <select ng-model="trip.vessel.id" ng-options="v.id as v.vesselName for v in vessels"
-                    required="required" ng-change="loadSkippers(trip.vessel.id)">
-            </select>
-        </div>
-
-        <!-- choose skipper - but only once the vessel has been selected -->
-        <div class="form-group check-element animate-show">
-            <label translate="field.skipper.label">Skipper</label>
-            <select ng-model="trip.skipper.id" ng-options="s.id as s.person.name for s in skippers"
-                    required="required" ng-disabled="!trip.vessel.id">
-            </select>
-        </div>
-
-        <!-- headline -->
-        <div class="form-group">
-            <label translate="field.trip.headline.label">Headline</label>
-            <input type="text" class="form-control" name="headline" ng-model="trip.headline"
-                   ng-minlength=2 ng-maxlength=100 required
-                   placeholder="{{'field.trip.headline.placeholder' | translate}}">
-
-            <div class="error" ng-show="form.headline.$dirty && form.headline.$invalid">
-                <small class="error" ng-show="form.headline.$error.required"
-                       translate="field.trip.headline.required">
-                    A headline is required.
-                </small>
-                <small class="error" ng-show="form.headline.$error.minlength"
-                       translate="field.trip.headline.minlength">
-                    A name must be at least 2 characters long
-                </small>
-                <small class="error" ng-show="form.headline.$error.maxlength"
-                       translate="field.trip.headline.maxlength">
-                    A name may not be more than 100 characters long.
-                </small>
-            </div>
-        </div>
-
-        <!-- fuel on board -->
-        <div class="form-group">
-            <label translate="field.trip.fuel.label">Fuel on board</label>
-            <input type="number"
-                   ng-model="trip.fuelOnBoard"
-                   name="fuel"
-                   min="0"
-                   max="10000"
-                   server-error/>
-
-            <div class="error" ng-show="form.fuel.$dirty && form.fuel.$invalid">
-                <small class="error" ng-show="form.fuel.$error.number"
-                       translate="field.trip.fuel.nan">
-                    This is not a valid number.
-                </small>
-                <small class="error" ng-show="form.fuel.$error.min || form.fuel.$error.max"
-                       translate="field.trip.fuel.range">
-                    Fuel must be in the range 1-10000 metres.
-                </small>
-            </div>
-        </div>
-
-
-        <!-- people on board -->
-        <div class="form-group">
-            <label translate="field.trip.people.label">People on board</label>
-            <input type="number" ng-model="trip.peopleOnBoard" name="people" min="1" max="999"/>
-
-            <div class="error" ng-show="form.people.$dirty && form.people.$invalid">
-                <small class="error" ng-show="form.people.$error.number"
-                       translate="field.trip.people.nan">
-                    This is not a valid number.
-                </small>
-                <small class="error" ng-show="form.people.$error.min || form.people.$error.max"
-                       translate="field.trip.people.range">
-                    People on board must be in the range 1-999.
-                </small>
-            </div>
-        </div>
-
-        <!-- summary -->
-        <div class="form-group">
-            <label translate="field.trip.summary.label">Summary</label>
-            <textarea class="form-control" ng-model="trip.summary" name="summary"
-                      ng-maxlength=255 rows="4"
-                      placeholder="{{'field.trip.summary.placeholder' | translate}}"/>
-
-            <div class="error" ng-show="form.summary.$dirty && form.summary.$invalid">
-                <small class="error" ng-show="form.summary.$error.maxlength"
-                       translate="field.trip.summary.maxlength">
-                    A name may not exceed 255 characters.
-                </small>
-            </div>
-        </div>
-
-        <!-- scheduled start -->
-        <div class="form-group">
-            <label translate="field.trip.start.scheduled.label">Scheduled Start</label>
-            <input type="datetime-local"
-                   class="form-control"
-                   ng-model="trip.scheduledStart_dt"
-                   name="scheduledStartTime"
-                   placeholder="{{'field.trip.start.scheduled.placeholder' | translate}}"
-                   ng-readonly="trip.actualStart_dt"
-                   server-error/>
-
-            <div class="error" ng-show="form.scheduledStartTime.$dirty && form.scheduledStartTime.$invalid">
-                <small class="error" ng-show="form.scheduledStartTime.$error.datetimelocal"
-                       translate="field.trip.start.scheduled.date">
-                    Not a valid date
-                </small>
-                <small class="error" ng-show="form.scheduledStartTime.$error.server">
-                    Problem with date validation on the server
-                </small>
-            </div>
-        </div>
-
-        <!-- scheduled end -->
-        <div class="form-group">
-            <label translate="field.trip.end.scheduled.label">Scheduled end</label>
-            <input type="datetime-local"
-                   class="form-control"
-                   ng-model="trip.scheduledEnd_dt"
-                   name="scheduledEndTime"
-                   placeholder="{{'field.trip.end.scheduled.placeholder' | translate}}"
-                   ng-readonly="trip.actualEnd_dt"
-                   server-error/>
-
-            <div class="error" ng-show="form.scheduledEndTime.$dirty && form.scheduledEndTime.$invalid">
-                <small class="error" ng-show="form.scheduledEndTime.$error.datetimelocal"
-                       translate="field.trip.end.scheduled.date">
-                    Not a valid date
-                </small>
-                <small class="error" ng-show="form.scheduledEndTime.$error.server">
-                    Problem with date validation on the server
-                </small>
-            </div>
-        </div>
-
-        <!-- actual start -->
-        <div class="form-group">
-            <label translate="field.trip.start.actual.label">Actual Start</label>
-            <input type="string" class="form-control" ng-model="trip.actualStart_dt" name="actualstart"
-                   placeholder="{{'field.trip.start.actual.placeholder' | translate}}" readonly/>
-        </div>
-
-        <!-- actual end -->
-        <div class="form-group">
-            <label translate="field.trip.end.actual.label">Actual End</label>
-            <input type="string" class="form-control" ng-model="trip.actualEnd_dt" name="actualend"
-                   placeholder="{{'field.trip.end.actual.placeholder' | translate}}" readonly/>
-        </div>
-
-        <div id="map" class="map" style="width: 100%; height: 400px;"></div>
-
-        {{map.feature}}
-
-        <p>Way points</p>
-        {{trip.wayPoints}}
-        <p>Geo feature</p>
-        {{$scope.geo.feature}}
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span><span
-                translate="button.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span><span translate="button.save">Save</span>
-        </button>
-    </form>
-</div>
     <div class="col-md-2"></div>
 </div>
