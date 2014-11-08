@@ -23,7 +23,6 @@ geodseaApp.controller('SkipperTripController', ['$scope', '$location', 'resolved
         };
 
         $scope.newTrip= function () {
-            alert('Start a new trip');
             TripService.resetTrip();
             $location.path('/skipper/trip')
         };
