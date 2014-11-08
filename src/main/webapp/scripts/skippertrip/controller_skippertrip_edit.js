@@ -12,6 +12,11 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
                 skipper: null, vessel: null, wayPoints: null };
         };
 
+        $scope.cancel = function()
+        {
+            $location.path('/skipper/trips');
+        }
+
         $scope.newTrip = function () {
 
             alert('creating a new trip');
