@@ -19,7 +19,6 @@ geodseaApp.controller('SkipperTripEditController', ['$scope', '$location', 'Vess
 
         $scope.newTrip = function () {
 
-            alert('creating a new trip');
             // starting time in 5 minutes from now. Finish time 2 hours later.
             var now = new Date();
             now.setMilliseconds(0);
