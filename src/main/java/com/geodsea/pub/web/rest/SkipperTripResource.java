@@ -120,7 +120,7 @@ public class SkipperTripResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public List<SkipperTripDTO> getAll() {
-        log.debug("REST request to get all Trips");
+        log.debug("REST request to get all Trips for the user (skipper)");
         List<TripSkipper> list = tripService.getTripsForSkipper();
 
         List<SkipperTripDTO> dtoList = new ArrayList<SkipperTripDTO>();
@@ -140,7 +140,7 @@ public class SkipperTripResource {
         log.debug("REST request to get the current trip for the skipper");
         TripSkipper tripSkipper = tripService.getActiveTripForSkipper();
         if (tripSkipper == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         else
             return new ResponseEntity<SkipperTripDTO>(Mapper.tripSkipper(tripSkipper), HttpStatus.OK);
     }
