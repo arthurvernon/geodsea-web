@@ -162,8 +162,7 @@ geodseaApp.controller('PasswordController', function ($scope, Password) {
         $scope.error = null;
         $scope.doNotMatch = null;
         $scope.changePassword = function () {
-            // TODO .password was .newPassword
-            if ($scope.password != $scope.confirmPassword) {
+            if ($scope.password.newPassword != $scope.confirmPassword) {
                 $scope.doNotMatch = "ERROR";
             } else {
                 $scope.doNotMatch = null;
@@ -253,7 +252,7 @@ geodseaApp.controller('MetricsController', function ($scope, MetricsService, Hea
         $scope.metrics = {};
 		$scope.updatingHealth = true;
 		$scope.updatingMetrics = true;
- 
+
         $scope.refresh = function() {
 			$scope.updatingHealth = true;
 			$scope.updatingMetrics = true;
@@ -264,7 +263,7 @@ geodseaApp.controller('MetricsController', function ($scope, MetricsService, Hea
         		$scope.healthCheck = promise.data;
 				$scope.updatingHealth = false;
         	});
-			
+
 			MetricsService.get().then(function(promise) {
         		$scope.metrics = promise;
 				$scope.updatingMetrics = false;
@@ -273,9 +272,9 @@ geodseaApp.controller('MetricsController', function ($scope, MetricsService, Hea
 				$scope.updatingMetrics = false;
         	});
 
-            
+
         };
-		
+
 		$scope.$watch('metrics', function(newValue, oldValue) {
 			$scope.servicesStats = {};
             $scope.cachesStats = {};
