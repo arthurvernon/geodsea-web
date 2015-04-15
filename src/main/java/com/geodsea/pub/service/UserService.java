@@ -133,4 +133,7 @@ public class UserService  {
         return currentPerson;
     }
 
+    public Person retrievePersonByLogin(String login) {
+        return personRepository.getByLogin(login);
+    }
 }
