@@ -107,4 +107,13 @@ public class ParticipantService {
     public boolean nameInUse(String login) {
         return participantRepository.getParticipantByLogin(login) != null;
     }
+
+    /**
+     * Determine if there is a participant who is already using the specified email address.
+     * @param email non-null email address to check.
+     * @return true if the email address is being used by a participant.
+     */
+    public boolean emailInUse(String email) {
+        return participantRepository.getParticipantByEmail(email) != null;
+    }
 }
