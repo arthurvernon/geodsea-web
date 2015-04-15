@@ -22,4 +22,6 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
 
     @Query("select p from Participant p where p.id in ?1")
     List<Participant> getParticipantsForIDs(long[] participantIds);
+
+    Participant getParticipantByEmail(String email);
 }
