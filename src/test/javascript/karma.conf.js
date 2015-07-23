@@ -11,6 +11,7 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
+            'src/main/webapp/bower_components/openlayers/ol4.min.js',
             'src/main/webapp/bower_components/modernizr/modernizr.js',
             'src/main/webapp/bower_components/jquery/dist/jquery.js',
             'src/main/webapp/bower_components/angular/angular.js',
@@ -22,7 +23,8 @@ module.exports = function (config) {
             'src/main/webapp/bower_components/angular-translate/angular-translate.js',
             'src/main/webapp/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
             'src/main/webapp/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
-            'src/main/webapp/bower_components/angular-dynamic-locale/src/tmhDinamicLocale.js',
+            'src/main/webapp/bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js',
+            'src/main/webapp/bower_components/ngAutocomplete/src/ngAutocomplete.js',
             'src/main/webapp/scripts/*.js',
             'src/main/webapp/scripts/**/*.js',
             'src/test/javascript/**/!(karma.conf).js'

@@ -116,4 +116,8 @@ public class ParticipantService {
     public boolean emailInUse(String email) {
         return participantRepository.getParticipantByEmail(email) != null;
     }
+
+    public Participant retrieveParticipantByLogin(String login) {
+        return participantRepository.getParticipantByLogin(login);
+    }
 }

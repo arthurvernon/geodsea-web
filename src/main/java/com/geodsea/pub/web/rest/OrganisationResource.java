@@ -31,7 +31,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/app")
-public class OrganisationResource extends ParticipantResource {
+public class OrganisationResource {
 
     private final Logger log = LoggerFactory.getLogger(OrganisationResource.class);
 
@@ -90,9 +90,11 @@ public class OrganisationResource extends ParticipantResource {
                         orgDTO.getEmail(), userName, orgDTO.isEnabled(), orgDTO.getWebsiteURL(), address, orgDTO.getTelephone());
 
                 // send the email if not automatically enabled by an administrator.
-                if (!collective.isEnabled())
-                    groupService.sendRegistrationEmail(collective, createBaseUrl(request));
-
+                if (!collective.isEnabled()) {
+                    // "http" "://" "myhost" ":" "80"
+                    String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+                    groupService.sendRegistrationEmail(collective, baseUrl);
+                }
                 return new ResponseEntity<>(HttpStatus.CREATED);
             } catch (ActionRefusedException ex) {
                 if (ErrorCode.USERNAME_ALREADY_EXISTS.equals(ex.getCode()))

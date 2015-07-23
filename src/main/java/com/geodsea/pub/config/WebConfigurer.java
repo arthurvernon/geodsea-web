@@ -6,21 +6,19 @@ import com.codahale.metrics.servlets.MetricsServlet;
 import com.geodsea.pub.web.filter.CachingHttpHeadersFilter;
 import com.geodsea.pub.web.filter.StaticResourcesProductionFilter;
 import com.geodsea.pub.web.filter.gzip.GZipServletFilter;
-import org.atmosphere.cache.UUIDBroadcasterCache;
-import org.atmosphere.cpr.AtmosphereFramework;
-import org.atmosphere.cpr.AtmosphereServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.MimeMappings;
 import org.springframework.boot.context.embedded.ServletContextInitializer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.ws.transport.http.MessageDispatcherServlet;
 
 import javax.inject.Inject;
 import javax.servlet.*;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -31,31 +29,45 @@ import java.util.Map;
  */
 @Configuration
 @AutoConfigureAfter(CacheConfiguration.class)
-public class WebConfigurer implements ServletContextInitializer {
+public class WebConfigurer implements ServletContextInitializer, EmbeddedServletContainerCustomizer {
 
     private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
     @Inject
     private Environment env;
 
-    @Inject
+    @Autowired(required = false)
     private MetricRegistry metricRegistry;
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         log.info("Web application configuration, using profiles: {}", Arrays.toString(env.getActiveProfiles()));
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
-
-        initMetrics(servletContext, disps);
-        initAtmosphereServlet(servletContext);
-        initDispatcherServlet(servletContext);
+        if (!env.acceptsProfiles(Constants.SPRING_PROFILE_FAST)) {
+            initMetrics(servletContext, disps);
+        }
         if (env.acceptsProfiles(Constants.SPRING_PROFILE_PRODUCTION)) {
             initCachingHttpHeadersFilter(servletContext, disps);
             initStaticResourcesProductionFilter(servletContext, disps);
+            initGzipFilter(servletContext, disps);
         }
-        initGzipFilter(servletContext, disps);
-
+        if (env.acceptsProfiles(Constants.SPRING_PROFILE_DEVELOPMENT)) {
+            initH2Console(servletContext);
+        }
         log.info("Web application fully configured");
+    }
+
+    /**
+     * Set up Mime types.
+     */
+    @Override
+    public void customize(ConfigurableEmbeddedServletContainer container) {
+        MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
+        // IE issue, see https://github.com/jhipster/generator-jhipster/pull/711
+        mappings.add("html", "text/html;charset=utf-8");
+        // CloudFoundry issue, see https://github.com/cloudfoundry/gorouter/issues/64
+        mappings.add("json", "text/html;charset=utf-8");
+        container.setMimeMappings(mappings);
     }
 
     /**
@@ -63,19 +75,17 @@ public class WebConfigurer implements ServletContextInitializer {
      */
     private void initGzipFilter(ServletContext servletContext, EnumSet<DispatcherType> disps) {
         log.debug("Registering GZip Filter");
-
         FilterRegistration.Dynamic compressingFilter = servletContext.addFilter("gzipFilter", new GZipServletFilter());
         Map<String, String> parameters = new HashMap<>();
-
         compressingFilter.setInitParameters(parameters);
-
         compressingFilter.addMappingForUrlPatterns(disps, true, "*.css");
         compressingFilter.addMappingForUrlPatterns(disps, true, "*.json");
         compressingFilter.addMappingForUrlPatterns(disps, true, "*.html");
         compressingFilter.addMappingForUrlPatterns(disps, true, "*.js");
-        compressingFilter.addMappingForUrlPatterns(disps, true, "/app/rest/*");
+        compressingFilter.addMappingForUrlPatterns(disps, true, "*.svg");
+        compressingFilter.addMappingForUrlPatterns(disps, true, "*.ttf");
+        compressingFilter.addMappingForUrlPatterns(disps, true, "/api/*");
         compressingFilter.addMappingForUrlPatterns(disps, true, "/metrics/*");
-
         compressingFilter.setAsyncSupported(true);
     }
 
@@ -92,11 +102,8 @@ public class WebConfigurer implements ServletContextInitializer {
 
         staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true, "/");
         staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true, "/index.html");
-        staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true, "/images/*");
-        staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true, "/fonts/*");
+        staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true, "/assets/*");
         staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true, "/scripts/*");
-        staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true, "/styles/*");
-        staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true, "/views/*");
         staticResourcesProductionFilter.setAsyncSupported(true);
     }
 
@@ -105,15 +112,13 @@ public class WebConfigurer implements ServletContextInitializer {
      */
     private void initCachingHttpHeadersFilter(ServletContext servletContext,
                                               EnumSet<DispatcherType> disps) {
-        log.debug("Registering Cachig HTTP Headers Filter");
+        log.debug("Registering Caching HTTP Headers Filter");
         FilterRegistration.Dynamic cachingHttpHeadersFilter =
                 servletContext.addFilter("cachingHttpHeadersFilter",
                         new CachingHttpHeadersFilter());
 
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/images/*");
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/fonts/*");
+        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/assets/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/scripts/*");
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/styles/*");
         cachingHttpHeadersFilter.setAsyncSupported(true);
     }
 
@@ -144,76 +149,13 @@ public class WebConfigurer implements ServletContextInitializer {
     }
 
     /**
-     * Initializes Atmosphere.
+     * Initializes H2 console
      */
-    private void initAtmosphereServlet(ServletContext servletContext) {
-        log.debug("Registering Atmosphere Servlet");
-        AtmosphereServlet servlet = new AtmosphereServlet();
-        Field frameworkField = ReflectionUtils.findField(AtmosphereServlet.class, "framework");
-        ReflectionUtils.makeAccessible(frameworkField);
-        NoAnalyticsAtmosphereFramework atmosphereFramework = new NoAnalyticsAtmosphereFramework();
-        ReflectionUtils.setField(frameworkField, servlet, atmosphereFramework);
-        ServletRegistration.Dynamic atmosphereServlet =
-                servletContext.addServlet("atmosphereServlet", servlet);
-
-        servletContext.setAttribute("AtmosphereServlet", atmosphereFramework);
-
-        atmosphereServlet.setInitParameter("org.atmosphere.cpr.packages", "com.geodsea.pub.web.websocket");
-        atmosphereServlet.setInitParameter("org.atmosphere.cpr.broadcasterCacheClass", UUIDBroadcasterCache.class.getName());
-        atmosphereServlet.setInitParameter("org.atmosphere.cpr.broadcaster.shareableThreadPool", "true");
-        atmosphereServlet.setInitParameter("org.atmosphere.cpr.broadcaster.maxProcessingThreads", "10");
-        atmosphereServlet.setInitParameter("org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads", "10");
-        servletContext.addListener(new org.atmosphere.cpr.SessionSupport());
-
-        atmosphereServlet.addMapping("/websocket/*");
-        atmosphereServlet.setLoadOnStartup(3);
-        atmosphereServlet.setAsyncSupported(true);
+    private void initH2Console(ServletContext servletContext) {
+        log.debug("Initialize H2 console");
+        ServletRegistration.Dynamic h2ConsoleServlet = servletContext.addServlet("H2Console", new org.h2.server.web.WebServlet());
+        h2ConsoleServlet.addMapping("/console/*");
+        h2ConsoleServlet.setInitParameter("-properties", "src/main/resources");
+        h2ConsoleServlet.setLoadOnStartup(1);
     }
-
-
-    /**
-     * This is required to allow web services to be implemented in this application.
-     * <p>
-     *     The path for all web services currently is /ws hence the license service is accessible via
-     *     http://localhost:8080/ws
-     * </p>
-     * @param servletContext
-     */
-    private void initDispatcherServlet(ServletContext servletContext) {
-
-        log.debug("Registering WS Servlet");
-
-        MessageDispatcherServlet mds = new MessageDispatcherServlet();
-        mds.setTransformWsdlLocations(true);
-
-        ServletRegistration.Dynamic servlet =
-                servletContext.addServlet("wsServlet", mds);
-
-        // Have to do this to stop the default configuration looking for something.
-        servlet.setInitParameter("contextConfigLocation", "");
-
-        servlet.addMapping("/ws/*");
-        servlet.setAsyncSupported(true);
-        servlet.setLoadOnStartup(4);
-    }
-
-    /**
-     * Atmosphere sends tracking data to Google Analytics, which is a potential security issue.
-     * <p>
-     * If you want to send this data, please use directly the AtmosphereFramework class.
-     * </p>
-     */
-    public class NoAnalyticsAtmosphereFramework extends AtmosphereFramework {
-
-        public NoAnalyticsAtmosphereFramework() {
-            super();
-        }
-
-        @Override
-        protected void analytics() {
-            // noop
-        }
-    }
-
-
 }

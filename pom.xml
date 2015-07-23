@@ -6,51 +6,60 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>1.1.8.RELEASE</version>
+        <version>1.2.3.RELEASE</version>
         <relativePath/>
     </parent>
+
     <groupId>com.geodsea.web</groupId>
     <artifactId>geodsea</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
+
+    <name>Geodsea</name>
 
     <prerequisites>
         <maven>3.0.0</maven>
     </prerequisites>
 
     <properties>
-        <HikariCP.version>1.4.0</HikariCP.version>
+        <HikariCP.version>2.2.5</HikariCP.version>
         <assertj-core.version>1.6.1</assertj-core.version>
-        <atmosphere.version>2.2.3</atmosphere.version>
-        <atmosphere-spring.version>2.2.0</atmosphere-spring.version>
         <awaitility.version>1.4.0</awaitility.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-lang.version>2.6</commons-lang.version>
         <geotools.version>12.0</geotools.version>
-        <geronimo-javamail_1.4_mail.version>1.8.4</geronimo-javamail_1.4_mail.version>
-        <hibernate-spatial-version>4.3</hibernate-spatial-version>
+        <gatling.version>2.1.4</gatling.version>
+        <gatling-maven-plugin.version>2.1.2</gatling-maven-plugin.version>
+        <hibernate-spatial.version>4.3</hibernate-spatial.version>
         <hibernate.version>4.3.6.Final</hibernate.version>
         <java.version>1.7</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <javax.inject.version>1</javax.inject.version>
-        <jhipster-loaded.version>0.12</jhipster-loaded.version>
+        <!--<jhipster-loaded.version>0.12</jhipster-loaded.version>-->
         <joda-time-hibernate.version>1.3</joda-time-hibernate.version>
         <json-path.version>0.9.1</json-path.version>
         <jts.version>1.13</jts.version>
+        <!--<liquibase.version>3.3.2</liquibase.version>-->
         <liquibase-slf4j.version>1.2.1</liquibase-slf4j.version>
-        <liquibase.hibernate.version>3.3</liquibase.hibernate.version>
-        <liquibase.version>3.1.1</liquibase.version>
+        <liquibase-hibernate4.version>3.5</liquibase-hibernate4.version>
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <maven-enforcer-plugin.version>1.3.1</maven-enforcer-plugin.version>
         <maven-sortpom-plugin.version>2.3.0</maven-sortpom-plugin.version>
-        <metrics-spring.version>3.0.1</metrics-spring.version>
+        <metrics-spark-reporter.version>1.2</metrics-spark-reporter.version>
+        <metrics-spring.version>3.0.3</metrics-spring.version>
         <postgis.version>1.5.2</postgis.version>
         <postgresql.version>9.3-1102-jdbc41</postgresql.version>
         <run.addResources>false</run.addResources>
-        <sonar-maven-plugin.version>2.2</sonar-maven-plugin.version>
-        <swagger-springmvc.version>0.8.8</swagger-springmvc.version>
-        <usertype.core.version>3.2.0.GA</usertype.core.version>
+        <sonar-maven-plugin.version>2.3</sonar-maven-plugin.version>
+        <spring-security.version>4.0.0.RELEASE</spring-security.version>
+        <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
+        <usertype-core.version>3.2.0.GA</usertype-core.version>
+        <codahale-metrics.version>3.0.2</codahale-metrics.version>
     </properties>
 
     <dependencies>
+
 
         <dependency>
             <groupId>com.geodsea</groupId>
@@ -58,44 +67,51 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+
         <dependency>
-            <groupId>com.codahale.metrics</groupId>
+            <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.codahale.metrics</groupId>
-            <artifactId>metrics-ehcache</artifactId>
-            <version>${codahale-metrics.version}</version>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-annotation</artifactId>
+            <version>${dropwizard-metrics.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.codahale.metrics</groupId>
+            <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-graphite</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.codahale.metrics</groupId>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-healthchecks</artifactId>
+            <version>${dropwizard-metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-json</artifactId>
-            <version>${codahale-metrics.version}</version>
+            <version>${dropwizard-metrics.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.codahale.metrics</groupId>
+            <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-jvm</artifactId>
-            <version>${codahale-metrics.version}</version>
+            <version>${dropwizard-metrics.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.codahale.metrics</groupId>
+            <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-servlet</artifactId>
-            <version>${codahale-metrics.version}</version>
+            <version>${dropwizard-metrics.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.codahale.metrics</groupId>
+            <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-servlets</artifactId>
             <exclusions>
                 <exclusion>
                     <artifactId>metrics-healthchecks</artifactId>
-                    <groupId>com.codahale.metrics</groupId>
+                    <groupId>io.dropwizard.metrics</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -120,7 +136,6 @@
             <artifactId>jackson-datatype-json-org</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.geodsea</groupId>
             <artifactId>epsg</artifactId>
@@ -129,7 +144,8 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
+            <!-- should be limited to test but code won't compile! -->
+            <!--<scope>test</scope>-->
         </dependency>
 
         <!-- Test dependencies -->
@@ -173,26 +189,27 @@
             <groupId>com.ryantenney.metrics</groupId>
             <artifactId>metrics-spring</artifactId>
             <version>${metrics-spring.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.codahale.metrics</groupId>
+                    <artifactId>metrics-annotation</artifactId>
+                </exclusion>
+                <!--<exclusion>-->
+                <!--<groupId>com.codahale.metrics</groupId>-->
+                <!--<artifactId>metrics-core</artifactId>-->
+                <!--</exclusion>-->
+                <exclusion>
+                    <groupId>com.codahale.metrics</groupId>
+                    <artifactId>metrics-healthchecks</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-        <!--
-             You need the JAXB API to be able to annotate your classes.
-             However, starting with Java 6 that API is included in the
-             Java SE platform so there is no need to declare a dependency.
-         -->
-        <!--<dependency>-->
-        <!--<groupId>javax.xml.bind</groupId>-->
-        <!--<artifactId>jaxb-api</artifactId>-->
-        <!--<version>${jaxb-api.version}</version>-->
-        <!--<scope>runtime</scope>-->
-        <!--</dependency>-->
-
-        <!-- required for WSDL generation -->
-        <!--<dependency>-->
-        <!--<groupId>wsdl4j</groupId>-->
-        <!--<artifactId>wsdl4j</artifactId>-->
-        <!--<version>1.6.3</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-ehcache</artifactId>
+            <version>${codahale-metrics.version}</version>
+        </dependency>
 
         <!-- GIS dependencies -->
         <dependency>
@@ -202,7 +219,7 @@
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
+            <artifactId>HikariCP-java6</artifactId>
             <version>${HikariCP.version}</version>
             <exclusions>
                 <exclusion>
@@ -210,11 +227,6 @@
                     <groupId>com.sun</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
         </dependency>
         <!-- The HikariCP Java Agent is disabled by default, as it is experimental
         <dependency>
@@ -224,20 +236,25 @@
         </dependency>
         -->
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+        <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>${commons-lang.version}</version>
         </dependency>
-
         <dependency>
             <groupId>de.grundid.opendatalab</groupId>
             <artifactId>geojson-jackson</artifactId>
             <version>1.2</version>
         </dependency>
         <dependency>
-            <groupId>io.github.jhipster.loaded</groupId>
-            <artifactId>core</artifactId>
-            <version>${jhipster-loaded.version}</version>
+            <groupId>io.gatling.highcharts</groupId>
+            <artifactId>gatling-charts-highcharts</artifactId>
+            <version>${gatling.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
@@ -253,11 +270,11 @@
             <artifactId>joda-time-hibernate</artifactId>
             <version>${joda-time-hibernate.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.javamail</groupId>
-            <artifactId>geronimo-javamail_1.4_mail</artifactId>
-            <version>${geronimo-javamail_1.4_mail.version}</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.apache.geronimo.javamail</groupId>-->
+        <!--<artifactId>geronimo-javamail_1.4_mail</artifactId>-->
+        <!--<version>${geronimo-javamail_1.4_mail.version}</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -276,18 +293,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-runtime</artifactId>
-            <version>${atmosphere.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-spring</artifactId>
-            <version>${atmosphere-spring.version}</version>
-        </dependency>
-
         <!--<dependency>-->
         <!--<groupId>postgresql</groupId>-->
         <!--<artifactId>postgresql</artifactId>-->
@@ -302,6 +307,10 @@
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-envers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate-entitymanager.version}</version>
         </dependency>
@@ -313,12 +322,13 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate-entitymanager.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-spatial</artifactId>
-            <version>${hibernate-spatial-version}</version>
+            <version>${hibernate-spatial.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>postgis-jdbc</artifactId>
@@ -337,7 +347,7 @@
         <dependency>
             <groupId>org.jadira.usertype</groupId>
             <artifactId>usertype.core</artifactId>
-            <version>${usertype.core.version}</version>
+            <version>${usertype-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
@@ -350,17 +360,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.liquibase.ext</groupId>
-            <artifactId>liquibase-hibernate4</artifactId>
-            <version>${liquibase.hibernate.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>hibernate-jpa-2.0-api</artifactId>
-                    <groupId>org.hibernate.javax.persistence</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.liquibase.ext</groupId>-->
+        <!--<artifactId>liquibase-hibernate4</artifactId>-->
+        <!--<version>${liquibase-hibernate4.version}</version>-->
+        <!--<exclusions>-->
+        <!--<exclusion>-->
+        <!--<artifactId>hibernate-jpa-2.0-api</artifactId>-->
+        <!--<groupId>org.hibernate.javax.persistence</groupId>-->
+        <!--</exclusion>-->
+        <!--</exclusions>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.postgis</groupId>
             <artifactId>postgis-jdbc</artifactId>
@@ -374,7 +384,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.3-1100-jdbc41</version>
+            <version>${postgresql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -408,6 +418,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
@@ -421,18 +435,48 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-ws</artifactId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <!-- Spring Cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-cloudfoundry-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-spring-service-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-localconfig-connector</artifactId>
+        </dependency>
+        <!-- security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-data</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-messaging</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <!-- reporting -->
+        <dependency>
+            <groupId>fr.ippon.spark.metrics</groupId>
+            <artifactId>metrics-spark-reporter</artifactId>
+            <version>${metrics-spark-reporter.version}</version>
         </dependency>
 
         <!-- Web services -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-ws</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.ws</groupId>
             <artifactId>spring-ws-core</artifactId>
@@ -522,8 +566,8 @@
     <build>
         <resources>
             <resource>
-                <filtering>true</filtering>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
                 <includes>
                     <include>**/*</include>
                 </includes>
@@ -531,6 +575,17 @@
         </resources>
         <pluginManagement>
             <plugins>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.3</version>
+                    <configuration>
+                        <source>1.7</source>
+                        <target>1.7</target>
+                    </configuration>
+                </plugin>
+
                 <!--This plugin's configuration is used to store Eclipse m2e settings only.
                 It has no influence on the Maven build itself.-->
                 <plugin>
@@ -609,7 +664,6 @@
                     <expandEmptyElements>false</expandEmptyElements>
                 </configuration>
             </plugin>
-
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.7</version>
@@ -629,31 +683,46 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>io.github.jhipster.loaded</groupId>
-                                    <artifactId>agent</artifactId>
-                                    <version>${jhipster-loaded.version}</version>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>spring_loaded</outputDirectory>
-                                    <destFileName>springloaded-jhipster.jar</destFileName>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
+                <groupId>io.gatling</groupId>
+                <artifactId>gatling-maven-plugin</artifactId>
+                <version>${gatling-maven-plugin.version}</version>
+                <configuration>
+                    <configFolder>src/test/gatling/conf</configFolder>
+                    <dataFolder>src/test/gatling/data</dataFolder>
+                    <resultsFolder>target/gatling/results</resultsFolder>
+                    <bodiesFolder>src/test/gatling/bodies</bodiesFolder>
+                    <simulationsFolder>src/test/gatling/simulations</simulationsFolder>
+                    <!-- This will force Gatling to ask which simulation to run
+                         This is useful when you have multiple simulations -->
+                    <simulationClass>*</simulationClass>
+                </configuration>
             </plugin>
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-dependency-plugin</artifactId>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>copy</id>-->
+            <!--<phase>process-resources</phase>-->
+            <!--<goals>-->
+            <!--<goal>copy</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<artifactItems>-->
+            <!--<artifactItem>-->
+            <!--<groupId>io.github.jhipster.loaded</groupId>-->
+            <!--<artifactId>agent</artifactId>-->
+            <!--<version>${jhipster-loaded.version}</version>-->
+            <!--<type>jar</type>-->
+            <!--<overWrite>true</overWrite>-->
+            <!--<outputDirectory>spring_loaded</outputDirectory>-->
+            <!--<destFileName>springloaded-jhipster.jar</destFileName>-->
+            <!--</artifactItem>-->
+            <!--</artifactItems>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
@@ -673,24 +742,23 @@
                         <goals>
                             <goal>enforce</goal>
                         </goals>
-                        <configuration>
-                            <rules>
-                                <requireMavenVersion>
-                                    <message>You are running an older version of Maven. JHipster requires at least Maven
-                                        3.0
-                                    </message>
-                                    <version>[3.0.0,)</version>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <message>You are running an older version of Java. JHipster requires at least JDK
-                                        ${java.version}
-                                    </message>
-                                    <version>[1.${java.version}.0,)</version>
-                                </requireJavaVersion>
-                            </rules>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <rules>
+                        <requireMavenVersion>
+                            <message>You are running an older version of Maven. JHipster requires at least Maven 3.0
+                            </message>
+                            <version>[3.0.0,)</version>
+                        </requireMavenVersion>
+                        <requireJavaVersion>
+                            <message>You are running an older version of Java. JHipster requires at least JDK
+                                ${java.version}
+                            </message>
+                            <version>[${java.version}.0,)</version>
+                        </requireJavaVersion>
+                    </rules>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -713,7 +781,6 @@
                     <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
@@ -787,10 +854,48 @@
                 <version>${sonar-maven-plugin.version}</version>
             </plugin>
             <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
+                    <diffChangeLogFile>
+                        src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml
+                    </diffChangeLogFile>
+                    <driver></driver>
+                    <url></url>
+                    <defaultSchemaName></defaultSchemaName>
+                    <username></username>
+                    <password></password>
+                    <referenceUrl>hibernate:spring:com.geodsea.pub.domain?dialect=</referenceUrl>
+                    <verbose>true</verbose>
+                    <logging>debug</logging>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                        <version>3.18.2-GA</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate4</artifactId>
+                        <version>${liquibase-hibernate4.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-data-jpa</artifactId>
+                        <version>${project.parent.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
+                    <jvmArguments>-Djava.rmi.server.hostname=localhost -Xdebug
+                        -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+                    </jvmArguments>
                     <arguments>
                         <argument>--spring.profiles.active=dev</argument>
                     </arguments>
@@ -811,24 +916,63 @@
                 <!-- Spring profile to use -->
                 <spring.profiles.active>dev</spring.profiles.active>
             </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>fast</id>
+            <properties>
+                <!-- log configuration -->
+                <logback.loglevel>DEBUG</logback.loglevel>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-undertow</artifactId>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <arguments>
+                                <argument>--spring.profiles.active=dev,fast</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>prod</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </dependency>
+            </dependencies>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>com.github.trecloux</groupId>
                         <artifactId>yeoman-maven-plugin</artifactId>
-                        <version>0.2</version>
+                        <version>0.4</version>
                         <executions>
                             <execution>
-                                <id>run-grunt</id>
+                                <id>run-frontend-build</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>build</goal>
                                 </goals>
                                 <configuration>
-                                    <gruntBuildArgs>--force</gruntBuildArgs>
+                                    <buildTool>grunt</buildTool>
+                                    <buildArgs>build --force --no-color</buildArgs>
                                 </configuration>
                             </execution>
                         </executions>
@@ -860,12 +1004,6 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
-                            <requiresUnpack>
-                                <dependency>
-                                    <groupId>org.atmosphere</groupId>
-                                    <artifactId>atmosphere-runtime</artifactId>
-                                </dependency>
-                            </requiresUnpack>
                             <arguments>
                                 <argument>--spring.profiles.active=prod</argument>
                             </arguments>

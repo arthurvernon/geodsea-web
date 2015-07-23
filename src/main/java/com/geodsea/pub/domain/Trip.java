@@ -19,14 +19,8 @@ import java.util.Date;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "T_TRIP", schema = "BOAT")
-public class Trip extends AbstractAuditingEntity {
-
-    @Id
-    @GeneratedValue(generator = "TRIP_GEN", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "TRIP_GEN", sequenceName = "BOAT.TRIP_ID_SEQ")
-    @Column(name="ID")
-    private long id;
-
+@PrimaryKeyJoinColumn(name="ID", referencedColumnName = "ID")
+public class Trip extends Activity {
 
 
     /**
@@ -131,13 +125,6 @@ public class Trip extends AbstractAuditingEntity {
         this.peopleOnBoard = people;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public LineString getWayPoints() {
         return wayPoints;

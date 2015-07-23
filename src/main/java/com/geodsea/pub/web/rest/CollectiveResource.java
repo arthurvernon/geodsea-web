@@ -25,7 +25,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/app")
-public class CollectiveResource extends ParticipantResource {
+public class CollectiveResource {
 
     private final Logger log = LoggerFactory.getLogger(CollectiveResource.class);
 

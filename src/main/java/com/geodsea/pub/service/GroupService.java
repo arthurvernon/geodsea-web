@@ -34,8 +34,8 @@ public class GroupService extends BaseService {
     @Inject
     protected MailService mailService;
 
-    @Inject
-    private SpringTemplateEngine templateEngine;
+//    @Inject
+//    private SpringTemplateEngine templateEngine;
 
     @Inject
     private GroupRepository groupRepository;
@@ -250,11 +250,8 @@ public class GroupService extends BaseService {
      */
     public void sendRegistrationEmail(Collective collective, String baseUrl) {
         if (StringUtils.isNotBlank(baseUrl)) {
-            final Locale locale = Locale.forLanguageTag(collective.getLangKey());
-            String content = createHtmlContentFromTemplate(collective, locale, baseUrl);
-            mailService.sendActivationEmail(collective.getEmail(), content, locale);
+            mailService.sendActivationEmail(collective, baseUrl);
         }
-
     }
 
     /**
@@ -277,21 +274,6 @@ public class GroupService extends BaseService {
     }
 
 
-    /**
-     * Create an email based upon the activationEmail.html template.
-     *
-     * @param participant
-     * @param locale
-     * @param baseUrl
-     * @return the content for the email.
-     */
-    protected String createHtmlContentFromTemplate(final Participant participant, final Locale locale, String baseUrl) {
-        Map<String, Object> variables = new HashMap<String, Object>();
-        variables.put("participant", participant);
-        variables.put("baseUrl", baseUrl);
-        Context context = new Context(locale, variables);
-        return templateEngine.process(MailService.EMAIL_ACTIVATION_PREFIX + MailService.TEMPLATE_SUFFIX, context);
-    }
 
     public List<Group> getAllFriends() {
         return groupRepository.findAll();

@@ -48,13 +48,13 @@ geodseaApp.constant('MAPSTYLES', {
     'LineString': [new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: 'green',
-            width: 1
+            width: 3
         })
     })],
     'MultiLineString': [new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: 'green',
-            width: 1
+            width: 3
         })
     })],
     'MultiPoint': [new ol.style.Style({

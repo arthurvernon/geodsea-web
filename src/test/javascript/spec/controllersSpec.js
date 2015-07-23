@@ -41,7 +41,11 @@ describe('Controllers Tests ', function () {
         it('should call Service and set OK on Success', function(){
             //GIVEN
             var pass = 'myPassword';
-            $scope.password = pass;
+            var oldPass = 'user6';
+            var pw = new Object();
+            pw.oldPassword = oldPass;
+            pw.newPassword = pass;
+            $scope.password = pw;
             $scope.confirmPassword = pass;
             //SET SPY
             spyOn(PasswordService, 'save');
@@ -51,7 +55,7 @@ describe('Controllers Tests ', function () {
 
             //THEN
             expect(PasswordService.save).toHaveBeenCalled();
-            expect(PasswordService.save).toHaveBeenCalledWith(pass, jasmine.any(Function), jasmine.any(Function));
+            expect(PasswordService.save).toHaveBeenCalledWith(pw, jasmine.any(Function), jasmine.any(Function));
             //SIMULATE SUCCESS CALLBACK CALL FROM SERVICE
             PasswordService.save.calls.mostRecent().args[1]();
             expect($scope.error).toBeNull();

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+<head>
+    <meta charset=utf-8">
+
+    <link rel="stylesheet" href="http://ol3js.org/ol3/master/build/ol.css" type="text/css">
+
+    <style>
+        .map {
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+
+    <script src="http://ol3js.org/ol3/master/build/ol.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
+
+    <script>
+
+        // ol3 map directive
+        var olModule = angular.module('ol', []);
+        olModule.directive('olMap', ['$parse', function($parse) {
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs) {
+                    var map = $parse(attrs.olMap)(scope);
+                    map.setTarget(element[0]);
+                }
+            };
+        }]);
+
+        // Angular app
+        var app = angular.module('app', ['ol']);
+        app.controller('Controller', ['$scope', function($scope) {
+            var view = new ol.View2D({
+                center: [0, 0],
+                zoom: 5
+            });
+
+            var map1 = new ol.Map({
+                layers: [
+                    new ol.layer.TileLayer({
+                        source: new ol.source.OSM()
+                    })
+                ],
+                view: view
+            });
+
+            var map2 = new ol.Map({
+                layers: [
+                    new ol.layer.TileLayer({
+                        source: new ol.source.Stamen({
+                            layer: 'watercolor'
+                        })
+                    })
+                ]
+            });
+
+            map2.bindTo('view', map1);
+
+            $scope.map1 = map1;
+            $scope.map2 = map2;
+
+        }]);
+    </script>
+
+</head>
+<body ng-controller='Controller'>
+<div class="map" ol-map='map1'></div>
+<div class="map" ol-map='map2'></div>
+</body>
+</html>

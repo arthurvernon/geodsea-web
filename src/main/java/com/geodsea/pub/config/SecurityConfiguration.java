@@ -1,9 +1,14 @@
 package com.geodsea.pub.config;
 
 import com.geodsea.pub.security.*;
+import com.geodsea.pub.web.filter.CsrfCookieGeneratorFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+
+import org.springframework.data.repository.query.spi.EvaluationContextExtension;
+import org.springframework.data.repository.query.spi.EvaluationContextExtensionSupport;
+import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
@@ -11,21 +16,28 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
+
 import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.csrf.CsrfFilter;
 
 import javax.inject.Inject;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     @Inject
     private Environment env;
 
-//    @Inject
-//    private AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler;
+    @Inject
+    private AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler;
 
     @Inject
     private MyUrlAuthenticationSuccessHandler successHandler;
@@ -41,13 +53,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Inject
     private UserDetailsService userDetailsService;
-    
+
     @Inject
     private RememberMeServices rememberMeServices;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new StandardPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Inject
@@ -60,34 +72,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-            // stops ugly unauthorised messages appearing all the time... not ideal but...
-//            .antMatchers("/websocket/activity")
-//            .antMatchers("/app/rest/register")
-//            .antMatchers("/app/rest/activate")
+            .antMatchers("/scripts/**/*.{js,html}")
             .antMatchers("/bower_components/**")
-            .antMatchers("/fonts/**")
-            .antMatchers("/images/**")
-            .antMatchers("/scripts/**")
-            .antMatchers("/styles/**")
-            .antMatchers("/views/**")
             .antMatchers("/i18n/**")
-            .antMatchers("/swagger-ui/**");
+            .antMatchers("/assets/**")
+            .antMatchers("/swagger-ui/**")
+            .antMatchers("/test/**")
+            .antMatchers("/console/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .csrf()
+            .ignoringAntMatchers("/websocket/**")
+        .and()
+            .addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
             .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .and()
+            .authenticationEntryPoint(authenticationEntryPoint)
+        .and()
             .rememberMe()
-                .rememberMeServices(rememberMeServices)
-                .key(env.getProperty("jhipster.security.rememberme.key"))
-                .and()
-//            .httpBasic()
-//                .and()
+            .rememberMeServices(rememberMeServices)
+            .key(env.getProperty("jhipster.security.rememberme.key"))
+        .and()
             .formLogin()
-                .loginProcessingUrl("/app/authentication")
+            .loginProcessingUrl("/api/authentication")
                 .successHandler(successHandler)
                 .failureHandler(ajaxAuthenticationFailureHandler)
                 .usernameParameter("j_username")
@@ -95,40 +104,42 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
             .logout()
-                .logoutUrl("/app/logout")
+            .logoutUrl("/api/logout")
                 .logoutSuccessHandler(ajaxLogoutSuccessHandler)
                 .deleteCookies("JSESSIONID")
                 .permitAll()
                 .and()
-            .csrf()
-                .disable()
             .headers()
-                .frameOptions().disable()
+            .frameOptions()
+            .disable()
+        .and()
             .authorizeRequests()
-                .antMatchers("/app/rest/register").permitAll()
-                .antMatchers("/app/rest/activate").permitAll()
-                .antMatchers("/app/rest/authenticate").permitAll()
-                .antMatchers("/app/rest/question/**").permitAll()
-                .antMatchers("/app/rest/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/app/**").authenticated()
-                .antMatchers("/websocket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/websocket/**").permitAll()
-                .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/dump/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/shutdown/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/beans/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/info/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/autoconfig/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/env/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/api-docs/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/protected/**").authenticated();
+            .antMatchers("/api/register").permitAll()
+            .antMatchers("/api/activate").permitAll()
+            .antMatchers("/api/authenticate").permitAll()
+            .antMatchers("/api/rest/question/**").permitAll()
+            .antMatchers("/api/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/api/**").authenticated()
+            .antMatchers("/websocket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/websocket/**").permitAll()
+            .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/dump/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/shutdown/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/beans/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/configprops/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/info/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/autoconfig/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/env/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/api-docs/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/protected/**").authenticated();
 
     }
 
-    @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
-    private static class GlobalSecurityConfiguration extends GlobalMethodSecurityConfiguration {
+    @Bean
+    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+        return new SecurityEvaluationContextExtension();
     }
 }

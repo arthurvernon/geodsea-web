@@ -1,4 +1,4 @@
-README for geodsea
+README for Geodsea
 ==========================
 
 
@@ -18,7 +18,7 @@ The workaround is to install the closure library and the open layers source code
 
 change `output_mode=script` for debugging. Otherwise use `--output_mode=compiled`
 
-`D:\openlayers>D:\closure-library\closure\bin\build\closurebuilder.py --root=D:/closure-library/ --root=D:/openlayers/ol3/src --namespace="ol" --namespace="ol.Map" --namespace="ol.layer.Tile" --namespace="ol.View" --namespace="ol.source.MapQuest" --namespace="ol.source.OSM" --namespace="ol.source.Vector" --namespace="ol.source.GeoJSON" --namespace="ol.layer.Vector" --namespace="ol.FeatureOverlay" --namespace="ol.style.Style" --namespace="ol.style.Fill" --namespace="ol.style.Stroke" --namespace="ol.style.Circle" --namespace="ol.interaction.Draw" --namespace="ol.interaction.Select" --namespace="ol.interaction.Modify" --namespace="ol.control.ScaleLine" --namespace="ol.control.FullScreen" --namespace="ol.format.GeoJSON" --output_mode=compiled --output_file=ol4.min.js --compiler_jar=D:\closure-library\compiler.jar`
+`D:\openlayers>D:\closure-library\closure\bin\build\closurebuilder.py --root=D:/closure-library/ --root=D:/openlayers/ol3/src --namespace="ol" --namespace="ol.Map" --namespace="ol.layer.Tile" --namespace="ol.View" --namespace="ol.source.MapQuest" --namespace="ol.source.OSM" --namespace="ol.source.Vector" --namespace="ol.source.GeoJSON" --namespace="ol.layer.Vector" --namespace="ol.FeatureOverlay" --namespace="ol.style.Style" --namespace="ol.style.Fill" --namespace="ol.style.Stroke" --namespace="ol.style.Circle" --namespace="ol.interaction.Draw" --namespace="ol.interaction.Select" --namespace="ol.interaction.Modify" --namespace="ol.control.ScaleLine" --namespace="ol.control.FullScreen" --namespace="ol.format.GeoJSON" --namespace="ol.structs.RBush" --output_mode=compiled --output_file=ol4.min.js --compiler_jar=D:\closure-library\compiler.jar`
 
 JSON and Date Objects
 ---------------------

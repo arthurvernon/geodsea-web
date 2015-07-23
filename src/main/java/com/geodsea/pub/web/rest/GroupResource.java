@@ -28,7 +28,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/app")
-public class GroupResource extends ParticipantResource {
+public class GroupResource {
 
     private final Logger log = LoggerFactory.getLogger(GroupResource.class);
 
@@ -83,9 +83,11 @@ public class GroupResource extends ParticipantResource {
                         groupDTO.getEmail(), userName, groupDTO.isEnabled());
 
                 // send the email if not automatically enabled by an administrator.
-                if (!collective.isEnabled())
-                    groupService.sendRegistrationEmail(collective, createBaseUrl(request));
-
+                if (!collective.isEnabled()) {
+                    // "http" "://" "myhost" ":" "80"
+                    String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+                    groupService.sendRegistrationEmail(collective, baseUrl);
+                }
                 return new ResponseEntity<>(HttpStatus.CREATED);
             } catch (ActionRefusedException ex) {
                 if (ErrorCode.USERNAME_ALREADY_EXISTS.equals(ex.getCode()))
