@@ -10,254 +10,28 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="styles/bootstrap.css">
-        <link rel="stylesheet" href="styles/main.css">
+        <!-- build:css assets/styles/vendor.css -->
+        <!-- bower:css -->
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css assets/styles/main.css -->
+        <link rel="stylesheet" href="assets/styles/main.css">
         <link id="mapView" rel="stylesheet" href="bower_components/openlayers/css/ol.css" type="text/css">
         <style> .map { height: 400px; width: 100%;}</style>
         <!-- endbuild -->
     </head>
-    <body ng-app="geodseaApp" ng-controller="MainController">
+    <body ng-app="geodseaApp">
         <!--[if lt IE 10]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div class="development"></div>
-        <nav class="navbar navbar-default" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                  <a class="navbar-brand" href="#"><span translate="title.main">geodsea</span></a>
-                </div>
-                <div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="authenticated">
-                    <ul class="nav navbar-nav nav-pills navbar-right">
-
-                        <!-- Home button -->
-                        <li>
-                            <a href="#">
-                                <span class="glyphicon glyphicon-home"></span>
-                                <span translate="menu.home">Home</span>
-                            </a>
-                        </li>
-
-                        <!-- TODO localisation of rescue, owner and skipper menus -->
-                        <!-- Rescue menu-->
-                        <li ng-switch-when="true" ng-show="isAuthorized(userRoles.rescue)" class="dropdown pointer" ng-controller="RescueController">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                <span>
-                                    <span class="glyphicon glyphicon-tower"></span>
-                                    <span class="hidden-tablet" translate="menu.rescue.main">Resuce</span>
-                                    <b class="caret"></b>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#/rescue/trips"><span class="glyphicon glyphicon-list"></span>
-                                    &#xA0;<span translate="menu.rescue.trips">Trips</span></a></li>
-                                <li><a href="#/rescue/map"><span class="glyphicon glyphicon-map-marker"></span>
-                                    &#xA0;<span translate="menu.rescue.map">Map</span></a></li>
-                                <li ng-switch-when="true" role="presentation" class="divider"></li>
-                                <li><a href="#/rescue/settings"><span class="glyphicon glyphicon-wrench"></span>
-                                    &#xA0;<span translate="menu.rescue.settings">Settings</span></a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Owner menu -->
-                        <li ng-switch-when="true" ng-show="isAuthorized(userRoles.owner)" class="dropdown pointer" ng-controller="OwnerController">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                <span>
-                                    <span class="glyphicon glyphicon-tower"></span>
-                                    <span class="hidden-tablet" translate="menu.owner.main">Owner</span>
-                                    <b class="caret"></b>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#/owner/vessels"><span class="glyphicon glyphicon-list"></span>
-                                    &#xA0;<span translate="menu.owner.vessels">Vessels</span></a></li>
-                                <li><a href="#/owner/trips"><span class="glyphicon glyphicon-list"></span>
-                                    &#xA0;<span translate="menu.owner.trips">Trips</span></a></li>
-                                <li><a href="#/owner/skippers"><span class="glyphicon glyphicon-list"></span>
-                                    &#xA0;<span translate="menu.owner.skippers">Skippers</span></a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Skipper menu -->
-                        <li ng-switch-when="true" ng-show="isAuthorized(userRoles.skipper)" class="dropdown pointer" ng-controller="SkipperController">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                <span>
-                                    <span class="glyphicon glyphicon-tower"></span>
-                                    <span class="hidden-tablet" translate="menu.skipper.main">Skipper</span>
-                                    <b class="caret"></b>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#/skipper/vessels"><span class="glyphicon glyphicon-list"></span>
-                                    &#xA0;<span translate="menu.skipper.vessels">Vessels</span></a></li>
-                                <li><a href="#/skipper/trips"><span class="glyphicon glyphicon-list"></span>
-                                    &#xA0;<span translate="menu.skipper.trips">Trips</span></a></li>
-                            </ul>
-                        </li>
-
-                        <!-- User menu -->
-                        <li class="dropdown pointer">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                <span>
-                                    <span class="glyphicon glyphicon-user"></span>
-                                    <span class="hidden-tablet" translate="menu.user.main">
-                                        User
-                                    </span>
-                                    <b class="caret"></b>
-                                </span>
-                            </a>
-
-                            <ul class="dropdown-menu" ng-controller="MenuController">
-                                <li ng-switch-when="true"><a href="#/settings"><span class="glyphicon glyphicon-wrench"></span>
-                                    &#xA0;<span translate="menu.user.settings">Settings</span></a></li>
-                                <li ng-switch-when="true"><a href="#/password"><span class="glyphicon glyphicon-lock"></span>
-                                    &#xA0;<span translate="menu.user.password">Password</span></a></li>
-                                <li ng-switch-when="true"><a href="#/sessions"><span class="glyphicon glyphicon-cloud"></span>
-                                    &#xA0;<span translate="menu.user.sessions">Sessions</span></a></li>
-                                <li ng-switch-when="true"><a href="#/logout"><span class="glyphicon glyphicon-log-out"></span>
-                                    &#xA0;<span translate="menu.user.logout">Log out</span></a></li>
-                                <li ng-switch-when="false"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>
-                                    &#xA0;<span translate="menu.user.login">Authenticate</span></a></li>
-                                <li ng-switch-when="true" role="presentation" class="divider"></li>
-                                <li ng-switch-when="true"><a href="#/vessel"><span class="glyphicon glyphicon-list"></span>
-                                    &#xA0;<span translate="menu.user.vessels">Vessels</span></a></li>
-                                <li ng-switch-when="true"><a href="#/skipper"><span class="glyphicon glyphicon-list"></span>
-                                    &#xA0;<span translate="menu.user.skippers">Skippers</span></a></li>
-                                <li ng-switch-when="true"><a href="#/trips"><span class="glyphicon glyphicon-list"></span>
-                                    &#xA0;<span translate="menu.user.trips">Trips</span></a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Add Menu -->
-                        <li class="dropdown pointer">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                <span>
-                                    <span class="glyphicon glyphicon-plus"></span>
-                                    <span class="hidden-tablet" translate="menu.add.main">
-                                        Register
-                                    </span>
-                                    <b class="caret"></b>
-                                </span>
-                            </a>
-
-                            <ul class="dropdown-menu" ng-controller="MenuController">
-                                <li ng-switch-when="false"><a href="#/register/user">
-                                    <span class="glyphicon glyphicon-user"></span>&#xA0;
-                                    <span translate="menu.add.user">User</span></a></li>
-
-                                <li ng-switch-when="true"><a href="#/register/vessel">
-                                    <span class="glyphicon glyphicon-plus"></span>&#xA0;
-                                    <span translate="menu.add.vessel">Vessel</span></a></li>
-
-                                <li role="presentation" class="divider"></li>
-
-                                <li ng-switch-when="true"><a href="#/register/group">
-                                    <span class="glyphicon glyphicon-plus"></span>&#xA0;
-                                    <span translate="menu.add.group">Group</span></a></li>
-
-                                <li ng-switch-when="true"><a href="#/register/organisation">
-                                    <span class="glyphicon glyphicon-plus"></span>&#xA0;
-                                    <span translate="menu.add.organisation">Organisation</span></a></li>
-
-                                <li ng-switch-when="true"><a href="#/register/member">
-                                    <span class="glyphicon glyphicon-plus"></span>&#xA0;
-                                    <span translate="menu.add.member">Member</span></a></li>
-
-                            </ul>
-                        </li>
-
-
-                        <!-- Admin menu -->
-                        <li ng-switch-when="true" ng-show="isAuthorized(userRoles.admin)" class="dropdown pointer" ng-controller="AdminController">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                <span>
-                                    <span class="glyphicon glyphicon-tower"></span>
-                                    <span class="hidden-tablet" translate="menu.admin.main">Admin</span>
-                                    <b class="caret"></b>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#/tracker"><span class="glyphicon glyphicon-eye-open"></span>
-                                    &#xA0;<span translate="menu.admin.tracker">User tracking</span></a></li>
-                                <li><a href="#/metrics"><span class="glyphicon glyphicon-dashboard"></span>
-                                    &#xA0;<span translate="menu.admin.metrics">Metrics</span></a></li>
-                                <li><a href="#/audits"><span class="glyphicon glyphicon-bell"></span>
-                                    &#xA0;<span translate="menu.admin.audits">Audits</span></a></li>
-                                <li><a href="#/logs"><span class="glyphicon glyphicon-tasks"></span>
-                                    &#xA0;<span translate="menu.admin.logs">Logs</span></a></li>
-                                <li><a href="#/docs"><span class="glyphicon glyphicon-book"></span>
-                                    &#xA0;<span translate="menu.admin.apidocs">API Docs</span></a></li>
-                            </ul>
-                        </li>
-                        <!-- Language menu -->
-                        <li class="dropdown pointer" ng-controller="LanguageController">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                <span>
-                                    <span class="glyphicon glyphicon-flag"></span>
-                                    <span class="hidden-tablet" translate="menu.language">Language</span>
-                                    <b class="caret"></b>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li active-menu="{{key}}" ng-repeat="(key, language) in languages">
-                                    <a href="javascript:;" ng-click="changeLanguage(key)">{{language}}</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!-- Help menu -->
-                        <li class="dropdown pointer">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                <span>
-                                    <span class="glyphicon glyphicon-globe"></span>
-                                    <span class="hidden-tablet" translate="menu.help.main">Help</span>
-                                    <b class="caret"></b>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu" ng-controller="HelpController">
-                                <li><a href="#/info/overview/{{language}}"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="menu.help.overview">Overview</span></a></li>
-                                <li role="presentation" class="divider"></li>
-                                <li role="presentation" class="dropdown-header"><span translate="menu.help.role">Role</span></li>
-                                <li><a href="#/info/owner/{{language}}"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="menu.help.owner">Boat Owner</span></a></li>
-
-                                <li><a href="#/info/skipper/{{language}}"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="menu.help.skipper">Skipper</span></a></li>
-
-                                <li ><a ng-href="#/info/rescue/{{language}}"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="menu.help.rescue">Rescue</span></a></li>
-
-
-                                <li><a href="#/info/club/{{language}}"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="menu.help.club">Club</span></a></li>
-
-                                <li><a href="#/friend"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="menu.help.friend">Friends</span></a></li>
-                                <li role="presentation" class="divider"></li>
-                                <li><a href="#/info/about/{{language}}"><span class="glyphicon glyphicon-info-sign"></span>
-                                    &#xA0;<span translate="menu.help.about">About</span></a></li>
-                                <li><a href="#/contact"><span class="glyphicon glyphicon-envelope"></span>
-                                    &#xA0;<span translate="menu.help.contact">Contact</span></a></li>
-                                <li><a href="#/faq"><span class="glyphicon glyphicon-question-sign"></span>
-                                    &#xA0;<span translate="menu.help.faq">FAQ</span></a></li>
-                            </ul>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
+        <div ui-view="navbar" ng-cloak=""></div>
         <div class="container">
-            <div class="well" ng-view=""></div>
+            <div class="well" ui-view="content"></div>
 
             <div class="footer">
-                <p translate="message.info.footer">This is your footer</p>
+                <p translate="footer">This is your footer</p>
             </div>
         </div>
 
@@ -271,8 +45,8 @@
             ga('create','UA-XXXXX-X');ga('send','pageview');
         </script>-->
 
-
-        <!-- build:js scripts/scripts.js -->
+        <!-- build:js scripts/vendor.js -->
+        <!-- bower:js -->
         <script src="bower_components/modernizr/modernizr.js"></script>
 
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
@@ -282,16 +56,90 @@
         <!-- Must be defined before angular so that angular can resolve what open layers brings to the party. -->
         <script src="bower_components/openlayers/ol4.min.js" type="text/javascript"></script>
 
+        <script src="bower_components/stomp-websocket/lib/stomp.min.js"></script>
+        <script src="bower_components/sockjs-client/dist/sockjs.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/json3/lib/json3.js"></script>
         <script src="bower_components/angular/angular.js"></script>
-        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="bower_components/angular-resource/angular-resource.js"></script>
         <script src="bower_components/angular-cookies/angular-cookies.js"></script>
         <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
         <script src="bower_components/angular-translate/angular-translate.js"></script>
         <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
-        <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+        <script src="bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
         <script src="bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
-        <script src="scripts/http-auth-interceptor.js"></script>
+        <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+        <script src="bower_components/angular-cache-buster/angular-cache-buster.js"></script>
+        <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+        <script src="bower_components/ngAutocomplete/src/ngAutocomplete.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!-- build:js({.tmp,src/main/webapp}) scripts/app.js -->
+        <script src="scripts/app/app.js"></script>
+        <script src="scripts/app/app.constants.js"></script>
+        <script src="scripts/components/auth/auth.service.js"></script>
+        <script src="scripts/components/auth/principal.service.js"></script>
+        <script src="scripts/components/auth/authority.directive.js"></script>
+        <script src="scripts/components/auth/services/account.service.js"></script>
+        <script src="scripts/components/auth/services/activate.service.js"></script>
+        <script src="scripts/components/auth/services/password.service.js"></script>
+        <script src="scripts/components/auth/services/register.service.js"></script>
+        <script src="scripts/components/form/form.directive.js"></script>
+        <script src="scripts/components/form/pager.directive.js"></script>
+        <script src="scripts/components/form/pagination.directive.js"></script>
+        <script src="scripts/components/language/language.service.js"></script>
+        <script src="scripts/components/language/language.controller.js"></script>
+        <script src="scripts/components/admin/audits.service.js"></script>
+        <script src="scripts/components/admin/logs.service.js"></script>
+        <script src="scripts/components/admin/configuration.service.js"></script>
+        <script src="scripts/components/admin/monitoring.service.js"></script>
+        <script src="scripts/components/navbar/navbar.directive.js"></script>
+        <script src="scripts/components/navbar/navbar.controller.js"></script>
+        <script src="scripts/components/user/user.service.js"></script>
+        <script src="scripts/components/util/truncate.filter.js"></script>
+        <script src="scripts/components/util/base64.service.js"></script>
+        <script src="scripts/components/util/parse-links.service.js"></script>
+        <script src="scripts/app/account/account.js"></script>
+        <script src="scripts/app/account/activate/activate.js"></script>
+        <script src="scripts/app/account/activate/activate.controller.js"></script>
+        <script src="scripts/app/account/login/login.js"></script>
+        <script src="scripts/app/account/login/login.controller.js"></script>
+        <script src="scripts/app/account/logout/logout.js"></script>
+        <script src="scripts/app/account/logout/logout.controller.js"></script>
+        <script src="scripts/app/account/password/password.js"></script>
+        <script src="scripts/app/account/password/password.controller.js"></script>
+        <script src="scripts/app/account/password/password.directive.js"></script>
+        <script src="scripts/app/account/register/register.js"></script>
+        <script src="scripts/app/account/register/register.controller.js"></script>
+        <script src="scripts/app/account/settings/settings.js"></script>
+        <script src="scripts/app/account/settings/settings.controller.js"></script>
+        <script src="scripts/app/admin/admin.js"></script>
+        <script src="scripts/app/admin/audits/audits.js"></script>
+        <script src="scripts/app/admin/audits/audits.controller.js"></script>
+        <script src="scripts/app/admin/configuration/configuration.js"></script>
+        <script src="scripts/app/admin/configuration/configuration.controller.js"></script>
+        <script src="scripts/app/admin/docs/docs.js"></script>
+        <script src="scripts/app/admin/health/health.js"></script>
+        <script src="scripts/app/admin/health/health.controller.js"></script>
+        <script src="scripts/app/admin/logs/logs.js"></script>
+        <script src="scripts/app/admin/logs/logs.controller.js"></script>
+        <script src="scripts/app/admin/metrics/metrics.js"></script>
+        <script src="scripts/app/admin/metrics/metrics.controller.js"></script>
+        <script src="scripts/app/entities/entity.js"></script>
+        <script src="scripts/app/error/error.js"></script>
+        <script src="scripts/app/main/main.js"></script>
+        <script src="scripts/app/main/main.controller.js"></script>
+        <script src="scripts/components/auth/services/sessions.service.js"></script>
+        <script src="scripts/components/auth/provider/auth.session.service.js"></script>
+        <script src="scripts/app/account/sessions/sessions.js"></script>
+        <script src="scripts/app/account/sessions/sessions.controller.js"></script>
+        <script src="scripts/app/admin/tracker/tracker.js"></script>
+        <script src="scripts/app/admin/tracker/tracker.controller.js"></script>
+        <script src="scripts/components/tracker/tracker.service.js"></script>
+
+<!--        <script src="scripts/http-auth-interceptor.js"></script>
         <script src="scripts/truncate.js"></script>
         <script src="scripts/utils.js"></script>
         <script src="scripts/app.js"></script>
@@ -313,7 +161,7 @@
         <script src="bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/carousel.js"></script>
         <script src="bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/scrollspy.js"></script>
         <script src="bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/collapse.js"></script>
-        <script src="bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/tab.js"></script>
+        <script src="bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/tab.js"></script> -->
         <script src="scripts/vessel/router_vessel.js"></script>
         <script src="scripts/vessel/controller_vessel.js"></script>
         <script src="scripts/vessel/service_registration.js"></script>
@@ -334,6 +182,8 @@
         <script src="scripts/skippertrip/controller_skippertrip.js"></script>
         <script src="scripts/skippertrip/controller_skippertrip_edit.js"></script>
         <script src="scripts/skippertrip/service_skippertrip.js"></script>
+        <script src="scripts/rescue/router_rescue.js"></script>
+        <script src="scripts/rescue/controller_rescue.js"></script>
         <!-- endbuild -->
 </body>
 </html>
