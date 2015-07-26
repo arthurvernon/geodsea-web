@@ -51,3 +51,8 @@ an int. On the client side the date object can be created simply with a construc
 of timezone, the client can render the date however it is appropriate.
 
 This also allows the Angular 1.3 <input type="datetime-local"... to work out of the box. 
+
+Getting Ready for the cloud
+===========================
+
+Here is a good article on how to [Setup Postgis on VMWare](http://blogs.vmware.com/vfabric/2013/04/how-to-build-a-geographic-database-with-postgis-and-vpostgres.html)
