@@ -1,7 +1,0 @@
-syntax: regexp
-^.idea
-^src/main/webapp/bower_components
-^node_modules
-^target
-^.tmp
-\.iml
