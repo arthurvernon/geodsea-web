@@ -40,7 +40,7 @@
     "karma-requirejs": "0.2.2",
     "karma-phantomjs-launcher": "0.1.4",
     "karma": "0.12.32",
-    "generator-jhipster": "2.7.0",
+    "generator-jhipster": "6.6.0",
     "lodash": "4.17.15",
     "xml2js": "0.4.5",
     "zeparser": "0.0.7",
