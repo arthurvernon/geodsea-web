@@ -49,7 +49,7 @@
         <metrics-spark-reporter.version>1.2</metrics-spark-reporter.version>
         <metrics-spring.version>3.0.3</metrics-spring.version>
         <postgis.version>1.5.2</postgis.version>
-        <postgresql.version>9.3-1102-jdbc41</postgresql.version>
+        <postgresql.version>42.2.25</postgresql.version>
         <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>2.3</sonar-maven-plugin.version>
         <spring-security.version>4.0.0.RELEASE</spring-security.version>
